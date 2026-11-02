@@ -80,8 +80,8 @@ boundary; action dimensions come from the shared robot metadata helper.
 The agent defaults to xhigh; `model_cfg.reasoning_effort` also accepts `medium`.
 It uses a 200K input context, all images within each append-only
 window, and default same-model text compaction before the next request exceeds
-50 images or after 120 completed model turns. There is no additional output-token
-cap, cumulative ledger or injected current-state summary. Provider attempt and
+50 images or after 120 completed model turns. General Responses calls have no
+additional output-token cap. There is no cumulative ledger or injected current-state summary. Provider attempt and
 completion budgets are 330 and 300; the episode wall budget is four hours.
 Authentication, policy and quota failures retain evidence and stop dispatch.
 The harness never changes a key or model route to bypass such failures.
@@ -91,7 +91,8 @@ and select its exact model/base URL. The same entry uses the CCI v4 tool transpo
 temperature zero by default and a compact model catalog containing no extra instructions.
 `model_cfg.sampling` can explicitly set `temperature`, `top_k` and `top_p`;
 the exact upstream request records their effective values. CCI requests wait at
-most 300 seconds, with up to three attempts for transient failures.
+most 300 seconds, with up to three attempts for transient failures, and cap each
+output at 65,536 tokens (or retain a smaller caller-supplied cap).
 It retains upstream JSON and translated CLI JSON separately. Cache usage is
 measured; the paid-provider cache fuse is not applied to self-hosted CCI.
 A single output-limit response may retry the same request once, before any tool

@@ -13,6 +13,8 @@ import time
 import urllib.request
 import urllib.error
 
+CCI_MAX_OUTPUT_TOKENS = 65536
+
 
 def declarations(items, prefix=''):
     result=[]
@@ -60,8 +62,10 @@ def request_to_cci(request):
         reasoning=raw.get('reasoning',{'effort':'xhigh'}),
         chat_template_kwargs={'enable_thinking':True,'reasoning_effort':(raw.get('reasoning') or {}).get('effort','xhigh')},
         temperature=0)
-    if raw.get('max_output_tokens') is not None:
-        result['max_output_tokens']=raw['max_output_tokens']
+    requested_cap=raw.get('max_output_tokens')
+    if requested_cap is not None and (type(requested_cap) is not int or requested_cap<=0):
+        raise ValueError('Invalid CCI max_output_tokens')
+    result['max_output_tokens']=min(requested_cap,CCI_MAX_OUTPUT_TOKENS) if requested_cap is not None else CCI_MAX_OUTPUT_TOKENS
     def image_defaults(value):
         if isinstance(value,dict):
             if value.get('type')=='input_image':value.setdefault('detail','auto')

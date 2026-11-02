@@ -6,6 +6,13 @@ request_to_cci,response_to_cli,sse=_module.request_to_cci,_module.response_to_cl
 
 class ProtocolTests(unittest.TestCase):
 
+    def test_cci_output_cap_defaults_and_never_raises_a_smaller_limit(self):
+        base = {'model':'fixture','input':[]}
+        self.assertEqual(request_to_cci(base)['max_output_tokens'],65536)
+        self.assertEqual(request_to_cci({**base,'max_output_tokens':100000})['max_output_tokens'],65536)
+        self.assertEqual(request_to_cci({**base,'max_output_tokens':4096})['max_output_tokens'],4096)
+        self.assertNotIn('max_output_tokens',base)
+
     def test_history_image_and_tools_survive(self):
         request = {'model': 'test', 'instructions': 'core', 'input': [{'type': 'additional_tools', 'tools': [{'type': 'namespace', 'name': 'functions', 'tools': [{'type': 'custom', 'name': 'exec', 'description': 'execute'}]}]}, {'role': 'developer', 'content': [{'type': 'input_text', 'text': 'skills'}]}, {'type': 'custom_tool_call', 'name': 'exec', 'call_id': 'call1', 'input': 'text(1)'}, {'type': 'custom_tool_call_output', 'call_id': 'call1', 'output': [{'type': 'input_image', 'image_url': 'data:image/png;base64,YQ=='}]}]}
         result = request_to_cci(request)
