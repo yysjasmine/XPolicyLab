@@ -5,5 +5,5 @@ from importlib import import_module
 
 def make_agent(case_dir, *, config):
     """Use the same package module and agent classes as the policy server."""
-    module = import_module("XPolicyLab.policy.SenseNova-RoboRSI.hybrid_agent")
+    module = import_module("XPolicyLab.policy.SenseNova-RoboRSI.skillpack_agent")
     return module.make_agent(case_dir, config=config)

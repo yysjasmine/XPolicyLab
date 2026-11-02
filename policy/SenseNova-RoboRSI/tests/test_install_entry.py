@@ -42,6 +42,7 @@ def _python(
         f"    if {missing_memfd!r} and '--python-only' in sys.argv:\n"
         "        # Exercise the production early check with the missing API;\n"
         "        # this never reaches a memfd syscall or launches a sandbox.\n"
+        "        sys.platform = 'linux'  # Reach the missing-API branch on any host.\n"
         "        os.__dict__.pop('memfd_create', None)\n"
         "        sys.argv = sys.argv[1:]\n"
         "        runpy.run_path(sys.argv[0], run_name='__main__')\n"
@@ -67,20 +68,24 @@ def _python(
         "    if sys.argv[1] == '-':\n"
         "        # Do not execute inline source preparation or downloads.\n"
         "        assert len(sys.argv) == 3, 'final receipt must follow the final preflight'\n"
-        "        assert 'urlopen' in sys.stdin.read()\n"
+        "        inline = sys.stdin.read()\n"
+        "        if 'vla_backend' in inline and 'yaml.safe_load' in inline:\n"
+        "            print('pi05')  # Select only the offline fixture branch.\n"
+        "            raise SystemExit(0)\n"
+        "        assert 'urlopen' in inline\n"
         "        Path(sys.argv[2], 'runtime').mkdir(exist_ok=True)\n"
         "        raise SystemExit(0)\n"
         "    if Path(sys.argv[1]).name == 'probe.py':\n"
         "        assert Path(sys.argv[1]).parent.name == 'sim_bootstrap'\n"
         "        print(json.dumps({'test_fixture': True, 'sim_namespace_verified': False}))\n"
         "        raise SystemExit(0)\n"
-        "    if Path(sys.argv[1]).name in {'icl_assets.py', 'pi05_runtime.py'}:\n"
+        "    if Path(sys.argv[1]).name == 'pi05_runtime.py':\n"
         "        assert sys.argv[2:] == ['install']\n"
         "        raise SystemExit(0)\n"
         "    if Path(sys.argv[1]).name == 'preflight.py':\n"
         "        assert '--installation-only' in sys.argv\n"
-        "        assert sys.argv[sys.argv.index('--verify-icl-task') + 1] == 'align_blocks'\n"
-        "        print(json.dumps({'test_fixture': True, 'icl': {'materialization': {'materialization_verified': False}}}))\n"
+        "        assert sys.argv[sys.argv.index('--verify-case-skill') + 1] == 'arrange_largest_number'\n"
+        "        print(json.dumps({'test_fixture': True, 'skillpack': {'raw_icl_materialized': False}}))\n"
         "        raise SystemExit(73)  # Stop after observing the exact final entry.\n"
         "raise SystemExit(99)\n"
     )
@@ -297,7 +302,7 @@ def test_missing_memfd_fails_before_downloads_or_dependency_install(
     assert "fixture-runtime-key" not in result.stdout + result.stderr
 
 
-def test_installer_reaches_offline_sandbox_sim_probe_and_selected_icl_check(tmp_path):
+def test_installer_reaches_offline_sandbox_sim_probe_and_selected_case_check(tmp_path):
     policy, tools, events, env = _harness(tmp_path)
     _python(tools / "python3.10")
     _python(policy / ".venv/bin/python")
@@ -345,17 +350,13 @@ def test_installer_reaches_offline_sandbox_sim_probe_and_selected_icl_check(tmp_
         for index, record in enumerate(records)
         if Path(record["args"][0]).name == "probe.py"
     )
-    icl_index = next(
-        index
-        for index, record in enumerate(records)
-        if Path(record["args"][0]).name == "icl_assets.py"
-    )
     vla_index = next(
         index
         for index, record in enumerate(records)
         if Path(record["args"][0]).name == "pi05_runtime.py"
     )
-    assert sandbox_index < simulator_index < icl_index < vla_index < len(records) - 1
+    assert sandbox_index < simulator_index < vla_index < len(records) - 1
+    assert not any(Path(record["args"][0]).name == "icl_assets.py" for record in records)
     assert records[simulator_index]["args"] == [
         str(policy / "sim_bootstrap/probe.py"),
         "--workspace",
@@ -367,8 +368,8 @@ def test_installer_reaches_offline_sandbox_sim_probe_and_selected_icl_check(tmp_
         "--config",
         str(policy / "deploy.yml"),
         "--installation-only",
-        "--verify-icl-task",
-        "align_blocks",
+        "--verify-case-skill",
+        "arrange_largest_number",
     ]
     assert all(not record["key_present"] for record in records)
     sandbox = json.loads((policy / "runtime/sandbox-install.json").read_text())
@@ -381,11 +382,11 @@ def test_installer_reaches_offline_sandbox_sim_probe_and_selected_icl_check(tmp_
     assert simulator["test_fixture"] is True
     assert simulator["sim_namespace_verified"] is False
     final_check = json.loads((policy / "runtime/install-preflight.json").read_text())
-    assert final_check["icl"]["materialization"]["materialization_verified"] is False
+    assert final_check["skillpack"]["raw_icl_materialized"] is False
     assert not (policy / "runtime/install-receipt.json").exists()
 
 
-def test_sandbox_gate_failure_stops_before_large_icl_and_vla_downloads(tmp_path):
+def test_sandbox_gate_failure_stops_before_vla_downloads(tmp_path):
     policy, tools, events, env = _harness(tmp_path)
     _python(tools / "python3.10")
     _python(policy / ".venv/bin/python")

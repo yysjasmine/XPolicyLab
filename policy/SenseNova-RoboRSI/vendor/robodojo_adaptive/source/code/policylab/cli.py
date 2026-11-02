@@ -9,7 +9,7 @@ from .common import load_config, validate_paths, write_json
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(description="Run autonomous exploration and continual evaluation with your benchmark adapter.")
+    parser = argparse.ArgumentParser(description="Inspect controller configuration and artifacts; execute through XPolicyLab.")
     commands = parser.add_subparsers(dest="command", required=True)
     init = commands.add_parser("init", help="Write an editable experiment configuration; no installation or execution")
     init.add_argument("config", type=Path)
@@ -18,13 +18,11 @@ def main(argv=None):
     init.add_argument("--training-set", required=True)
     init.add_argument("--workspace", required=True, help="Persistent agent workspace directory")
     init.add_argument("--benchmark-python", default=sys.executable)
-    for name in ("check", "run"):
+    for name in ("check",):
         cmd = commands.add_parser(name, help="Check configuration without launching models/environments" if name == "check" else "Start a real experiment")
         cmd.add_argument("config", type=Path)
         if name == "check":
             cmd.add_argument("--adapter-only", action="store_true", help="Do not check the local Codex installation/login")
-        else:
-            cmd.add_argument("--output", type=Path, default=Path("runs"))
     inspect = commands.add_parser("inspect", help="Print the saved run summary")
     inspect.add_argument("run", type=Path)
     args = parser.parse_args(argv)
@@ -54,7 +52,7 @@ def main(argv=None):
         cfg = load_config(args.config)
         receipt = validate_paths(cfg)
         ast.parse(Path(cfg["adapter"].rsplit(":", 1)[0]).read_text())
-        if args.command == "run" or not args.adapter_only:
+        if not args.adapter_only:
             from .codex import auth_file, native_binary
             native_binary(cfg["codex_binary"])
             auth_file(cfg)
@@ -64,10 +62,6 @@ def main(argv=None):
             print(json.dumps({"configuration": "valid", **receipt,
                               "scope": "Paths, syntax and configuration only. No adapter import, simulator, model or login request was executed."}, indent=2))
             return 0
-        from .runner import run_experiment
-        run, summary = run_experiment(cfg, args.output)
-        print(json.dumps({"run": str(run), **summary}, indent=2))
-        return 0 if summary["status"] == "completed" else 1
     except (ValueError, KeyError, OSError) as exc:
         print(f"PolicyLab: {exc}", file=sys.stderr)
         return 2

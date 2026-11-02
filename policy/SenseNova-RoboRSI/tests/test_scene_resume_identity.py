@@ -15,6 +15,8 @@ hybrid_agent = import_module("XPolicyLab.policy.SenseNova-RoboRSI.hybrid_agent")
 hybrid_backend = import_module("XPolicyLab.policy.SenseNova-RoboRSI.hybrid_backend")
 hybrid_resume = import_module("XPolicyLab.policy.SenseNova-RoboRSI.hybrid_resume")
 model_module = import_module("XPolicyLab.policy.SenseNova-RoboRSI.model")
+execution_profile = import_module("XPolicyLab.policy.SenseNova-RoboRSI.execution_profile")
+skillpack_agent = import_module("XPolicyLab.policy.SenseNova-RoboRSI.skillpack_agent")
 
 IDENTITY = {"task": "align_blocks", "eval_seed": 0, "layout": 14, "run_id": "fixture"}
 
@@ -48,6 +50,7 @@ def boundary(tmp_path):
     model._trajectory_id = "fixture-policy"
     model._trajectory_directory = tmp_path / "trajectory"
     model._tool_python = Path("/unused/tool/python")
+    model._adaptive_steps = {"approved_steps_min": 5, "approved_steps_max": 50, "approved_steps_default": 5}
     hybrid_resume.write_json(tmp_path / "episode-owner.json", {"identity": dict(IDENTITY)})
     return model
 
@@ -75,11 +78,9 @@ def test_native_cap_cannot_change_after_receipt_is_bound(boundary):
 
 
 def _prepare_start(monkeypatch, boundary):
-    prepared = SimpleNamespace(
-        source_identity={"mapping": {"base_task": "align_blocks"}},
-        workspace=boundary._directory / "workspace",
-    )
-    monkeypatch.setattr(model_module, "prepare_icl_context", lambda *_: prepared)
+    # Exercise the real lean preparation/profile path. Only the native transport
+    # and VLA process are stubs in these identity-boundary tests.
+    monkeypatch.setattr(execution_profile, "extend_reference", lambda reference: reference)
     monkeypatch.setattr(hybrid_backend, "load_reference_source", lambda *_: SimpleNamespace())
     monkeypatch.setattr(boundary, "_ensure_vla", lambda: 19802)
     monkeypatch.setattr(boundary, "_reserve_resume", lambda: None)
@@ -104,11 +105,12 @@ def _prepare_start(monkeypatch, boundary):
             return self
 
     monkeypatch.setattr(hybrid_backend, "HybridBackend", Backend)
-    monkeypatch.setattr(hybrid_agent, "HybridController", Controller)
+    monkeypatch.setattr(skillpack_agent, "SkillpackController", Controller)
     return captured
 
 
-def test_initial_native_cap_must_equal_original_task_cap(boundary, monkeypatch):
+def test_explicit_native_cap_must_match_actual_episode(boundary, monkeypatch):
+    boundary.model_cfg["native_step_limit"] = 200
     boundary.update_obs(observation(receipt(step_limit=201)))
     captured = _prepare_start(monkeypatch, boundary)
     with pytest.raises(ValueError, match="step limit"):
@@ -124,6 +126,12 @@ def test_actual_layout14_binds_fresh_config_and_original_replay(boundary, monkey
         cfg = json.loads((model_module.POLICY_DIR / profile["profile_path"] /
                          "resources/fresh-configs/align_blocks-s0.json").read_text())
         cfg["model"] = "fixture-model"
+        cfg["reasoning_effort"] = "xhigh"
+        cfg["episode_seconds"] = 14400
+        cfg["options"].update(boundary._adaptive_steps)
+        cfg["options"].update(codex_compact_tokens=200000, review_window_steps=200,
+                              review_max_windows=1, stop_min_steps=200,
+                              review_allow_reset=False, max_repeat=1)
         cfg["test_episodes"][0].update(layout_id=14, id="align_blocks-s0-eval0-layout14")
         cfg["continue_from_run"] = "/own/stopped/controller"
         cfg["episode_seconds"] -= 1200

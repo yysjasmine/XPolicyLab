@@ -80,7 +80,7 @@ def prepare_retry(task,row):
   return False
  cfg=json.loads((ROOT/'config'/f'{task}.json').read_text())
  cfg.update(continue_from_run=str(source),agent_workspace=str(ROOT/'workspaces'/f'{task}-recover-{time.time_ns()}'),episode_seconds=remaining)
- cfg['options'].update(codex_compact_tokens=60000,replay_fresh_session=True)
+ cfg['options'].update(codex_compact_tokens=200000,replay_fresh_session=True)
  if step:
   cfg['options']['replay']=dict(source_record=str(records[0].parent),episode_id=cfg['test_episodes'][0]['id'],control_step=step)
  else:cfg['options'].pop('replay',None)

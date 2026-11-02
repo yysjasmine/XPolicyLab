@@ -98,16 +98,7 @@ def sandbox_command(cfg, run, private_home, cmd):
 
 
 def main():
-    from policylab.common import load_config
-    from policylab.runner import run_experiment
-    import hybrid_host
-    hybrid_host.install()
-    codex.command = command
-    codex.sandbox_command = sandbox_command
-    cfg = resolve_runtime_config(load_config(sys.argv[1]))
-    run,summary=run_experiment(cfg, sys.argv[2] if len(sys.argv)>2 else str(Path.cwd()/"runs"))
-    print(json.dumps({'run': str(run), **summary}, indent=2), flush=True)
-    return 0 if summary['status'] == 'completed' else 1
+    raise RuntimeError("Standalone controller execution was removed; use the SenseNova-RoboRSI XPolicyLab entry")
 
 
 if __name__ == '__main__':

@@ -1,0 +1,141 @@
+{
+  "task": "fill_pen_holder",
+  "source_receipt_sha256": "921fa41a8fbb3c18aae0ada291e0ecab58deed2dc64c5f8849ca68ca318209b9",
+  "reviewed_sources": [
+    {
+      "path": "preparation/skills/pen_holder_policy.md",
+      "sha256": "9f78489e44c418838a76c19c53403e563912dbcab91ff7540200151ef0b82fbe"
+    },
+    {
+      "path": "preparation/CHECKLIST.md",
+      "sha256": "fe1b88bcd4f31e4403a960efd6a72ed88d4031f92100fb78bfb53a477fcdc5f3"
+    },
+    {
+      "path": "preparation/evidence/NUMERICS.md",
+      "sha256": "2cf88de9bcb11882444b64cb2ad7ca9cd9838ec97632d32a36f2e98e13b3260b"
+    },
+    {
+      "path": "preparation/scripts/geometry.py",
+      "sha256": "0b642a2063593fa8688bb210e5c6184be1b17f180e0d3f0b04ecde4aa9e47c33"
+    }
+  ],
+  "source_md_py_manifest": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "1477c8f89e12deb3d516a187465972b58202fafa50a1e373904f1b4fc37424f5"
+    },
+    {
+      "path": "preparation/CHECKLIST.md",
+      "sha256": "fe1b88bcd4f31e4403a960efd6a72ed88d4031f92100fb78bfb53a477fcdc5f3"
+    },
+    {
+      "path": "preparation/README.md",
+      "sha256": "29b6fd0c079180526cf8a7a97116f70dfa0af097e244e422e39e5b408955125e"
+    },
+    {
+      "path": "preparation/REHEARSALS.md",
+      "sha256": "d98b82faaca65fa768d829e3d4c5ae515a353179a0e151699b6e4ae1729cf65a"
+    },
+    {
+      "path": "preparation/UNCERTAINTIES.md",
+      "sha256": "727ceca18b0036bd2049c6a817a1d5b3fec5bddf045e94e7ad0042c7c149b905"
+    },
+    {
+      "path": "preparation/evidence/BENCHMARK.md",
+      "sha256": "bf9ba14e721feb62b254f8d2ff1bef9f950714f8a8519ad73329652f887a5f7f"
+    },
+    {
+      "path": "preparation/evidence/DEMONSTRATIONS.md",
+      "sha256": "888ff3bb87936e5442f667339f22c9197cec374ff94f34524330ff6fc3115a64"
+    },
+    {
+      "path": "preparation/evidence/NUMERICS.md",
+      "sha256": "2cf88de9bcb11882444b64cb2ad7ca9cd9838ec97632d32a36f2e98e13b3260b"
+    },
+    {
+      "path": "preparation/evidence/OFFLINE_CHECKS.md",
+      "sha256": "8dc16cfd73f1c91b37db8931c19583cf6f9e9c21fea1a691b32925ca38c38e9d"
+    },
+    {
+      "path": "preparation/scripts/HOW_TO_USE.md",
+      "sha256": "e60af18315e4b1077803b4785a950abc6af3bc76aff8885b5730c7299e33f88b"
+    },
+    {
+      "path": "preparation/scripts/check_helpers.py",
+      "sha256": "e7f8eb643c3b76c0ae2e5566a1f1c7272570e535fbdf4eed292db1dfcbc46e9e"
+    },
+    {
+      "path": "preparation/scripts/eef_policy.py",
+      "sha256": "90a6f645ac295fb33ca3eb35b5d21725b513650c15872057a7ad90a98cb85135"
+    },
+    {
+      "path": "preparation/scripts/geometry.py",
+      "sha256": "0b642a2063593fa8688bb210e5c6184be1b17f180e0d3f0b04ecde4aa9e47c33"
+    },
+    {
+      "path": "preparation/scripts/numerical_report.py",
+      "sha256": "2cac65eba75d8ddd08c7995bd773f2e16539463f22887f3c0426afd3d61d4ed3"
+    },
+    {
+      "path": "preparation/scripts/study.py",
+      "sha256": "2af0d8f66a225adc2eff2a1f8cf9c1b1834fcb3cc3b97720b17fa338f1a7dee0"
+    },
+    {
+      "path": "preparation/scripts/transitions.py",
+      "sha256": "7ab8678d38ab7e711632de7f56b6162e73d4de7a1cf7c891847da54c2bfcb115"
+    },
+    {
+      "path": "preparation/skills/pen_holder_policy.md",
+      "sha256": "9f78489e44c418838a76c19c53403e563912dbcab91ff7540200151ef0b82fbe"
+    }
+  ],
+  "retained_images": [
+    {
+      "source": "preparation/images/ep00_transitions.jpg",
+      "retained": "assets/ep00_transitions.jpg",
+      "sha256": "2a341bfebc511086f0958f202a3e34edb122003357eefb26fcc2bad336961390",
+      "bytes": 338652
+    },
+    {
+      "source": "preparation/images/ep00_endings.jpg",
+      "retained": "assets/ep00_endings.jpg",
+      "sha256": "0234e2d2f01c57d5d7c6bf4badfcbe047055af630c580329d370c9d8229cb405",
+      "bytes": 353418
+    },
+    {
+      "source": "preparation/images/ep07_endings.jpg",
+      "retained": "assets/ep07_endings.jpg",
+      "sha256": "a2137672b286b0146a725a2da934ef18b8119ff6fd21bf4904b192786778981c",
+      "bytes": 343909
+    }
+  ],
+  "helper_functions": [
+    "plan: thick-first instrument ordering and endpoint-interpolated grasp points",
+    "offset: observed shaft/tip-to-TCP displacement correction"
+  ],
+  "skill_utf8_bytes": 4367,
+  "skill_sha256": "4415c86b2aace2079923145111f7a86ca9cad30e3e651f4df6a4e9accca350da",
+  "helper_sha256": "6dcd60a4ce51f38e26f7969ef80af48155e98ad3d1762cbd4b783b357696bc84",
+  "tests": {
+    "path": "authoring_receipts/test_fill_pen_holder.py",
+    "count": 6,
+    "result": "passed",
+    "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s robodojo/harness/case_skills/v1/authoring_receipts -p test_fill_pen_holder.py",
+    "temporary_root": "<authoring-temporary-directory>"
+  },
+  "runtime": {
+    "robot_subagents_enabled": false,
+    "subagent_ablation": "not enabled; future AB only",
+    "model_api_called": false,
+    "simulator_run": false,
+    "robot_imported": false
+  },
+  "limitations": [
+    "Offline arithmetic and source-image preservation checks do not establish physical success, collision clearance, grasp or insertion validity.",
+    "Current RGB and measured TCP state determine execution; demonstration counts/layouts are reference examples."
+  ],
+  "source_archive_sha256": "e4d8304e6e9096105473e91f4f2f5bcc8faae44efcdd7f4a4f6206b1b7a27152",
+  "public_source": "https://huggingface.co/datasets/sensenova/SenseNova-RoboRSI-Packages/resolve/d922d28766d11d761228a500ddb7a28abc1b121e/robodojo/v1.0.0/icl/fill_pen_holder.tar.gz",
+  "local_paths_redacted": true,
+  "unredacted_local_receipt_sha256": "a01924904d4aa042dac3b3da776df80bc1f0480c3a030f076cc3242788765ff4"
+}

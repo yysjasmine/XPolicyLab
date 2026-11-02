@@ -1,4 +1,4 @@
-"""Check original prompts, CLI transport, recovery and deferred tool feedback."""
+"""Check skillpack ownership, CLI transport, recovery and native ACK feedback."""
 
 from __future__ import annotations
 
@@ -25,6 +25,9 @@ from roborsi.planner.codex_cli import CodexCliPlanner
 from roborsi.planner.codex_cli_config import CodexCliConfig
 
 hybrid_agent = import_module("XPolicyLab.policy.SenseNova-RoboRSI.hybrid_agent")
+skillpack_agent = import_module("XPolicyLab.policy.SenseNova-RoboRSI.skillpack_agent")
+execution_profile = import_module("XPolicyLab.policy.SenseNova-RoboRSI.execution_profile")
+HybridBackend = import_module("XPolicyLab.policy.SenseNova-RoboRSI.hybrid_backend").HybridBackend
 hybrid_launcher = import_module("XPolicyLab.policy.SenseNova-RoboRSI.hybrid_launcher")
 BackendClosed = import_module("XPolicyLab.policy.SenseNova-RoboRSI.hybrid_backend").BackendClosed
 load_reference_source = import_module("XPolicyLab.policy.SenseNova-RoboRSI.hybrid_backend").load_reference_source
@@ -48,6 +51,9 @@ def cfg():
         ).read_text()
     )
     config["model"] = "fixture-model"
+    config["reasoning_effort"] = "xhigh"
+    config["episode_seconds"] = 14400
+    config["options"].update(codex_compact_tokens=200000, approved_steps_min=5)
     return config
 
 
@@ -65,77 +71,40 @@ def cli_config(executable):
                 "model_providers.runtime.base_url": "https://provider.example.invalid/v1",
                 "model_providers.runtime.wire_api": "responses",
                 "model_providers.runtime.env_key": "CODEX_API_KEY",
-                "model_auto_compact_token_limit": 60000,
+                "model_auto_compact_token_limit": 200000,
             },
         }
     )
 
 
-def test_prompt_preserves_reference_and_reports_episode_limits(reference, cfg):
-    prompt = hybrid_agent.build_evaluation_prompt(reference, cfg)
-    limits = (
-        "Adaptive approved_steps must be an integer from 2 to 50; if omitted, use 5. "
-        "These recorded episode limits override historical skill examples; every VLA proposal also reports them. "
-    )
-    assert prompt.count(limits) == 1
-    original = prompt.replace(limits, "")
-    assert len(original.encode()) == 8498
-    assert (
-        hashlib.sha256(original.encode()).hexdigest()
-        == "20b1fbf3327208c9e7143a4c6574e730ad59186844f51745579fb60d0e005132"
-    )
-    assert "roborsi_action" not in prompt and "MCP" not in prompt
 
 
-@pytest.mark.parametrize("minimum,default", [(5, 5), (10, 10), (50, 50)])
-def test_prompt_uses_resolved_runtime_limits(reference, cfg, minimum, default):
-    cfg["options"].update(approved_steps_min=minimum, approved_steps_default=default)
-    prompt = hybrid_agent.build_evaluation_prompt(reference, cfg)
-    assert f"integer from {minimum} to 50; if omitted, use {default}." in prompt
 
 
 def test_agent_config_custom_factory_reaches_embodied_agent(tmp_path):
-    runtime = P / "runtime"
-    runtime.mkdir(exist_ok=True)
-    with tempfile.TemporaryDirectory(
-        prefix="hybrid-config-test-", dir=runtime
-    ) as temporary:
-        preset = Path(temporary) / "agent.yaml"
-        raw = {
-            "schema_version": 1,
-            "source_root": "../..",
-            "factory": "sense_nova_roborsi_factory:make_agent",
-            "code": [
-                "../../sense_nova_roborsi_factory.py",
-                "../../hybrid_agent.py",
-                "../../hybrid_launcher.py",
-            ],
-            "agent": {
-                "planner": "codex_cli",
-                "model": "fixture-model",
-                "reasoning_effort": "max",
-                "max_turns": None,
-                "max_tokens": None,
-                "planner_timeout_s": 0,
-                "action_timeout_s": None,
-                "codex_cli": {
-                    "executable": "/not-launched",
-                    "expected_version": "codex-cli 0.160.1",
-                    "tools": "external",
-                },
-            },
-        }
+    raw = yaml.safe_load((P / "agent.yaml").read_text())
+    raw["source_root"] = str(P)
+    raw["code"] = [str(P/name) for name in raw["code"]]
+    raw["agent"]["model"] = "fixture-model"
+    raw["agent"]["codex_cli"]["executable"] = "/not-launched"
+    # AgentConfig seals the preset together with its actual factory source.
+    # Keep this short-lived preset inside source_root, outside runtime installs.
+    with tempfile.TemporaryDirectory(prefix=".agent-preset-", dir=P/"tests") as temporary:
+        preset = Path(temporary)/"agent.yaml"
         preset.write_text(yaml.safe_dump(raw))
         case = tmp_path / "episode"
         case.mkdir()
         agent = AgentConfig.from_file(preset).create_agent(case)
-        assert isinstance(agent, hybrid_agent.HybridEmbodiedAgent)
-        assert isinstance(agent, EmbodiedAgent)
-        assert agent.planner == "codex_cli" and agent.codex_cli.tools == "external"
-        assert (case / "agent-config.json").is_file()
-        agent.close()
+    assert isinstance(agent, skillpack_agent.SkillpackEmbodiedAgent)
+    assert isinstance(agent, EmbodiedAgent)
+    assert agent.planner == "codex_cli" and agent.codex_cli.tools == "external"
+    assert agent.reasoning_effort == "xhigh"
+    assert (case / "agent-config.json").is_file()
+    agent.close()
 
 
+
+@pytest.mark.skipif(not hasattr(os, "memfd_create"), reason="Verified memfd transport requires Linux")
 def test_launcher_uses_original_mounts_and_hides_secrets_in_memfd(
     reference, cfg, tmp_path, monkeypatch
 ):
@@ -172,7 +141,7 @@ def test_launcher_uses_original_mounts_and_hides_secrets_in_memfd(
         model=cfg["model"],
         timeout_s=None,
         dashboard_events=None,
-        reasoning_effort="max",
+        reasoning_effort="xhigh",
         config=cli_config(binary),
     )
     assert isinstance(planner, CodexCliPlanner)
@@ -312,170 +281,101 @@ def test_original_live_context_recovery_keeps_the_same_physical_episode(
     assert result["status"] == "finished"
 
 
-class DeferredBackend:
-    """No simulator: each original step waits for the test's explicit ACK."""
-
-    def __init__(self):
-        self.actions = queue.Queue()
-        self.step = 0
-        self.closed = False
-        self.pending = None
-
-    def reply(self):
-        return {
-            "observation": {
-                "instruction": "Align blocks",
-                "control_step": self.step,
-                "step_limit": 200,
-            },
-            "done": self.step == 5,
-            "metrics": {"success": None} if self.step == 5 else {},
-        }
-
-    def request(self, *, op, **kwargs):
-        if op == "reset":
-            Path(kwargs["record_dir"]).mkdir(parents=True)
-            return self.reply()
-        if op == "vla_propose":
-            target = {
-                arm: {
-                    "position": [0.0, 0.0, 1.0],
-                    "quaternion_wxyz": [1.0, 0.0, 0.0, 0.0],
-                    "gripper_closed": False,
-                }
-                for arm in ["left", "right"]
-            }
-            return {
-                "proposal_id": "fixture-proposal",
-                "control_step": self.step,
-                "targets": [copy.deepcopy(target) for _ in range(50)],
-                "out_of_bounds": [[] for _ in range(50)],
-            }
-        if op == "step":
-            self.pending = SimpleNamespace(
-                action=kwargs["action"], event=threading.Event()
-            )
-            self.actions.put(self.pending)
-            self.pending.event.wait()
-            if self.closed:
-                raise BackendClosed("Cancelled")
-            return self.reply()
-        raise AssertionError(op)
-
-    def next_action(self, timeout):
-        item = self.actions.get(timeout=timeout)
-        if isinstance(item, Exception):
-            raise item
-        return item
-
-    def acknowledge(self):
-        self.step += 1
-        self.pending.event.set()
-
-    def cancel(self):
-        self.closed = True
-        if self.pending is not None:
-            self.pending.event.set()
-        self.actions.put(BackendClosed("Cancelled"))
+class OfflineToolProcess:
+    """Thread-backed CLI transport fake; invokes the registered MCP handlers."""
+    def __init__(self, callback, toolkit, cfg, run, segment, prompt):
+        self.returncode = None
+        def execute():
+            try:
+                callback(toolkit, cfg, run, segment, prompt)
+                (segment/"model.jsonl").write_text(json.dumps({"type": "thread.started", "thread_id": "offline-session"})+"\n")
+                self.returncode = 0
+            except BaseException:
+                import traceback
+                (segment/"model.stderr").write_text(traceback.format_exc())
+                self.returncode = 1
+        self.thread = threading.Thread(target=execute, daemon=True)
+        self.thread.start()
+    def poll(self):
+        return self.returncode
+    def wait(self, timeout=None):
+        self.thread.join(timeout)
+        if self.thread.is_alive():
+            raise TimeoutError("Offline tool operation did not finish")
+        return self.returncode
 
 
-def test_original_tools_review_and_five_acknowledged_steps_close_without_self_scoring(
-    reference, cfg, tmp_path, monkeypatch
+def make_offline_tool_planner(callback):
+    class OfflinePlanner:
+        def __init__(self, **kwargs):
+            self.process = None
+        def launch_segment(self, cfg, run, home, segment, prompt, session=None):
+            segment.mkdir(exist_ok=True)
+            (segment/"prompt.txt").write_text(prompt)
+            self.process = OfflineToolProcess(callback, self.toolkit, cfg, run, segment, prompt)
+            return self.process
+        def cancel(self):
+            if self.process is not None:
+                self.process.wait(timeout=5)
+    return OfflinePlanner
+
+
+
+def test_skillpack_tools_five_acknowledged_steps_close_without_self_scoring(
+    reference, cfg, robot, vla, tmp_path, monkeypatch
 ):
-    backend = DeferredBackend()
-    prepared = tmp_path / "prepared"
-    (prepared / "prep/skills").mkdir(parents=True)
-    (prepared / "prep/skills/original.md").write_text("Original complete experience")
-    training = tmp_path / "training"
-    training.mkdir()
-    (training / "public.txt").write_text("public fixture")
+    reference = execution_profile.extend_reference(reference)
     episode = tmp_path / "episode"
     episode.mkdir()
+    prepared = execution_profile.prepare_skillpack_context(P, "align_blocks", episode)
+    current_observation = import_module("XPolicyLab.policy.SenseNova-RoboRSI.tests.test_hybrid_backend").observation
+    backend = HybridBackend(reference, task_name="align_blocks", episode_dir=episode,
+        initial_observation=current_observation(), step_limit=200, metadata_path=robot.metadata,
+        expected_metadata_sha256=hashlib.sha256(robot.metadata.read_bytes()).hexdigest(),
+        resource_root=robot.root, vla_port=19802)
     original_request = reference.runner.Experiment.request
-
-    class OfflinePlanner:
-        def __init__(self, **_kwargs):
-            self.process = None
-
-        def launch_segment(self, _cfg, run, _home, segment, prompt, session=None):
-            (segment / "prompt.txt").write_text(prompt)
-            program = "\n".join(
-                [
-                    "import sys,json,os",
-                    "sys.path.insert(0,sys.argv[1])",
-                    "from robot import observe,vla_propose,vla_review",
-                    "assert observe()['observation']['control_step']==0",
-                    "p=vla_propose('align blocks')",
-                    "r=vla_review(p['proposal_id'],'accept','observed fixture',{'current_subgoal':'align'},approved_steps=5)",
-                    "assert r['executed_steps']==5 and r['done']",
-                    "print(json.dumps({'type':'thread.started','thread_id':'offline-session'}))",
-                ]
-            )
-            with (
-                (segment / "model.jsonl").open("w") as output,
-                (segment / "model.stderr").open("w") as error,
-            ):
-                self.process = subprocess.Popen(
-                    [sys.executable, "-c", program, str(run / "tools")],
-                    stdout=output,
-                    stderr=error,
-                    env={
-                        "PATH": os.defpath,
-                        "POLICYLAB_SOCKET": str((run / "bridge/robot.sock").resolve()),
-                    },
-                    start_new_session=True,
-                )
-            return self.process
-
-        def cancel(self):
-            if self.process is not None and self.process.poll() is None:
-                self.process.terminate()
-                self.process.wait(2)
-
-    monkeypatch.setattr(hybrid_agent, "HybridCodexCliPlanner", OfflinePlanner)
-    agent = hybrid_agent.HybridEmbodiedAgent(
-        mcp_servers=(),
-        output_dir=episode,
-        planner="codex_cli",
-        model=cfg["model"],
-        reasoning_effort="max",
-        max_turns=None,
-        max_tokens=None,
-        codex_cli=cli_config(P / "runtime/codex/bin/codex"),
-    )
-    context = hybrid_agent.HybridRunContext(
-        reference,
-        backend,
-        cfg,
-        episode,
-        prepared,
-        training,
-        P / "vendor/robodojo_adaptive/resources/interfaces/BENCHMARK.md",
-        Path(sys.executable),
-        Path("/not-used"),
-        "0" * 64,
-    )
-    controller = hybrid_agent.HybridController(agent, context).start()
+    completed = []
+    def execute(toolkit, _cfg, _run, _segment, prompt):
+        assert prompt.startswith("Carry out the current episode task.")
+        assert toolkit.execute_tool("observe", {}).result["observation"]["control_step"] == 0
+        proposal = toolkit.execute_tool("vla_propose", {"subgoal": "Align the visible blocks."}).result
+        result = toolkit.execute_tool("act", {"proposal_id": proposal["proposal_id"], "steps": 5,
+            "reason": "Observed fixture prefix", "assessment": {"current_subgoal": "Align"}}).result
+        assert result["executed_steps"] == 5 and result["done"]
+        completed.append(result)
+    monkeypatch.setattr(skillpack_agent, "SkillpackCodexCliPlanner", make_offline_tool_planner(execute))
+    monkeypatch.setattr(reference.runner, "stop_process", lambda process: process.wait(timeout=5))
+    agent = skillpack_agent.SkillpackEmbodiedAgent(mcp_servers=(), output_dir=episode,
+        planner="codex_cli", model=cfg["model"], reasoning_effort="xhigh", max_turns=None,
+        max_tokens=None, codex_cli=cli_config(Path("/not-used")))
+    context = hybrid_agent.HybridRunContext(reference, backend, cfg, episode, prepared.workspace,
+        prepared.workspace, P/"vendor/robodojo_adaptive/resources/interfaces/BENCHMARK.md",
+        Path(sys.executable), Path("/not-used"), "0"*64,
+        execution_profile=execution_profile.load_skillpack_profile(P, "align_blocks", episode), model_cfg={})
+    controller = skillpack_agent.SkillpackController(agent, context).start()
     try:
         for step in range(5):
             pending = controller.next_action(timeout=10)
-            assert pending.action["mode"] == "eef" and backend.step == step
-            controller.acknowledge()
+            assert pending.step_index == step and backend.control_step == step
+            assert set(pending.action) == {"left_arm_joint_state", "left_ee_joint_state",
+                                           "right_arm_joint_state", "right_ee_joint_state"}
+            controller.acknowledge(pending.request_id, current_observation(), terminated=step == 4)
         controller._thread.join(10)
-        assert controller.done and controller.error is None
+        assert controller.done and controller.error is None and completed
         assert controller.result.stats["native_success"] is None
         assert controller.result.finish_result is None
-        result = json.loads(
-            (episode / "controller/episodes/evaluation-0001/result.json").read_text()
-        )
+        result = json.loads((episode/"controller/episodes/evaluation-0001/result.json").read_text())
         assert result["native_done"] is True and result["success"] is None
-        assert (
-            episode / "workspace/prep/skills/original.md"
-        ).read_text() == "Original complete experience"
+        assert (episode/"workspace/.agents/skills/robo-general/SKILL.md").is_file()
+        assert context.execution_profile.manifest["skills"] == ["robo-general"]
+        assert not (episode/"workspace/.agents/skills/align_blocks").exists()
+        assert not (episode/"workspace/AGENTS.md").exists()
+        assert not (episode/"controller/tools/robot.py").exists()
         assert reference.runner.Experiment.request is original_request
-        assert not (episode / "controller/bridge").exists()
+        assert not (episode/"controller/bridge").exists()
     finally:
         controller.cancel()
+
 
 
 def test_cancel_releases_backend_before_agent_close_without_experiment_lock():

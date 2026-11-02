@@ -1,0 +1,59 @@
+{
+  "task": "insert_key",
+  "source_archive_sha256": "d9b4742e36ca05959fe3eefed9b9e0b9b995d65fddf8b83f3501a0660cd1dcfd",
+  "source_files": [
+    {
+      "path": "skills/insert_key.md",
+      "bytes": 12437,
+      "sha256": "64587ce69fa5281a0a3105257ef16cd3e07f8477f6ef46d70cf810c1699fa50d"
+    },
+    {
+      "path": "programs/USAGE.md",
+      "bytes": 10669,
+      "sha256": "73ccf17e1bf27fcda62973158487609afe851e443519cd6a072b02c79b344f1c"
+    },
+    {
+      "path": "skills/rehearsals.md",
+      "bytes": 16442,
+      "sha256": "4dadd87a5f7761d9ed85ea82fb9fb07761915c48fa5314b2d4076bb1580b5d79"
+    },
+    {
+      "path": "programs/geometry.py",
+      "bytes": 7766,
+      "sha256": "deb32779297b8931795c4fc7a4f42e7f03a51b2d45b5fbf4b2f0041416148d25"
+    }
+  ],
+  "retained_images": [
+    {
+      "source_archive_member": "payload/evidence/ep00_head_overview.jpg",
+      "path": "assets/overview.jpg",
+      "bytes": 373642,
+      "sha256": "81326db64e369b52816739524a759c5ee148f6f27bac0e1b728c13fa13ba6407"
+    },
+    {
+      "source_archive_member": "payload/evidence/ep07_contacts.jpg",
+      "path": "assets/mirrored_contacts.jpg",
+      "bytes": 548399,
+      "sha256": "2f824f3141864a807c3346b3d403e2c18bd071c06dd1bc1b5a71aea04ef8411f"
+    },
+    {
+      "source_archive_member": "payload/evidence/ep00_ending_comparison.jpg",
+      "path": "assets/ending.jpg",
+      "bytes": 531209,
+      "sha256": "016393a86f6420358c7777fe3669ff4685c60082f18d5a9fa28d0308f8ec86f6"
+    }
+  ],
+  "operations_to_scripts": {
+    "asymmetric tooth/keyhole orientation and grasp offset": "assist.py align",
+    "fixed 60-degree clockwise endpoint and pivot translation": "assist.py turn"
+  },
+  "main_md_bytes": 4174,
+  "raw_training_material_in_runtime": false,
+  "runtime_subagents_enabled": false,
+  "physical_validation_performed": false,
+  "tests": {
+    "passed": 4,
+    "command": "python3 -m unittest discover -s robodojo/harness/case_skills/v1/tests -p test_insert_key_helper.py -q",
+    "kind": "offline directed alignment and pivot math; no simulator"
+  }
+}

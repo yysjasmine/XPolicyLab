@@ -8,7 +8,7 @@ RC1 适配器：每卡 1 个共享 VLA、每卡 10 路的真实评测验收尚�
 policy/SenseNova-RoboRSI
 ```
 
-该版本保留 `adaptive_2_50` 源码基线，运行时默认允许批准 5–50 步。策略服务启动前设置 `ROBORSI_ADAPTIVE_MIN_STEPS`（2–50整数，未设置为5）可改变下限，设置为2可恢复之前的2–50范围；上限及VLA预测长度仍为50。省略批准步数时使用 `max(5, 下限)`，显式低于下限的值会被拒绝。实际范围写入配置、提示词和proposal；恢复中断任务需使用原范围。保留原始 agent 执行流程、真实 layout 透传、跨进程动作回放恢复和完整轨迹。本 PR 的修改限于此策略目录。
+该版本保留 `adaptive_2_50` 源码基线，运行时默认允许批准 5–50 步。策略服务启动前设置 `ROBORSI_ADAPTIVE_MIN_STEPS`（2–50整数，未设置为5）可改变下限，设置为2可恢复之前的2–50范围；上限及VLA预测长度仍为50。省略批准步数时使用 `max(5, 下限)`，显式低于下限的值会被拒绝。实际范围写入配置、提示词和proposal；恢复中断任务需使用原范围。保留原生执行协议、真实 layout 透传、跨进程动作回放恢复和完整轨迹。模型只通过冻结的当前 skillpack 入口运行。本 PR 的修改限于此策略目录。
 
 ## 1. 工作目录与运行前提
 
@@ -61,7 +61,18 @@ bash bootstrap.sh --check
 bash install.sh
 ```
 
-`bootstrap.sh --check` 检查固定构建输入；`install.sh` 构建策略、模型工具和 π0.5 环境，并下载固定 CLI、ICL、tokenizer、checkpoint。源码副本不包含这些安装产物。模拟器继续使用官方 Conda 环境；若环境名不是 `RoboDojo`，修改 `SIM_ENV`。
+`bootstrap.sh --check` 检查固定构建输入；`install.sh` 构建策略、模型工具和所选 VLA 环境（默认 Simate beta），下载锁定的 CLI、tokenizer 和 checkpoint。新的 `skillpack/` 随源码提交，安装时只校验，不下载或 prepare 旧 27 个 ICL 包。模拟器继续使用官方 Conda 环境；若环境名不是 `RoboDojo`，修改 `SIM_ENV`。
+
+模型输入只使用冻结的核心 system prompt、三个 MCP 工具和 `robo-general`，再按当前任务选择一个 case skill。标准任务加载对应 case；泛化任务通过 catalog 的显式别名复用基础 case，并按当前任务名称安装；open 任务只加载 `robo-general`。不注入旧 ICL、机器人 AGENTS.md 或旧准备阶段长提示词，运行时 subagent 关闭。
+
+可先做无需模型、仿真或下载的文件校验：
+
+```bash
+"$POLICY_DIR/.venv/bin/python" "$POLICY_DIR/preflight.py" \
+  --metadata-only --verify-case-skill arrange_largest_number
+```
+
+安装后去掉 `--metadata-only`、加 `--installation-only`，同时验证 source/CLI、Python、sandbox 和所选 VLA 环境。`--verify-case-skill align_blocks` 会报告只有 general 的 open 选择；实际评测入口用 `--task-name` 传入当前任务。
 
 运行前在当前 shell 设置服务地址、模型和 key。下面地址与模型仅为占位符，请替换为实际的 Responses 兼容服务地址和模型；不要把真实配置或密钥写入源码：
 
@@ -73,7 +84,7 @@ printf '\n'
 export CODEX_API_KEY
 ```
 
-`ROBORSI_CODEX_BASE_URL` 与 `ROBORSI_CODEX_MODEL` 均为必填环境变量，没有默认值；缺失或为空时评测会提前报错。推理强度仍为 `max`，API key 仍由 `CODEX_API_KEY` 提供。使用与预期实验一致的服务与模型；切换模型会改变实验条件。安装与离线检查不需要这些运行时配置。
+`ROBORSI_CODEX_BASE_URL` 与 `ROBORSI_CODEX_MODEL` 均为必填环境变量，没有默认值；缺失或为空时评测会提前报错。推理强度为 `xhigh`，API key 仍由 `CODEX_API_KEY` 提供。使用与预期实验一致的服务与模型；切换模型会改变实验条件。安装与离线检查不需要这些运行时配置。
 
 模型请求的 `X-Trajectory-Id` 标识同一个逻辑 episode。新 episode 生成一次 ID；策略每次启动 Codex CLI 时重新注入该 ID，因此 Codex 新建 session、resume，以及通过 `hybrid_resume` 跨进程恢复时都保持相同的 ID。CLI 本身不会持久化这个自定义请求头。服务端可按该请求头归集完整模型交互。
 
@@ -235,7 +246,7 @@ EVAL_NUM=1 \
 
 ## 8. 部署入口与并发验证边界
 
-本包保留的 `install.sh` 是直接安装依赖的入口；`bash bootstrap.sh --check` 只检查构建输入。安装阶段不读取 API key，会下载锁定的公共依赖、ICL、CLI、tokenizer 和权重。安装不会补齐官方模拟器、完整 Assets 或所需的匹配 Kit 扩展，须先准备这些环境。
+本包保留的 `install.sh` 是直接安装依赖的入口；`bash bootstrap.sh --check` 只检查构建输入。安装阶段不读取 API key，会下载锁定的公共依赖、CLI、tokenizer 和所选 VLA 权重；当前 skillpack 直接校验随源码提交的文件。安装不会补齐官方模拟器、完整 Assets 或所需的匹配 Kit 扩展，须先准备这些环境。
 
 此策略目录包含可选的 `environment/run.py` namespace 启动器，但本 PR 不分发部署 plan。使用该启动器时须显式传入针对当前部署验证过的 `--plan /absolute/current-plan.json`。常规 `install.sh` / `eval.sh` 直接使用前文的官方工作区布局。源码提交不代表安装或评测就绪。
 

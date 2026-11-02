@@ -1,0 +1,64 @@
+{
+  "task": "classify_objects",
+  "at": 1793609806.3978188,
+  "source_files": [
+    {
+      "path": "skills/category-sorting/SKILL.md",
+      "sha256": "700c8068c898ad04eb53f4ab3cd47caca0cd0275701c4033bcced526f6b9ea33"
+    },
+    {
+      "path": "skills/category-sorting/references/completion.md",
+      "sha256": "a11f13677cfd65c4a5fe9eae217bfcb8235ce47046a78d5844ab7df410a60966"
+    },
+    {
+      "path": "programs/policy_tools.py",
+      "sha256": "49b2ac048c6d4346e74a4b72bce7dec1c3f72d5a7be5caec2638376fa68983cc"
+    },
+    {
+      "path": "evidence/ep08/initial_and_endings.jpg",
+      "sha256": "b6b072c85883743ffa6a78d9b1229e92364bd3e3f8bae685edd01a4344bec7ba"
+    },
+    {
+      "path": "evidence/ep00/transitions.jpg",
+      "sha256": "7a90719e40ff12964a60a2c275fe4fd5ae1eedbc150a1e87621544d40a6d56f3"
+    }
+  ],
+  "files": [
+    {
+      "path": "SKILL.md",
+      "bytes": 3715,
+      "sha256": "efb377617269cf7d10dde3dc3a222fef8b88f0bc0491d8ed32179d5eace190e1"
+    },
+    {
+      "path": "scripts/assist.py",
+      "bytes": 3802,
+      "sha256": "5cf61efc460109070a77c06b1a30e8ff272828b318dac80aed7f81367e4bb589"
+    },
+    {
+      "path": "assets/table-transfer.jpg",
+      "bytes": 1198955,
+      "sha256": "7a90719e40ff12964a60a2c275fe4fd5ae1eedbc150a1e87621544d40a6d56f3"
+    },
+    {
+      "path": "assets/groups-and-endings.jpg",
+      "bytes": 1652741,
+      "sha256": "b6b072c85883743ffa6a78d9b1229e92364bd3e3f8bae685edd01a4344bec7ba"
+    }
+  ],
+  "helper_commands": [
+    "assign",
+    "fit"
+  ],
+  "operation_mapping": {
+    "category ledger and chosen basket mapping": "assign",
+    "object footprint within basket opening": "fit"
+  },
+  "offline_tests": {
+    "passed": 3,
+    "command": "python3 -m unittest discover -s robodojo/harness/case_skills/v1/tests -p test_classify_objects_helper.py -q"
+  },
+  "runtime_subagent_enabled": false,
+  "raw_icl_training_in_skill": false,
+  "native_physics_validation": false,
+  "data_qc_performed": false
+}

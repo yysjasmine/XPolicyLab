@@ -1,0 +1,161 @@
+{
+  "task": "sort_nesting_dolls_by_size",
+  "source_receipt_sha256": "a30efedb70c81fd586db0368184cb1083bc24f1c771762ef1c714122b4d23a46",
+  "source_archive_sha256": "21f71ebb40ce1912f5ee585f09f590a4f9f19305f3a4aefc8604aeca728e9247",
+  "public_source": "https://huggingface.co/datasets/sensenova/SenseNova-RoboRSI-Packages/resolve/d922d28766d11d761228a500ddb7a28abc1b121e/robodojo/v1.0.0/icl/sort_nesting_dolls_by_size.tar.gz",
+  "reviewed_sources": [
+    {
+      "path": "preparation/skills/sort_nesting_dolls/SKILL.md",
+      "sha256": "3f75179f868de2e6a8b9a08c85f5ebdefe70f7c316bc4673be9f152635b1e181"
+    },
+    {
+      "path": "preparation/COMPLETION_CHECKLIST.md",
+      "sha256": "351b3705662a19173c39ae4a9e1c790578c0f2cda68848bdce6ebf75afd4706a"
+    },
+    {
+      "path": "preparation/lib/geometry.py",
+      "sha256": "b0055e438b64f8064d00ad73196988d79ca3379effa39314b1fb24743a103d35"
+    }
+  ],
+  "source_md_py_manifest": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "1ef807aa5fa09440652feb12758d48f15549f5b217de7b2d07ea2e45aff60714"
+    },
+    {
+      "path": "preparation/COMPLETION_CHECKLIST.md",
+      "sha256": "351b3705662a19173c39ae4a9e1c790578c0f2cda68848bdce6ebf75afd4706a"
+    },
+    {
+      "path": "preparation/DEMONSTRATIONS.md",
+      "sha256": "e0e9f098fa01d06889aab01826811e7085019598be390e38da5e6199c992ea16"
+    },
+    {
+      "path": "preparation/PUBLIC_INTERFACE.md",
+      "sha256": "28d7f7a81725e1bda557549252030773da4976daab880ce3a3960dc349c19649"
+    },
+    {
+      "path": "preparation/README.md",
+      "sha256": "cdef97461701ebc0ce712186cca2c2655fc84ddbf9bceadd0895a24cfcdd2b9d"
+    },
+    {
+      "path": "preparation/REHEARSALS.md",
+      "sha256": "5b6e25f91c0319fdceb380bc31e9ea3059b0d521725d4f957ba4731a2186ecec"
+    },
+    {
+      "path": "preparation/RUNNING_HELPERS.md",
+      "sha256": "869cbb2f7835aa57cb1d6692e54749d08be40878be819f2fd6d29983f05d6f30"
+    },
+    {
+      "path": "preparation/UNCERTAINTIES.md",
+      "sha256": "29a2bfb1a3811fec45fe06167066a9e379cfd7039dcd87fad8439e474cb5c541"
+    },
+    {
+      "path": "preparation/lib/__init__.py",
+      "sha256": "d475e7c8b6daf131decd7f751d4d1ce3598122d2cbf40dc30387d640550a86e2"
+    },
+    {
+      "path": "preparation/lib/geometry.py",
+      "sha256": "b0055e438b64f8064d00ad73196988d79ca3379effa39314b1fb24743a103d35"
+    },
+    {
+      "path": "preparation/lib/policy.py",
+      "sha256": "b21bf0f3a5527db0a48ef0c31c7e69795335eb11e6bf145976ea670b19c56539"
+    },
+    {
+      "path": "preparation/reports/events.md",
+      "sha256": "30a0cf2ce4196ff0c7ac2f5facd920438189fa0f75746bb2f0904aa821a02b0c"
+    },
+    {
+      "path": "preparation/scripts/analyze_events.py",
+      "sha256": "3e1ae3d3204110ba2ed72b536a88414d4f9a49a73ce2551ce3998089f34b9354"
+    },
+    {
+      "path": "preparation/scripts/audit_numeric.py",
+      "sha256": "889f59e54ff5b9e4cc81c16415e4c254636fe70fab594218ddd04692700878f7"
+    },
+    {
+      "path": "preparation/scripts/audit_preparation.py",
+      "sha256": "7699a994f27998cf62c1136eb512e37771a1b4f09527c12a8fbdc12b122ff3df"
+    },
+    {
+      "path": "preparation/scripts/build_references.py",
+      "sha256": "5a5e5ab5bd3f895cf9b58917722482775a38babef9a4e78ed286436d626e7e2d"
+    },
+    {
+      "path": "preparation/scripts/build_visual_references.py",
+      "sha256": "eaa2b20fd7994a8cd35b0c06293a2f0d0116f83923579ab863b50e2e1b1726c9"
+    },
+    {
+      "path": "preparation/scripts/calibrate_public.py",
+      "sha256": "6ce34bc1ee40555e28b3036bb9142a30a0b3c8162d980d21ea02f081ab79418a"
+    },
+    {
+      "path": "preparation/scripts/check_helpers.py",
+      "sha256": "6bc15a90022ad8eaf6678a5e5a85c908752f6a1f69bfb9e358cf2017304e83e8"
+    },
+    {
+      "path": "preparation/scripts/extract_public.py",
+      "sha256": "a51039bac8815178d1e34626320dfb1b0eb130c4e84f170a5e34526332abc000"
+    },
+    {
+      "path": "preparation/scripts/fit_table_plane.py",
+      "sha256": "9118015e837cd211e56dcb49810bdc06fdd42a5b00ac1fb328f3dfd045ccdf6d"
+    },
+    {
+      "path": "preparation/scripts/reference_event.py",
+      "sha256": "28cf3bc027f6818ed1be892bbfcf6ba23649dd743f820eb324ef944ae2f5d6f9"
+    },
+    {
+      "path": "preparation/skills/sort_nesting_dolls/SKILL.md",
+      "sha256": "3f75179f868de2e6a8b9a08c85f5ebdefe70f7c316bc4673be9f152635b1e181"
+    }
+  ],
+  "retained_images": [
+    {
+      "source": "preparation/figures/grasp_contact_gallery.jpg",
+      "retained": "assets/grasp_contact_gallery.jpg",
+      "sha256": "448a9da4d952525eea48fe27c94445e992e0a31005c7fb8bd6a3b9774f10b871",
+      "bytes": 160521
+    },
+    {
+      "source": "preparation/figures/ep02_endings.jpg",
+      "retained": "assets/ep02_endings.jpg",
+      "sha256": "af01370ae52b0903172d07f7f8d3518f34be1c3965cf2e0341b423f21be18165",
+      "bytes": 128269
+    },
+    {
+      "source": "preparation/figures/ep03_endings.jpg",
+      "retained": "assets/ep03_endings.jpg",
+      "sha256": "ab6dfc1b5e50a3482c87732b8b430186b5c8de325da61f7fe9084052856f25f7",
+      "bytes": 130029
+    }
+  ],
+  "helper_functions": [
+    "plan: ascending observed sizes and separated row positions using current footprint radii/gap",
+    "offset: observed doll-base-to-TCP compensation"
+  ],
+  "skill_utf8_bytes": 4565,
+  "skill_sha256": "8d80c02c96c5ae2b4e9b9e7083b3f7e290e7831c7246df3e762f60bea13229fa",
+  "helper_sha256": "bfaf36b2607c6e673f34eec9846b2a7190eef461d8ebff4118a31cfd8dba829a",
+  "tests": {
+    "path": "authoring_receipts/test_sort_nesting_dolls_by_size.py",
+    "count": 6,
+    "result": "passed",
+    "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s robodojo/harness/case_skills/v1/authoring_receipts -p test_sort_nesting_dolls_by_size.py",
+    "temporary_root": "<authoring-temporary-directory>"
+  },
+  "runtime": {
+    "robot_subagents_enabled": false,
+    "subagent_ablation": "not enabled; future AB only",
+    "model_api_called": false,
+    "simulator_run": false,
+    "robot_imported": false
+  },
+  "limitations": [
+    "Offline arithmetic and source-image preservation checks do not establish physical success, collision clearance, grasp, support force or nesting validity.",
+    "Current instruction, RGB and measured TCP state determine execution; demonstration counts/layouts are reference examples."
+  ],
+  "local_paths_redacted": true,
+  "unredacted_local_receipt_sha256": "67a5825b02346804a4899d8a80f9e190f05b197849c3c21ed4ef769107f9af4f"
+}

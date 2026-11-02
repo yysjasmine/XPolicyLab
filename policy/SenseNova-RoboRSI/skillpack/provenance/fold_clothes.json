@@ -1,0 +1,67 @@
+{
+  "task": "fold_clothes",
+  "at": 1793609930.558174,
+  "source_files": [
+    {
+      "path": "skills/fold_clothes/SKILL.md",
+      "sha256": "ade4bb71b18e107bca5be986abcb556c8927e30bb01adf31bbdfc89f051e7882"
+    },
+    {
+      "path": "COMPLETION_CHECKLIST.md",
+      "sha256": "12567f362494bdd42c5027efc679125e317af35aef7bb1bcf9566561ab4694f1"
+    },
+    {
+      "path": "policylab/primitives.py",
+      "sha256": "a8501ea01c2dd9665e5665d285a55657a6d711256b70a453913a892545fc073a"
+    },
+    {
+      "path": "policylab/geometry.py",
+      "sha256": "2d6a34737d6abbb8997ed438856f5d9292285c3fa15322a97b3c3391eee20a04"
+    },
+    {
+      "path": "evidence/ep00/critical_contacts.jpg",
+      "sha256": "dd67e85354485be72cbf04a21db5df0fe7d9b0d6bf4759d6d1fdb152d0692fe7"
+    },
+    {
+      "path": "evidence/endings_detail_05_09.jpg",
+      "sha256": "0c7214533b73533a41e19a389e47bd8fae0f13749c121c628d3905068816a8e3"
+    }
+  ],
+  "files": [
+    {
+      "path": "SKILL.md",
+      "bytes": 4524,
+      "sha256": "33805122bac5579b5e48a19a20aa505c171f6fa343e20a7f1164f0835000caf2"
+    },
+    {
+      "path": "scripts/assist.py",
+      "bytes": 2611,
+      "sha256": "d01a384577ee7c79be9132df15a10c2f640b6359d6a4ebe38c0b23269d3279c1"
+    },
+    {
+      "path": "assets/ending-variation.jpg",
+      "bytes": 297055,
+      "sha256": "0c7214533b73533a41e19a389e47bd8fae0f13749c121c628d3905068816a8e3"
+    },
+    {
+      "path": "assets/fold-sequence.jpg",
+      "bytes": 537048,
+      "sha256": "dd67e85354485be72cbf04a21db5df0fe7d9b0d6bf4759d6d1fdb152d0692fe7"
+    }
+  ],
+  "helper_commands": [
+    "frame",
+    "point"
+  ],
+  "operation_mapping": {
+    "garment_frame and frame_point": "current TCP frame/point commands; native tool-offset and quaternion priors removed"
+  },
+  "offline_tests": {
+    "passed": 3,
+    "command": "python3 -m unittest discover -s robodojo/harness/case_skills/v1/tests -p test_fold_clothes_helper.py -q"
+  },
+  "runtime_subagent_enabled": false,
+  "raw_icl_training_in_skill": false,
+  "native_physics_validation": false,
+  "data_qc_performed": false
+}

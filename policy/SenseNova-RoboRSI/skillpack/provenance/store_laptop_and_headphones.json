@@ -1,0 +1,75 @@
+{
+  "task": "store_laptop_and_headphones",
+  "at": 1793610928.3562791,
+  "source_files": [
+    {
+      "path": "skills/store_laptop_and_headphones.md",
+      "sha256": "5f03cbedd896fafbf841ef02ceaf1ffd6ee8a08d39dd20acaa661a3314fbac5b"
+    },
+    {
+      "path": "completion_checklist.md",
+      "sha256": "787b20d95929b8878605fb16348f1466b6717a7536feac125dddc38ab7624ae8"
+    },
+    {
+      "path": "analysis/geometry_notes.md",
+      "sha256": "5e16cfbd1cf7182c94603ded33ef5af6b83682f2a2f58191a59712d290fee7e7"
+    },
+    {
+      "path": "programs/perception_geometry.py",
+      "sha256": "0177fb067f897e5e3299c239bd5de523352696c2549b66f9c740e88416185035"
+    },
+    {
+      "path": "programs/demo_reference.py",
+      "sha256": "91e5827f4c9c6dc3f2a96dd35148eb2ef135e15469d2cbefdc08d802c4d4a313"
+    }
+  ],
+  "files": [
+    {
+      "path": "SKILL.md",
+      "bytes": 6460,
+      "sha256": "8ee260d2417fbce0404768b78da3e8ee8a8f756afd9a2c18661fed6b244791d7"
+    },
+    {
+      "path": "assets/ending-sequence.jpg",
+      "bytes": 424102,
+      "sha256": "7f9fbe9a97f27b93c1104a140d4dca77ffd28d46398dd9e5b6985847eb8cfcaf"
+    },
+    {
+      "path": "assets/laptop-transfer-storage.jpg",
+      "bytes": 1463425,
+      "sha256": "d63826e97b18220cebd17d4d04b4524a2e510c27deb9bcd9a7a5a929a172360d"
+    },
+    {
+      "path": "assets/sequence-overview.jpg",
+      "bytes": 470853,
+      "sha256": "f13d08a864cb37c5cab334941de85502e98ae712c5173cc36c2f254ef79c9945"
+    },
+    {
+      "path": "scripts/assist.py",
+      "bytes": 2282,
+      "sha256": "2306a259f5ae5711252c3846212750c1ff1582fbcb486b369c983b9ff04d42b1"
+    }
+  ],
+  "asset_source_paths": {
+    "assets/sequence-overview.jpg": "payload/evidence/ep00/overview_head.jpg",
+    "assets/laptop-transfer-storage.jpg": "payload/evidence/ep00/laptop_lift_handover_storage.jpg",
+    "assets/ending-sequence.jpg": "payload/evidence/ep00/ending_all.jpg"
+  },
+  "helper_commands": [
+    "lid-angle",
+    "slot-alignment"
+  ],
+  "operation_mapping": {
+    "lid closure arc and side-seam checks": "caller hinge/front features to local opening-angle cue",
+    "slot plane and two lower-edge ends": "current undirected-axis yaw and XY/lateral error; no whole-edge containment rule",
+    "large phase reference index": "3 existing composite sheets, no raw numerical demo replay"
+  },
+  "offline_tests": {
+    "passed": 3,
+    "command": "python3 -m unittest discover -s robodojo/harness/case_skills/v1/tests -p test_store_laptop_and_headphones_helper.py -q"
+  },
+  "runtime_subagent_enabled": false,
+  "raw_icl_training_in_skill": false,
+  "native_physics_validation": false,
+  "data_qc_performed": false
+}

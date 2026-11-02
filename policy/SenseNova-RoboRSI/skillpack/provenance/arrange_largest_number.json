@@ -1,0 +1,27 @@
+{
+  "task": "arrange_largest_number",
+  "source_archive_sha256": "dbe3ee86d8e0fcebb5d31b1a5eb4c3593b2a43dbff1cf1d7f58d5d0455c30dbd",
+  "source_files": {
+    "preparation/skills/arrange_numbers.md": "64374ff975193bea366ffbc527228aacb4529392c05089e14a19e4c3392a14b4",
+    "preparation/scene_model.md": "3fab96aebdad1ccc180db8efdcaa78a89138f102696adb10050fff33c8dde0b6",
+    "preparation/rehearsals.md": "93307aa413418ab8051036b2ed29348b691be1f63bfa08cb6de71d2b05e2547b",
+    "preparation/completion_checklist.md": "214701ac796bbd171b92f78fc7b17e674277a7d982c6525d2ae67926b9de9b4c",
+    "preparation/programs/geometry.py": "daf850848dc9ff336dca0354c037fdaff3d9997e49ebc500058293c0a4d2c539"
+  },
+  "prior_case_refactor_sha256": "003f4334b7991cfe2a3f2a8a3bfd44d13435c95a1f7f684ffdaa16606e86a0c8",
+  "images": {
+    "direct-overview.jpg": "eef5d6026466ac63f64d10b5a93ce0d845a0b0b910330e94cfcf8dda2d1f71d3",
+    "transfer-keyframes.jpg": "221603c54f85b0cfa06478dc4c28b48c5132fa79a451d26bbbea4543ccb2a98c",
+    "ending.jpg": "0f39936e1802c96faab3b59276dfbd234bfeae1a4fdae0fd812e18f84c7f89b0"
+  },
+  "helper_commands": [
+    "plan",
+    "crop",
+    "project",
+    "placement"
+  ],
+  "original_icl_training_material_shipped": false,
+  "subagents_enabled": false,
+  "geometry": "Only the original public head calibration and plane projection; no depth or native robot geometry interface",
+  "native_physics_validation": false
+}

@@ -1,0 +1,145 @@
+{
+  "profile_id": "robodojo_execution_three_tools_v14_continuous_gripper_lean_case",
+  "task": "arrange_largest_number",
+  "skills": [
+    "robo-general",
+    "arrange_largest_number"
+  ],
+  "sha256": {
+    "agent_core.md": "beef93c94767c02a18c0b80b220ff55b49358b8aa366e2dd3602d55cf1035b8b",
+    "native_tools.json": "aa97455a660c91cbf250ea98862507baf0d33dc798ffeba0fd440cc0641592b8",
+    "robot_tools.json": "5a813922cdf38269f327c9fa4b7fd56a26cbcca37e7ee889cf707dd496354754",
+    "skills/arrange_largest_number/SKILL.md": "003f4334b7991cfe2a3f2a8a3bfd44d13435c95a1f7f684ffdaa16606e86a0c8",
+    "skills/robo-general/SKILL.md": "461fc4af2fa0d3478e746cb262168840ecdb0128a24977ca6f40cb6d0afbb142",
+    "skills_instruction.md": "6375cd7d5ec41cf7d02ac0fb8d6d4ddd4f08a3a1927eae680b99944e937fb302",
+    "actual_robot_declarations.json": "4c8d3afd8853410888608e6a8c5395a708e6e6f10b6cdfed73d4e758809a5c4b",
+    "skills/arrange_largest_number/scripts/arrange.py": "9565e6242b4c778e49f464678eb9811590222c7e771e0898150dd00d3a4c6daf"
+  },
+  "remove_legacy_markdown": [
+    ".agents/skills/arrange_largest_number/SKILL.md",
+    "AGENTS.md",
+    "README.md",
+    "preparation/agent_system.md",
+    "preparation/completion_checklist.md",
+    "preparation/coverage.md",
+    "preparation/demonstrations.md",
+    "preparation/evidence_and_uncertainty.md",
+    "preparation/figures/README.md",
+    "preparation/programs/USAGE.md",
+    "preparation/rehearsals.md",
+    "preparation/scene_model.md",
+    "preparation/skills/arrange_numbers.md",
+    ".agents/skills/arrange_largest_number/references/completion.md",
+    ".agents/skills/arrange_largest_number/references/coverage.md",
+    ".agents/skills/arrange_largest_number/references/demo-00.md",
+    ".agents/skills/arrange_largest_number/references/demo-01.md",
+    ".agents/skills/arrange_largest_number/references/demo-02.md",
+    ".agents/skills/arrange_largest_number/references/demo-03.md",
+    ".agents/skills/arrange_largest_number/references/demo-04.md",
+    ".agents/skills/arrange_largest_number/references/demo-05.md",
+    ".agents/skills/arrange_largest_number/references/demo-06.md",
+    ".agents/skills/arrange_largest_number/references/demo-07.md",
+    ".agents/skills/arrange_largest_number/references/demo-08.md",
+    ".agents/skills/arrange_largest_number/references/demo-09.md",
+    ".agents/skills/arrange_largest_number/references/demo-index.md",
+    ".agents/skills/arrange_largest_number/references/evidence-1.md",
+    ".agents/skills/arrange_largest_number/references/evidence-2.md",
+    ".agents/skills/arrange_largest_number/references/figures.md",
+    ".agents/skills/arrange_largest_number/references/helpers.md",
+    ".agents/skills/arrange_largest_number/references/recovery.md",
+    ".agents/skills/arrange_largest_number/references/scene.md",
+    ".agents/skills/arrange_largest_number/references/strategy-1.md",
+    ".agents/skills/arrange_largest_number/references/strategy-2.md"
+  ],
+  "compact_tokens": 200000,
+  "image_limit": 50,
+  "round_limit": 120,
+  "robot_tool_registration": {
+    "implementation": "../../robot_tools/v1/robot_tools.py",
+    "tools": [
+      "observe",
+      "vla_propose",
+      "act"
+    ],
+    "trajectory_display_stride": 5,
+    "sample_step_numbers": [
+      5,
+      10,
+      15,
+      20,
+      25,
+      30,
+      35,
+      40,
+      45,
+      50
+    ],
+    "sample_zero_based_indices": [
+      4,
+      9,
+      14,
+      19,
+      24,
+      29,
+      34,
+      39,
+      44,
+      49
+    ],
+    "full_trajectory_retained": true,
+    "frame": "TCP in environment-origin metres; reference-relative pitch/roll/yaw degrees; all native conversion internal",
+    "native_tool_offset_m": 0.1501,
+    "action_choices": [
+      "proposal_id + steps",
+      "targets without proposal_id or reject flag"
+    ],
+    "proposal_display_decimals": 3,
+    "native_bridge_factory": "../../robot_tools/v1/native_request.py:make_experiment_class",
+    "allow_direct_targets": true,
+    "public_pose_contract": {
+      "reference_point": "TCP/GRASP_POINT",
+      "coordinate_frame": "environment_origin",
+      "position_units": "metres",
+      "orientation_reference": "vertical_down",
+      "orientation_units": "degrees",
+      "orientation_axes": {
+        "pitch_deg": "+X",
+        "roll_deg": "+Y",
+        "yaw_deg": "+Z"
+      },
+      "orientation_order": [
+        "pitch_deg",
+        "roll_deg",
+        "yaw_deg"
+      ]
+    },
+    "native_orientation": "unit quaternion wxyz",
+    "public_state_display_decimals": 3,
+    "native_measurement_and_execution_precision": "unchanged",
+    "vla_execution": "stored original clipped joint prefix; no IK",
+    "manual_tcp_execution": "measured-state closed-loop IK",
+    "tcp_tracking_default_max_native_steps": 80,
+    "tcp_tracking_max_native_steps": 160,
+    "position_tolerance_m": 0.003,
+    "orientation_tolerance_deg": 3,
+    "termination_owner": "harness; no model stop tool",
+    "profile_loader": "../../robot_tools/v1/prompt_profile.py",
+    "gripper_control": {
+      "field": "gripper_opening",
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "zero": "fully_closed",
+      "one": "fully_open",
+      "preview": "same clipped continuous values as stored VLA execution",
+      "manual_execution": "preserved through TCP tracking and IK into native joint commands"
+    }
+  },
+  "single_markdown_skills": [
+    "robo-general",
+    "arrange_largest_number"
+  ],
+  "remove_legacy_assets": [
+    ".agents/skills/arrange_largest_number/assets/demonstrations.json"
+  ]
+}

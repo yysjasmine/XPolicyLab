@@ -1,0 +1,153 @@
+{
+  "task": "stack_blocks",
+  "source_receipt_sha256": "7941c36b24158c2b67b7834036ca1fceb07d90d3fc3e406193b79c2399d3bce4",
+  "source_archive_sha256": "1d3fd55637e563bf735666353139f101ea18a9b915d171cf50055306680dad65",
+  "public_source": "https://huggingface.co/datasets/sensenova/SenseNova-RoboRSI-Packages/resolve/d922d28766d11d761228a500ddb7a28abc1b121e/robodojo/v1.0.0/icl/stack_blocks.tar.gz",
+  "reviewed_sources": [
+    {
+      "path": "skills/stack_blocks/SKILL.md",
+      "sha256": "a175efa6610b0e8942bd4ed61ba5dc9f69ef8e4be28f1602cf03fb1920120d48"
+    },
+    {
+      "path": "skills/stack_blocks/COMPLETION_CHECKLIST.md",
+      "sha256": "e18e628a92c5a22ee457bf722477c92410f006e6cbe639504f69446b41771c47"
+    },
+    {
+      "path": "analysis/DEMONSTRATIONS.md",
+      "sha256": "a8dd6f35f80d0eeb5ab749a3ff7d2b3d7406a43dbca9aa01ea9f30a930697d13"
+    },
+    {
+      "path": "programs/vision_geometry.py",
+      "sha256": "e00004f82450e743f17642b26fd56d5640bfeafb2160a144fe5f1c4e556897d3"
+    }
+  ],
+  "source_md_py_manifest": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "2c27903fd4853509eb6fe9055edf6fc7e2d4e87140adda259473fabba9074a2e"
+    },
+    {
+      "path": "README.md",
+      "sha256": "7e7e82f1e6466f0a09e571073d7083c292cdb878f6b31ac6cb62ebbd465695fc"
+    },
+    {
+      "path": "analysis/DEMONSTRATIONS.md",
+      "sha256": "a8dd6f35f80d0eeb5ab749a3ff7d2b3d7406a43dbca9aa01ea9f30a930697d13"
+    },
+    {
+      "path": "analysis/RELEASE_GEOMETRY.md",
+      "sha256": "4a06b4b387e924dd455e573f305307bc3afde0c7cb65affae7b1a72f5c676d23"
+    },
+    {
+      "path": "analysis/UNCERTAINTIES.md",
+      "sha256": "099b5c067c327eb6cb58957f17759fcdf28389a7c3bf69f9b93a1f7fedd5b7c0"
+    },
+    {
+      "path": "programs/analyze_transitions.py",
+      "sha256": "68fa4b9bff2492f8c6d5c7f7c1c463ca3232a81e430bda24797e7a686e4517cc"
+    },
+    {
+      "path": "programs/check_offline.py",
+      "sha256": "ec0525a5fc57b57d7a3fd2174cd99122d9189a04cb275fda35350c66e7889df5"
+    },
+    {
+      "path": "programs/compare_visual_sizes.py",
+      "sha256": "55b32e3bacf7134b173729e6eceb91a5d5c8a13198298ba32aac45c7704f4820"
+    },
+    {
+      "path": "programs/contact_sheets.py",
+      "sha256": "528c4a21ba13e76ad27d9ff0c04c2086b390f1f14b837e5905ff110a9dd7e6fe"
+    },
+    {
+      "path": "programs/fit_cube_prior.py",
+      "sha256": "c1680fa1ab98ea3b6ab0d070e3c4cd0764b2ce613b5357c049f3670511487f8b"
+    },
+    {
+      "path": "programs/inspect_release.py",
+      "sha256": "5468f322206468c2395997315889e32ccf04980359a9966655b27aa7fc3e1fc5"
+    },
+    {
+      "path": "programs/policy_utils.py",
+      "sha256": "477ee1bc1dec5baa41143a0ef7e893b0a9129029f9dab2a9b5f5548b4a8c9a32"
+    },
+    {
+      "path": "programs/study_demonstrations.py",
+      "sha256": "b874c28c728033a94d63e7afd84c504eef40e535602d79f1b576346fa7ea6e22"
+    },
+    {
+      "path": "programs/vision_geometry.py",
+      "sha256": "e00004f82450e743f17642b26fd56d5640bfeafb2160a144fe5f1c4e556897d3"
+    },
+    {
+      "path": "programs/write_reference_index.py",
+      "sha256": "266d7f99619cd7a67e841f09ff952a09939eaa156423f7746f7943cff7e72851"
+    },
+    {
+      "path": "reference/BENCHMARK.md",
+      "sha256": "b6d80366e930dbb3f5571cd21c55557bc1f3a6e47f388087050c6d7830fd4e90"
+    },
+    {
+      "path": "skills/stack_blocks/COMPLETION_CHECKLIST.md",
+      "sha256": "e18e628a92c5a22ee457bf722477c92410f006e6cbe639504f69446b41771c47"
+    },
+    {
+      "path": "skills/stack_blocks/REHEARSALS.md",
+      "sha256": "bac3305e6fca14d89e2bdd43ff311c2d61c0a3027c35c36730f75c4c8dc042ad"
+    },
+    {
+      "path": "skills/stack_blocks/SKILL.md",
+      "sha256": "a175efa6610b0e8942bd4ed61ba5dc9f69ef8e4be28f1602cf03fb1920120d48"
+    },
+    {
+      "path": "templates/EPISODE_RECORD.md",
+      "sha256": "521c50e49745c8c6ec0239be24540ab90b8c496c246dfe7d68eac82b756edad7"
+    }
+  ],
+  "retained_images": [
+    {
+      "source_archive_member": "payload/frames/ep00_overview.png",
+      "retained": "assets/ep00_overview.png",
+      "sha256": "1dc85c27ac21b0b690c1081d89c75b4ef8cafbb93793e38745d1287398554295",
+      "bytes": 2944111
+    },
+    {
+      "source_archive_member": "payload/frames/ep00_support.png",
+      "retained": "assets/ep00_support.png",
+      "sha256": "03e4c6adb54295a8c2a4a9255ab2677fac12250854722413d3e014cd94d8e27c",
+      "bytes": 979398
+    },
+    {
+      "source_archive_member": "payload/frames/geometry_face_orientation.png",
+      "retained": "assets/geometry_face_orientation.png",
+      "sha256": "5e07c9c63337746ced5a611bcdda1c336e25e41e425f25d67d0c72f9132ef5e3",
+      "bytes": 1454979
+    }
+  ],
+  "helper_functions": [
+    "plan: caller-chosen bottom-to-top block centres, cumulative support heights and centered footprint overhang",
+    "offset: current held-block-centre-to-TCP compensation"
+  ],
+  "skill_utf8_bytes": 4323,
+  "skill_sha256": "0652a207ea0fc00b514c02779edc333b546ee74618fa8b161776680725e7fe17",
+  "helper_sha256": "c25671997f8711d75076bce4db533dd01b97ab25c297d71cda7381de3b2b5011",
+  "tests": {
+    "path": "authoring_receipts/test_stack_blocks.py",
+    "count": 6,
+    "result": "passed",
+    "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s robodojo/harness/case_skills/v1/authoring_receipts -p test_stack_blocks.py",
+    "temporary_root": "<authoring-temporary-directory>"
+  },
+  "runtime": {
+    "robot_subagents_enabled": false,
+    "subagent_ablation": "not enabled; future AB only",
+    "model_api_called": false,
+    "simulator_run": false,
+    "robot_imported": false
+  },
+  "limitations": [
+    "Offline arithmetic and source-image preservation checks do not establish physical success, collision clearance, grasp, support force or nesting validity.",
+    "Current instruction, RGB and measured TCP state determine execution; demonstration counts/layouts are reference examples."
+  ],
+  "local_paths_redacted": true,
+  "unredacted_local_receipt_sha256": "fc0450d587c58845c182f18023cab5a7293131b17d47835448d06c6a69ab19f5"
+}

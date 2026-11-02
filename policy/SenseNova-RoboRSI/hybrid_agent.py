@@ -1,11 +1,9 @@
-"""Use the original adaptive RoboDojo controller through an EmbodiedAgent."""
+"""Own one skillpack episode over the native RoboDojo controller and ACK loop."""
 
 from __future__ import annotations
 
-import ast
 import copy
 import hashlib
-import inspect
 import json
 import os
 import queue
@@ -16,13 +14,10 @@ import threading
 import time
 from dataclasses import dataclass
 from pathlib import Path
-from types import SimpleNamespace
 from typing import Any, Callable
 
-from roborsi.agents.config import AgentConfig
 from roborsi.embodied_agent import EmbodiedAgent
 from roborsi.planner.base import PlannerResult
-from roborsi.planner.codex_cli_config import CodexCliConfig
 
 try:
     from .hybrid_backend import BackendClosed
@@ -49,87 +44,10 @@ class HybridRunContext:
     resume: dict | None = None
     trajectory_dir: Path | None = None
     before_execution: Callable[[], None] | None = None
+    execution_profile: Any | None = None
+    model_cfg: dict | None = None
 
 
-def build_evaluation_prompt(reference, cfg: dict, *, own_resume: bool = False) -> str:
-    """Extract the original prompt expressions, preserving their exact bytes."""
-    options = cfg.get("options", {})
-    if not options.get("evaluation_independent") or options.get("review_allow_reset"):
-        raise ValueError(
-            "Hybrid requires the reference independent no-reset evaluation"
-        )
-    if (cfg.get("continue_from_run") or options.get("replay")) and not own_resume:
-        raise ValueError("A new official episode cannot adopt author evaluation state")
-    source = inspect.getsource(reference.runner.run_experiment)
-    tree = ast.parse(source)
-    guidance, stop, prompt, prefix, recovery = [], [], [], [], []
-    for node in ast.walk(tree):
-        if isinstance(node, ast.If) and isinstance(node.test, ast.BoolOp):
-            condition = ast.get_source_segment(source, node.test) or ""
-            if "replay_fresh_session" in condition and isinstance(
-                node.body[0], ast.AugAssign
-            ):
-                recovery.append(node)
-        if isinstance(node, ast.Assign) and len(node.targets) == 1:
-            name = node.targets[0]
-            if isinstance(name, ast.Name) and name.id == "review_guidance":
-                guidance.append(node)
-            if (
-                isinstance(name, ast.Name)
-                and name.id == "prompt"
-                and isinstance(node.value, ast.JoinedStr)
-                and "Evaluation instance" in ast.get_source_segment(source, node)
-            ):
-                prompt.append(node)
-        if (
-            isinstance(node, ast.If)
-            and isinstance(node.test, ast.Call)
-            and isinstance(node.test.func, ast.Attribute)
-            and isinstance(node.test.func.value, ast.Name)
-            and node.test.func.value.id == "options"
-            and node.test.func.attr == "get"
-            and node.test.args
-            and isinstance(node.test.args[0], ast.Constant)
-            and node.test.args[0].value == "stop_min_steps"
-        ):
-            stop.append(node)
-        if (
-            isinstance(node, ast.Constant)
-            and isinstance(node.value, str)
-            and node.value.startswith(
-                "\nThis is an independent evaluation with a copy of your task's preparation skills;"
-            )
-        ):
-            prefix.append(node.value)
-    if not all(len(nodes) == 1 for nodes in (guidance, stop, prompt, prefix)):
-        raise ValueError("Original evaluation prompt structure changed")
-    if len(recovery) != 1:
-        raise ValueError("Original recovery prompt structure changed")
-    expressions = ast.Module(
-        body=[guidance[0], stop[0], recovery[0], prompt[0]], type_ignores=[]
-    )
-    namespace = {
-        "options": options,
-        "experiment": SimpleNamespace(
-            review_allow_reset=False,
-            review_window_steps=options.get("review_window_steps"),
-        ),
-        "index": 0,
-        "repeat_limit": options["max_repeat"],
-        "resume_seconds": cfg["episode_seconds"],
-        "continuation": cfg.get("continue_from_run") if own_resume else None,
-        "replay": options.get("replay") if own_resume else None,
-        "episode": cfg["test_episodes"][0],
-    }
-    exec(
-        compile(
-            ast.fix_missing_locations(expressions),
-            "<original-evaluation-prompt>",
-            "exec",
-        ),
-        namespace,
-    )
-    return reference.runner.INSTRUCTIONS + prefix[0] + namespace["prompt"]
 
 
 class HybridEmbodiedAgent(EmbodiedAgent):
@@ -151,9 +69,9 @@ class HybridEmbodiedAgent(EmbodiedAgent):
 
     def run_reference(self) -> PlannerResult:
         # EmbodiedAgent.run calls this subclass's _run. These labels never enter
-        # model context; the original controller constructs its own exact prompt.
+        # model context; the execution profile supplies the actual prompt.
         return self.run(
-            "original RoboDojo evaluation", system_prompt="original controller"
+            "current RoboDojo episode", system_prompt="skillpack execution"
         )
 
     def _run(
@@ -253,6 +171,7 @@ class HybridEmbodiedAgent(EmbodiedAgent):
             run / "tools/robot.py",
         )
         shutil.copy2(context.public_instructions, run / "tools/BENCHMARK.md")
+        self.stage_workspace(context, workspace, run)
         cfg = copy.deepcopy(context.cfg)
         cfg["model"] = self.model
         if len(cfg.get("test_episodes", [])) != 1:
@@ -272,9 +191,7 @@ class HybridEmbodiedAgent(EmbodiedAgent):
             config_path = trajectory / "config.json"
             config_path.write_text(json.dumps(cfg, indent=2) + "\n")
             config_path.chmod(0o600)
-        prompt = build_evaluation_prompt(
-            context.reference, cfg, own_resume=context.resume is not None
-        )
+        prompt = self.evaluation_prompt(context, cfg)
         (run / "provenance.json").write_text(
             json.dumps(
                 {
@@ -288,7 +205,7 @@ class HybridEmbodiedAgent(EmbodiedAgent):
                     ).hexdigest(),
                     "robot_tool_sha256": hashlib.sha256(
                         (run / "tools/robot.py").read_bytes()
-                    ).hexdigest(),
+                    ).hexdigest() if (run / "tools/robot.py").is_file() else None,
                     "model_scoring": "official evaluator only; no controller-generated success",
                 },
                 indent=2,
@@ -297,18 +214,7 @@ class HybridEmbodiedAgent(EmbodiedAgent):
         )
         if trajectory is not None:
             shutil.copyfile(run / "provenance.json", trajectory / "provenance.json")
-        planner = HybridCodexCliPlanner(
-            reference=context.reference,
-            bubblewrap=context.bubblewrap,
-            bubblewrap_sha256=context.bubblewrap_sha256,
-            output_dir=run,
-            repo_root=workspace,
-            model=self.model,
-            timeout_s=None,
-            dashboard_events=None,
-            reasoning_effort=self.reasoning_effort,
-            config=self.codex_cli,
-        )
+        planner = self.make_planner(context, run, workspace)
         self._hybrid_planner = planner
         if self._cancelled.is_set():
             planner.cancel()
@@ -316,13 +222,12 @@ class HybridEmbodiedAgent(EmbodiedAgent):
                 "Hybrid episode was cancelled before controller startup"
             )
         reference = context.reference
-
-        class Experiment(reference.runner.Experiment):
-            request = reference.hybrid_host.request
-
-        experiment = Experiment(cfg, run, context.backend)
+        experiment = self.make_experiment(context, cfg, run)
+        self.bind_experiment(context, planner, experiment, run)
         experiment.phase = "evaluation"
-        socket_directory = tempfile.TemporaryDirectory(prefix="srs-bridge-", dir="/tmp")
+        socket_root = Path(os.environ.get("ROBORSI_RUNTIME_SOCKET_ROOT", str(Path.home()/".cache/roborsi/sockets")))
+        socket_root.mkdir(mode=0o700, parents=True, exist_ok=True)
+        socket_directory = tempfile.TemporaryDirectory(prefix="srs-bridge-", dir=socket_root)
         bridge_dir = run / "bridge"
         bridge_dir.symlink_to(socket_directory.name, target_is_directory=True)
         try:
@@ -361,9 +266,7 @@ class HybridEmbodiedAgent(EmbodiedAgent):
                         "Original cumulative episode wall budget exhausted during replay"
                     )
                 (run / "config.json").write_text(json.dumps(cfg, indent=2) + "\n")
-                prompt = build_evaluation_prompt(
-                    context.reference, cfg, own_resume=True
-                )
+                prompt = self.evaluation_prompt(context, cfg)
                 if trajectory is not None:
                     shutil.copyfile(run / "config.json", trajectory / "config.json")
                 provenance_path = run / "provenance.json"
@@ -479,6 +382,37 @@ class HybridEmbodiedAgent(EmbodiedAgent):
                 bridge_dir.unlink(missing_ok=True)
                 socket_directory.cleanup()
 
+    def stage_workspace(self, context, workspace, run):
+        """Instance hook for an alternative model-facing preparation format."""
+
+    def evaluation_prompt(self, context, cfg):
+        raise NotImplementedError("Use the registered skillpack execution profile")
+
+    def make_experiment(self, context, cfg, run):
+        reference = context.reference
+
+        class Experiment(reference.runner.Experiment):
+            request = reference.hybrid_host.request
+
+        return Experiment(cfg, run, context.backend)
+
+    def make_planner(self, context, run, workspace):
+        return HybridCodexCliPlanner(
+            reference=context.reference,
+            bubblewrap=context.bubblewrap,
+            bubblewrap_sha256=context.bubblewrap_sha256,
+            output_dir=run,
+            repo_root=workspace,
+            model=self.model,
+            timeout_s=None,
+            dashboard_events=None,
+            reasoning_effort=self.reasoning_effort,
+            config=self.codex_cli,
+        )
+
+    def bind_experiment(self, context, planner, experiment, run):
+        """Instance hook; the default controller needs no additional transport."""
+
     def close(self):
         self._cancelled.set()
         if self._reference_context is not None:
@@ -488,32 +422,6 @@ class HybridEmbodiedAgent(EmbodiedAgent):
             planner.cancel()
 
 
-def make_agent(case_dir: Path, *, config: AgentConfig) -> HybridEmbodiedAgent:
-    """AgentConfig custom factory; no SDK/MCP planner or task owner is created."""
-    options = config.document.get("agent", {})
-    if (
-        options.get("planner") != "codex_cli"
-        or not isinstance(options.get("model"), str)
-        or not options["model"].strip()
-        or options.get("reasoning_effort") != "max"
-        or options.get("max_turns") is not None
-        or options.get("max_tokens") is not None
-    ):
-        raise ValueError(
-            "Hybrid Agent requires the reference CLI, model, effort and budgets"
-        )
-    if (
-        config.document.get("prompt_file")
-        or config.document.get("skills")
-        or config.document.get("runtime")
-    ):
-        raise ValueError("The original hybrid controller owns all model context")
-    options["codex_cli"] = CodexCliConfig.from_dict(options.get("codex_cli", {}))
-    if options["codex_cli"].tools != "external":
-        raise ValueError("Hybrid Agent requires the original external robot tools")
-    return HybridEmbodiedAgent(
-        mcp_servers=(), output_dir=case_dir, local_tools=(), **options
-    )
 
 
 CONTROLLER_CLEANUP_TIMEOUT_SECONDS = 3600.0

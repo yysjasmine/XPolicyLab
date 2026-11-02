@@ -17,6 +17,10 @@ from PIL import Image
 hybrid_agent = import_module("XPolicyLab.policy.SenseNova-RoboRSI.hybrid_agent")
 resume = import_module("XPolicyLab.policy.SenseNova-RoboRSI.hybrid_resume")
 HybridBackend = import_module("XPolicyLab.policy.SenseNova-RoboRSI.hybrid_backend").HybridBackend
+skillpack_agent = import_module("XPolicyLab.policy.SenseNova-RoboRSI.skillpack_agent")
+execution_profile = import_module("XPolicyLab.policy.SenseNova-RoboRSI.execution_profile")
+P = Path(__file__).resolve().parents[1]
+make_offline_tool_planner = import_module("XPolicyLab.policy.SenseNova-RoboRSI.tests.test_hybrid_agent").make_offline_tool_planner
 cli_config = import_module("XPolicyLab.policy.SenseNova-RoboRSI.tests.test_hybrid_agent").cli_config
 observation = import_module("XPolicyLab.policy.SenseNova-RoboRSI.tests.test_hybrid_backend").observation
 sha = import_module("XPolicyLab.policy.SenseNova-RoboRSI.tests.test_hybrid_backend").sha
@@ -32,6 +36,9 @@ def stopped(tmp_path, reference):
         ).read_text()
     )
     cfg["model"] = "fixture-model"
+    cfg["reasoning_effort"] = "xhigh"
+    cfg["episode_seconds"] = 14400
+    cfg["options"].update(codex_compact_tokens=200000, review_window_steps=200, stop_min_steps=200, approved_steps_min=5)
     identity = {
         "task": "align_blocks",
         "eval_seed": 0,
@@ -201,27 +208,16 @@ def test_original_four_recovery_cap(stopped, reference, tmp_path, value):
         resume.prepare_resume(root, tmp_path / "request.json", reference)
 
 
-def test_original_recovery_prompt_only_on_validated_resume(
-    stopped, reference, tmp_path
-):
+def test_resume_policy_rejects_changed_action_options(stopped, reference, tmp_path):
     root, cfg, _, _ = stopped
-    fresh = hybrid_agent.build_evaluation_prompt(reference, cfg)
-    request = resume.prepare_resume(root, tmp_path / "request.json", reference)
+    request = resume.prepare_resume(root, tmp_path/"request.json", reference)
     recovered = request["config"]
-    with pytest.raises(ValueError, match="author evaluation state"):
-        hybrid_agent.build_evaluation_prompt(reference, recovered)
-    prompt = hybrid_agent.build_evaluation_prompt(reference, recovered, own_resume=True)
-    assert (
-        "SAME interrupted episode restored by private recorded-action replay" in prompt
-    )
-    assert "Discard any old pending VLA proposal" in prompt
-    assert "79200 wall seconds" in prompt
-    assert "SAME interrupted episode" not in fresh
     resume.validate_policy(recovered, cfg)
     changed = copy.deepcopy(recovered)
     changed["options"]["approved_steps_max"] = 10
     with pytest.raises(ValueError, match="options"):
         resume.validate_policy(changed, cfg)
+
 
 
 @pytest.mark.parametrize("diverge", [False, True])
@@ -284,106 +280,47 @@ def test_resume_controller_launches_only_after_native_validation(
     stopped, reference, robot, tmp_path, monkeypatch, diverge, vla, persistent
 ):
     root, cfg, identity, _ = stopped
-    request = resume.prepare_resume(root, tmp_path / "resume.json", reference)
-    directory = tmp_path / "controller-attempt"
-    trajectory = tmp_path / "trajectory" if persistent else None
+    request = resume.prepare_resume(root, tmp_path/"resume.json", reference)
+    directory = tmp_path/"controller-attempt"
+    trajectory = tmp_path/"trajectory" if persistent else None
     if trajectory:
         trajectory.mkdir()
     directory.mkdir()
     recovered = request["config"]
-    backend = HybridBackend(
-        reference,
-        task_name="align_blocks",
-        episode_dir=trajectory or directory,
-        initial_observation=observation(),
-        step_limit=200,
-        metadata_path=robot.metadata,
-        expected_metadata_sha256=sha(robot.metadata),
-        resource_root=robot.root,
-        vla_port=19802,
-        replay=recovered["options"]["replay"],
-    )
+    reference = execution_profile.extend_reference(reference)
+    backend = HybridBackend(reference, task_name="align_blocks", episode_dir=trajectory or directory,
+        initial_observation=observation(), step_limit=200, metadata_path=robot.metadata,
+        expected_metadata_sha256=sha(robot.metadata), resource_root=robot.root, vla_port=19802,
+        replay=recovered["options"]["replay"])
     launches = []
-
-    class OfflinePlanner:
-        process = None
-
-        def __init__(self, **kwargs):
-            pass
-
-        def launch_segment(self, cfg, run, home, segment, prompt, session=None):
-            assert resume.read_json(run / "resume-validation.json")["matched"]
-            assert (
-                (run.parent / "workspace/note.md").read_text().startswith("Only this")
-            )
-            assert "SAME interrupted episode restored" in prompt and session is None
-            assert cfg["episode_seconds"] < recovered["episode_seconds"]
-            launches.append(prompt)
-            program = "\n".join(
-                [
-                    "import sys,json",
-                    "sys.path.insert(0,sys.argv[1])",
-                    "from robot import observe,vla_propose,vla_review",
-                    "o=observe()['observation']; assert o['control_step']==1",
-                    "p=vla_propose('continue own episode')",
-                    "r=vla_review(p['proposal_id'],'accept','observed fixture',{'current_subgoal':'continue'},approved_steps=5); assert r['done'] and r['executed_steps']==1",
-                ]
-            )
-            segment.mkdir(exist_ok=True)
-            with (
-                (segment / "model.jsonl").open("w") as out,
-                (segment / "model.stderr").open("w") as err,
-            ):
-                self.process = subprocess.Popen(
-                    [sys.executable, "-c", program, str(run / "tools")],
-                    stdout=out,
-                    stderr=err,
-                    start_new_session=True,
-                    env={
-                        "PATH": os.defpath,
-                        "POLICYLAB_SOCKET": str((run / "bridge/robot.sock").resolve()),
-                    },
-                )
-            return self.process
-
-        def cancel(self):
-            if self.process and self.process.poll() is None:
-                self.process.terminate()
-                self.process.wait(2)
-
-    monkeypatch.setattr(hybrid_agent, "HybridCodexCliPlanner", OfflinePlanner)
-    agent = hybrid_agent.HybridEmbodiedAgent(
-        mcp_servers=(),
-        output_dir=directory,
-        planner="codex_cli",
-        model=cfg["model"],
-        reasoning_effort="max",
-        max_turns=None,
-        max_tokens=None,
-        codex_cli=cli_config(Path("/not-used")),
-    )
-    interface = reference.source_dir.parent / "resources/interfaces/BENCHMARK.md"
-    context = hybrid_agent.HybridRunContext(
-        reference,
-        backend,
-        recovered,
-        directory,
-        root / "agent/workspace",
-        root / "agent/workspace",
-        interface,
-        Path(sys.executable),
-        Path("/not-used"),
-        "0" * 64,
-        request,
-        trajectory,
-    )
-    controller = hybrid_agent.HybridController(agent, context).start()
+    def execute(toolkit, active_cfg, run, segment, prompt):
+        assert resume.read_json(run/"resume-validation.json")["matched"]
+        assert (run.parent/"workspace/note.md").read_text().startswith("Only this")
+        assert prompt.startswith("Carry out the current episode task.")
+        assert active_cfg["episode_seconds"] < recovered["episode_seconds"]
+        launches.append(prompt)
+        assert toolkit.execute_tool("observe", {}).result["observation"]["control_step"] == 1
+        proposal = toolkit.execute_tool("vla_propose", {"subgoal": "Continue the visible alignment."}).result
+        result = toolkit.execute_tool("act", {"proposal_id": proposal["proposal_id"], "steps": 5,
+            "reason": "Observed resumed fixture", "assessment": {"current_subgoal": "Continue"}}).result
+        assert result["done"] and result["executed_steps"] == 1
+    monkeypatch.setattr(skillpack_agent, "SkillpackCodexCliPlanner", make_offline_tool_planner(execute))
+    monkeypatch.setattr(reference.runner, "stop_process", lambda process: process.wait(timeout=5))
+    agent = skillpack_agent.SkillpackEmbodiedAgent(mcp_servers=(), output_dir=directory,
+        planner="codex_cli", model=cfg["model"], reasoning_effort="xhigh", max_turns=None,
+        max_tokens=None, codex_cli=cli_config(Path("/not-used")))
+    profile = execution_profile.load_skillpack_profile(P, "align_blocks", directory)
+    interface = reference.source_dir.parent/"resources/interfaces/BENCHMARK.md"
+    context = hybrid_agent.HybridRunContext(reference, backend, recovered, directory,
+        root/"agent/workspace", root/"agent/workspace", interface, Path(sys.executable),
+        Path("/not-used"), "0"*64, request, trajectory, execution_profile=profile, model_cfg={})
+    controller = skillpack_agent.SkillpackController(agent, context).start()
     try:
         replay = controller.next_action(timeout=10)
         assert replay.step_index == 0 and not launches
         obs = observation()
         if diverge:
-            obs["state"]["left_ee_pose"][0] += 0.1
+            obs["state"]["left_ee_pose"][0] += .1
         controller.acknowledge(replay.request_id, obs)
         if diverge:
             controller._thread.join(10)
@@ -395,24 +332,24 @@ def test_resume_controller_launches_only_after_native_validation(
             controller._thread.join(10)
             assert controller.done and controller.error is None
             assert controller.result.stats["native_success"] is None
-            result = resume.read_json(
-                directory / "controller/episodes/evaluation-0001/result.json"
-            )
+            result = resume.read_json(directory/"controller/episodes/evaluation-0001/result.json")
             assert result["native_done"] and result["success"] is None
-        assert (root / "agent/workspace/note.md").is_file()
+        assert (root/"agent/workspace/note.md").is_file()
+        assert not (directory/"controller/tools/robot.py").exists()
     finally:
         controller.cancel()
     if persistent:
-        assert (directory / "controller/episodes").is_symlink()
-        assert (trajectory / "controller/config.json").is_file()
-        assert (trajectory / "controller/provenance.json").is_file()
-        assert (trajectory / "controller/episodes/evaluation-0001/episode.json").is_file()
+        assert (directory/"controller/episodes").is_symlink()
+        assert (trajectory/"controller/config.json").is_file()
+        assert (trajectory/"controller/provenance.json").is_file()
+        assert (trajectory/"controller/episodes/evaluation-0001/episode.json").is_file()
         if not diverge:
-            assert (trajectory / "controller/observations/latest.json").is_file()
-            assert (trajectory / "controller/provenance.json").read_bytes() == (directory / "controller/provenance.json").read_bytes()
+            assert (trajectory/"controller/observations/latest.json").is_file()
+            assert (trajectory/"controller/provenance.json").read_bytes() == (directory/"controller/provenance.json").read_bytes()
         else:
-            validation = resume.read_json(trajectory / "controller/episodes/evaluation-0001/native/replay_validation.json")
+            validation = resume.read_json(trajectory/"controller/episodes/evaluation-0001/native/replay_validation.json")
             assert validation["matched"] is False
+
 
 
 def bare_model(monkeypatch, trajectory_dir):
@@ -433,6 +370,7 @@ def bare_model(monkeypatch, trajectory_dir):
     value._connector = value._temporary = value._icl = value._obs = value._pending = (
         None
     )
+    value._adaptive_steps = {"approved_steps_min": 5, "approved_steps_max": 50, "approved_steps_default": 5}
     value._step = 0
     value._resume = None
     value._awaiting_feedback = False
@@ -461,12 +399,7 @@ def test_model_start_uses_shared_interface_for_each_task(tmp_path, monkeypatch, 
     monkeypatch.setattr(module, "POLICY_DIR", policy_dir)
     monkeypatch.setattr(module, "submission", lambda: pins)
     monkeypatch.setattr(module, "load_agent_config", lambda *a, **k: value._agent_config)
-    monkeypatch.setattr(
-        module, "prepare_icl_context",
-        lambda *_args: SimpleNamespace(
-            source_identity={"mapping": {"base_task": task_name}}, workspace=workspace,
-        ),
-    )
+    monkeypatch.setattr(execution_profile, "extend_reference", lambda reference: reference)
     monkeypatch.setattr(value, "_ensure_vla", lambda: 19803)
     monkeypatch.setattr(value, "_claim_resume", lambda: None)
     monkeypatch.setattr(backend_module, "load_reference_source", lambda *_args: object())
@@ -477,7 +410,7 @@ def test_model_start_uses_shared_interface_for_each_task(tmp_path, monkeypatch, 
         contexts.append(context)
         return SimpleNamespace(start=lambda: object())
 
-    monkeypatch.setattr(hybrid_agent, "HybridController", controller)
+    monkeypatch.setattr(skillpack_agent, "SkillpackController", controller)
     value._start()
 
     assert len(contexts) == 1
@@ -485,6 +418,10 @@ def test_model_start_uses_shared_interface_for_each_task(tmp_path, monkeypatch, 
     assert context.public_instructions == (
         policy_dir / pins["hybrid"]["profile_path"] / "resources/interfaces/BENCHMARK.md"
     )
+    assert context.execution_profile.task == task_name
+    assert context.prepared_workspace.name == "prepared-skills"
+    assert context.cfg["reasoning_effort"] == "xhigh"
+    assert context.cfg["options"]["codex_compact_tokens"] == 200000
     assert context.cfg["options"]["task"] == task_name
     assert context.cfg["test_episodes"][0]["task"] == task_name
 

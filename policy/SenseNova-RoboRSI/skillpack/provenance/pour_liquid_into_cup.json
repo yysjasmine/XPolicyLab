@@ -1,0 +1,69 @@
+{
+  "task": "pour_liquid_into_cup",
+  "source_archive_sha256": "073cbfb8eced9da6214a0ffefdfbe36c62b145410200eeea084d785e542f63bf",
+  "source_files": [
+    {
+      "path": "skills/pour_liquid.md",
+      "bytes": 15695,
+      "sha256": "333736bf4781483cbb16b235fd9b18dd5b663ddd38d68d6fad81eb6b96d14096"
+    },
+    {
+      "path": "COMPLETION_CHECKLIST.md",
+      "bytes": 2923,
+      "sha256": "f7597194f607c37ed017c7ffaa0c2bbcabca831589bdcf2bb97fd5bad9bd43c6"
+    },
+    {
+      "path": "programs/USAGE.md",
+      "bytes": 4696,
+      "sha256": "cd63cb8db4ef00773645e858d2bcac382567b87621bc27dbc600903c0d46b92c"
+    },
+    {
+      "path": "programs/geometry.py",
+      "bytes": 5829,
+      "sha256": "ceee98ad8721055e9f3f6c6e1aa689bd718f1360a89f355c0483fc7155147dff"
+    },
+    {
+      "path": "programs/policy_utils.py",
+      "bytes": 12822,
+      "sha256": "89997f9c4ac6a34aa987cf46e1839374f2035f2dd97e592416fbaa0eee1f9231"
+    }
+  ],
+  "retained_images": [
+    {
+      "source_archive_member": "payload/frames/ep00/contact.jpg",
+      "path": "assets/contact.jpg",
+      "bytes": 243374,
+      "sha256": "eeb122ac46459f2a50baf91d18dee859eea6121cb115e0b9ce1dced05ae6ff26"
+    },
+    {
+      "source_archive_member": "payload/frames/ep00/pour.jpg",
+      "path": "assets/pour.jpg",
+      "bytes": 177876,
+      "sha256": "4b89f2d11de8226e5c354f9fff15c1a7e15d360f2110afb63a97d13913c98cb0"
+    },
+    {
+      "source_archive_member": "payload/frames/ep00/ending.jpg",
+      "path": "assets/ending.jpg",
+      "bytes": 238268,
+      "sha256": "6925bcd51f0a0be4a8f9c8f7585be35f30d80dc14c52c84895637f1c9125f5e9"
+    }
+  ],
+  "operations_to_scripts": {
+    "mouth world-goal alignment with observed grasp offset": "assist.py align",
+    "mouth-preserving world-axis pivot with bounded displacement, adapted to public TCP degree convention": "assist.py pivot"
+  },
+  "main_md_bytes": 5404,
+  "raw_training_material_in_runtime": false,
+  "runtime_subagents_enabled": false,
+  "physical_validation_performed": false,
+  "tests": {
+    "passed": 5,
+    "command": "python3 -m unittest discover -s robodojo/harness/case_skills/v1/tests -p test_pour_liquid_into_cup_helper.py -q",
+    "kind": "offline geometry; no simulator"
+  },
+  "read_only_interface_contract": {
+    "path": "robodojo/harness/robot_tools/v1/tcp_pose.py",
+    "sha256": "a3c544ceada5e6ac7d99165b13c757004ddfdd51cda354f67fccfe54a196db8d",
+    "reason": "Match public downward-reference Rz(yaw) Ry(roll) Rx(pitch); shared file unchanged"
+  }
+}

@@ -183,9 +183,8 @@ BENCH_ROOT="$(cd "${POLICY_DIR}/../../.." && pwd)"
     --workspace "${BENCH_ROOT}" --allow-missing-workspace \
     > "${POLICY_DIR}/runtime/sim-bootstrap-install.json"
 
-# Complete public-training ICL data is required, including its referenced media.
-printf '%s\n' 'Preparing the fixed ICL packages...'
-"${POLICY_ENV}/bin/python" "${POLICY_DIR}/icl_assets.py" install > /dev/null
+# The committed current-case skillpack is checked by metadata preflight above.
+# Runtime stages robo-general and at most the selected case; no ICL download.
 
 # Install only the selected VLA. The Simate path keeps the vendored OpenPI
 # wire codec but never downloads the unused pi0.5 weights/runtime.
@@ -208,7 +207,7 @@ fi
 # Installation validates identity and configuration offline; eval.sh always requires the key.
 "${POLICY_ENV}/bin/python" "${POLICY_DIR}/preflight.py" \
     --config "${POLICY_DIR}/deploy.yml" --installation-only \
-    --verify-icl-task align_blocks > "${POLICY_DIR}/runtime/install-preflight.json"
+    --verify-case-skill arrange_largest_number > "${POLICY_DIR}/runtime/install-preflight.json"
 "${POLICY_ENV}/bin/python" - "${POLICY_DIR}" "${POLICY_ENV}" <<'PY'
 import json
 import sys
@@ -232,8 +231,8 @@ receipt = {
     "cli_companion_sha256": metadata["cli"]["companion_sha256"],
     "requirements_sha256": sha256_file(policy / "requirements.lock"),
     "source_manifest_sha256": sha256_file(policy / "runtime/source-files.json"),
-    "icl_catalog_sha256": metadata["icl"]["catalog_sha256"],
-    "icl_artifacts_sha256": metadata["icl"]["artifacts_sha256"],
+    "case_catalog_sha256": sha256_file(policy / "skillpack/cases/catalog.json"),
+    "frozen_common_sha256": sha256_file(policy / "skillpack/frozen_common.json"),
     "hybrid_manifest_sha256": metadata["hybrid"]["manifest_sha256"],
     "vla_backend": backend,
     "vla_install_receipt": "simate-install.json" if backend == "simate_beta" else "runtime/pi05-installed.json",
@@ -250,9 +249,9 @@ receipt = {
     "runtime_capabilities": json.loads(
         (policy / "runtime/sandbox-install.json").read_text()
     ),
-    "icl_materialization": json.loads(
+    "skillpack": json.loads(
         (policy / "runtime/install-preflight.json").read_text()
-    )["icl"]["materialization"],
+    )["skillpack"],
 }
 (policy / "runtime/install-receipt.json").write_text(json.dumps(receipt, indent=2) + "\n")
 PY

@@ -64,7 +64,9 @@ it uploads nothing and requires no credentials.
 The bootstrap returns to `install.sh`, which installs the pinned controller
 baseline (71 locked distributions plus source RoboRSI), five XPolicyLab runtime
 additions, two build packages and XPolicyLab itself. It separately installs the
-model tools, CLI, ICL and the selected VLA assets. The default is Simate beta;
+model tools, CLI and the selected VLA assets. The committed current-case
+skillpack is verified locally; installation does not download or prepare the old
+27 ICL packages. The default is Simate beta;
 its separate Python 3.11 virtualenv reuses the official environment's CUDA
 PyTorch 2.6–2.8, and installs the other eight packages using
 `simate/requirements.lock` with required SHA-256 checks. The original simulator
@@ -84,15 +86,37 @@ physical directory (`runtime/tool-deployment` points to it). The official
 simulator interpreter and its activation hooks must be readable/executable by
 that user. Installation never rewrites the benchmark image or its permissions.
 
+## Current-case skills
+
+The only model-facing entry is the committed `skillpack/`: frozen system/tools
+and `robo-general`, plus the selected case skill. Standard tasks select their
+own case; explicit generalization aliases reuse their base case under the
+current task name. Open tasks receive only `robo-general`. Raw ICL archives,
+training directories and old preparation prompts are not staged.
+
+Offline checks verify `cases/catalog.json`, every case resource hash and
+`frozen_common.json`, including the shared prompt/tool/general-skill bytes:
+
+```bash
+.venv/bin/python preflight.py --metadata-only --verify-case-skill arrange_largest_number
+.venv/bin/python preflight.py --installation-only --verify-case-skill align_blocks
+```
+
+The first command needs only committed files and the standard library. The
+second additionally checks the installed CLI, Python/sandbox, source and selected
+VLA environment; it does not call a model or simulator. `align_blocks` is an open
+task, so its reported selection contains only `robo-general`. Evaluation passes
+its actual task through `--task-name`; unknown tasks fail before execution.
+
 ## Installation and validation boundaries
 
 Run `bash install.sh` at the final physical policy path. This entry performs the
-legacy source installation directly; it is not the separate benchmark-image
+pinned source installation directly; it is not the separate benchmark-image
 `--plan` / `--install` dispatcher. Installed interpreters, private tool symlinks,
 checkpoints and receipts must be generated or verified at the new location. Do
 not copy an old receipt or rewrite absolute paths to claim installation success.
-Keep the source locks and manifests under `vendor/`, `tools/`, `pi05/`, `icl/`
-and `submission.json`, together with `simate/`: they authenticate the exact
+Keep the source locks and manifests under `vendor/`, `tools/`, `pi05/`,
+`skillpack/` and `submission.json`, together with `simate/`: they authenticate the exact
 installation inputs.
 
 The official workspace, complete native Assets, simulator Python 3.11.17 and
@@ -125,7 +149,7 @@ checkpoint directory are checked and reused. Optional cache configuration:
 # Use an existing Simate Python 3.11 environment / complete checkpoint directory.
 export ROBORSI_SIM_MODEL_PYTHON=/path/to/simate-env/bin/python
 export ROBORSI_SIM_CHECKPOINT=/path/to/simate-beta-robodojo-eval
-# If the policy/CLI/tool/ICL environment is already installed:
+# If the policy/CLI/tool environment is already installed:
 bash install_simate.sh
 ```
 

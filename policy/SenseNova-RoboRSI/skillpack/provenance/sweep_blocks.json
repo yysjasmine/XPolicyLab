@@ -1,0 +1,71 @@
+{
+  "task": "sweep_blocks",
+  "source_archive_sha256": "1e37e409c202c5da7ccc01aa7df73f76f7f34e598452007b951c314f2fa974d7",
+  "source_files": [
+    {
+      "path": "skills/broom-dustpan/SKILL.md",
+      "bytes": 5620,
+      "sha256": "b7c75e31e9f7b50d3c7ddf25fb9dffc6462b23fe45e9cbd9c3bdd249d4489ab3"
+    },
+    {
+      "path": "skills/broom-dustpan/references/policy.md",
+      "bytes": 14959,
+      "sha256": "ed25b44c8e11936fc239d454e55090cb59b5a96f7301b64bde44fa20dee40dcc"
+    },
+    {
+      "path": "skills/broom-dustpan/references/completion.md",
+      "bytes": 5358,
+      "sha256": "4a5173ebb4a196b62b403eb89d0c51c082d4654bb685c9518192b5ebc1ee1d21"
+    },
+    {
+      "path": "skills/broom-dustpan/references/geometry.md",
+      "bytes": 8782,
+      "sha256": "27e7ee0ec13770d52c066bfd7e63be19a603a1e8fa8da5408a2bc3d15c251221"
+    },
+    {
+      "path": "skills/broom-dustpan/scripts/geometry.py",
+      "bytes": 7100,
+      "sha256": "503920a47776eed77455509c9fe132629d99af8995463cb4506cdf118e2a8f0c"
+    },
+    {
+      "path": "skills/broom-dustpan/scripts/point_query.py",
+      "bytes": 3693,
+      "sha256": "c41ecc40171d4dc6b7230138610e8a1b2c743a4e8e215d663a91f2fcd36c2593"
+    }
+  ],
+  "retained_images": [
+    {
+      "source_archive_member": "payload/demo_refs/ep00/overview.jpg",
+      "path": "assets/overview.jpg",
+      "bytes": 410045,
+      "sha256": "984ea91ebb859516ddbc2d3f6e73493b25df387e90095cbd767eed2c7a85894e"
+    },
+    {
+      "source_archive_member": "payload/demo_refs/ep00/sweep_trio.jpg",
+      "path": "assets/sweep.jpg",
+      "bytes": 546805,
+      "sha256": "5580eaf94843b28a63c5526594addebf6bc71094fcfc9c150f5ab265f886a7e9"
+    },
+    {
+      "source_archive_member": "payload/demo_refs/ep00/ending_trio.jpg",
+      "path": "assets/ending.jpg",
+      "bytes": 274642,
+      "sha256": "f80015504fcac19c318f21a0b18e9c357bf3c134290209b243ca2080e2b7a682"
+    }
+  ],
+  "operations_to_scripts": {
+    "object lane selection, lip crossing and inward sweep candidate geometry": "assist.py lane",
+    "tool contact-point translation offset adapted to current TCP": "assist.py lane tcp_positions",
+    "pan mouth span and object lateral alignment": "assist.py lane span diagnostics"
+  },
+  "main_md_bytes": 5647,
+  "random_variant_support": "Current requested sweep objects, no fixed count, shape or dimension",
+  "raw_training_material_in_runtime": false,
+  "runtime_subagents_enabled": false,
+  "physical_validation_performed": false,
+  "tests": {
+    "passed": 4,
+    "command": "python3 -m unittest discover -s robodojo/harness/case_skills/v1/tests -p test_sweep_blocks_helper.py -q",
+    "kind": "offline lane geometry; no simulator"
+  }
+}

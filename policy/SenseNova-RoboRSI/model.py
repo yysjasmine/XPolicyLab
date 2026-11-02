@@ -25,7 +25,6 @@ from XPolicyLab.model_template import ModelTemplate
 from XPolicyLab.utils.checkpoint_resolver import resolve_checkpoint_root
 from XPolicyLab.utils.process_data import get_robot_action_dim_info
 
-from .icl_context import prepare_icl_context
 from .runtime_config import (
     POLICY_DIR, load_agent_config, resolve_adaptive_steps, resolve_base_url, resolve_model, submission,
 )
@@ -382,7 +381,9 @@ class Model(ModelTemplate):
         return self._vla.port
 
     def _start(self) -> None:
-        from .hybrid_agent import HybridController, HybridRunContext
+        from .hybrid_agent import HybridRunContext
+        from .skillpack_agent import SkillpackController
+        from .execution_profile import extend_reference, load_skillpack_profile, prepare_skillpack_context
         from .hybrid_backend import HybridBackend, load_reference_source
 
         pins = submission()
@@ -392,10 +393,11 @@ class Model(ModelTemplate):
             POLICY_DIR / profile["manifest_path"],
             profile["manifest_sha256"],
         )
-        self._icl = prepare_icl_context(
+        reference = extend_reference(reference)
+        self._icl = prepare_skillpack_context(
             POLICY_DIR, self.model_cfg["task_name"], self._directory
         )
-        base_task = self._icl.source_identity["mapping"]["base_task"]
+        base_task = self._icl.source_identity["mapping"].get("base_task") or self.model_cfg["task_name"]
         config_path = (
             POLICY_DIR
             / profile["profile_path"]
@@ -405,9 +407,22 @@ class Model(ModelTemplate):
         cfg = json.loads(config_path.read_text())
         cfg = copy.deepcopy(cfg)
         cfg["model"] = self._agent_config.document["agent"]["model"]
+        cfg["reasoning_effort"] = "xhigh"
+        cfg["episode_seconds"] = self.model_cfg.get("episode_seconds", 14400)
+        if type(cfg["episode_seconds"]) is not int or not 1 <= cfg["episode_seconds"] <= 14400:
+            raise ValueError("episode_seconds must be an integer from 1 to 14400")
         cfg.pop("continue_from_run", None)
         cfg["options"]["task"] = self.model_cfg["task_name"]
         cfg["options"].update(self._adaptive_steps)
+        native_limit = (self._obs.get("roborsi_native_identity") or {}).get("step_limit")
+        requested_limit = self.model_cfg.get("native_step_limit", native_limit or cfg["options"]["review_window_steps"])
+        if type(requested_limit) is not int or requested_limit <= 0:
+            raise ValueError("native_step_limit must be a positive integer")
+        if native_limit is not None and requested_limit != native_limit:
+            raise ValueError("Configured native step limit differs from the actual episode")
+        cfg["options"].update(codex_compact_tokens=200000, review_window_steps=requested_limit,
+                              review_max_windows=1, stop_min_steps=requested_limit,
+                              review_allow_reset=False, max_repeat=1)
         cfg["options"]["gpu"] = cfg["options"]["physical_gpu"] = 0
         cfg["options"]["vla_port"] = self._ensure_vla()
         episode = cfg["test_episodes"][0]
@@ -485,8 +500,10 @@ class Model(ModelTemplate):
             resume=self._resume,
             trajectory_dir=self._trajectory_directory,
             before_execution=self._claim_resume,
+            execution_profile=load_skillpack_profile(POLICY_DIR, self.model_cfg["task_name"], case),
+            model_cfg=dict(self.model_cfg),
         )
-        self._connector = HybridController(agent, context).start()
+        self._connector = SkillpackController(agent, context).start()
 
     def get_action(self) -> list[dict[str, np.ndarray]]:
         """Yield one original joint update; wait for its actual executed observation."""
@@ -633,18 +650,16 @@ class Model(ModelTemplate):
                         acknowledged_steps=self._step,
                     )
                     write_json(owner_path, owner)
-                try:
-                    from .trajectory_archive import archive_episode
-
-                    archive_episode(
-                        self._directory,
-                        task=str(self.model_cfg.get("task_name", "unknown")),
-                        episode_id=self._episode_id,
-                    )
-                except Exception as error:
-                    (self._directory / "trajectory_archive_error.txt").write_text(
-                        f"{type(error).__name__}: {error}\n"
-                    )
+                # Large copy/hash publication belongs to the case supervisor,
+                # after the native result RPC returns. Preserve source records.
+                write_json(self._directory / "archive.pending.json", {
+                    "format": "roborsi_skillpack_archive_pending_v1",
+                    "task": str(self.model_cfg.get("task_name", "unknown")),
+                    "episode_id": self._episode_id,
+                    "source": str(self._directory),
+                    "trajectory_directory": str(self._trajectory_directory),
+                    "native_terminal_accepted": self._ended,
+                })
         except BaseException:
             # A failed close must never permit a later reset to create another
             # episode while its old controller may still own writers/processes.
@@ -664,8 +679,8 @@ class Model(ModelTemplate):
             self._awaiting_feedback = False
             if self._temporary is not None:
                 # Keep the source episode directory for post-mortem and full
-                # trajectory recovery.  archive_episode copies it when the
-                # episode closes; never delete the source after that copy.
+                # trajectory recovery and asynchronous supervisor publication.
+                # Closing the RPC never deletes or copies this source tree.
                 finalizer = getattr(self._temporary, "_finalizer", None)
                 if finalizer is not None:
                     finalizer.detach()

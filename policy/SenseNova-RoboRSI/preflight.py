@@ -384,13 +384,110 @@ def validate_source_manifest(
         )
 
 
+def validate_case_skillpack(
+    policy_dir: Path = POLICY_DIR, task_name: str | None = None,
+) -> dict[str, Any]:
+    """Verify committed shared bytes and case resources without imports or staging."""
+    root = (policy_dir / "skillpack").resolve(strict=True)
+    library = root / "cases"
+    catalog_path = library / "catalog.json"
+    catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
+    if not isinstance(catalog, dict):
+        raise ValueError("Case skillpack catalog must be a mapping")
+    frozen_path = root / "frozen_common.json"
+    frozen = json.loads(frozen_path.read_text(encoding="utf-8"))
+
+    def checked_file(base: Path, relative: str, digest: str) -> Path:
+        path = (base / relative_artifact_path(relative, "skillpack resource")).resolve(strict=True)
+        if not path.is_relative_to(base.resolve()) or not path.is_file():
+            raise ValueError(f"Skillpack resource escapes its package: {relative}")
+        if not isinstance(digest, str) or not re.fullmatch(r"[0-9a-f]{64}", digest):
+            raise ValueError(f"Invalid skillpack digest: {relative}")
+        if sha256_file(path) != digest:
+            raise ValueError(f"Skillpack resource SHA-256 mismatch: {relative}")
+        return path
+
+    submission = json.loads((policy_dir / "submission.json").read_text(encoding="utf-8"))
+    pins = submission.get("skillpack")
+    if (not isinstance(pins, dict)
+            or pins.get("catalog_path") != "skillpack/cases/catalog.json"
+            or pins.get("frozen_common_path") != "skillpack/frozen_common.json"):
+        raise ValueError("submission.json needs the committed current-case skillpack pins")
+    checked_file(policy_dir.resolve(), pins["catalog_path"], pins.get("catalog_sha256"))
+    checked_file(policy_dir.resolve(), pins["frozen_common_path"], pins.get("frozen_common_sha256"))
+
+    if not isinstance(frozen, dict) or not frozen:
+        raise ValueError("Missing frozen shared skillpack manifest")
+    for relative, digest in frozen.items():
+        checked_file(root, relative, digest)
+    general = "common/skills/robo-general/SKILL.md"
+    if general not in frozen or catalog.get("frozen_general_sha256") != frozen[general]:
+        raise ValueError("Case catalog differs from the frozen robo-general skill")
+    if (catalog.get("schema_version") != 1
+            or catalog.get("subagents_enabled") is not False
+            or catalog.get("raw_icl_training_material_in_runtime") is not False):
+        raise ValueError("Unsupported current-case skillpack catalog")
+    tasks, packs = catalog.get("tasks"), catalog.get("packs")
+    if not isinstance(tasks, dict) or not tasks or not isinstance(packs, dict) or not packs:
+        raise ValueError("Case skillpack needs task mappings and resource packs")
+    for case, package in packs.items():
+        if not isinstance(package, dict):
+            raise ValueError(f"Invalid case package: {case}")
+        directory = relative_artifact_path(package.get("directory"), "case package directory")
+        base = (library / directory).resolve(strict=True)
+        if not base.is_relative_to(library.resolve()) or not base.is_dir():
+            raise ValueError(f"Case package escapes the library: {case}")
+        hashes = package.get("sha256")
+        if not isinstance(hashes, dict) or "SKILL.md" not in hashes:
+            raise ValueError(f"Case package has no main skill: {case}")
+        actual = {path.relative_to(base).as_posix() for path in base.rglob("*")
+                  if path.is_file() and "__pycache__" not in path.parts
+                  and path.suffix not in {".pyc", ".pyo"}}
+        if actual != set(hashes):
+            raise ValueError(f"Case package files differ from the catalog: {case}")
+        for relative, digest in hashes.items():
+            checked_file(base, relative, digest)
+        if (base / "SKILL.md").stat().st_size >= 8192:
+            raise ValueError(f"Case main skill exceeds the UTF-8 byte bound: {case}")
+    for task, selection in tasks.items():
+        if not re.fullmatch(r"[A-Za-z0-9_]+", task) or not isinstance(selection, dict):
+            raise ValueError("Invalid task mapping in case catalog")
+        kind, case = selection.get("kind"), selection.get("case_skill")
+        if kind == "open":
+            if case is not None or selection.get("base_task") is not None:
+                raise ValueError(f"Open task must use only robo-general: {task}")
+        elif kind in {"standard", "generalization"}:
+            if case not in packs or selection.get("base_task") != case:
+                raise ValueError(f"Task has no matching case skill: {task}")
+            if kind == "standard" and case != task:
+                raise ValueError(f"Standard task must use its own case skill: {task}")
+        else:
+            raise ValueError(f"Unknown task kind: {task}")
+    result = {
+        "catalog_sha256": sha256_file(catalog_path),
+        "frozen_common_sha256": sha256_file(frozen_path),
+        "shared_files_verified": len(frozen),
+        "case_packs_verified": len(packs),
+        "task_count": len(tasks),
+        "raw_icl_materialized": False,
+        "runtime_subagents_enabled": False,
+    }
+    if task_name is not None:
+        if task_name not in tasks:
+            raise ValueError(f"Unknown public RoboDojo task: {task_name}")
+        selected = tasks[task_name]
+        result["selection"] = {"task": task_name, **selected,
+                               "skills": ["robo-general"] + ([task_name] if selected["case_skill"] else [])}
+    return result
+
+
 def check_runtime(
     config_path: Path,
     *,
     require_key: bool,
     installation_only: bool = False,
     task_name: str | None = None,
-    verify_icl_task: str | None = None,
+    verify_case_skill: str | None = None,
 ) -> dict[str, Any]:
     """Use the same AgentConfig and executable preflight as the production Model."""
     import yaml
@@ -447,24 +544,10 @@ def check_runtime(
         "python": check_python_capabilities(),
         "sandbox": check_sandbox_capabilities(POLICY_DIR),
     }
-    try:
-        from .icl_assets import validate_icl_install
-    except ImportError:
-        from icl_assets import validate_icl_install
-
-    icl = validate_icl_install(POLICY_DIR)
-    try:
-        from .icl_context import check_icl_materialization, check_icl_selection
-    except ImportError:
-        from icl_context import check_icl_materialization, check_icl_selection
-
-    if task_name is not None:
-        icl = {**icl, "selection": check_icl_selection(POLICY_DIR, task_name)}
-    if verify_icl_task is not None:
-        icl = {
-            **icl,
-            "materialization": check_icl_materialization(POLICY_DIR, verify_icl_task),
-        }
+    if task_name is not None and verify_case_skill is not None and task_name != verify_case_skill:
+        raise ValueError("Task selection and verified case skill must name the same task")
+    selected_task = verify_case_skill or task_name or model_cfg.get("task_name")
+    skillpack = validate_case_skillpack(POLICY_DIR, selected_task)
     try:
         from .pi05_runtime import check_pi05_runtime
         from .pi05_source import load_openpi_client
@@ -501,7 +584,7 @@ def check_runtime(
                   if installation_only else "offline CLI identity and configuration; model access was not tested"),
         "key_required": require_key,
         "runtime_capabilities": capabilities,
-        "icl": icl,
+        "skillpack": skillpack,
         **({"vla": vla} if model_cfg.get("vla_backend") == "simate_beta" else {"pi05": vla}),
     }
 
@@ -526,26 +609,19 @@ def main() -> int:
     )
     parser.add_argument(
         "--task-name",
-        help="check the actual evaluation task's pinned ICL selection without copying it",
+        help="check the current task's case-skill selection (open tasks use only robo-general)",
     )
     parser.add_argument(
-        "--verify-icl-task",
+        "--verify-case-skill",
         metavar="TASK",
-        help="also materialize and read one task's complete ICL package offline",
+        help="verify one current task's committed case skill and resources without staging or downloads",
     )
     args = parser.parse_args()
     try:
-        if args.metadata_only and (args.task_name or args.verify_icl_task):
-            raise ValueError(
-                "ICL selection/materialization checks require installed dependencies"
-            )
+        if args.task_name and args.verify_case_skill and args.task_name != args.verify_case_skill:
+            raise ValueError("Task selection and verified case skill must name the same task")
         metadata = load_submission()
-        try:
-            from .icl_assets import load_icl_metadata
-        except ImportError:
-            from icl_assets import load_icl_metadata
-
-        load_icl_metadata(POLICY_DIR)
+        skillpack = validate_case_skillpack(POLICY_DIR, args.verify_case_skill or args.task_name)
         try:
             from .pi05_assets import load_pi05_metadata
             from .pi05_source import validate_pi05_source
@@ -572,6 +648,7 @@ def main() -> int:
                 "version": metadata["cli"]["expected_version"],
                 "check": "installation metadata only; CLI/model were not executed",
                 "tool_python": tools["python_version"],
+                "skillpack": skillpack,
             }
         else:
             result = check_runtime(
@@ -579,7 +656,7 @@ def main() -> int:
                 require_key=not (args.allow_missing_key or args.installation_only),
                 installation_only=args.installation_only,
                 task_name=args.task_name,
-                verify_icl_task=args.verify_icl_task,
+                verify_case_skill=args.verify_case_skill,
             )
     except (OSError, ValueError, KeyError, ImportError) as exc:
         print(f"RoboRSI preflight failed: {exc}", file=sys.stderr)

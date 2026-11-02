@@ -1,0 +1,204 @@
+{
+  "task": "build_tower",
+  "source_receipt_sha256": "55e439941dea32095f2cedfbc60f8e87e80889b279329c6869817f55d8501e8d",
+  "source_archive_sha256": "a8538699cec60096d9e734a94d8c8c0b09c4f62af764d01caf59c11ed31d7335",
+  "public_source": "https://huggingface.co/datasets/sensenova/SenseNova-RoboRSI-Packages/resolve/d922d28766d11d761228a500ddb7a28abc1b121e/robodojo/v1.0.0/icl/build_tower.tar.gz",
+  "reviewed_sources": [
+    {
+      "path": "tower_study/SKILL.md",
+      "sha256": "93eb543225cb85ad7ac7a00ad0d5f7cfb944368a7e306adb7861be59782a2413"
+    },
+    {
+      "path": "tower_study/docs/completion_checklist.md",
+      "sha256": "efe044e1533d581ca7a37558b99acb6af589db1b8010d99fdc439e048de4591b"
+    },
+    {
+      "path": "tower_study/docs/geometry.md",
+      "sha256": "c31c93cc5e5aeed9a80453d9fa064de31c0e441186467b1787657b6df7ca0d09"
+    },
+    {
+      "path": "tower_study/programs/geometry.py",
+      "sha256": "235bf4f50b1998221f372120391479470edac77f5ad27fe7f6482f7bd93c2052"
+    }
+  ],
+  "source_md_py_manifest": [
+    {
+      "path": "README.md",
+      "sha256": "e34448443f89f074ce880e26bc79f6fd7c8b58f13a0ff9f2a1a705a0b1138655"
+    },
+    {
+      "path": "tower_study/SKILL.md",
+      "sha256": "93eb543225cb85ad7ac7a00ad0d5f7cfb944368a7e306adb7861be59782a2413"
+    },
+    {
+      "path": "tower_study/docs/completion_checklist.md",
+      "sha256": "efe044e1533d581ca7a37558b99acb6af589db1b8010d99fdc439e048de4591b"
+    },
+    {
+      "path": "tower_study/docs/coverage_uncertainties.md",
+      "sha256": "4d10973d84f4cdc2b857d5b6fffba69cee2b3994b4b25f56db415c59c4d36cd7"
+    },
+    {
+      "path": "tower_study/docs/episodes/ep00.md",
+      "sha256": "90f7176388a469658ba7bae5543eb24bad4636669e63aaf124c3b91d41209580"
+    },
+    {
+      "path": "tower_study/docs/episodes/ep01.md",
+      "sha256": "9ec1b2f9258d46361c1b9aaa6d03fe70dc06aac71e387b88cf9c55a9956b73ec"
+    },
+    {
+      "path": "tower_study/docs/episodes/ep02.md",
+      "sha256": "444b7897e06b952f0e26b41ed7b14168a384104709c1034237fc6809ee348e44"
+    },
+    {
+      "path": "tower_study/docs/episodes/ep03.md",
+      "sha256": "c0b8bf32c87d148eb5f062181b3cfc056ab21a33064a839ff5a29b29149ff7e2"
+    },
+    {
+      "path": "tower_study/docs/episodes/ep04.md",
+      "sha256": "87711fbcd211d1841d930425cf1f26d979592eb9cdb1a34a404dc76a640f05fe"
+    },
+    {
+      "path": "tower_study/docs/episodes/ep05.md",
+      "sha256": "b94598855a91106b4493edae2cc8853bc7fbe45b57da363105270ee0355c3168"
+    },
+    {
+      "path": "tower_study/docs/episodes/ep06.md",
+      "sha256": "4bba3d4dedd4534c89990246ee25ea7adc49b343986c4e41c64700bc61a5c18e"
+    },
+    {
+      "path": "tower_study/docs/episodes/ep07.md",
+      "sha256": "e4a7732a0663ba38b9383a70a88b9eddecb56d3d44485ba62b165e2fd806ea25"
+    },
+    {
+      "path": "tower_study/docs/episodes/ep08.md",
+      "sha256": "ee36a7311be51566c61843963d195fb90349ad4f1c7d780d921e71d07486907d"
+    },
+    {
+      "path": "tower_study/docs/episodes/ep09.md",
+      "sha256": "5638b95fc1931712433a5e09765f54a79ec1af0c0c615387fa07f6bde6d7818b"
+    },
+    {
+      "path": "tower_study/docs/evidence.md",
+      "sha256": "939baa267e464cba0d7fd83713144d4153a024e923b587a227d7894990972798"
+    },
+    {
+      "path": "tower_study/docs/geometry.md",
+      "sha256": "c31c93cc5e5aeed9a80453d9fa064de31c0e441186467b1787657b6df7ca0d09"
+    },
+    {
+      "path": "tower_study/docs/interface.md",
+      "sha256": "06c27638b467d7d9e0eb97bd5ebfd0211bc2b399af131f402f2894d0f1480cf5"
+    },
+    {
+      "path": "tower_study/docs/measured_references.md",
+      "sha256": "9bea79192992cc0ab9df92361139df9cd0fd85a65fae4fc181112a5582fde0a4"
+    },
+    {
+      "path": "tower_study/docs/rehearsals.md",
+      "sha256": "c3324017f5fd51911b0cf72d0871a8e36964ee1232ac13bdb78d6b972de30a3a"
+    },
+    {
+      "path": "tower_study/docs/verification.md",
+      "sha256": "9723c9e560c85387a33f7fdb401fd0559f896ecb3b7daece317df23db54ff74a"
+    },
+    {
+      "path": "tower_study/experience/README.md",
+      "sha256": "7ad52d212e4886a546fc9961943db176a40f2524524b12fc77188ce7d265da7b"
+    },
+    {
+      "path": "tower_study/programs/README.md",
+      "sha256": "02a2acf9513ad6a5977ce0f2007ad8576fb352261d6eb21e39bb78e975c8e0bd"
+    },
+    {
+      "path": "tower_study/programs/geometry.py",
+      "sha256": "235bf4f50b1998221f372120391479470edac77f5ad27fe7f6482f7bd93c2052"
+    },
+    {
+      "path": "tower_study/programs/motion.py",
+      "sha256": "9b4ce253413fef1e8cad01eb41f4153e766ad49afe293ea604b3fe3b444a9abd"
+    },
+    {
+      "path": "tower_study/programs/test_offline.py",
+      "sha256": "8ff81de1b85d41327216a9c1f617237af320ef8d1476c4c7dc2996bf688526cf"
+    },
+    {
+      "path": "tower_study/scripts/analyze_trajectories.py",
+      "sha256": "bd764881eca6f7f181cd8d34f247441b8c7042042db40410ecdb6f218ef3c946"
+    },
+    {
+      "path": "tower_study/scripts/audit_artifacts.py",
+      "sha256": "9a468594af6ebd3dc9a8b15653e3fba4d69b62189e2d57b530d9e53867a5ac4d"
+    },
+    {
+      "path": "tower_study/scripts/calibrate_geometry.py",
+      "sha256": "5b353354edd290dc2c0138c83d27a8686d717ba63631bc1c3ad81dd51349777d"
+    },
+    {
+      "path": "tower_study/scripts/comparison_sheets.py",
+      "sha256": "16ff423b4be86978205c45464ccf202cce604b343436dd2f93cb6795212f423f"
+    },
+    {
+      "path": "tower_study/scripts/fit_white_geometry.py",
+      "sha256": "c36f8933595d233edbde0141dbda719b7736bdc83bf37745e2efe7c6a2e7720c"
+    },
+    {
+      "path": "tower_study/scripts/study_corpus.py",
+      "sha256": "d0a983852ca067608c5ba9de6fe0ca284315634b558f3b57e4671d3e90577086"
+    },
+    {
+      "path": "tower_study/scripts/supplemental_evidence.py",
+      "sha256": "6baf3842bf7f310a7a3a6a073f33d2a7b4df679134dd8b130e7eb9f8b1325434"
+    },
+    {
+      "path": "tower_study/scripts/write_references.py",
+      "sha256": "27b19673d1abeda9474ac03ebe3f7caac6636e116622f937c54f4a2478773429"
+    },
+    {
+      "path": "tower_study/sources/BENCHMARK.md",
+      "sha256": "97d9bbe8cdf8da6275759139103c6bf919498d78a19e3aa16c72b961aa352ca2"
+    }
+  ],
+  "retained_images": [
+    {
+      "source": "tower_study/images/ep00/overview.jpg",
+      "retained": "assets/ep00_overview.jpg",
+      "sha256": "17b19df71f47c6a516da34909fc04bbce0c37ddbd71046ccf0007a8de150ff5a",
+      "bytes": 545290
+    },
+    {
+      "source": "tower_study/images/ep00/ending_views.jpg",
+      "retained": "assets/ep00_ending_views.jpg",
+      "sha256": "dce87d6406e8871dfdbdc25e8e57f29fcc1354a63005e499abfc1614d5140325",
+      "bytes": 349544
+    }
+  ],
+  "helper_functions": [
+    "plan: support span, board underside centre/yaw, level difference and one-dimensional overlap",
+    "pair: same rigid planar transform for both current TCPs",
+    "offset: single held-reference-to-TCP compensation"
+  ],
+  "skill_utf8_bytes": 4445,
+  "skill_sha256": "9d107ba4711844f6ed8159abbe55c82ee5975a2874d3a4828baaa1df2784e61c",
+  "helper_sha256": "3bf27415d724267f9e3cb0654229f445e6d54a8c4eea332b61724be7561cae67",
+  "tests": {
+    "path": "authoring_receipts/test_build_tower.py",
+    "count": 7,
+    "result": "passed",
+    "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s robodojo/harness/case_skills/v1/authoring_receipts -p test_build_tower.py",
+    "temporary_root": "<authoring-temporary-directory>"
+  },
+  "runtime": {
+    "robot_subagents_enabled": false,
+    "subagent_ablation": "not enabled; future AB only",
+    "model_api_called": false,
+    "simulator_run": false,
+    "robot_imported": false
+  },
+  "limitations": [
+    "Offline arithmetic and source-image preservation checks do not establish physical success, collision clearance, grasp, support force or insertion validity.",
+    "Current instruction, RGB and measured TCP state determine execution; demonstration counts/layouts are reference examples."
+  ],
+  "local_paths_redacted": true,
+  "unredacted_local_receipt_sha256": "771c17931fedd4510311fada466271fdd34a7984a87599bb17816e139fd63fbf"
+}

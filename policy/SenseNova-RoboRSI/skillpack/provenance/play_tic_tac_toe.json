@@ -1,0 +1,67 @@
+{
+  "task": "play_tic_tac_toe",
+  "at": 1793610520.91727,
+  "source_files": [
+    {
+      "path": "skills/tic_tac_toe/SKILL.md",
+      "sha256": "fced8525fd2c20a6c914ecdc3bd594c6321b6b518e88bb8bc7845547bc34da2c"
+    },
+    {
+      "path": "programs/geometry.py",
+      "sha256": "eeb9361e6e688d95a496fc430558f9530374df6322d266fc47ff2d20d02d7048"
+    },
+    {
+      "path": "programs/board_vision.py",
+      "sha256": "692d68c632539426bba648b233fb84d6448e54014e95ee78d25ecdb134541df3"
+    }
+  ],
+  "files": [
+    {
+      "path": "SKILL.md",
+      "bytes": 5282,
+      "sha256": "b28549b8208aae3b12d3c6a97961f7980b4e1d7f32de4fd86042fc89ded9603d"
+    },
+    {
+      "path": "assets/ending-sequence.jpg",
+      "bytes": 166533,
+      "sha256": "f7ac56954767149d6ece76d32f09c6e4703a0b6840d16cff92923881523d8e83"
+    },
+    {
+      "path": "assets/first-turn.jpg",
+      "bytes": 343407,
+      "sha256": "ee723790c5669c479f03c0d7c0c59b6a1c2d5110ddf8eda1aba809f78b79ed48"
+    },
+    {
+      "path": "assets/opponent-turns.jpg",
+      "bytes": 638621,
+      "sha256": "fbbaafcff76862af6101b7b8c5f342b1250cdcf1efe6211efef63a6221eeada2"
+    },
+    {
+      "path": "scripts/assist.py",
+      "bytes": 2453,
+      "sha256": "6b910145a1f79f9a39478999653f175aa079d8dd5cf5ef3f352b61fb25ec1bc6"
+    }
+  ],
+  "asset_source_paths": {
+    "assets/first-turn.jpg": "payload/study/images/ep00_first_turn_detail.jpg",
+    "assets/opponent-turns.jpg": "payload/study/images/ep00_opponent_responses.jpg",
+    "assets/ending-sequence.jpg": "payload/study/images/ep00_ending_board_sequence.jpg"
+  },
+  "helper_commands": [
+    "cells",
+    "turn"
+  ],
+  "operation_mapping": {
+    "board_cell_pixels/homography": "current quadrilateral to labelled perspective image centers",
+    "turn and inventory MD rules": "explicit visual labels to turn/count candidates; unknown never empty",
+    "color classifier": "omitted as corpus-calibrated and not independently validated"
+  },
+  "offline_tests": {
+    "passed": 3,
+    "command": "python3 -m unittest discover -s robodojo/harness/case_skills/v1/tests -p test_play_tic_tac_toe_helper.py -q"
+  },
+  "runtime_subagent_enabled": false,
+  "raw_icl_training_in_skill": false,
+  "native_physics_validation": false,
+  "data_qc_performed": false
+}

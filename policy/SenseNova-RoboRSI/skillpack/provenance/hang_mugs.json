@@ -1,0 +1,64 @@
+{
+  "task": "hang_mugs",
+  "source_archive_sha256": "41d9844828d27204673d03bab001168f98228d36b5e9a3f32af71a7fe113835a",
+  "source_files": [
+    {
+      "path": "skills/hang-mugs/SKILL.md",
+      "bytes": 5004,
+      "sha256": "2d4cdf5c54682403cb2cb3b1cf461700cfc2b5bd4fd59fc1353dc3857fc37fdd"
+    },
+    {
+      "path": "skills/hang-mugs/references/policy.md",
+      "bytes": 15563,
+      "sha256": "115b918e0154f3679c5f57f3ecb2c7f2208c6041b6905d8579757e5ae1acbd5f"
+    },
+    {
+      "path": "skills/hang-mugs/references/perception.md",
+      "bytes": 10032,
+      "sha256": "197b991b7750ed5ae0a7c6e47d4c943fef7e58a986e3e415d8cd916975515f0b"
+    },
+    {
+      "path": "skills/hang-mugs/references/completion.md",
+      "bytes": 5077,
+      "sha256": "09ba2fdc0d8894efd2451a7ccc58817bc78445a1c420f432908ba054caee1c70"
+    },
+    {
+      "path": "skills/hang-mugs/scripts/geometry.py",
+      "bytes": 10688,
+      "sha256": "87a4368c17d91df61e1632791134641ece79e5cbb17cfe8dea4552929384bd0f"
+    }
+  ],
+  "retained_images": [
+    {
+      "source_archive_member": "payload/preparation/images/episode_0000002_overview.jpg",
+      "path": "assets/overview.jpg",
+      "bytes": 604712,
+      "sha256": "44f0880a06dd6d08b30f0040401f7e174253a581f73459b468822df68a667e46"
+    },
+    {
+      "source_archive_member": "payload/preparation/images/episode_0000002_phases.jpg",
+      "path": "assets/phases.jpg",
+      "bytes": 421252,
+      "sha256": "8125df755081b6b61ed69d8a69a8f4030404d5326d30673e9b20d50be9da5360"
+    },
+    {
+      "source_archive_member": "payload/preparation/images/endings_0_4.jpg",
+      "path": "assets/endings.jpg",
+      "bytes": 678249,
+      "sha256": "ae198a8d52ede534981c25127eebe678c04e5db07724b472f4c6b46346e072ca"
+    }
+  ],
+  "operations_to_scripts": {
+    "outside-tip approach and inward peg-axis translation with observed attachment offset": "assist.py thread",
+    "handle-plane/peg-axis comparison": "assist.py thread angular error"
+  },
+  "main_md_bytes": 3901,
+  "raw_training_material_in_runtime": false,
+  "runtime_subagents_enabled": false,
+  "physical_validation_performed": false,
+  "tests": {
+    "passed": 3,
+    "command": "python3 -m unittest discover -s robodojo/harness/case_skills/v1/tests -p test_hang_mugs_helper.py -q",
+    "kind": "offline peg geometry checks; no simulator"
+  }
+}

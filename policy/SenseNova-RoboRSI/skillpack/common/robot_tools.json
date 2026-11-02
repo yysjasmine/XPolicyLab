@@ -1,0 +1,220 @@
+[
+  {
+    "name": "observe",
+    "description": "Read current RGB, measured TCP positions, pitch/roll/yaw degrees relative to the downward reference, permissions and budgets without advancing physics. Display floats use at most three decimal places.",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "vla_propose",
+    "description": "Predict a trajectory without moving. Give one short English sentence describing an immediate action, the observed object and a destination when needed; use task/demo wording and omit reasoning, code and multi-step plans. Example: Move the left gripper above the blue 8. Return proposal_id and TCP samples at steps 5,10,...,50. A new request replaces an unexecuted old proposal.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "subgoal": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        }
+      },
+      "required": [
+        "subgoal"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "act",
+    "description": "Accept stored original VLA joint steps, or track model-supplied TCP targets with internal measured-state feedback and IK. TCP targets use continuous gripper_opening (0 closed, 1 open). Supplying targets declines the proposal. Return reached/stalled/budget status, actual native steps, residual errors, RGB and measured TCP state. Pose arrival does not verify grasp. Keep reason/assessment concise.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "proposal_id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Use only when accepting the current VLA proposal; omit when supplying targets."
+        },
+        "steps": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 50,
+          "description": "Consecutive prefix length; VLA allows 5..50, default 5."
+        },
+        "targets": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "left": {
+                "type": "object",
+                "properties": {
+                  "position": {
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    },
+                    "minItems": 3,
+                    "maxItems": 3,
+                    "description": "Absolute gripping-face-centre TCP XYZ in environment-origin metres."
+                  },
+                  "pitch_deg": {
+                    "type": "number",
+                    "minimum": -180,
+                    "maximum": 180,
+                    "description": "Degrees about environment +X, relative to the downward reference."
+                  },
+                  "roll_deg": {
+                    "type": "number",
+                    "minimum": -90,
+                    "maximum": 90,
+                    "description": "Degrees about environment +Y, applied after pitch."
+                  },
+                  "yaw_deg": {
+                    "type": "number",
+                    "minimum": -180,
+                    "maximum": 180,
+                    "description": "Degrees about environment +Z, applied after roll."
+                  },
+                  "gripper_opening": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1,
+                    "description": "Continuous normalized opening: 0 fully closed, 1 fully open."
+                  }
+                },
+                "required": [
+                  "position",
+                  "pitch_deg",
+                  "roll_deg",
+                  "yaw_deg",
+                  "gripper_opening"
+                ],
+                "additionalProperties": false
+              },
+              "right": {
+                "type": "object",
+                "properties": {
+                  "position": {
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    },
+                    "minItems": 3,
+                    "maxItems": 3,
+                    "description": "Absolute gripping-face-centre TCP XYZ in environment-origin metres."
+                  },
+                  "pitch_deg": {
+                    "type": "number",
+                    "minimum": -180,
+                    "maximum": 180,
+                    "description": "Degrees about environment +X, relative to the downward reference."
+                  },
+                  "roll_deg": {
+                    "type": "number",
+                    "minimum": -90,
+                    "maximum": 90,
+                    "description": "Degrees about environment +Y, applied after pitch."
+                  },
+                  "yaw_deg": {
+                    "type": "number",
+                    "minimum": -180,
+                    "maximum": 180,
+                    "description": "Degrees about environment +Z, applied after roll."
+                  },
+                  "gripper_opening": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1,
+                    "description": "Continuous normalized opening: 0 fully closed, 1 fully open."
+                  }
+                },
+                "required": [
+                  "position",
+                  "pitch_deg",
+                  "roll_deg",
+                  "yaw_deg",
+                  "gripper_opening"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "left",
+              "right"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1,
+          "maxItems": 50,
+          "description": "Model-chosen dual-arm TCP waypoints; no proposal_id or reject flag. Harness tracks each to 3mm/3deg before advancing. A waypoint may consume multiple native steps; model-side interpolation is unnecessary."
+        },
+        "max_native_steps": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 160,
+          "description": "Shared native-step budget for TCP tracking, default 80. Omit for original VLA acceptance."
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "assessment": {
+          "type": "object",
+          "properties": {
+            "current_subgoal": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "current_subgoal"
+          ],
+          "additionalProperties": false
+        },
+        "review": {
+          "type": "object",
+          "properties": {
+            "observed_state": {
+              "type": "string",
+              "minLength": 1
+            },
+            "demo_comparison": {
+              "type": "string",
+              "minLength": 1
+            },
+            "why_not_done": {
+              "type": "string",
+              "minLength": 1
+            },
+            "next_plan": {
+              "type": "string",
+              "minLength": 1
+            },
+            "ending_check": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "observed_state",
+            "demo_comparison",
+            "why_not_done",
+            "next_plan",
+            "ending_check"
+          ],
+          "additionalProperties": false,
+          "description": "Evidence at a required checkpoint. Without proposal_id/steps/targets, records the due review without motion."
+        }
+      },
+      "required": [
+        "reason",
+        "assessment"
+      ],
+      "additionalProperties": false
+    }
+  }
+]

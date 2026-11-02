@@ -1,0 +1,70 @@
+{
+  "task": "fasten_screws",
+  "source_archive_sha256": "beeb197cc76f3a4dc7be8c5df55e90106057fe6e52817cbcdaaf11d5a13a63cd",
+  "source_files": [
+    {
+      "path": "skills/fasten-screws/SKILL.md",
+      "bytes": 6491,
+      "sha256": "b57864c0e7a933965b3031a288cf2e96cbb462f97551bd67d9fdb1af1fe0acd3"
+    },
+    {
+      "path": "skills/fasten-screws/references/motion.md",
+      "bytes": 9176,
+      "sha256": "3b7c66d2f7b9e58b04da658403d6cbd18bc2e26fb2fd694784b4709796ed3793"
+    },
+    {
+      "path": "skills/fasten-screws/references/perception.md",
+      "bytes": 6826,
+      "sha256": "43efc83e2524be3ea9104876d691bf2b2b44dbbea3d69d2f8dbfabf80f069d74"
+    },
+    {
+      "path": "skills/fasten-screws/references/helper-usage.md",
+      "bytes": 6004,
+      "sha256": "eec319b875ecaf7d1c6facb43ae72096f0098f30284621a70959f0d206685ee4"
+    },
+    {
+      "path": "skills/fasten-screws/references/completion-checklist.md",
+      "bytes": 7695,
+      "sha256": "47f1620ca0ab70a786564b6c1d5f81c5c80697400c0ec1d8c936f69c1b0572e3"
+    },
+    {
+      "path": "skills/fasten-screws/scripts/policy_math.py",
+      "bytes": 12839,
+      "sha256": "3b42dff5f7b3e6f949ce2af93632ccadee4409a7f47554874ecb8bf11582d5d0"
+    }
+  ],
+  "retained_images": [
+    {
+      "source_archive_member": "payload/evidence/ep01/assembly_contacts.jpg",
+      "path": "assets/assembly.jpg",
+      "bytes": 510434,
+      "sha256": "c4f8f9422ac4615d4beeb14a2c329361c09978c5bb4da8d61e6c743b0f0cb317"
+    },
+    {
+      "source_archive_member": "payload/evidence/ep01/tightening_contacts.jpg",
+      "path": "assets/turns.jpg",
+      "bytes": 508323,
+      "sha256": "498bdd102dfe97e95ebd93ccdf761cab8f582e86d4d7f17e0b820fa007be92b9"
+    },
+    {
+      "source_archive_member": "payload/evidence/ep01/initial_ending_all.jpg",
+      "path": "assets/ending.jpg",
+      "bytes": 237551,
+      "sha256": "d28b0bc2192d8f2d998435f001037dee04e4a80505e0ea203837956ec2529cb7"
+    }
+  ],
+  "operations_to_scripts": {
+    "same-colour identity matching": "assist.py pairs",
+    "coaxial positioning": "assist.py align",
+    "fixed clockwise turn endpoint and observed progress": "assist.py stroke"
+  },
+  "main_md_bytes": 4157,
+  "raw_training_material_in_runtime": false,
+  "runtime_subagents_enabled": false,
+  "physical_validation_performed": false,
+  "tests": {
+    "passed": 5,
+    "command": "python3 -m unittest discover -s robodojo/harness/case_skills/v1/tests -p test_fasten_screws_helper.py -q",
+    "kind": "offline arithmetic/selection/CLI checks; no simulator"
+  }
+}

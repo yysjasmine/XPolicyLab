@@ -1,0 +1,133 @@
+{
+  "task": "insert_tubes",
+  "source_receipt_sha256": "0c2011d47922ca463d00d099a1983b0d6253cb38fd000a7244f98fc2803764e0",
+  "source_archive_sha256": "cdee6892aca8691ae58ca2cce11e2dc5b68fa7f88d27ccabbd6138ed95ec5316",
+  "public_source": "https://huggingface.co/datasets/sensenova/SenseNova-RoboRSI-Packages/resolve/d922d28766d11d761228a500ddb7a28abc1b121e/robodojo/v1.0.0/icl/insert_tubes.tar.gz",
+  "reviewed_sources": [
+    {
+      "path": "skills/insert_tubes/SKILL.md",
+      "sha256": "5bf415a43e21631c2f49fe00183a3bc1590e51cfae22fec69e586e9e01ce7f57"
+    },
+    {
+      "path": "skills/insert_tubes/completion_checklist.md",
+      "sha256": "e3aad1ef7fa587f35676b088721e4406be1585a8f8b81be8e87ee1b569694cd7"
+    },
+    {
+      "path": "programs/geometry.py",
+      "sha256": "96ad1dde3f8fe438a836e4ddd91efef8b9e48929cee13d739daececc87ad07a4"
+    }
+  ],
+  "source_md_py_manifest": [
+    {
+      "path": "PUBLIC_INTERFACE.md",
+      "sha256": "4d3e45f7d8215371f5c8a00ce091a697b12184093d59e40d4163ffbfc310f134"
+    },
+    {
+      "path": "README.md",
+      "sha256": "06f41c39c8680522a92e93c8cc30981e02e4c8ea9452d2031584e459941f33ec"
+    },
+    {
+      "path": "programs/USAGE.md",
+      "sha256": "f8f4a1c61d6b63f7e9f1cfbca811d649bc40f94b3a0acbad764140a6c10a1177"
+    },
+    {
+      "path": "programs/geometry.py",
+      "sha256": "96ad1dde3f8fe438a836e4ddd91efef8b9e48929cee13d739daececc87ad07a4"
+    },
+    {
+      "path": "programs/offline_checks.py",
+      "sha256": "6b37ea7105002f999cac47e31b705c0ecbb0fdab0fdafa29b5e6083a9dde27db"
+    },
+    {
+      "path": "skills/insert_tubes/SKILL.md",
+      "sha256": "5bf415a43e21631c2f49fe00183a3bc1590e51cfae22fec69e586e9e01ce7f57"
+    },
+    {
+      "path": "skills/insert_tubes/completion_checklist.md",
+      "sha256": "e3aad1ef7fa587f35676b088721e4406be1585a8f8b81be8e87ee1b569694cd7"
+    },
+    {
+      "path": "skills/insert_tubes/rehearsals.md",
+      "sha256": "61a9302bcb51b88e02b874dd82f10a0145fe2c2bce4a1f45347b70901256bf11"
+    },
+    {
+      "path": "study/COVERAGE.md",
+      "sha256": "c3e66836361aabc8d977a1e89df632a34cc0fdf696b1d78f6d9a9b4a05987c03"
+    },
+    {
+      "path": "study/EVIDENCE.md",
+      "sha256": "53d205c3b3db44f424ac62758d8ae47b2e6af1adfc366041918295fd5d0a17f0"
+    },
+    {
+      "path": "study/scripts/analyze_geometry.py",
+      "sha256": "4f6e88c7b06a416056cd0c9fc14ed4ec6f981e48e46d1eac8a5ea3b9adcda65b"
+    },
+    {
+      "path": "study/scripts/contact_sheets.py",
+      "sha256": "299bdb9ccb5151b7ddd38b4873141451212d070ee81ffd92e3a66dc42215be71"
+    },
+    {
+      "path": "study/scripts/inventory.py",
+      "sha256": "b671a918e615219b7b113d6f0624f76143b155de4122616b26e858dd331a3d05"
+    },
+    {
+      "path": "study/scripts/refine_geometry.py",
+      "sha256": "f8c9d8cbefe50b8e03cccc973ac8fe1df48ccf52272902635234a1e5ca2881ac"
+    },
+    {
+      "path": "study/scripts/summarize.py",
+      "sha256": "2fcac40e99d7ed82700e71c43ef4c08570e00f1e039a7d63f2cedfd8f27197a9"
+    },
+    {
+      "path": "study/scripts/write_reports.py",
+      "sha256": "fc84b8cc54dd02ee8fc383fde526c39175ef9dcddac2f59737c797736032772d"
+    }
+  ],
+  "retained_images": [
+    {
+      "source": "study/images/demo00_overview.jpg",
+      "retained": "assets/demo00_overview.jpg",
+      "sha256": "2e5aca0045ef25c40c5a1d4aaa87340f023c42e036cc7e384a4bd6fe84f39cb9",
+      "bytes": 289039
+    },
+    {
+      "source": "study/images/demo00_contacts.jpg",
+      "retained": "assets/demo00_contacts.jpg",
+      "sha256": "c52ff5186d572d23a1018b5ced8e0aa39e62ef63e38d8fc60991b99dfe937766",
+      "bytes": 898837
+    },
+    {
+      "source": "study/images/demo00_endings.jpg",
+      "retained": "assets/demo00_endings.jpg",
+      "sha256": "7f3c4ddaa185393f051d2786b4a7e5f08cbe4aec1bdde70323c190dd85985490",
+      "bytes": 209059
+    }
+  ],
+  "helper_functions": [
+    "plan: observed tube-to-selected-hole rank assignment along a supplied rack-row axis",
+    "offset: current held-tip-to-TCP compensation"
+  ],
+  "skill_utf8_bytes": 4311,
+  "skill_sha256": "722d8179411e9272268946dc74519f6f17eb39d282378d35f29d085ba5c91911",
+  "helper_sha256": "8084a40209e9aa69c11e1effef931ee953c7cd1ca9baa9591506b35799b5d135",
+  "tests": {
+    "path": "authoring_receipts/test_insert_tubes.py",
+    "count": 6,
+    "result": "passed",
+    "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s robodojo/harness/case_skills/v1/authoring_receipts -p test_insert_tubes.py",
+    "temporary_root": "<authoring-temporary-directory>"
+  },
+  "runtime": {
+    "robot_subagents_enabled": false,
+    "subagent_ablation": "not enabled; future AB only",
+    "model_api_called": false,
+    "simulator_run": false,
+    "robot_imported": false
+  },
+  "limitations": [
+    "Offline arithmetic and source-image preservation checks do not establish physical success, collision clearance, grasp, support force or insertion validity.",
+    "Current instruction, RGB and measured TCP state determine execution; demonstration counts/layouts are reference examples."
+  ],
+  "local_paths_redacted": true,
+  "unredacted_local_receipt_sha256": "b9975fdb2d263850edc13ca09d0c4a536c497df04e4fc4e8c1688a39567cf03e"
+}

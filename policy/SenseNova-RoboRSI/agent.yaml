@@ -6,10 +6,14 @@ code:
   - hybrid_agent.py
   - hybrid_launcher.py
   - hybrid_backend.py
+  - skillpack_agent.py
+  - execution_profile.py
+  - cci_protocol.py
+  - cci_model_template.json
 agent:
   planner: codex_cli
   model: ""  # Required at runtime: ROBORSI_CODEX_MODEL
-  reasoning_effort: max
+  reasoning_effort: xhigh
   max_turns: null
   max_tokens: null
   planner_timeout_s: 0
@@ -25,7 +29,8 @@ agent:
     cli_args: []
     config_overrides:
       approval_policy: never
-      model_auto_compact_token_limit: 60000
+      model_auto_compact_token_limit: 200000
+      model_context_window: 200000
       web_search: disabled
       features.multi_agent: false
       model_provider: runtime

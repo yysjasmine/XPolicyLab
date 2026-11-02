@@ -1,0 +1,720 @@
+{
+  "schema_version": 1,
+  "source_catalog_sha256": "11135dcfa98771b0017f887c242ba9ab8adb3243e2a77c20de5a149d70b7a262",
+  "source_commit": "cfa591575172b638a8436fa95db28e9469785c9c",
+  "official_source_commit": "726e9aabfaa642203722eb126f5eaf0f37f3e1ad",
+  "subagents_enabled": false,
+  "frozen_general_sha256": "461fc4af2fa0d3478e746cb262168840ecdb0128a24977ca6f40cb6d0afbb142",
+  "raw_icl_training_material_in_runtime": false,
+  "tasks": {
+    "align_blocks": {
+      "kind": "open",
+      "base_task": null,
+      "case_skill": null
+    },
+    "arrange_largest_number": {
+      "kind": "standard",
+      "base_task": "arrange_largest_number",
+      "case_skill": "arrange_largest_number"
+    },
+    "arrange_largest_number_random": {
+      "kind": "generalization",
+      "base_task": "arrange_largest_number",
+      "case_skill": "arrange_largest_number"
+    },
+    "build_tower": {
+      "kind": "standard",
+      "base_task": "build_tower",
+      "case_skill": "build_tower"
+    },
+    "classify_objects": {
+      "kind": "standard",
+      "base_task": "classify_objects",
+      "case_skill": "classify_objects"
+    },
+    "classify_objects_by_language": {
+      "kind": "open",
+      "base_task": null,
+      "case_skill": null
+    },
+    "cover_blocks": {
+      "kind": "open",
+      "base_task": null,
+      "case_skill": null
+    },
+    "deposit_coin": {
+      "kind": "standard",
+      "base_task": "deposit_coin",
+      "case_skill": "deposit_coin"
+    },
+    "fasten_screws": {
+      "kind": "standard",
+      "base_task": "fasten_screws",
+      "case_skill": "fasten_screws"
+    },
+    "fill_egg_holder": {
+      "kind": "standard",
+      "base_task": "fill_egg_holder",
+      "case_skill": "fill_egg_holder"
+    },
+    "fill_pen_holder": {
+      "kind": "standard",
+      "base_task": "fill_pen_holder",
+      "case_skill": "fill_pen_holder"
+    },
+    "fold_clothes": {
+      "kind": "standard",
+      "base_task": "fold_clothes",
+      "case_skill": "fold_clothes"
+    },
+    "fold_clothes_random": {
+      "kind": "generalization",
+      "base_task": "fold_clothes",
+      "case_skill": "fold_clothes"
+    },
+    "general_pickup": {
+      "kind": "open",
+      "base_task": null,
+      "case_skill": null
+    },
+    "hang_mugs": {
+      "kind": "standard",
+      "base_task": "hang_mugs",
+      "case_skill": "hang_mugs"
+    },
+    "hang_mugs_random": {
+      "kind": "generalization",
+      "base_task": "hang_mugs",
+      "case_skill": "hang_mugs"
+    },
+    "imitate_sorting_sequence": {
+      "kind": "open",
+      "base_task": null,
+      "case_skill": null
+    },
+    "insert_key": {
+      "kind": "standard",
+      "base_task": "insert_key",
+      "case_skill": "insert_key"
+    },
+    "insert_tubes": {
+      "kind": "standard",
+      "base_task": "insert_tubes",
+      "case_skill": "insert_tubes"
+    },
+    "make_kong": {
+      "kind": "standard",
+      "base_task": "make_kong",
+      "case_skill": "make_kong"
+    },
+    "make_toast": {
+      "kind": "standard",
+      "base_task": "make_toast",
+      "case_skill": "make_toast"
+    },
+    "make_toast_random": {
+      "kind": "generalization",
+      "base_task": "make_toast",
+      "case_skill": "make_toast"
+    },
+    "match_and_pick_from_conveyor": {
+      "kind": "open",
+      "base_task": null,
+      "case_skill": null
+    },
+    "organize_table": {
+      "kind": "open",
+      "base_task": null,
+      "case_skill": null
+    },
+    "pack_objects_into_box": {
+      "kind": "standard",
+      "base_task": "pack_objects_into_box",
+      "case_skill": "pack_objects_into_box"
+    },
+    "pack_objects_into_box_random": {
+      "kind": "generalization",
+      "base_task": "pack_objects_into_box",
+      "case_skill": "pack_objects_into_box"
+    },
+    "pick_from_conveyor_by_image": {
+      "kind": "open",
+      "base_task": null,
+      "case_skill": null
+    },
+    "play_Xylophone": {
+      "kind": "standard",
+      "base_task": "play_Xylophone",
+      "case_skill": "play_Xylophone"
+    },
+    "play_stacking_toy": {
+      "kind": "standard",
+      "base_task": "play_stacking_toy",
+      "case_skill": "play_stacking_toy"
+    },
+    "play_tic_tac_toe": {
+      "kind": "standard",
+      "base_task": "play_tic_tac_toe",
+      "case_skill": "play_tic_tac_toe"
+    },
+    "plug_in_charger": {
+      "kind": "standard",
+      "base_task": "plug_in_charger",
+      "case_skill": "plug_in_charger"
+    },
+    "pour_balls_into_vase": {
+      "kind": "open",
+      "base_task": null,
+      "case_skill": null
+    },
+    "pour_by_language": {
+      "kind": "open",
+      "base_task": null,
+      "case_skill": null
+    },
+    "pour_liquid_into_cup": {
+      "kind": "standard",
+      "base_task": "pour_liquid_into_cup",
+      "case_skill": "pour_liquid_into_cup"
+    },
+    "pour_liquid_into_cup_random": {
+      "kind": "generalization",
+      "base_task": "pour_liquid_into_cup",
+      "case_skill": "pour_liquid_into_cup"
+    },
+    "press_by_number": {
+      "kind": "open",
+      "base_task": null,
+      "case_skill": null
+    },
+    "push_T": {
+      "kind": "standard",
+      "base_task": "push_T",
+      "case_skill": "push_T"
+    },
+    "push_T_random": {
+      "kind": "generalization",
+      "base_task": "push_T",
+      "case_skill": "push_T"
+    },
+    "put_bottles_into_dustbin": {
+      "kind": "standard",
+      "base_task": "put_bottles_into_dustbin",
+      "case_skill": "put_bottles_into_dustbin"
+    },
+    "solve_equation": {
+      "kind": "open",
+      "base_task": null,
+      "case_skill": null
+    },
+    "sort_nesting_dolls_by_size": {
+      "kind": "standard",
+      "base_task": "sort_nesting_dolls_by_size",
+      "case_skill": "sort_nesting_dolls_by_size"
+    },
+    "sort_nesting_dolls_by_size_random": {
+      "kind": "generalization",
+      "base_task": "sort_nesting_dolls_by_size",
+      "case_skill": "sort_nesting_dolls_by_size"
+    },
+    "stack_blocks": {
+      "kind": "standard",
+      "base_task": "stack_blocks",
+      "case_skill": "stack_blocks"
+    },
+    "stack_blocks_by_language": {
+      "kind": "open",
+      "base_task": null,
+      "case_skill": null
+    },
+    "stack_blocks_random": {
+      "kind": "generalization",
+      "base_task": "stack_blocks",
+      "case_skill": "stack_blocks"
+    },
+    "stack_bowls": {
+      "kind": "standard",
+      "base_task": "stack_bowls",
+      "case_skill": "stack_bowls"
+    },
+    "stack_bowls_random": {
+      "kind": "generalization",
+      "base_task": "stack_bowls",
+      "case_skill": "stack_bowls"
+    },
+    "store_laptop_and_headphones": {
+      "kind": "standard",
+      "base_task": "store_laptop_and_headphones",
+      "case_skill": "store_laptop_and_headphones"
+    },
+    "store_laptop_and_headphones_random": {
+      "kind": "generalization",
+      "base_task": "store_laptop_and_headphones",
+      "case_skill": "store_laptop_and_headphones"
+    },
+    "store_tools_in_toolbox": {
+      "kind": "open",
+      "base_task": null,
+      "case_skill": null
+    },
+    "swap_T": {
+      "kind": "open",
+      "base_task": null,
+      "case_skill": null
+    },
+    "swap_blocks": {
+      "kind": "open",
+      "base_task": null,
+      "case_skill": null
+    },
+    "sweep_blocks": {
+      "kind": "standard",
+      "base_task": "sweep_blocks",
+      "case_skill": "sweep_blocks"
+    },
+    "sweep_blocks_random": {
+      "kind": "generalization",
+      "base_task": "sweep_blocks",
+      "case_skill": "sweep_blocks"
+    }
+  },
+  "packs": {
+    "arrange_largest_number": {
+      "directory": "skills/arrange_largest_number",
+      "description": "Arrange observed digits upright in descending left-to-right order on the pads.",
+      "markdown_utf8_bytes": 3540,
+      "token_count_upper_bound": 3540,
+      "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
+      "reference_images": 3,
+      "bytes": 745398,
+      "sha256": {
+        "SKILL.md": "4e5915d3ef873ddf4763f3984d2ccf0536e1946a449bb18d36491553c2a926d6",
+        "assets/direct-overview.jpg": "eef5d6026466ac63f64d10b5a93ce0d845a0b0b910330e94cfcf8dda2d1f71d3",
+        "assets/ending.jpg": "0f39936e1802c96faab3b59276dfbd234bfeae1a4fdae0fd812e18f84c7f89b0",
+        "assets/transfer-keyframes.jpg": "221603c54f85b0cfa06478dc4c28b48c5132fa79a451d26bbbea4543ccb2a98c",
+        "scripts/arrange.py": "f5f1b4872e85692293838f660d35841a3805b9a58b67fc0bff965e09505f96ac",
+        "scripts/geometry.py": "fe28e0b2a07cb1094fcac07cad01cc84e2ee6b43f387d1cd8b90caf0b29dc2bd"
+      },
+      "authoring_receipt_sha256": "bc83bd45c043388e6d817960ea3764628ac5a78a0c036c84701360adc0728149"
+    },
+    "build_tower": {
+      "directory": "skills/build_tower",
+      "description": "Assemble the demonstrated layered tower with paired supports, two boards and a roof.",
+      "markdown_utf8_bytes": 4445,
+      "token_count_upper_bound": 4445,
+      "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
+      "reference_images": 2,
+      "bytes": 903076,
+      "sha256": {
+        "SKILL.md": "9d107ba4711844f6ed8159abbe55c82ee5975a2874d3a4828baaa1df2784e61c",
+        "assets/ep00_ending_views.jpg": "dce87d6406e8871dfdbdc25e8e57f29fcc1354a63005e499abfc1614d5140325",
+        "assets/ep00_overview.jpg": "17b19df71f47c6a516da34909fc04bbce0c37ddbd71046ccf0007a8de150ff5a",
+        "scripts/assist.py": "3bf27415d724267f9e3cb0654229f445e6d54a8c4eea332b61724be7561cae67"
+      },
+      "authoring_receipt_sha256": "ccaf14794001e9ff29eb1eb9120b02696d3cb5d03f640ce4decc603203d092b2"
+    },
+    "classify_objects": {
+      "directory": "skills/classify_objects",
+      "description": "Sort the observed objects by category into the instructed baskets.",
+      "markdown_utf8_bytes": 3715,
+      "token_count_upper_bound": 3715,
+      "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
+      "reference_images": 2,
+      "bytes": 2859213,
+      "sha256": {
+        "SKILL.md": "efb377617269cf7d10dde3dc3a222fef8b88f0bc0491d8ed32179d5eace190e1",
+        "assets/groups-and-endings.jpg": "b6b072c85883743ffa6a78d9b1229e92364bd3e3f8bae685edd01a4344bec7ba",
+        "assets/table-transfer.jpg": "7a90719e40ff12964a60a2c275fe4fd5ae1eedbc150a1e87621544d40a6d56f3",
+        "scripts/assist.py": "5cf61efc460109070a77c06b1a30e8ff272828b318dac80aed7f81367e4bb589"
+      },
+      "authoring_receipt_sha256": "7d0411f5a18d71d3aba7541defdce620e4c883f95a11fb80f53c7f309f087bb2"
+    },
+    "deposit_coin": {
+      "directory": "skills/deposit_coin",
+      "description": "Pick up the observed coin, transfer it when needed, and deposit it edge-first through the bank slot.",
+      "markdown_utf8_bytes": 3636,
+      "token_count_upper_bound": 3636,
+      "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
+      "reference_images": 3,
+      "bytes": 1962279,
+      "sha256": {
+        "SKILL.md": "d6aea7b7b0198407f0ae6bd24ff2cfbd60c69b012047e3c8d95ab968a827892b",
+        "assets/direct_overview.jpg": "8c9cc30cc5ee3feead4e7ed80e622399ac1e42861e10834ab9264a43f9a9f635",
+        "assets/handoff.jpg": "dd7b43334ff7fa5c3357eed0e29d98db28b7465837c7e362174665bb40b1d4db",
+        "assets/insertion.jpg": "bb1ca1fe2a6d5a7e45bfc39fbe64fb9be308e06a2a5e93ef8547f9410c045e65",
+        "scripts/assist.py": "ce247a0b96ac73265619807cccec0511bbc864608957f5a6e06d019e3c3d5753"
+      },
+      "authoring_receipt_sha256": "7ea5079ad8ddcbfea5fcbc650cd75d64352fd3f5454df77e96d5117f1b3fe6b5"
+    },
+    "fasten_screws": {
+      "directory": "skills/fasten_screws",
+      "description": "Pair observed nuts and screws, seat each nut, and tighten through visually checked clockwise strokes.",
+      "markdown_utf8_bytes": 4157,
+      "token_count_upper_bound": 4157,
+      "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
+      "reference_images": 3,
+      "bytes": 1264506,
+      "sha256": {
+        "SKILL.md": "a02c15634c0f07af40671dda01a2ea294e7be38dd0f279b1d026cd956c2eaa6b",
+        "assets/assembly.jpg": "c4f8f9422ac4615d4beeb14a2c329361c09978c5bb4da8d61e6c743b0f0cb317",
+        "assets/ending.jpg": "d28b0bc2192d8f2d998435f001037dee04e4a80505e0ea203837956ec2529cb7",
+        "assets/turns.jpg": "498bdd102dfe97e95ebd93ccdf761cab8f582e86d4d7f17e0b820fa007be92b9",
+        "scripts/assist.py": "1f9f4ac71c92d3028971b0eb0235be3966772d15951094c9e0ba90c4cce5b246"
+      },
+      "authoring_receipt_sha256": "831d9e81dca5ab8e13738e2fdb31659f808a2a480a2531ed76599bfb8753692b"
+    },
+    "fill_egg_holder": {
+      "directory": "skills/fill_egg_holder",
+      "description": "Transfer the eggs into the holder, close its lid and restore the arms.",
+      "markdown_utf8_bytes": 3924,
+      "token_count_upper_bound": 3924,
+      "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
+      "reference_images": 2,
+      "bytes": 376604,
+      "sha256": {
+        "SKILL.md": "df1aa26bb992ad4a3c719ca012b2caec8b142936ac2a96c6016c233fd251766f",
+        "assets/ep00_overview.jpg": "320ac744cce8e28996ac3c4872bcc73120e5115c4c7427f719fa48418a117417",
+        "assets/ep08_overview.jpg": "08122a6befe7daef7a6a387f8e13578e62bf5c7cc14ead2371300be20d2204ae",
+        "scripts/assist.py": "eb952eadfea7441eb60fe068b572492f7bbe3074cddf655688738f3dd088b279"
+      },
+      "authoring_receipt_sha256": "ff5e768bce924c1f2daddef208e17cce7a2a0076e9c7dcc329eb207007faa730"
+    },
+    "fill_pen_holder": {
+      "directory": "skills/fill_pen_holder",
+      "description": "Hold the container with one arm, insert the instruments with the other, then put it down.",
+      "markdown_utf8_bytes": 4367,
+      "token_count_upper_bound": 4367,
+      "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
+      "reference_images": 3,
+      "bytes": 1044011,
+      "sha256": {
+        "SKILL.md": "4415c86b2aace2079923145111f7a86ca9cad30e3e651f4df6a4e9accca350da",
+        "assets/ep00_endings.jpg": "0234e2d2f01c57d5d7c6bf4badfcbe047055af630c580329d370c9d8229cb405",
+        "assets/ep00_transitions.jpg": "2a341bfebc511086f0958f202a3e34edb122003357eefb26fcc2bad336961390",
+        "assets/ep07_endings.jpg": "a2137672b286b0146a725a2da934ef18b8119ff6fd21bf4904b192786778981c",
+        "scripts/assist.py": "6dcd60a4ce51f38e26f7969ef80af48155e98ad3d1762cbd4b783b357696bc84"
+      },
+      "authoring_receipt_sha256": "453ab0b946f9f00b75f2923a29f09346af5c597746b2420a622994167e117822"
+    },
+    "fold_clothes": {
+      "directory": "skills/fold_clothes",
+      "description": "Fold the observed garment using its current cuffs, hem and torso frame.",
+      "markdown_utf8_bytes": 4524,
+      "token_count_upper_bound": 4524,
+      "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
+      "reference_images": 2,
+      "bytes": 841238,
+      "sha256": {
+        "SKILL.md": "33805122bac5579b5e48a19a20aa505c171f6fa343e20a7f1164f0835000caf2",
+        "assets/ending-variation.jpg": "0c7214533b73533a41e19a389e47bd8fae0f13749c121c628d3905068816a8e3",
+        "assets/fold-sequence.jpg": "dd67e85354485be72cbf04a21db5df0fe7d9b0d6bf4759d6d1fdb152d0692fe7",
+        "scripts/assist.py": "d01a384577ee7c79be9132df15a10c2f640b6359d6a4ebe38c0b23269d3279c1"
+      },
+      "authoring_receipt_sha256": "92a4b7470c35bb4ad0fcef6ec09ee6aa6abc74f7b72a403b106cc8a9811a1e88"
+    },
+    "hang_mugs": {
+      "directory": "skills/hang_mugs",
+      "description": "Grasp observed mugs by their rims and thread their handles onto free rack pegs.",
+      "markdown_utf8_bytes": 3901,
+      "token_count_upper_bound": 3901,
+      "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
+      "reference_images": 3,
+      "bytes": 1710428,
+      "sha256": {
+        "SKILL.md": "937a9ec9f2654440ea00c7e6c83880acb034194156fe5e62bd819170811e8ba0",
+        "assets/endings.jpg": "ae198a8d52ede534981c25127eebe678c04e5db07724b472f4c6b46346e072ca",
+        "assets/overview.jpg": "44f0880a06dd6d08b30f0040401f7e174253a581f73459b468822df68a667e46",
+        "assets/phases.jpg": "8125df755081b6b61ed69d8a69a8f4030404d5326d30673e9b20d50be9da5360",
+        "scripts/assist.py": "7de7263787535c3736c3bf960701dc7bb3d0948eb121f5885ad9e262ad110a3b"
+      },
+      "authoring_receipt_sha256": "620b813b4fe8c1e9ef687454f17bc4590370d9408bb7e533478b3c71bba646a4"
+    },
+    "insert_key": {
+      "directory": "skills/insert_key",
+      "description": "Pick up the key, transfer its bow to the other hand, align the asymmetric keyhole, insert and turn.",
+      "markdown_utf8_bytes": 4174,
+      "token_count_upper_bound": 4174,
+      "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
+      "reference_images": 3,
+      "bytes": 1460864,
+      "sha256": {
+        "SKILL.md": "7b94ddbd3fc31a8dd20347de204ea01ff6e2a39181c208cca9e889dc9045eba2",
+        "assets/ending.jpg": "016393a86f6420358c7777fe3669ff4685c60082f18d5a9fa28d0308f8ec86f6",
+        "assets/mirrored_contacts.jpg": "2f824f3141864a807c3346b3d403e2c18bd071c06dd1bc1b5a71aea04ef8411f",
+        "assets/overview.jpg": "81326db64e369b52816739524a759c5ee148f6f27bac0e1b728c13fa13ba6407",
+        "scripts/assist.py": "89eb44032d9f94729333ccfeca566946b6287d999eabb608dd9acf895f4bc154"
+      },
+      "authoring_receipt_sha256": "6398d41da64d641f156515ef97ed026c704cfb76a8eaefe6190cf6a73507fc3a"
+    },
+    "insert_tubes": {
+      "directory": "skills/insert_tubes",
+      "description": "Pick capped tubes, turn them upright and seat them in the rack's intended large holes.",
+      "markdown_utf8_bytes": 4311,
+      "token_count_upper_bound": 4311,
+      "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
+      "reference_images": 3,
+      "bytes": 1404873,
+      "sha256": {
+        "SKILL.md": "722d8179411e9272268946dc74519f6f17eb39d282378d35f29d085ba5c91911",
+        "assets/demo00_contacts.jpg": "c52ff5186d572d23a1018b5ced8e0aa39e62ef63e38d8fc60991b99dfe937766",
+        "assets/demo00_endings.jpg": "7f3c4ddaa185393f051d2786b4a7e5f08cbe4aec1bdde70323c190dd85985490",
+        "assets/demo00_overview.jpg": "2e5aca0045ef25c40c5a1d4aaa87340f023c42e036cc7e384a4bd6fe84f39cb9",
+        "scripts/assist.py": "8084a40209e9aa69c11e1effef931ee953c7cd1ca9baa9591506b35799b5d135"
+      },
+      "authoring_receipt_sha256": "1227e1c3565db5f9466f3ca51ab78b34d205e15bdf55f3290c4afd2e18ef5ab3"
+    },
+    "make_kong": {
+      "directory": "skills/make_kong",
+      "description": "Expose the three hand tiles matching an observed discard, draw a reserve tile, and stand it at the row end.",
+      "markdown_utf8_bytes": 4817,
+      "token_count_upper_bound": 4817,
+      "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
+      "reference_images": 2,
+      "bytes": 1305617,
+      "sha256": {
+        "SKILL.md": "32963bf15fd76043a5d86f877f0d66397e587803ca008a362dce50e9b7848ce9",
+        "assets/draw-handoff-place.jpg": "9ee9246a48c5f519bce714a71e2bed0257a621c85a659eec37cd127f45b8ad7a",
+        "assets/identity-and-ending.jpg": "d9fb1923a00130b1e1ebc0a7fa7bb9a471169ad811f83ca641a16c10fa67a13a",
+        "scripts/assist.py": "4fcd099c4a860b1ff9dbf50df80d8fda106267d3211de8a5c0f8df6e88542c3b"
+      },
+      "authoring_receipt_sha256": "b47268b31e5e608b7e59df41f6c0616752c3350a1e38f752a5d783ef4b2bb596"
+    },
+    "make_toast": {
+      "directory": "skills/make_toast",
+      "description": "Pick up bread, transfer it between hands, place slices in toaster slots and press the lever.",
+      "markdown_utf8_bytes": 4973,
+      "token_count_upper_bound": 4973,
+      "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
+      "reference_images": 3,
+      "bytes": 859435,
+      "sha256": {
+        "SKILL.md": "56768d7cb420ffc02d668368da203aa78edff681a0bd7326baaf8f149de00294",
+        "assets/contact.jpg": "f6f50eb0c514549fd30fb1a41a2654d2dbc4c79c645177ccea26dc5217068d34",
+        "assets/ending.jpg": "1ed80839a3f2315acfa2a8776f3d18dc75fdf2c400873bf6e94435457bbd60b2",
+        "assets/overview.jpg": "31d7ed00b18e78bbaaaed468fdcc1d301a094710ce1d78d33d291b597b0931ff",
+        "scripts/assist.py": "7d0e43e33a92138dfb332ec054e110d73cc48622b252e70b4c53e5d30171142a"
+      },
+      "authoring_receipt_sha256": "1d0c6c72c26fe941b7c4c6ecb634f4a41acf99eb3bf69846a2f137e7d5a8a0fd"
+    },
+    "pack_objects_into_box": {
+      "directory": "skills/pack_objects_into_box",
+      "description": "Pack observed objects into an open box with their semantic fronts facing left.",
+      "markdown_utf8_bytes": 5177,
+      "token_count_upper_bound": 5177,
+      "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
+      "reference_images": 2,
+      "bytes": 1194484,
+      "sha256": {
+        "SKILL.md": "e09abff979f502e36996b43b2bea8fdaa976bb407bd0600053292775f203c09c",
+        "assets/ending-sequence.jpg": "aac5138d888f2d2e819799cb2fd1e7a831f55eb2eec3c9c32b61079b8135560c",
+        "assets/packing-overview.jpg": "b60b91858446c2e56bcf30806161aa9a204bb3dc3ec270008859bbfc263f4a73",
+        "scripts/assist.py": "1db52143f328714b6bc925fb12a8cf71b0711290fb7b9fee5fc4c52cd208668d"
+      },
+      "authoring_receipt_sha256": "9067e7755c9de6b99ff933925fa07dec02d1f83c9a8911ad87a6f289297d9354"
+    },
+    "play_Xylophone": {
+      "directory": "skills/play_Xylophone",
+      "description": "Acquire a mallet, strike observed keys left-to-right and retain it in the demonstrated ending.",
+      "markdown_utf8_bytes": 5268,
+      "token_count_upper_bound": 5268,
+      "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
+      "reference_images": 3,
+      "bytes": 1224421,
+      "sha256": {
+        "SKILL.md": "98068a2592b6175c8d3d10bb22f88a58ca320d196d10905d0a61ae0b1f4f28a1",
+        "assets/ending.jpg": "07f5ff06424cc16db8cfb64c8eb4925031e5f288a74baa150346e203376725da",
+        "assets/handoff.jpg": "3833e61930bcbd56269f5bfdfef93f46a71ae1957f74f8386962843669634e5b",
+        "assets/sequence-overview.jpg": "2d44b040fccc15d1f5809a31641555913cc3df0473a06d3f810eca33465a1698",
+        "scripts/assist.py": "8e83c339b7247da76be974dd174612ae1290ccc60851819565762b8024783479"
+      },
+      "authoring_receipt_sha256": "c2f75427b1c4c0bc4860f631669e795274b50cdace0f16d640adbbc77a8bb5de"
+    },
+    "play_stacking_toy": {
+      "directory": "skills/play_stacking_toy",
+      "description": "Group the toy pieces by family and thread each family onto its height-ranked peg.",
+      "markdown_utf8_bytes": 4446,
+      "token_count_upper_bound": 4446,
+      "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
+      "reference_images": 3,
+      "bytes": 1739090,
+      "sha256": {
+        "SKILL.md": "d35993a54cc7662accd230d9df0d50dbf9d411f7d0da35dc0ba4a96f42576ac5",
+        "assets/board_endings.jpg": "1306700897c9fae5a3481cdc334e1373412089ea4152fb157815ca60ee3615c6",
+        "assets/ep00_contact.jpg": "7c3b0ca4873c2c5156d630f3677b316984bd17dfc3c176a3b8e1e0e6c76fb844",
+        "assets/ep00_overview.jpg": "0d25020f972393afceadbc4dd7cd5614496ca1c6322ff3cebbb1411683628769",
+        "scripts/assist.py": "31a488c5e3dc96796effc9e21a3f566ffc7d2e317f155afcb23155050785da9e"
+      },
+      "authoring_receipt_sha256": "bb0e4dde858e4595b7afe1414634c6694bfb8e36290e8564985fdd5e547f94af"
+    },
+    "play_tic_tac_toe": {
+      "directory": "skills/play_tic_tac_toe",
+      "description": "Place O rings in alternating turns with the X opponent and fill the observed board.",
+      "markdown_utf8_bytes": 5282,
+      "token_count_upper_bound": 5282,
+      "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
+      "reference_images": 3,
+      "bytes": 1156296,
+      "sha256": {
+        "SKILL.md": "b28549b8208aae3b12d3c6a97961f7980b4e1d7f32de4fd86042fc89ded9603d",
+        "assets/ending-sequence.jpg": "f7ac56954767149d6ece76d32f09c6e4703a0b6840d16cff92923881523d8e83",
+        "assets/first-turn.jpg": "ee723790c5669c479f03c0d7c0c59b6a1c2d5110ddf8eda1aba809f78b79ed48",
+        "assets/opponent-turns.jpg": "fbbaafcff76862af6101b7b8c5f342b1250cdcf1efe6211efef63a6221eeada2",
+        "scripts/assist.py": "6b910145a1f79f9a39478999653f175aa079d8dd5cf5ef3f352b61fb25ec1bc6"
+      },
+      "authoring_receipt_sha256": "afa63f7aa95b107194adff7d5bd5605d8dc2fcf2d9afafc09421c5b1fe4e6f00"
+    },
+    "plug_in_charger": {
+      "directory": "skills/plug_in_charger",
+      "description": "Acquire a charger, expose its pins, align them with a power-strip socket and release after insertion.",
+      "markdown_utf8_bytes": 4924,
+      "token_count_upper_bound": 4924,
+      "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
+      "reference_images": 3,
+      "bytes": 1557515,
+      "sha256": {
+        "SKILL.md": "907ad64d0f2bbd637e69e8042af4c024964f5b7d729083b489724789083256be",
+        "assets/ending.jpg": "e48e9ba2c85500105685c976b8252313ec8c22d4aad4d6c9f2512a097fd624cf",
+        "assets/one_transfer.jpg": "ac4f5a0e8040f3e1565a46f6ffc493016deb8baabead4d90c3754112dd688ead",
+        "assets/two_transfers.jpg": "7ecd84e68b592bbb828b123c36f44bfb9efa4a42a859c2e08c22243122208b8f",
+        "scripts/assist.py": "57dcbdfef3e4bec8b5fe5e57812cd61df7bca7f9098a73c457c1c9ecd93ddda8"
+      },
+      "authoring_receipt_sha256": "49cc245b603fdbbdf1d3219012dc4d44513507a737560d1292b45baa1e90e282"
+    },
+    "pour_liquid_into_cup": {
+      "directory": "skills/pour_liquid_into_cup",
+      "description": "Grasp a bottle, position its mouth over a cup, pour with feedback and return upright while retaining the grasp.",
+      "markdown_utf8_bytes": 5404,
+      "token_count_upper_bound": 5404,
+      "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
+      "reference_images": 3,
+      "bytes": 668655,
+      "sha256": {
+        "SKILL.md": "0c46d76734ae9b6881a6d4af6ae3e49f17f17c05bcaea5221e17a858163a8e64",
+        "assets/contact.jpg": "eeb122ac46459f2a50baf91d18dee859eea6121cb115e0b9ce1dced05ae6ff26",
+        "assets/ending.jpg": "6925bcd51f0a0be4a8f9c8f7585be35f30d80dc14c52c84895637f1c9125f5e9",
+        "assets/pour.jpg": "4b89f2d11de8226e5c354f9fff15c1a7e15d360f2110afb63a97d13913c98cb0",
+        "scripts/assist.py": "3d0a1320d5a1e9092e1276ef7cb662f4c74da5a0c0ea5d29f53f844421fb96fa"
+      },
+      "authoring_receipt_sha256": "1f8cf490feaf9f204e84d2bd9e4aabe34879121da76c284fa8eea12f829113c9"
+    },
+    "push_T": {
+      "directory": "skills/push_T",
+      "description": "Push a supported T block onto the observed T pad, using whole-shape alignment and measured contact response.",
+      "markdown_utf8_bytes": 5317,
+      "token_count_upper_bound": 5317,
+      "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
+      "reference_images": 3,
+      "bytes": 1309519,
+      "sha256": {
+        "SKILL.md": "1261ca84683f92d5ad1900690716009698125bcffb5bf97db1ffa68c55909e14",
+        "assets/layouts-overview.jpg": "9e74bf16df96f5435cdc94bd2f7a5d2134e55213cdbe5def2c313a5a72b35987",
+        "assets/rotation-response.jpg": "24b36d37926f02647dd82d429c23598a6232784ce555daa5442e5f73bd6bcfb9",
+        "assets/separation-ending.jpg": "0543f7b986f66c774904517b40eaecda6d41d7290fb7639cfd46e501a091b867",
+        "scripts/assist.py": "6f5197b2359efb224c3977e973589176d2c7e2b875128e15ac1171e4f12869aa"
+      },
+      "authoring_receipt_sha256": "082597627b049c17a871f3bdd76175248d582456b36016a4a3a57aeb134355c9"
+    },
+    "put_bottles_into_dustbin": {
+      "directory": "skills/put_bottles_into_dustbin",
+      "description": "Pick up observed upright or lying bottles, transfer when useful, and release them through the bin opening.",
+      "markdown_utf8_bytes": 6083,
+      "token_count_upper_bound": 6083,
+      "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
+      "reference_images": 3,
+      "bytes": 530201,
+      "sha256": {
+        "SKILL.md": "3ec42c7ea49446c563185da658a273e6c11204836ce2e7409bdfcd39210f80e7",
+        "assets/ending-sequence.jpg": "d1d2d0dddea30a8269c8a17eee238fda3293e3df52b58bd59ea843c568be18fa",
+        "assets/handover.jpg": "99b23339307c7b343921ec4ce1947978406bec5b5badd1e9c606ea86a851f899",
+        "assets/pickup-and-disposal-overview.jpg": "1c1283123f65760ae0a3438a93d3f036a117f89b1dabbe0d327e863f0671ba49",
+        "scripts/assist.py": "c23ec7ed2d51d366830b8da1a22c514ade32147f1b9c76d85cdf9e2da706fc33"
+      },
+      "authoring_receipt_sha256": "b565db068aae4cd8ee646417fecff927975529a7da5f4fcdd40231a302d27134"
+    },
+    "sort_nesting_dolls_by_size": {
+      "directory": "skills/sort_nesting_dolls_by_size",
+      "description": "Arrange the observed dolls in one upright row, smallest to largest from left to right.",
+      "markdown_utf8_bytes": 4565,
+      "token_count_upper_bound": 4565,
+      "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
+      "reference_images": 3,
+      "bytes": 427444,
+      "sha256": {
+        "SKILL.md": "8d80c02c96c5ae2b4e9b9e7083b3f7e290e7831c7246df3e762f60bea13229fa",
+        "assets/ep02_endings.jpg": "af01370ae52b0903172d07f7f8d3518f34be1c3965cf2e0341b423f21be18165",
+        "assets/ep03_endings.jpg": "ab6dfc1b5e50a3482c87732b8b430186b5c8de325da61f7fe9084052856f25f7",
+        "assets/grasp_contact_gallery.jpg": "448a9da4d952525eea48fe27c94445e992e0a31005c7fb8bd6a3b9774f10b871",
+        "scripts/assist.py": "bfaf36b2607c6e673f34eec9846b2a7190eef461d8ebff4118a31cfd8dba829a"
+      },
+      "authoring_receipt_sha256": "4c727b2c112cd9bd321184c34ba7f73fad196601e1b1d2badd10d5e6651bb875"
+    },
+    "stack_blocks": {
+      "directory": "skills/stack_blocks",
+      "description": "Build one supported vertical stack from the observed blocks and verify release of every layer.",
+      "markdown_utf8_bytes": 4323,
+      "token_count_upper_bound": 4323,
+      "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
+      "reference_images": 3,
+      "bytes": 5386293,
+      "sha256": {
+        "SKILL.md": "0652a207ea0fc00b514c02779edc333b546ee74618fa8b161776680725e7fe17",
+        "assets/ep00_overview.png": "1dc85c27ac21b0b690c1081d89c75b4ef8cafbb93793e38745d1287398554295",
+        "assets/ep00_support.png": "03e4c6adb54295a8c2a4a9255ab2677fac12250854722413d3e014cd94d8e27c",
+        "assets/geometry_face_orientation.png": "5e07c9c63337746ced5a611bcdda1c336e25e41e425f25d67d0c72f9132ef5e3",
+        "scripts/assist.py": "c25671997f8711d75076bce4db533dd01b97ab25c297d71cda7381de3b2b5011"
+      },
+      "authoring_receipt_sha256": "562fee38ac0a0deed982526ec7c0d85ec2e4a70f2c39019ccccce527b6ebef0e"
+    },
+    "stack_bowls": {
+      "directory": "skills/stack_bowls",
+      "description": "Lift bowls by their rims, nest them into one supported stack and clear the fingers.",
+      "markdown_utf8_bytes": 4273,
+      "token_count_upper_bound": 4273,
+      "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
+      "reference_images": 3,
+      "bytes": 583685,
+      "sha256": {
+        "SKILL.md": "5ff1d22b680f9b759de3ae4826ebe1af97f33c7a23f62e4955df8c12ab793a69",
+        "assets/ep00_overview.jpg": "f4f052696bf0799f69444a394e48dab0c327256db2c7188798bb203240c077dc",
+        "assets/ep06_overview.jpg": "467e398f43036316dff1a5792e50f25899416cee009617ae3f3b280a137d3b2a",
+        "assets/ep09_overview.jpg": "856385746d6e09baeb539eb947b1701a55519dfb8d2f4027b31e215e0caf6290",
+        "scripts/assist.py": "224942d9157ee4d9c7d58b01481080db074f7e93a54ea42ec5487bc0203e9909"
+      },
+      "authoring_receipt_sha256": "301db64f4e19b5b6db05b013018aa75df0f50c6de923a984424a4faba8a33463"
+    },
+    "store_laptop_and_headphones": {
+      "directory": "skills/store_laptop_and_headphones",
+      "description": "Hang headphones, close the laptop, transfer it and seat it upright in its separate holder.",
+      "markdown_utf8_bytes": 6460,
+      "token_count_upper_bound": 6460,
+      "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
+      "reference_images": 3,
+      "bytes": 2367122,
+      "sha256": {
+        "SKILL.md": "8ee260d2417fbce0404768b78da3e8ee8a8f756afd9a2c18661fed6b244791d7",
+        "assets/ending-sequence.jpg": "7f9fbe9a97f27b93c1104a140d4dca77ffd28d46398dd9e5b6985847eb8cfcaf",
+        "assets/laptop-transfer-storage.jpg": "d63826e97b18220cebd17d4d04b4524a2e510c27deb9bcd9a7a5a929a172360d",
+        "assets/sequence-overview.jpg": "f13d08a864cb37c5cab334941de85502e98ae712c5173cc36c2f254ef79c9945",
+        "scripts/assist.py": "2306a259f5ae5711252c3846212750c1ff1582fbcb486b369c983b9ff04d42b1"
+      },
+      "authoring_receipt_sha256": "455e112726c33b744e17b3d296181be88ac93d561e1415f07f695eb680de0e15"
+    },
+    "sweep_blocks": {
+      "directory": "skills/sweep_blocks",
+      "description": "Acquire a broom and dustpan, sweep the currently requested objects into the bowl, and release the tools on support.",
+      "markdown_utf8_bytes": 5647,
+      "token_count_upper_bound": 5647,
+      "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
+      "reference_images": 3,
+      "bytes": 1240009,
+      "sha256": {
+        "SKILL.md": "94402312caf98742c15a380efaf023a1c27b9228bda017752a826b493b0b608b",
+        "assets/ending.jpg": "f80015504fcac19c318f21a0b18e9c357bf3c134290209b243ca2080e2b7a682",
+        "assets/overview.jpg": "984ea91ebb859516ddbc2d3f6e73493b25df387e90095cbd767eed2c7a85894e",
+        "assets/sweep.jpg": "5580eaf94843b28a63c5526594addebf6bc71094fcfc9c150f5ab265f886a7e9",
+        "scripts/assist.py": "8f904aefcf2cce6107f3d2d10d5c627c7e48aed2d3238a26b9fa9e50cb5fdbda"
+      },
+      "authoring_receipt_sha256": "5087b5d264a72fcfc51853b0ef6cf975cb843228b695e4a3c4755ef2264ec434"
+    }
+  }
+}

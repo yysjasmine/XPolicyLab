@@ -1,0 +1,157 @@
+{
+  "task": "play_stacking_toy",
+  "source_receipt_sha256": "ae3e50cd2bda0f0d37679b4600f62ffce8fac086cc3aeb853484d7827ee2c6bc",
+  "source_archive_sha256": "10c9c6f0d4c511e3e09e438ed568f50f7747b036cc398e8bd9bfb09cc065e619",
+  "public_source": "https://huggingface.co/datasets/sensenova/SenseNova-RoboRSI-Packages/resolve/d922d28766d11d761228a500ddb7a28abc1b121e/robodojo/v1.0.0/icl/play_stacking_toy.tar.gz",
+  "reviewed_sources": [
+    {
+      "path": "skills/stacking-toy/SKILL.md",
+      "sha256": "6bfab48a7a3254f40ba25a103fd36a61e8c28cd98af860143600bddbe9550219"
+    },
+    {
+      "path": "skills/stacking-toy/references/completion-checklist.md",
+      "sha256": "e261eabfc79253f76a40e61c148bc8c5dbecf9ac0c2f7297738d08bee49e5cda"
+    },
+    {
+      "path": "skills/stacking-toy/references/geometry.md",
+      "sha256": "9f438f47f814bb0330b6c780b9dce7865137243ace37132de67da17ed7f9c7b3"
+    },
+    {
+      "path": "skills/stacking-toy/scripts/geometry.py",
+      "sha256": "069ee758548e3dfff5ed196e026d65d6a479838c153e52cd5ee8cbf2139a90b5"
+    }
+  ],
+  "source_md_py_manifest": [
+    {
+      "path": "COVERAGE.md",
+      "sha256": "fcfc53afc721c3204621c9cdb9f430e813096e5af5117592825f0a6dda585126"
+    },
+    {
+      "path": "START_HERE.md",
+      "sha256": "9068cb5cb92a208c5b62039d5e82e35c02f3c46ffbab13c2056ca467c86f4500"
+    },
+    {
+      "path": "analysis/aggregate_evidence.py",
+      "sha256": "2ba007c98f58df6d3e21ec786f615f99e56199dbb56724e1d7d48fec1e798505"
+    },
+    {
+      "path": "analysis/annotate_demos.py",
+      "sha256": "d55254105c2ae2fe5e17b34f194b0f6b8450000aaba6bdfcded8f0c9ff67a12b"
+    },
+    {
+      "path": "analysis/calibrate_geometry.py",
+      "sha256": "3ee17377bb6973e6bbed29f33eaf336166236305d00d3594b2dcf8504d7cf42c"
+    },
+    {
+      "path": "analysis/contact_studies.py",
+      "sha256": "75d05d3275e551da3a741c5b50b8bb66c0b4b93f673ced3fe0e233653f5f3964"
+    },
+    {
+      "path": "analysis/peg_geometry.py",
+      "sha256": "61c8dfabe1b2c2570d1e532e69e331a45367dce8e120fb70aa2805e40dad77f3"
+    },
+    {
+      "path": "analysis/stereo_geometry.py",
+      "sha256": "75c6076f8e978c1b999261c1e9c362912526fe45c9f03de8cb0243a3f2a3382c"
+    },
+    {
+      "path": "analyze_training.py",
+      "sha256": "8c834cc9800c3eb73444a2aa773d12f84c25f9195e3863e9af49fe45bd71cf02"
+    },
+    {
+      "path": "public/BENCHMARK.md",
+      "sha256": "f15de3ed7f7a9a7e85b49976cbe09a1bbb1039a7bd86245fc49ff71b194a605f"
+    },
+    {
+      "path": "skills/stacking-toy/SKILL.md",
+      "sha256": "6bfab48a7a3254f40ba25a103fd36a61e8c28cd98af860143600bddbe9550219"
+    },
+    {
+      "path": "skills/stacking-toy/references/completion-checklist.md",
+      "sha256": "e261eabfc79253f76a40e61c148bc8c5dbecf9ac0c2f7297738d08bee49e5cda"
+    },
+    {
+      "path": "skills/stacking-toy/references/demo-index.md",
+      "sha256": "dfd43f60872479874481b278057f1e2a64f8b47bf2059df259f9b99e89ce3f2f"
+    },
+    {
+      "path": "skills/stacking-toy/references/evidence.md",
+      "sha256": "326389f6d400fc3a098628ebba82c10274f067a9082637662c71a07c54257e43"
+    },
+    {
+      "path": "skills/stacking-toy/references/geometry.md",
+      "sha256": "9f438f47f814bb0330b6c780b9dce7865137243ace37132de67da17ed7f9c7b3"
+    },
+    {
+      "path": "skills/stacking-toy/references/protocol.md",
+      "sha256": "375e3271b583aac3d70cc54ce4edc44b8a3ba88984f8a20df9e7b48c4f604edd"
+    },
+    {
+      "path": "skills/stacking-toy/references/rehearsals.md",
+      "sha256": "c048f1cc888427de953d8336068f8bdb86eb2f8be6939825fc9a4c85b18b8517"
+    },
+    {
+      "path": "skills/stacking-toy/scripts/control.py",
+      "sha256": "f816f380113754c872f869317ce38a59f6c9fd0e1dbee76420390d5171781d69"
+    },
+    {
+      "path": "skills/stacking-toy/scripts/geometry.py",
+      "sha256": "069ee758548e3dfff5ed196e026d65d6a479838c153e52cd5ee8cbf2139a90b5"
+    },
+    {
+      "path": "skills/stacking-toy/scripts/offline_checks.py",
+      "sha256": "da7aa015e70b73b904176077434d0c496556565cac5eadc03d440f74e38005d9"
+    },
+    {
+      "path": "skills/stacking-toy/scripts/vision.py",
+      "sha256": "4e531c196878a137b64c7e5c1249d1125238f533ef6b530518ebb746923c13f9"
+    }
+  ],
+  "retained_images": [
+    {
+      "source": "evidence/ep00/overview_all_cameras.jpg",
+      "retained": "assets/ep00_overview.jpg",
+      "sha256": "0d25020f972393afceadbc4dd7cd5614496ca1c6322ff3cebbb1411683628769",
+      "bytes": 506535
+    },
+    {
+      "source": "evidence/ep00/cycle01_red_left_contact.jpg",
+      "retained": "assets/ep00_contact.jpg",
+      "sha256": "7c3b0ca4873c2c5156d630f3677b316984bd17dfc3c176a3b8e1e0e6c76fb844",
+      "bytes": 620355
+    },
+    {
+      "source": "evidence/board_endings_0.jpg",
+      "retained": "assets/board_endings.jpg",
+      "sha256": "1306700897c9fae5a3481cdc334e1373412089ea4152fb157815ca60ee3615c6",
+      "bytes": 603687
+    }
+  ],
+  "helper_functions": [
+    "plan: group observed pieces and map unique family-count ranks to measured peg-height ranks",
+    "offset: observed held-hole-to-TCP compensation"
+  ],
+  "skill_utf8_bytes": 4446,
+  "skill_sha256": "d35993a54cc7662accd230d9df0d50dbf9d411f7d0da35dc0ba4a96f42576ac5",
+  "helper_sha256": "31a488c5e3dc96796effc9e21a3f566ffc7d2e317f155afcb23155050785da9e",
+  "tests": {
+    "path": "authoring_receipts/test_play_stacking_toy.py",
+    "count": 6,
+    "result": "passed",
+    "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s robodojo/harness/case_skills/v1/authoring_receipts -p test_play_stacking_toy.py",
+    "temporary_root": "<authoring-temporary-directory>"
+  },
+  "runtime": {
+    "robot_subagents_enabled": false,
+    "subagent_ablation": "not enabled; future AB only",
+    "model_api_called": false,
+    "simulator_run": false,
+    "robot_imported": false
+  },
+  "limitations": [
+    "Offline arithmetic and source-image preservation checks do not establish physical success, collision clearance, grasp, support force or insertion validity.",
+    "Current instruction, RGB and measured TCP state determine execution; demonstration counts/layouts are reference examples."
+  ],
+  "local_paths_redacted": true,
+  "unredacted_local_receipt_sha256": "28571b095299ae568f184da70fca41177c0750578964d2e3b8106adf5dc1517b"
+}

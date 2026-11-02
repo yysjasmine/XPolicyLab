@@ -1,0 +1,68 @@
+{
+  "task": "deposit_coin",
+  "source_archive_sha256": "a3828f24df3eab0a902f58229a832e170cfca331f88640a303db36cdc8836ff3",
+  "source_files": [
+    {
+      "path": "skills/coin_deposit/SKILL.md",
+      "bytes": 14565,
+      "sha256": "01780227904c2144263b8a65fe2cb0b7f0bf5b5b8c6ffd34d6ffba2d0273d64f"
+    },
+    {
+      "path": "programs/USAGE.md",
+      "bytes": 3861,
+      "sha256": "db37b3d6ec0ecfd792048aa9d6c3ebe5a059eb985a456bfdf9b5d971de1d6a1a"
+    },
+    {
+      "path": "EVIDENCE.md",
+      "bytes": 17254,
+      "sha256": "8ade5284acc55f849b9ebb284085b27f9bda435bedb0769121c9b031480676bd"
+    },
+    {
+      "path": "REHEARSALS.md",
+      "bytes": 14538,
+      "sha256": "020f9c37869a2cabfce29bf8b4a377acbc6194c7ad2fbd17313d079b10a7ddaf"
+    },
+    {
+      "path": "programs/geometry.py",
+      "bytes": 5924,
+      "sha256": "0b9334c5fb60620f5437b500eab6d5eac2ce08f9d3437600c0a4d096973b4801"
+    },
+    {
+      "path": "programs/landmarks.py",
+      "bytes": 3230,
+      "sha256": "79182cb4e8cd49644b9bdd3e87f4dbc32e6ad148e7225abbdc527a5f018deeff"
+    }
+  ],
+  "retained_images": [
+    {
+      "source_archive_member": "payload/frames/ep09/head_overview.jpg",
+      "path": "assets/direct_overview.jpg",
+      "bytes": 641872,
+      "sha256": "8c9cc30cc5ee3feead4e7ed80e622399ac1e42861e10834ab9264a43f9a9f635"
+    },
+    {
+      "source_archive_member": "payload/frames/ep00/handoff.jpg",
+      "path": "assets/handoff.jpg",
+      "bytes": 734253,
+      "sha256": "dd7b43334ff7fa5c3357eed0e29d98db28b7465837c7e362174665bb40b1d4db"
+    },
+    {
+      "source_archive_member": "payload/frames/ep09/insertion.jpg",
+      "path": "assets/insertion.jpg",
+      "bytes": 580330,
+      "sha256": "bb1ca1fe2a6d5a7e45bfc39fbe64fb9be308e06a2a5e93ef8547f9410c045e65"
+    }
+  ],
+  "operations_to_scripts": {
+    "slot orientation and held-coin rotation compensation": "assist.py align"
+  },
+  "main_md_bytes": 3636,
+  "raw_training_material_in_runtime": false,
+  "runtime_subagents_enabled": false,
+  "physical_validation_performed": false,
+  "tests": {
+    "passed": 4,
+    "command": "python3 -m unittest discover -s robodojo/harness/case_skills/v1/tests -p test_deposit_coin_helper.py -q",
+    "kind": "offline arithmetic/selection/CLI checks; no simulator"
+  }
+}

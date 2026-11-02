@@ -1,0 +1,59 @@
+{
+  "task": "make_toast",
+  "source_archive_sha256": "41387cabbe2293c07b37e3fe4f1ccac7b3c6369f0a8dbff983794295f14a4c8c",
+  "source_files": [
+    {
+      "path": "skills/make-toast/SKILL.md",
+      "bytes": 12334,
+      "sha256": "00bec176e31feaefa04cab360b7c78381705c1be075d25dce562e46e80ad91ea"
+    },
+    {
+      "path": "geometry_notes.md",
+      "bytes": 9849,
+      "sha256": "c90f414e57970041d978a02553252226497c9ce9609be34133bf8bd8e9e01e8b"
+    },
+    {
+      "path": "completion_checklist.md",
+      "bytes": 6511,
+      "sha256": "d56fce2b1c926de849bf79665d9f4d08a93905f45c7cff274289fd3721a6df9d"
+    },
+    {
+      "path": "policy_support.py",
+      "bytes": 8626,
+      "sha256": "aea4c45514035283b48ab5ed30767ad4a830f8ebbec5e61057913101a7031ba0"
+    }
+  ],
+  "retained_images": [
+    {
+      "source_archive_member": "payload/evidence/episode_00_overview.jpg",
+      "path": "assets/overview.jpg",
+      "bytes": 297259,
+      "sha256": "31d7ed00b18e78bbaaaed468fdcc1d301a094710ce1d78d33d291b597b0931ff"
+    },
+    {
+      "source_archive_member": "payload/evidence/ep00_slice2_contact.jpg",
+      "path": "assets/contact.jpg",
+      "bytes": 268188,
+      "sha256": "f6f50eb0c514549fd30fb1a41a2654d2dbc4c79c645177ccea26dc5217068d34"
+    },
+    {
+      "source_archive_member": "payload/evidence/episode_00_ending.jpg",
+      "path": "assets/ending.jpg",
+      "bytes": 286049,
+      "sha256": "1ed80839a3f2315acfa2a8776f3d18dc75fdf2c400873bf6e94435457bbd60b2"
+    }
+  ],
+  "operations_to_scripts": {
+    "bread-plane and slot alignment with grasp offset": "assist.py slot",
+    "observed lever-track contact and bounded press candidate": "assist.py lever"
+  },
+  "main_md_bytes": 4973,
+  "raw_training_material_in_runtime": false,
+  "runtime_subagents_enabled": false,
+  "physical_validation_performed": false,
+  "tests": {
+    "passed": 4,
+    "command": "python3 -m unittest discover -s robodojo/harness/case_skills/v1/tests -p test_make_toast_helper.py -q",
+    "kind": "offline geometry; no simulator"
+  }
+}

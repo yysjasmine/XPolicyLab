@@ -53,18 +53,12 @@
     },
     "archive_format": "wheel"
   },
-  "icl": {
-    "catalog_path": "icl/catalog.json",
-    "catalog_sha256": "11135dcfa98771b0017f887c242ba9ab8adb3243e2a77c20de5a149d70b7a262",
-    "artifacts_path": "icl/artifacts.json",
-    "artifacts_sha256": "a2ba217bf091b0a6ec17881da89ee12fbc54b3492e3c82050e93024d542349c5"
-  },
   "hybrid": {
     "variant": "adaptive_2_50",
     "source_path": "vendor/robodojo_adaptive/source",
     "profile_path": "vendor/robodojo_adaptive",
     "manifest_path": "vendor/robodojo_adaptive/provenance/source-files.json",
-    "manifest_sha256": "d11efdde1dd6c5dd1cd131ef042a14aff5a724c1576bb29d104090e33305906a",
+    "manifest_sha256": "b782c1b3ecef787753c5b4142226f90304d61a5a5146fd35c311fc48c1dc96a8",
     "version_kind": "Pinned adaptive_2_50 source baseline with runtime-configurable approved-step minimum (ROBORSI_ADAPTIVE_MIN_STEPS, default5); upper bound50 and action budgets preserved; effective limits recorded per episode.",
     "public_task_configs": 42,
     "original_source_files": 21,
@@ -91,5 +85,11 @@
   "tool_runtime": {
     "manifest_path": "tools/runtime.json",
     "manifest_sha256": "fb14b393e9338ab6920d12dba88264e7c028efc4b66b12b41a5949191f16443a"
+  },
+  "skillpack": {
+    "catalog_path": "skillpack/cases/catalog.json",
+    "catalog_sha256": "3d6937aa3fc4618e348c829fbf7606a7d93361fcfa423dded981648b4e06dfd4",
+    "frozen_common_path": "skillpack/frozen_common.json",
+    "frozen_common_sha256": "941f54ec96b3e2c417cda7fcb29d2c6b67ae0402e8eb9cb499fdf2bf6dd9e154"
   }
 }

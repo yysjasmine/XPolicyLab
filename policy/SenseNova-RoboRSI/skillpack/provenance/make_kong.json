@@ -1,0 +1,63 @@
+{
+  "task": "make_kong",
+  "at": 1793610242.015598,
+  "source_files": [
+    {
+      "path": "skills/mahjong-kong/SKILL.md",
+      "sha256": "8b616afa3ddb98ca45f514b57df281da6204509987a5fa1f4e70db37be5fddd0"
+    },
+    {
+      "path": "completion_checklist.md",
+      "sha256": "170b849cf6273ffc2b02478c80a3cefa52c26be25a1dcf19058d5c1668c75632"
+    },
+    {
+      "path": "programs/geometry.py",
+      "sha256": "f2e27bb5e30ae65cc857aaa3700ffbe4871708efd718e5639f60d91e6e829b88"
+    }
+  ],
+  "files": [
+    {
+      "path": "SKILL.md",
+      "bytes": 4817,
+      "sha256": "32963bf15fd76043a5d86f877f0d66397e587803ca008a362dce50e9b7848ce9"
+    },
+    {
+      "path": "scripts/assist.py",
+      "bytes": 3646,
+      "sha256": "4fcd099c4a860b1ff9dbf50df80d8fda106267d3211de8a5c0f8df6e88542c3b"
+    },
+    {
+      "path": "assets/draw-handoff-place.jpg",
+      "bytes": 965081,
+      "sha256": "9ee9246a48c5f519bce714a71e2bed0257a621c85a659eec37cd127f45b8ad7a"
+    },
+    {
+      "path": "assets/identity-and-ending.jpg",
+      "bytes": 332073,
+      "sha256": "d9fb1923a00130b1e1ebc0a7fa7bb9a471169ad811f83ca641a16c10fa67a13a"
+    }
+  ],
+  "asset_source_paths": {
+    "assets/draw-handoff-place.jpg": "payload/frames/ep00/draw_handoff_place.jpg",
+    "assets/identity-and-ending.jpg": "payload/frames/ep00/identity_end_crops.jpg"
+  },
+  "helper_commands": [
+    "matches",
+    "row-slot",
+    "counts",
+    "orientation"
+  ],
+  "operation_mapping": {
+    "face identity and ending ledger": "matches/counts",
+    "row-anchor adaptation": "row-slot",
+    "six sparse phase quaternions from original skill": "converted once to current downward-relative degree priors; runtime has no native quaternion API"
+  },
+  "offline_tests": {
+    "passed": 4,
+    "command": "python3 -m unittest discover -s robodojo/harness/case_skills/v1/tests -p test_make_kong_helper.py -q"
+  },
+  "runtime_subagent_enabled": false,
+  "raw_icl_training_in_skill": false,
+  "native_physics_validation": false,
+  "data_qc_performed": false
+}

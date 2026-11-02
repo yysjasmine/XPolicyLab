@@ -9,6 +9,10 @@ from __future__ import annotations
 from importlib import import_module
 
 import os
+from pathlib import Path
+import shutil
+import sys
+from types import SimpleNamespace
 
 import numpy as np
 import pytest
@@ -16,12 +20,42 @@ from roborsi.planner.codex_cli_config import CodexCliConfig
 
 model_module = import_module("XPolicyLab.policy.SenseNova-RoboRSI.model")
 runtime_config = import_module("XPolicyLab.policy.SenseNova-RoboRSI.runtime_config")
-adapter_factory = import_module("XPolicyLab.policy.SenseNova-RoboRSI.tests.test_model_hybrid").adapter_factory
-observation = import_module("XPolicyLab.policy.SenseNova-RoboRSI.tests.test_model_hybrid").observation
+execution_profile = import_module("XPolicyLab.policy.SenseNova-RoboRSI.execution_profile")
+observation = import_module("XPolicyLab.policy.SenseNova-RoboRSI.tests.test_hybrid_backend").observation
 ToolRuntimeError = import_module("XPolicyLab.policy.SenseNova-RoboRSI.tool_runtime").ToolRuntimeError
+P = Path(__file__).resolve().parents[1]
 
 
-def test_missing_independent_tools_fails_before_vla_or_icl(monkeypatch):
+@pytest.fixture
+def adapter_factory(monkeypatch, tmp_path):
+    """Real current Model/config boundary; tool interpreter and VLA are stubs."""
+    directory = tmp_path/"policy"
+    directory.mkdir()
+    for name in ("agent.yaml", "submission.json", "sense_nova_roborsi_factory.py", "hybrid_agent.py",
+                 "hybrid_launcher.py", "hybrid_backend.py", "skillpack_agent.py", "execution_profile.py"):
+        shutil.copy2(P/name, directory/name)
+    (directory/"runtime/RoboRSI").mkdir(parents=True)
+    monkeypatch.setattr(model_module, "POLICY_DIR", directory)
+    monkeypatch.setattr(runtime_config, "POLICY_DIR", directory)
+    monkeypatch.setattr(model_module, "get_robot_action_dim_info", lambda _: {"arm_dim": [6,6], "ee_dim": [1,1]})
+    monkeypatch.setattr(model_module, "resolve_tool_python", lambda _: Path(sys.executable))
+    monkeypatch.setattr(model_module.Model, "_ensure_vla", lambda _: 19803)
+    source = import_module("XPolicyLab.policy.SenseNova-RoboRSI.pi05_source")
+    monkeypatch.setattr(source, "load_openpi_client", lambda _: None)
+    monkeypatch.setenv("CODEX_API_KEY", "synthetic-unused-offline-key")
+    models = []
+    def create():
+        value = model_module.Model({"bench_name": "RoboDojo", "task_name": "arrange_largest_number",
+                                   "env_cfg_type": "arx_x5", "action_type": "joint", "eval_batch": False,
+                                   "trajectory_dir": str(tmp_path/"trajectories")})
+        models.append(value)
+        return SimpleNamespace(directory=directory, model=value)
+    yield create
+    for model in models:
+        model.shutdown()
+
+
+def test_missing_independent_tools_fails_before_vla_or_skillpack(monkeypatch):
     monkeypatch.setenv("CODEX_API_KEY", "synthetic-unused-offline-key")
 
     def missing(_policy):
@@ -32,7 +66,7 @@ def test_missing_independent_tools_fails_before_vla_or_icl(monkeypatch):
 
     monkeypatch.setattr(model_module, "resolve_tool_python", missing)
     monkeypatch.setattr(model_module.Model, "_ensure_vla", must_not_start)
-    monkeypatch.setattr(model_module, "prepare_icl_context", must_not_start)
+    monkeypatch.setattr(execution_profile, "prepare_skillpack_context", must_not_start)
     with pytest.raises(ToolRuntimeError, match="Independent original tool"):
         model_module.Model(
             {

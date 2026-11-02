@@ -1,0 +1,75 @@
+{
+  "task": "push_T",
+  "at": 1793610700.748429,
+  "source_files": [
+    {
+      "path": "skills/push_t/SKILL.md",
+      "sha256": "fe348028236f0a6de185b6b2dd81947826efb45ee935a7c024ff58147a75a9c7"
+    },
+    {
+      "path": "preparation/visual_fit_review.md",
+      "sha256": "3b3f26276a0e8acee2777a13685175a909592a5ccb16df0b0278907565562f5e"
+    },
+    {
+      "path": "preparation/trajectory_response.md",
+      "sha256": "e044de51ed8b6e9aca83ee09f1cf4cf6c65af67214f1d18fad95e57c95df3854"
+    },
+    {
+      "path": "programs/push_t_vision.py",
+      "sha256": "0c00d1630a958ad46e2b03ccab30368ade59b5f15667b06b7c8a62b5be03aabe"
+    },
+    {
+      "path": "programs/push_t_core.py",
+      "sha256": "8cd04c6fac9db89f357dc87f538f450d20e031f853878648a6c69815362fe234"
+    }
+  ],
+  "files": [
+    {
+      "path": "SKILL.md",
+      "bytes": 5317,
+      "sha256": "1261ca84683f92d5ad1900690716009698125bcffb5bf97db1ffa68c55909e14"
+    },
+    {
+      "path": "assets/layouts-overview.jpg",
+      "bytes": 951436,
+      "sha256": "9e74bf16df96f5435cdc94bd2f7a5d2134e55213cdbe5def2c313a5a72b35987"
+    },
+    {
+      "path": "assets/rotation-response.jpg",
+      "bytes": 169599,
+      "sha256": "24b36d37926f02647dd82d429c23598a6232784ce555daa5442e5f73bd6bcfb9"
+    },
+    {
+      "path": "assets/separation-ending.jpg",
+      "bytes": 181331,
+      "sha256": "0543f7b986f66c774904517b40eaecda6d41d7290fb7639cfd46e501a091b867"
+    },
+    {
+      "path": "scripts/assist.py",
+      "bytes": 1836,
+      "sha256": "6f5197b2359efb224c3977e973589176d2c7e2b875128e15ac1171e4f12869aa"
+    }
+  ],
+  "asset_source_paths": {
+    "assets/layouts-overview.jpg": "payload/references/overview_00_04.jpg",
+    "assets/rotation-response.jpg": "payload/references/contact_transitions/case_1.jpg",
+    "assets/separation-ending.jpg": "payload/references/contact_transitions/case_4.jpg"
+  },
+  "helper_commands": [
+    "alignment",
+    "contact"
+  ],
+  "operation_mapping": {
+    "alignment full T pose": "translation and 360-degree yaw in current common XY",
+    "contact_candidates lever-arm model": "caller-selected visible contact moment and short vector; original calibrated automatic vision omitted",
+    "visual fit failures and motion response": "main skill retains visibility/height caveats and observed non-rigid displacement relation"
+  },
+  "offline_tests": {
+    "passed": 3,
+    "command": "python3 -m unittest discover -s robodojo/harness/case_skills/v1/tests -p test_push_T_helper.py -q"
+  },
+  "runtime_subagent_enabled": false,
+  "raw_icl_training_in_skill": false,
+  "native_physics_validation": false,
+  "data_qc_performed": false
+}

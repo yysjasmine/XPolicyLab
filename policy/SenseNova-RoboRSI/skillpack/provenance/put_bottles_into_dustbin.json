@@ -1,0 +1,71 @@
+{
+  "task": "put_bottles_into_dustbin",
+  "at": 1793610793.473265,
+  "source_files": [
+    {
+      "path": "policylab/skills/bottles.md",
+      "sha256": "6cf6c95d64cc8622938f7409d6e1cc90bcc876b158af4688c64fa66be1f3fbd4"
+    },
+    {
+      "path": "policylab/scripts/geometry.py",
+      "sha256": "3b4fb86f893ff0ca0cb0e5c5cdf48331f51dd61612e6dce817611b0f57b99dab"
+    },
+    {
+      "path": "policylab/scripts/inventory.py",
+      "sha256": "2aca38fe920b3a4cd6932f33812b74596a580e08a1046622cc1e51de71d0e7bf"
+    },
+    {
+      "path": "policylab/scripts/reference_query.py",
+      "sha256": "9578c6b6c6811f1b610020ae550fda5f00930c5b67bf1ed2c5aa3bb1b3cb0507"
+    }
+  ],
+  "files": [
+    {
+      "path": "SKILL.md",
+      "bytes": 6083,
+      "sha256": "3ec42c7ea49446c563185da658a273e6c11204836ce2e7409bdfcd39210f80e7"
+    },
+    {
+      "path": "assets/ending-sequence.jpg",
+      "bytes": 55596,
+      "sha256": "d1d2d0dddea30a8269c8a17eee238fda3293e3df52b58bd59ea843c568be18fa"
+    },
+    {
+      "path": "assets/handover.jpg",
+      "bytes": 236506,
+      "sha256": "99b23339307c7b343921ec4ce1947978406bec5b5badd1e9c606ea86a851f899"
+    },
+    {
+      "path": "assets/pickup-and-disposal-overview.jpg",
+      "bytes": 229508,
+      "sha256": "1c1283123f65760ae0a3438a93d3f036a117f89b1dabbe0d327e863f0671ba49"
+    },
+    {
+      "path": "scripts/assist.py",
+      "bytes": 2508,
+      "sha256": "c23ec7ed2d51d366830b8da1a22c514ade32147f1b9c76d85cdf9e2da706fc33"
+    }
+  ],
+  "asset_source_paths": {
+    "assets/pickup-and-disposal-overview.jpg": "payload/policylab/reference/ep00_overview.jpg",
+    "assets/handover.jpg": "payload/policylab/reference/ep07_handovers.jpg",
+    "assets/ending-sequence.jpg": "payload/policylab/reference/ep08_ends.jpg"
+  },
+  "helper_commands": [
+    "body-point",
+    "release-margin"
+  ],
+  "operation_mapping": {
+    "upright/lying axis and body grasp notes": "current base-cap interpolation and tilt, no stored height or offset",
+    "bin fall footprint and rim recovery": "caller observed convex opening and conservative footprint margin",
+    "large demonstration index": "3 representative existing composite sheets; original numerical trajectory index excluded"
+  },
+  "offline_tests": {
+    "passed": 3,
+    "command": "python3 -m unittest discover -s robodojo/harness/case_skills/v1/tests -p test_put_bottles_into_dustbin_helper.py -q"
+  },
+  "runtime_subagent_enabled": false,
+  "raw_icl_training_in_skill": false,
+  "native_physics_validation": false,
+  "data_qc_performed": false
+}

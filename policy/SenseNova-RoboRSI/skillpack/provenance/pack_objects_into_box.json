@@ -1,0 +1,61 @@
+{
+  "task": "pack_objects_into_box",
+  "at": 1793610425.923624,
+  "source_files": [
+    {
+      "path": "skills/pack_objects/SKILL.md",
+      "sha256": "5a8caeaa3a3c1a5e2f22fae1fb1c6eef92d7a04d74486b326cc533620b1a80f9"
+    },
+    {
+      "path": "skills/pack_objects/completion_checklist.md",
+      "sha256": "72060140d56ed79788bffe2368f53ae7b9b207dd206accb4dadf82e75aa053d3"
+    },
+    {
+      "path": "policy/geometry.py",
+      "sha256": "4e6a90c3275f7480af1d27387d15f2636b749c8c948314e146b6b67f99d6a1f9"
+    }
+  ],
+  "files": [
+    {
+      "path": "SKILL.md",
+      "bytes": 5177,
+      "sha256": "e09abff979f502e36996b43b2bea8fdaa976bb407bd0600053292775f203c09c"
+    },
+    {
+      "path": "assets/ending-sequence.jpg",
+      "bytes": 534033,
+      "sha256": "aac5138d888f2d2e819799cb2fd1e7a831f55eb2eec3c9c32b61079b8135560c"
+    },
+    {
+      "path": "assets/packing-overview.jpg",
+      "bytes": 653080,
+      "sha256": "b60b91858446c2e56bcf30806161aa9a204bb3dc3ec270008859bbfc263f4a73"
+    },
+    {
+      "path": "scripts/assist.py",
+      "bytes": 2194,
+      "sha256": "1db52143f328714b6bc925fb12a8cf71b0711290fb7b9fee5fc4c52cd208668d"
+    }
+  ],
+  "asset_source_paths": {
+    "assets/packing-overview.jpg": "payload/frames/episode_0000000_overview.jpg",
+    "assets/ending-sequence.jpg": "payload/frames/endings/episode_0000004_ending_sequence.jpg"
+  },
+  "helper_commands": [
+    "front",
+    "fit"
+  ],
+  "operation_mapping": {
+    "semantic front orientation": "observed feature pair -> world yaw correction; original yaw_angle_to_left retained in degrees",
+    "placement footprint": "current oriented extent and interior containment candidate; no inferred support",
+    "native pose and old contact offsets": "removed from public interface; current TCP used"
+  },
+  "offline_tests": {
+    "passed": 3,
+    "command": "python3 -m unittest discover -s robodojo/harness/case_skills/v1/tests -p test_pack_objects_into_box_helper.py -q"
+  },
+  "runtime_subagent_enabled": false,
+  "raw_icl_training_in_skill": false,
+  "native_physics_validation": false,
+  "data_qc_performed": false
+}

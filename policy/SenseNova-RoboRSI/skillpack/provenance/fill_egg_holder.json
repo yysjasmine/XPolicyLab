@@ -1,0 +1,163 @@
+{
+  "task": "fill_egg_holder",
+  "source_receipt_sha256": "162d38a89fd1020090dac7514987adca658616cbbccd5e668a7d96019d406079",
+  "reviewed_sources": [
+    {
+      "path": "skills/egg_holder.md",
+      "sha256": "ea34fb17379cbece77b42fcb0a3647586d454769732d5a675f3eb0fcd717ca0b"
+    },
+    {
+      "path": "geometry_notes.md",
+      "sha256": "1cbbf77756184ad2d8fd5e96e3b5ba5e3d059c0bd2e2a49d7b02d3593f9f2722"
+    },
+    {
+      "path": "completion_checklist.md",
+      "sha256": "8ba4982f0db1ad61aa61810d0966f4f9f9105208b33a4cf246e8c824fcd64ab6"
+    },
+    {
+      "path": "rehearsals.md",
+      "sha256": "dca045b8d1f04c98e51a610fc737f7dfa0195793560e3d1e2787aa2292fc6777"
+    },
+    {
+      "path": "programs/policy_geometry.py",
+      "sha256": "7e4ba825fe8c0a94a50d2202927766e52606cd80d6b2c16ed6c4fd9d00f141b2"
+    }
+  ],
+  "source_md_py_manifest": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "dd4aaa2e5f6ffe395ab724f07541d4a4949411a316281b8169ae46b63911e8d2"
+    },
+    {
+      "path": "EVALUATION_GUIDE.md",
+      "sha256": "f05fcdae887083ca0ef2ec8ca2785fe3d8e8abcd37762b7cd1327dee7ea5995a"
+    },
+    {
+      "path": "README.md",
+      "sha256": "79806ecc69b06fb0393adcd08c4e6c51a95dac98e74b89e32a1bc0c69020e463"
+    },
+    {
+      "path": "completion_checklist.md",
+      "sha256": "8ba4982f0db1ad61aa61810d0966f4f9f9105208b33a4cf246e8c824fcd64ab6"
+    },
+    {
+      "path": "demo_evidence.md",
+      "sha256": "d75668ed9e20a4bee5f51e0b8e18f35ddfedd041dc689ec3780c7e697cd0ab07"
+    },
+    {
+      "path": "geometry_notes.md",
+      "sha256": "1cbbf77756184ad2d8fd5e96e3b5ba5e3d059c0bd2e2a49d7b02d3593f9f2722"
+    },
+    {
+      "path": "programs/add_transition_details.py",
+      "sha256": "c9beadea2faff1212050e2217b600483b21a5324d5a63828f682bef9d6b03343"
+    },
+    {
+      "path": "programs/analyze_trajectories.py",
+      "sha256": "9c913ff644221db47d31772c30a808f0dbef33c3ce17f2faa42d5b90d83c5218"
+    },
+    {
+      "path": "programs/audit_lid_seating.py",
+      "sha256": "4b9f0a8910d42b0ef9f3afd895a508ae819520c37aef76a7074026edded82a4e"
+    },
+    {
+      "path": "programs/audit_metadata.py",
+      "sha256": "eb6427178cee22d142c8fbebfacfad886f0a7204399bb4dc30f60d7f42073dda"
+    },
+    {
+      "path": "programs/finalize_preparation.py",
+      "sha256": "cdffeb967b6c3e8b373ca688c5ad7ddca25013bef6b039bb8213d0aebd7fb647"
+    },
+    {
+      "path": "programs/make_details.py",
+      "sha256": "e96cf8b3e467936ef14263035c8b001cba20e49f93df6e7c758882615bc3b99d"
+    },
+    {
+      "path": "programs/observation_files.py",
+      "sha256": "a3db5a0df54898aac17d489ff1c77f58a88ed2febbc93c896d833516ebde401a"
+    },
+    {
+      "path": "programs/offline_checks.py",
+      "sha256": "0a0259282374a6a04a0744c8d2c17de984caa13831641db24461e7600c0a2453"
+    },
+    {
+      "path": "programs/policy_geometry.py",
+      "sha256": "7e4ba825fe8c0a94a50d2202927766e52606cd80d6b2c16ed6c4fd9d00f141b2"
+    },
+    {
+      "path": "programs/policy_runtime.py",
+      "sha256": "3f0eba90a75322e3eb28ecb9866fe0cbc2d6dad0382c0bb26c3b2f2ed05ff148"
+    },
+    {
+      "path": "programs/save_geometry_evidence.py",
+      "sha256": "d2bf71addfdbb32656dc99f046a3c2b85ed2cd179970c001d44498a82aa324e3"
+    },
+    {
+      "path": "programs/study_data.py",
+      "sha256": "540e131def641693ed4560abacc974561c8d5e95bbbb142baa2f7f4af91d6eb4"
+    },
+    {
+      "path": "programs/table_plane_study.py",
+      "sha256": "aaedd4c5fe65d82f460337f78ee553eebc1a3ffef010250ea9e8244f3bbe5fe1"
+    },
+    {
+      "path": "programs/transfer_coverage.py",
+      "sha256": "8e19baa389caa931b4589967bef35007c32983fca172d309f1a93be63d74bd33"
+    },
+    {
+      "path": "programs/write_evidence.py",
+      "sha256": "f56a391fc7fbdaf43e85880f912ee47e2cc8ac032c3fdd70c2e445b96bcc88d2"
+    },
+    {
+      "path": "rehearsals.md",
+      "sha256": "dca045b8d1f04c98e51a610fc737f7dfa0195793560e3d1e2787aa2292fc6777"
+    },
+    {
+      "path": "skills/egg_holder.md",
+      "sha256": "ea34fb17379cbece77b42fcb0a3647586d454769732d5a675f3eb0fcd717ca0b"
+    }
+  ],
+  "retained_images": [
+    {
+      "source": "images/ep08/overview.jpg",
+      "retained": "assets/ep08_overview.jpg",
+      "sha256": "08122a6befe7daef7a6a387f8e13578e62bf5c7cc14ead2371300be20d2204ae",
+      "bytes": 185338
+    },
+    {
+      "source": "images/ep00/overview.jpg",
+      "retained": "assets/ep00_overview.jpg",
+      "sha256": "320ac744cce8e28996ac3c4872bcc73120e5115c4c7427f719fa48418a117417",
+      "bytes": 184127
+    }
+  ],
+  "helper_functions": [
+    "plan: observed local cup-grid centres with configurable rows/columns",
+    "offset: rotate observed object-to-TCP displacement toward a destination"
+  ],
+  "skill_utf8_bytes": 3924,
+  "skill_sha256": "df1aa26bb992ad4a3c719ca012b2caec8b142936ac2a96c6016c233fd251766f",
+  "helper_sha256": "eb952eadfea7441eb60fe068b572492f7bbe3074cddf655688738f3dd088b279",
+  "tests": {
+    "path": "authoring_receipts/test_fill_egg_holder.py",
+    "count": 6,
+    "result": "passed",
+    "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s robodojo/harness/case_skills/v1/authoring_receipts -p test_fill_egg_holder.py",
+    "temporary_root": "<authoring-temporary-directory>"
+  },
+  "runtime": {
+    "robot_subagents_enabled": false,
+    "subagent_ablation": "not enabled; future AB only",
+    "model_api_called": false,
+    "simulator_run": false,
+    "robot_imported": false
+  },
+  "limitations": [
+    "Offline arithmetic and source-image preservation checks do not establish physical success, collision clearance, grasp or insertion validity.",
+    "Current RGB and measured TCP state determine execution; demonstration counts/layouts are reference examples."
+  ],
+  "source_archive_sha256": "124f0a3ad8505a779044bd1f7322a733769fc2558dc370a1e475a7fb1c751fc9",
+  "public_source": "https://huggingface.co/datasets/sensenova/SenseNova-RoboRSI-Packages/resolve/d922d28766d11d761228a500ddb7a28abc1b121e/robodojo/v1.0.0/icl/fill_egg_holder.tar.gz",
+  "local_paths_redacted": true,
+  "unredacted_local_receipt_sha256": "8cd7eae66b794363fea7f1beac88e23498d281f9275b484e843c44b9804a61c6"
+}

@@ -1,0 +1,64 @@
+{
+  "task": "plug_in_charger",
+  "source_archive_sha256": "c35b150df19800c1c472bb1f7b0788d686b13acb5e0450d5e62564791d500631",
+  "source_files": [
+    {
+      "path": "skills/plug_charger/SKILL.md",
+      "bytes": 14025,
+      "sha256": "1246f91c61cca343e8e37bacd069d299728b412d415bc6eebc98ea590555e477"
+    },
+    {
+      "path": "geometry_notes.md",
+      "bytes": 7116,
+      "sha256": "baf8957fdd8ddcd89352cd8f4c2b4cd9a3f52eb19a91390c12705928955522b8"
+    },
+    {
+      "path": "completion_checklist.json",
+      "bytes": 16479,
+      "sha256": "e48d05f29e415594305ac537149c3df5b1d8e1bce244ccde203d32f5a4c7f7f2"
+    },
+    {
+      "path": "policy/USAGE.md",
+      "bytes": 9619,
+      "sha256": "a3fb6a6baa265153cdde41e528e5ee823920fc6569ab2d1ffeb9eafd401af2f8"
+    },
+    {
+      "path": "policy/geometry.py",
+      "bytes": 7652,
+      "sha256": "c5b7cee18fb0ef934a00e16e53a34a8202b436b00847712cf739c3bf56c6e193"
+    }
+  ],
+  "retained_images": [
+    {
+      "source_archive_member": "payload/evidence/demo00/timeline_head.jpg",
+      "path": "assets/one_transfer.jpg",
+      "bytes": 555464,
+      "sha256": "ac4f5a0e8040f3e1565a46f6ffc493016deb8baabead4d90c3754112dd688ead"
+    },
+    {
+      "source_archive_member": "payload/evidence/demo02/timeline_head.jpg",
+      "path": "assets/two_transfers.jpg",
+      "bytes": 564199,
+      "sha256": "7ecd84e68b592bbb828b123c36f44bfb9efa4a42a859c2e08c22243122208b8f"
+    },
+    {
+      "source_archive_member": "payload/evidence/demo00/ending_multiview.jpg",
+      "path": "assets/ending.jpg",
+      "bytes": 430508,
+      "sha256": "e48e9ba2c85500105685c976b8252313ec8c22d4aad4d6c9f2512a097fd624cf"
+    }
+  ],
+  "operations_to_scripts": {
+    "planar held-object retargeting adapted to live pin/hole pair geometry": "assist.py align",
+    "pin spacing and correspondence diagnostics": "assist.py align residuals"
+  },
+  "main_md_bytes": 4924,
+  "raw_training_material_in_runtime": false,
+  "runtime_subagents_enabled": false,
+  "physical_validation_performed": false,
+  "tests": {
+    "passed": 4,
+    "command": "python3 -m unittest discover -s robodojo/harness/case_skills/v1/tests -p test_plug_in_charger_helper.py -q",
+    "kind": "offline geometry; no simulator"
+  }
+}

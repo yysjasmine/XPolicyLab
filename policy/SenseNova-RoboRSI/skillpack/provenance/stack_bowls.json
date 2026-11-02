@@ -1,0 +1,153 @@
+{
+  "task": "stack_bowls",
+  "source_receipt_sha256": "2854d174514944c40d5e1a535e1ad34cf851652011c199846dc6dfa7cd19ed97",
+  "source_archive_sha256": "c55fb78c2dee96b4eeb7656781012bd5d9c52cd02b1f72de877fa8688961e82a",
+  "public_source": "https://huggingface.co/datasets/sensenova/SenseNova-RoboRSI-Packages/resolve/d922d28766d11d761228a500ddb7a28abc1b121e/robodojo/v1.0.0/icl/stack_bowls.tar.gz",
+  "reviewed_sources": [
+    {
+      "path": "skills/stack-bowls/SKILL.md",
+      "sha256": "7c591ea3a08945eade4106384632e358009744dff900a9cfe796fff581e0204a"
+    },
+    {
+      "path": "skills/stack-bowls/references/completion-checklist.md",
+      "sha256": "a01973458f856e36139f86e468c2e3e1b54397a8f4cea88a49f27334453bb38f"
+    },
+    {
+      "path": "skills/stack-bowls/references/geometry.md",
+      "sha256": "62e1cc5521c0dd7183c919b892739b0013f2a3db5ee40c54b4894e7305962b32"
+    },
+    {
+      "path": "skills/stack-bowls/scripts/camera_geometry.py",
+      "sha256": "d5989a71877849ca1014fde7a007c0c1f8ceaa31c84058845b5a76c27908a000"
+    }
+  ],
+  "source_md_py_manifest": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "d5d85f86c6d11eb28c0dd615dd42daedc4acb6a8bb23c08eae892638cbe076b0"
+    },
+    {
+      "path": "PREPARATION_REPORT.md",
+      "sha256": "5bc94b456ff4c0b318c4dfddc8307e8d475535b5f1c9f03c1db508d8f2699d8c"
+    },
+    {
+      "path": "START_HERE.md",
+      "sha256": "1328188950edac75d941866d3d8d192349cd0bc4d36166b19f262f09455ac010"
+    },
+    {
+      "path": "skills/stack-bowls/SKILL.md",
+      "sha256": "7c591ea3a08945eade4106384632e358009744dff900a9cfe796fff581e0204a"
+    },
+    {
+      "path": "skills/stack-bowls/references/completion-checklist.md",
+      "sha256": "a01973458f856e36139f86e468c2e3e1b54397a8f4cea88a49f27334453bb38f"
+    },
+    {
+      "path": "skills/stack-bowls/references/evidence.md",
+      "sha256": "071e165aca4e49deb05bea8ae0aa3b87edf0b846c6abd90cb6e76d08edd1b478"
+    },
+    {
+      "path": "skills/stack-bowls/references/geometry.md",
+      "sha256": "62e1cc5521c0dd7183c919b892739b0013f2a3db5ee40c54b4894e7305962b32"
+    },
+    {
+      "path": "skills/stack-bowls/references/public-interface.md",
+      "sha256": "6272cad1398ee7001828c100c202558aaed012f1dbd11e8f251dd547f570b733"
+    },
+    {
+      "path": "skills/stack-bowls/references/rehearsals.md",
+      "sha256": "67246b754424b9d0e8efe3621f4cb5296b79b3f987ab75e999295b6684f16f91"
+    },
+    {
+      "path": "skills/stack-bowls/references/runtime-helper.md",
+      "sha256": "66496356ef03c60907e2a0500caa38822c70b2255a055e668fdb77eb36dac4c2"
+    },
+    {
+      "path": "skills/stack-bowls/references/uncertainties.md",
+      "sha256": "edcbd9459e57be44969bfb886740e371df5cf82964b6c82fa36ffa43b3311fc1"
+    },
+    {
+      "path": "skills/stack-bowls/scripts/analyze_geometry.py",
+      "sha256": "9380e45bdfa4b760d6d4dee61e79d429f9e83bf28b732c581b3c2fe72dc8a444"
+    },
+    {
+      "path": "skills/stack-bowls/scripts/analyze_trajectories.py",
+      "sha256": "80dea3efdb1108cc9af6bed0e74cd780f67953a109ea17e0691e4d44feda8408"
+    },
+    {
+      "path": "skills/stack-bowls/scripts/camera_geometry.py",
+      "sha256": "d5989a71877849ca1014fde7a007c0c1f8ceaa31c84058845b5a76c27908a000"
+    },
+    {
+      "path": "skills/stack-bowls/scripts/demo_reference.py",
+      "sha256": "d66ec606c945d199b88377004a7f9607f78340868cff4a10de3a43816ec67db3"
+    },
+    {
+      "path": "skills/stack-bowls/scripts/eef_math.py",
+      "sha256": "38dbff0cb0e97e102928003510cf6b902b8d19be24d5a3afc3b21293914eddfe"
+    },
+    {
+      "path": "skills/stack-bowls/scripts/focused_frames.py",
+      "sha256": "cede5c6fbbb188dbd9b07654ab3193b2d0ffa2d1083dd6e1d9aa79d2ad86c3ba"
+    },
+    {
+      "path": "skills/stack-bowls/scripts/guarded_control.py",
+      "sha256": "dbe9b768d0ad33867a7e6c817bb5e2d56a992af3cab15d4d3b31b4eb075dbd4b"
+    },
+    {
+      "path": "skills/stack-bowls/scripts/offline_checks.py",
+      "sha256": "e9631e29cd8f516b1039df8fab81189ec97f43365e2334a105718b3379ee6258"
+    },
+    {
+      "path": "skills/stack-bowls/scripts/study_demos.py",
+      "sha256": "6f92ca7f1743ab7ca6c0a2ec71075edcc4c76ad7d57d362324a3d16fcc9b2ceb"
+    }
+  ],
+  "retained_images": [
+    {
+      "source": "research/sheets/ep00_overview.jpg",
+      "retained": "assets/ep00_overview.jpg",
+      "sha256": "f4f052696bf0799f69444a394e48dab0c327256db2c7188798bb203240c077dc",
+      "bytes": 190878
+    },
+    {
+      "source": "research/sheets/ep06_overview.jpg",
+      "retained": "assets/ep06_overview.jpg",
+      "sha256": "467e398f43036316dff1a5792e50f25899416cee009617ae3f3b280a137d3b2a",
+      "bytes": 191772
+    },
+    {
+      "source": "research/sheets/ep09_overview.jpg",
+      "retained": "assets/ep09_overview.jpg",
+      "sha256": "856385746d6e09baeb539eb947b1701a55519dfb8d2f4027b31e215e0caf6290",
+      "bytes": 192365
+    }
+  ],
+  "helper_functions": [
+    "plan: least-squares horizontal rim circles from supplied world-point estimates, residuals and centre alignment",
+    "offset: current held-rim-to-TCP compensation"
+  ],
+  "skill_utf8_bytes": 4273,
+  "skill_sha256": "5ff1d22b680f9b759de3ae4826ebe1af97f33c7a23f62e4955df8c12ab793a69",
+  "helper_sha256": "224942d9157ee4d9c7d58b01481080db074f7e93a54ea42ec5487bc0203e9909",
+  "tests": {
+    "path": "authoring_receipts/test_stack_bowls.py",
+    "count": 6,
+    "result": "passed",
+    "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s robodojo/harness/case_skills/v1/authoring_receipts -p test_stack_bowls.py",
+    "temporary_root": "<authoring-temporary-directory>"
+  },
+  "runtime": {
+    "robot_subagents_enabled": false,
+    "subagent_ablation": "not enabled; future AB only",
+    "model_api_called": false,
+    "simulator_run": false,
+    "robot_imported": false
+  },
+  "limitations": [
+    "Offline arithmetic and source-image preservation checks do not establish physical success, collision clearance, grasp, support force or nesting validity.",
+    "Current instruction, RGB and measured TCP state determine execution; demonstration counts/layouts are reference examples."
+  ],
+  "local_paths_redacted": true,
+  "unredacted_local_receipt_sha256": "2f3265bd0979fb45e2e9a96a66924c89e383475014f856d67f6bfd3d4a391190"
+}

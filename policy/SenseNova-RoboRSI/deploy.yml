@@ -17,3 +17,4 @@ checkpoint_path: "checkpoints/simate-beta-robodojo-eval"
 request_timeout_s: 3660.0
 trajectory_dir: null
 vla_backend: "simate_beta"
+provider_kind: responses  # Use cci for the existing self-hosted Responses tool adapter.

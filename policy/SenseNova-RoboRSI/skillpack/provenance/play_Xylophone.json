@@ -1,0 +1,71 @@
+{
+  "task": "play_Xylophone",
+  "at": 1793610614.7465448,
+  "source_files": [
+    {
+      "path": "skills/xylophone/SKILL.md",
+      "sha256": "c7f81857836e0b30803e22d097aa3d52b30aff9226591df893907f255aa04e45"
+    },
+    {
+      "path": "references/completion-checklist.md",
+      "sha256": "44e5bdaf6f398a84e8026805ecd616f0dc4260869ca4975a3e9b2010b2cb150a"
+    },
+    {
+      "path": "programs/geometry.py",
+      "sha256": "32f93b8f0b4189790e06f6c9230e2f907e5d6bf517d9a274a89eef1574a9973a"
+    },
+    {
+      "path": "programs/fit_mallet.py",
+      "sha256": "cd8fbfa2dc332c61503140d9de3d9b40e61013020fe8467bb15e2b89510deeff"
+    }
+  ],
+  "files": [
+    {
+      "path": "SKILL.md",
+      "bytes": 5268,
+      "sha256": "98068a2592b6175c8d3d10bb22f88a58ca320d196d10905d0a61ae0b1f4f28a1"
+    },
+    {
+      "path": "assets/ending.jpg",
+      "bytes": 194596,
+      "sha256": "07f5ff06424cc16db8cfb64c8eb4925031e5f288a74baa150346e203376725da"
+    },
+    {
+      "path": "assets/handoff.jpg",
+      "bytes": 258211,
+      "sha256": "3833e61930bcbd56269f5bfdfef93f46a71ae1957f74f8386962843669634e5b"
+    },
+    {
+      "path": "assets/sequence-overview.jpg",
+      "bytes": 764137,
+      "sha256": "2d44b040fccc15d1f5809a31641555913cc3df0473a06d3f810eca33465a1698"
+    },
+    {
+      "path": "scripts/assist.py",
+      "bytes": 2209,
+      "sha256": "8e83c339b7247da76be974dd174612ae1290ccc60851819565762b8024783479"
+    }
+  ],
+  "asset_source_paths": {
+    "assets/sequence-overview.jpg": "payload/frames/ep00/cam_head_overview.jpg",
+    "assets/handoff.jpg": "payload/frames/ep00/handoff_views.jpg",
+    "assets/ending.jpg": "payload/frames/ep00/ending_views.jpg"
+  },
+  "helper_commands": [
+    "head-target",
+    "sequence"
+  ],
+  "operation_mapping": {
+    "head offset/fit notes": "translation from current observed head/TCP pair at fixed attitude; unreliable stored sphere fit omitted",
+    "ordered contact and recovery ledger": "supported chronological prefix with unresolved attempts",
+    "handoff and asymmetrical ending": "main skill: left home/open; right retains tool elevated"
+  },
+  "offline_tests": {
+    "passed": 3,
+    "command": "python3 -m unittest discover -s robodojo/harness/case_skills/v1/tests -p test_play_Xylophone_helper.py -q"
+  },
+  "runtime_subagent_enabled": false,
+  "raw_icl_training_in_skill": false,
+  "native_physics_validation": false,
+  "data_qc_performed": false
+}
