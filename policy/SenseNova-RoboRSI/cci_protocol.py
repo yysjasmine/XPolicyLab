@@ -135,7 +135,7 @@ def sse(response):
 
 
 class CciAdapter:
-    def __init__(self,endpoint,model,directory,request_timeout=1200):
+    def __init__(self,endpoint,model,directory,request_timeout=300):
         self.endpoint=endpoint.rstrip('/')+'/responses';self.model=model
         self.directory=Path(directory);self.directory.mkdir(parents=True,exist_ok=True)
         self.counter=0;self.lock=threading.Lock();self.request_timeout=request_timeout
@@ -165,7 +165,10 @@ class CciAdapter:
                         if request.get('stream'):content_type='text/event-stream'
                 except Exception as error:
                     status=502;content_type='application/json'
-                    body=json.dumps({'error':{'type':'cci_adapter_error','message':str(error)}}).encode()
+                    timed_out=isinstance(error,TimeoutError) or isinstance(getattr(error,'reason',None),TimeoutError)
+                    body=json.dumps({'error':{'type':'cci_request_timeout' if timed_out else 'cci_adapter_error',
+                                             'message':str(error),
+                                             **({'timeout_seconds':owner.request_timeout} if timed_out else {})}}).encode()
                     prefix.with_suffix('.adapter_error.json').write_bytes(body)
                 self.send_response(status);self.send_header('Content-Type',content_type)
                 self.send_header('Content-Length',str(len(body)));self.end_headers();self.wfile.write(body)

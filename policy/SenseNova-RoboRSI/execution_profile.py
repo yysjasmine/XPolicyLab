@@ -208,7 +208,7 @@ def start_capture(profile, run, model_cfg):
     if provider_kind == "cci":
         from .cci_protocol import CciAdapter
         cci = CciAdapter(upstream, resolve_model(), owner/"cci-wire",
-                         request_timeout=model_cfg.get("episode_seconds", 14400))
+                         request_timeout=min(300, model_cfg.get("episode_seconds", 14400)))
         cci.start()
         upstream = cci.base_url
         profile = CciPromptProfile(profile)

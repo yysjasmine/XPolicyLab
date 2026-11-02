@@ -67,3 +67,30 @@ def test_cci_reasoning_null_content_does_not_rewrite_visible_history():
     assert result["input"][0]["encrypted_content"] == "opaque"
     assert result["input"][1] == raw["input"][1]
     assert evidence["cci_null_content_as_empty_array"] == [0]
+
+
+def test_cci_attempt_timeout_is_not_replaced_by_four_hour_episode(tmp_path, monkeypatch):
+    cci = import_module("XPolicyLab.policy.SenseNova-RoboRSI.cci_protocol")
+    guard = import_module("XPolicyLab.policy.SenseNova-RoboRSI.skillpack.capture_guard")
+    seen = {}
+
+    class Adapter:
+        def __init__(self, endpoint, model, directory, request_timeout=300):
+            seen["attempt_timeout"] = request_timeout
+            self.base_url = "http://127.0.0.1:12345/v1"
+        def start(self): pass
+        def stop(self): pass
+
+    class Capture:
+        def __init__(self, *args, **kwargs): seen["deadline"] = kwargs["case_deadline"]
+        def start(self): pass
+        def stop(self): pass
+
+    monkeypatch.setattr(cci, "CciAdapter", Adapter)
+    monkeypatch.setattr(guard, "GuardedCapture", Capture)
+    monkeypatch.setenv("ROBORSI_CODEX_MODEL", "test-cci")
+    monkeypatch.setenv("ROBORSI_CODEX_BASE_URL", "http://127.0.0.1:819/v1")
+    capture = profile.start_capture(None, tmp_path/"controller", {
+        "provider_kind": "cci", "episode_seconds": 14400, "case_wall_deadline": 20000})
+    assert seen == {"attempt_timeout": 300, "deadline": 20000}
+    capture.stop()
