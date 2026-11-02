@@ -149,6 +149,7 @@ def load_agent_config(
     )
     overrides = {
         "agent.model": model,
+        "agent.reasoning_effort": model_cfg.get("reasoning_effort", "xhigh"),
         "agent.codex_cli.executable": str(runtime / "codex/bin/codex"),
         "agent.codex_cli.expected_version": cli["expected_version"],
         "agent.codex_cli.expected_sha256": cli["sha256"],
@@ -156,6 +157,8 @@ def load_agent_config(
         "agent.codex_cli.env_vars": forwarded,
         "agent.working_dir": str(workspace),
     }
+    if overrides["agent.reasoning_effort"] not in {"medium", "xhigh"}:
+        raise ValueError("reasoning_effort must be medium or xhigh")
     # A JSON pointer keeps the literal dotted TOML key intact. The YAML
     # template has no deployment defaults; both values are resolved above.
     overrides[

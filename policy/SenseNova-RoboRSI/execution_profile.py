@@ -208,7 +208,8 @@ def start_capture(profile, run, model_cfg):
     if provider_kind == "cci":
         from .cci_protocol import CciAdapter
         cci = CciAdapter(upstream, resolve_model(), owner/"cci-wire",
-                         request_timeout=min(300, model_cfg.get("episode_seconds", 14400)))
+                         request_timeout=min(300, model_cfg.get("episode_seconds", 14400)),
+                         sampling=model_cfg.get("sampling"))
         cci.start()
         upstream = cci.base_url
         profile = CciPromptProfile(profile)
@@ -220,6 +221,7 @@ def start_capture(profile, run, model_cfg):
     capture = GuardedCapture(
         ProviderCaptureConfig(upstream, "runtime", request_encrypted_content=True),
         owner/"api", case_dir=owner, model=resolve_model(), model_label=owner.name,
+        expected_effort=model_cfg.get("reasoning_effort", "xhigh"),
         cohort_root=owner, prompt_profile=profile, enforce_paid_cache=provider_kind != "cci",
         case_deadline=model_cfg.get("case_wall_deadline"),
         prior_rows=prior_rows,
@@ -241,11 +243,11 @@ def start_capture(profile, run, model_cfg):
     return capture
 
 
-def stage_cci_catalog(workspace, model):
+def stage_cci_catalog(workspace, model, *, reasoning_effort="xhigh"):
     """Declare the custom model's exec/wait transport, without extra instructions."""
     template = Path(__file__).parent/"cci_model_template.json"
     value = json.loads(template.read_text())
-    value["models"][0].update(slug=model, display_name=model)
+    value["models"][0].update(slug=model, display_name=model, default_reasoning_level=reasoning_effort)
     path = Path(workspace)/"preparation/cci-model-catalog.json"
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2)+"\n")
     return path

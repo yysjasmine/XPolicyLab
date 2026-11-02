@@ -7,6 +7,7 @@ from copy import deepcopy
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 import json
+import math
 import threading
 import time
 import urllib.request
@@ -135,10 +136,22 @@ def sse(response):
 
 
 class CciAdapter:
-    def __init__(self,endpoint,model,directory,request_timeout=300):
+    def __init__(self,endpoint,model,directory,request_timeout=300,sampling=None):
         self.endpoint=endpoint.rstrip('/')+'/responses';self.model=model
         self.directory=Path(directory);self.directory.mkdir(parents=True,exist_ok=True)
         self.counter=0;self.lock=threading.Lock();self.request_timeout=request_timeout
+        self.sampling={'temperature':0}
+        if sampling is not None:
+            if not isinstance(sampling,dict) or set(sampling)-{'temperature','top_k','top_p'}:
+                raise ValueError('CCI sampling supports temperature, top_k and top_p')
+            self.sampling.update(sampling)
+        for name in ['temperature','top_p']:
+            if name not in self.sampling:continue
+            value=self.sampling[name]
+            if type(value) not in [float,int] or not math.isfinite(value) or value<0 or (name=='top_p' and not 0<value<=1):
+                raise ValueError('Invalid CCI '+name)
+        if 'top_k' in self.sampling and (type(self.sampling['top_k']) is not int or self.sampling['top_k']<=0):
+            raise ValueError('Invalid CCI top_k')
         owner=self
         class Handler(BaseHTTPRequestHandler):
             def log_message(self,*args):pass
@@ -151,6 +164,7 @@ class CciAdapter:
                 try:
                     assert self.path=='/v1/responses' and request['model']==owner.model
                     payload=request_to_cci(request)
+                    payload.update(owner.sampling)
                     prefix.with_suffix('.request.json').write_text(json.dumps(payload,ensure_ascii=False))
                     req=urllib.request.Request(owner.endpoint,data=json.dumps(payload,ensure_ascii=False).encode(),headers={'Content-Type':'application/json'})
                     try:

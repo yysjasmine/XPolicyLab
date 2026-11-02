@@ -7,6 +7,7 @@ import shutil
 from pathlib import Path
 
 import pytest
+import yaml
 
 runtime_config = import_module("XPolicyLab.policy.SenseNova-RoboRSI.runtime_config")
 
@@ -28,14 +29,9 @@ def test_direct_preflight_import_can_resolve_adaptive_limits():
 def policy_copy(tmp_path, monkeypatch):
     policy = tmp_path / "shared-policy"
     policy.mkdir()
-    for name in (
-        "agent.yaml",
-        "submission.json",
-        "sense_nova_roborsi_factory.py",
-        "hybrid_agent.py",
-        "hybrid_launcher.py",
-        "hybrid_backend.py",
-    ):
+    names = {"agent.yaml", "submission.json"} | set(yaml.safe_load((P/"agent.yaml").read_text())["code"])
+    for name in names:
+        (policy/name).parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(P / name, policy / name)
     monkeypatch.setattr(runtime_config, "POLICY_DIR", policy)
     monkeypatch.delenv("ROBORSI_RUNTIME_STATE_DIR", raising=False)
@@ -147,7 +143,7 @@ def test_custom_routing_preserves_protocol_budgets_and_trajectory_header(policy_
     agent = config.document["agent"]
     provider = agent["codex_cli"]["config_overrides"]
     assert agent["model"] == route
-    assert agent["planner"] == "codex_cli" and agent["reasoning_effort"] == "max"
+    assert agent["planner"] == "codex_cli" and agent["reasoning_effort"] == "xhigh"
     assert agent["max_turns"] is None and agent["max_tokens"] is None
     assert agent["codex_cli"]["tools"] == "external"
     assert provider["model_provider"] == "runtime"
@@ -158,6 +154,14 @@ def test_custom_routing_preserves_protocol_budgets_and_trajectory_header(policy_
     assert provider["model_providers.runtime.request_max_retries"] == 8
     assert provider["model_providers.runtime.env_http_headers.X-Trajectory-Id"] == "ROBORSI_TRAJECTORY_ID"
     assert "synthetic-offline-secret" not in repr(config.document)
+
+
+@pytest.mark.parametrize("effort", ["medium", "xhigh"])
+def test_requested_reasoning_effort_reaches_agent_config(policy_copy, monkeypatch, effort):
+    monkeypatch.setenv("ROBORSI_CODEX_BASE_URL", "http://127.0.0.1:819/v1")
+    monkeypatch.setenv("ROBORSI_CODEX_MODEL", "fixture")
+    config = runtime_config.load_agent_config({"reasoning_effort": effort}, require_key=False)
+    assert config.document["agent"]["reasoning_effort"] == effort
 
 
 def test_installation_check_does_not_require_or_reuse_deployment_settings(policy_copy, monkeypatch):

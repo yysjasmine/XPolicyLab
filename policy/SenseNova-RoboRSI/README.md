@@ -77,7 +77,8 @@ policy environment and `RoboDojo` the simulator Conda environment. Supported:
 `RoboDojo`, `arx_x5`, `joint`, one environment. RGB arrives decoded at the Model
 boundary; action dimensions come from the shared robot metadata helper.
 
-The agent uses xhigh, a 200K input context, all images within each append-only
+The agent defaults to xhigh; `model_cfg.reasoning_effort` also accepts `medium`.
+It uses a 200K input context, all images within each append-only
 window, and default same-model text compaction before the next request exceeds
 50 images or after 120 completed model turns. There is no additional output-token
 cap, cumulative ledger or injected current-state summary. Provider attempt and
@@ -87,7 +88,10 @@ The harness never changes a key or model route to bypass such failures.
 
 For an existing unauthenticated self-hosted CCI service, set `provider_kind: cci`
 and select its exact model/base URL. The same entry uses the CCI v4 tool transport,
-temperature zero and a compact model catalog containing no extra instructions.
+temperature zero by default and a compact model catalog containing no extra instructions.
+`model_cfg.sampling` can explicitly set `temperature`, `top_k` and `top_p`;
+the exact upstream request records their effective values. CCI requests wait at
+most 300 seconds, with up to three attempts for transient failures.
 It retains upstream JSON and translated CLI JSON separately. Cache usage is
 measured; the paid-provider cache fuse is not applied to self-hosted CCI.
 A single output-limit response may retry the same request once, before any tool

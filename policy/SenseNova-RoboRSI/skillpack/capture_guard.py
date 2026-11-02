@@ -122,10 +122,13 @@ def cache_statistics(rows):
 class GuardedCapture(ProviderCapture):
     """Capture exact provider bytes, then stop unsafe or unaccounted dispatch."""
 
-    def __init__(self, *args, case_dir, model, model_label, cohort_root, prior_rows=(), prompt_profile=None, case_deadline=None, enforce_paid_cache=True, **kwargs):
+    def __init__(self, *args, case_dir, model, model_label, cohort_root, prior_rows=(), prompt_profile=None, case_deadline=None, enforce_paid_cache=True, expected_effort="xhigh", **kwargs):
         super().__init__(*args,**kwargs)
         self.case=Path(case_dir)
         self.model=model
+        if expected_effort not in {"medium", "xhigh"}:
+            raise ValueError('expected_effort must be medium or xhigh')
+        self.expected_effort=expected_effort
         self.model_label=model_label
         self.cohort=Path(cohort_root)
         self.prompt_profile=prompt_profile
@@ -264,8 +267,9 @@ class GuardedCapture(ProviderCapture):
             write(self.case/'post_smoke.original_cli_request.json',_redact(request))
             await self._error(send,409,b'Operator act limit reached; no further provider dispatch')
             return
-        if request.get('model')!=self.model or (request.get('reasoning') or {}).get('effort')!='xhigh':
-            self._hold('model_or_effort_mismatch',{'model':request.get('model'),'reasoning':request.get('reasoning')})
+        if request.get('model')!=self.model or (request.get('reasoning') or {}).get('effort')!=self.expected_effort:
+            self._hold('model_or_effort_mismatch',{'model':request.get('model'),'reasoning':request.get('reasoning'),
+                                                   'expected_effort':self.expected_effort})
             await self._error(send,400,b'Model/effort differs');return
         if self._attempts>=330 or sum(r['completed'] for r in self.rows)>=300:
             self._hold('model_call_budget',{'attempts':self._attempts});await self._error(send,503,b'Model call budget exhausted');return

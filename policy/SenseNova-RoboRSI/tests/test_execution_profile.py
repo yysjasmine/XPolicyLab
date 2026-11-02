@@ -75,14 +75,17 @@ def test_cci_attempt_timeout_is_not_replaced_by_four_hour_episode(tmp_path, monk
     seen = {}
 
     class Adapter:
-        def __init__(self, endpoint, model, directory, request_timeout=300):
+        def __init__(self, endpoint, model, directory, request_timeout=300, sampling=None):
             seen["attempt_timeout"] = request_timeout
+            seen["sampling"] = sampling
             self.base_url = "http://127.0.0.1:12345/v1"
         def start(self): pass
         def stop(self): pass
 
     class Capture:
-        def __init__(self, *args, **kwargs): seen["deadline"] = kwargs["case_deadline"]
+        def __init__(self, *args, **kwargs):
+            seen["deadline"] = kwargs["case_deadline"]
+            seen["expected_effort"] = kwargs["expected_effort"]
         def start(self): pass
         def stop(self): pass
 
@@ -90,7 +93,18 @@ def test_cci_attempt_timeout_is_not_replaced_by_four_hour_episode(tmp_path, monk
     monkeypatch.setattr(guard, "GuardedCapture", Capture)
     monkeypatch.setenv("ROBORSI_CODEX_MODEL", "test-cci")
     monkeypatch.setenv("ROBORSI_CODEX_BASE_URL", "http://127.0.0.1:819/v1")
+    sampling = {"temperature": 1.0, "top_k": 20, "top_p": 0.95}
     capture = profile.start_capture(None, tmp_path/"controller", {
-        "provider_kind": "cci", "episode_seconds": 14400, "case_wall_deadline": 20000})
-    assert seen == {"attempt_timeout": 300, "deadline": 20000}
+        "provider_kind": "cci", "episode_seconds": 14400, "case_wall_deadline": 20000,
+        "reasoning_effort": "medium", "sampling": sampling})
+    assert seen == {"attempt_timeout": 300, "deadline": 20000,
+                    "expected_effort": "medium", "sampling": sampling}
     capture.stop()
+
+
+def test_medium_catalog_does_not_fall_back_to_xhigh(tmp_path):
+    (tmp_path/"preparation").mkdir()
+    path = profile.stage_cci_catalog(tmp_path, "fixture", reasoning_effort="medium")
+    model = json.loads(path.read_text())["models"][0]
+    assert model["default_reasoning_level"] == "medium"
+    assert model["slug"] == "fixture"

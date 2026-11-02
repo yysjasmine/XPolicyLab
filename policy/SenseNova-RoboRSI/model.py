@@ -407,7 +407,7 @@ class Model(ModelTemplate):
         cfg = json.loads(config_path.read_text())
         cfg = copy.deepcopy(cfg)
         cfg["model"] = self._agent_config.document["agent"]["model"]
-        cfg["reasoning_effort"] = "xhigh"
+        cfg["reasoning_effort"] = self._agent_config.document["agent"]["reasoning_effort"]
         cfg["episode_seconds"] = self.model_cfg.get("episode_seconds", 14400)
         if type(cfg["episode_seconds"]) is not int or not 1 <= cfg["episode_seconds"] <= 14400:
             raise ValueError("episode_seconds must be an integer from 1 to 14400")

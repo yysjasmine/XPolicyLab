@@ -18,13 +18,15 @@ EmbodiedAgent = import_module("roborsi.embodied_agent").EmbodiedAgent
 P = Path(__file__).resolve().parents[1]
 
 
-def test_unique_factory_is_real_embodied_agent_with_xhigh(tmp_path):
+@pytest.mark.parametrize("effort", ["medium", "xhigh"])
+def test_unique_factory_is_real_embodied_agent_with_selected_effort(tmp_path, effort):
     document = yaml.safe_load((P/"agent.yaml").read_text())
     document["agent"]["model"] = "fixture-model"
+    document["agent"]["reasoning_effort"] = effort
     agent = factory.make_agent(tmp_path, config=SimpleNamespace(document=document))
     assert isinstance(agent, EmbodiedAgent)
     assert isinstance(agent, skillpack.SkillpackEmbodiedAgent)
-    assert agent.reasoning_effort == "xhigh"
+    assert agent.reasoning_effort == effort
     assert agent.codex_cli.config_overrides["model_auto_compact_token_limit"] == 200000
     assert agent.max_tokens is None
 

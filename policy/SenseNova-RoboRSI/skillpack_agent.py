@@ -100,7 +100,7 @@ class SkillpackEmbodiedAgent(HybridEmbodiedAgent):
         context.execution_profile.stage_live_workspace(workspace, owner=context.episode_dir)
         if (context.model_cfg or {}).get("provider_kind") == "cci":
             from .execution_profile import stage_cci_catalog
-            stage_cci_catalog(workspace, self.model)
+            stage_cci_catalog(workspace, self.model, reasoning_effort=self.reasoning_effort)
 
     def evaluation_prompt(self, context, cfg):
         return context.execution_profile.episode_prompt(cfg)
@@ -146,9 +146,9 @@ class SkillpackController(HybridController):
 
 def make_agent(case_dir, *, config):
     options = dict(config.document.get("agent", {}))
-    if (options.get("planner") != "codex_cli" or options.get("reasoning_effort") != "xhigh"
+    if (options.get("planner") != "codex_cli" or options.get("reasoning_effort") not in {"medium", "xhigh"}
             or options.get("max_turns") is not None or options.get("max_tokens") is not None):
-        raise ValueError("Skillpack requires the external Codex CLI, xhigh and no output-token cap")
+        raise ValueError("Skillpack requires the external Codex CLI, medium/xhigh and no output-token cap")
     if config.document.get("prompt_file") or config.document.get("skills") or config.document.get("runtime"):
         raise ValueError("The frozen execution profile owns prompts and skills")
     options["codex_cli"] = CodexCliConfig.from_dict(options.get("codex_cli", {}))

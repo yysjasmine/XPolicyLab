@@ -42,16 +42,17 @@ def test_bounded_timeout_retains_request_and_original_budget(tmp_path, monkeypat
         return Response()
 
     monkeypatch.setattr(urllib.request, "urlopen", upstream)
-    adapter = cci.CciAdapter("http://provider.invalid/v1", "fixture", tmp_path/"cci")
+    sampling = {"temperature": 1.0, "top_k": 20, "top_p": 0.95}
+    adapter = cci.CciAdapter("http://provider.invalid/v1", "fixture", tmp_path/"cci", sampling=sampling)
     assert adapter.request_timeout == 300
     adapter.start()
     deadline = time.time()+60
     capture = guard.GuardedCapture(config(adapter.base_url, "runtime"), tmp_path/"api",
         case_dir=tmp_path, model="fixture", model_label="fixture", cohort_root=tmp_path,
         prompt_profile=SimpleNamespace(transform=lambda value: (value, {})),
-        case_deadline=deadline, enforce_paid_cache=False)
+        case_deadline=deadline, enforce_paid_cache=False, expected_effort="medium")
     capture.start()
-    request = {"model": "fixture", "reasoning": {"effort": "xhigh"}, "stream": False,
+    request = {"model": "fixture", "reasoning": {"effort": "medium"}, "stream": False,
                "input": [{"role": "user", "content": [{"type": "input_text", "text": "one request"}]}]}
     try:
         call = urllib.request.Request(capture.base_url+"/responses", data=json.dumps(request).encode(),
@@ -72,6 +73,9 @@ def test_bounded_timeout_retains_request_and_original_budget(tmp_path, monkeypat
         expected = 1 if outcome == "authentication" else 3
         assert len(payloads) == capture._attempts == expected
         assert len(set(payloads)) == 1
+        actual = json.loads(payloads[0])
+        assert {k: actual[k] for k in sampling} == sampling
+        assert actual["reasoning"]["effort"] == actual["chat_template_kwargs"]["reasoning_effort"] == "medium"
         assert timeouts == [300]*expected
         assert capture.case_deadline == deadline
         assert len(list((tmp_path/"cci").glob("*.request.json"))) == expected
