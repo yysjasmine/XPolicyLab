@@ -207,8 +207,9 @@ def start_capture(profile, run, model_cfg):
     provider_kind = model_cfg.get("provider_kind", "responses")
     if provider_kind == "cci":
         from .cci_protocol import CciAdapter
-        cci = CciAdapter(upstream, resolve_model(), owner/"cci-wire",
-                         request_timeout=model_cfg.get("episode_seconds", 14400))
+        # The guard owns the cumulative episode deadline. Each upstream attempt
+        # must retain the adapter's shorter timeout so bounded retries can run.
+        cci = CciAdapter(upstream, resolve_model(), owner/"cci-wire")
         cci.start()
         upstream = cci.base_url
         profile = CciPromptProfile(profile)
