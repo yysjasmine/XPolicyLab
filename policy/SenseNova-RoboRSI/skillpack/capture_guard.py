@@ -260,6 +260,10 @@ class GuardedCapture(ProviderCapture):
         if (self.case/'dispatch_hold.json').exists() or cohort.exists():
             await self._error(send,503,b'Experiment dispatch paused; see evidence');return
         request=json.loads(body)
+        if (self.case/'user_smoke_complete.json').exists():
+            write(self.case/'post_smoke.original_cli_request.json',_redact(request))
+            await self._error(send,409,b'Operator act limit reached; no further provider dispatch')
+            return
         if request.get('model')!=self.model or (request.get('reasoning') or {}).get('effort')!='xhigh':
             self._hold('model_or_effort_mismatch',{'model':request.get('model'),'reasoning':request.get('reasoning')})
             await self._error(send,400,b'Model/effort differs');return
