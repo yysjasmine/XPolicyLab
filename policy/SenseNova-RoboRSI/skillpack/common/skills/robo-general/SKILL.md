@@ -7,6 +7,8 @@ description: Operate RoboDojo with observe, vla_propose and act. Use for VLA-ass
 
 Follow the current episode instruction, permissions and budgets. Use the declared tool parameters; keep reasons and observed-state assessments concise.
 
+Call robot tools directly. Their results include state text and RGB image blocks automatically; no JavaScript forwarding, `text()` or `image()` is needed.
+
 1. Call `observe` first. Inspect current head and both wrist RGB views, measured TCP state and remaining budget.
 2. When VLA is enabled, give `vla_propose` one short English sentence: an immediate action, the observed object and a destination when needed. Use task/demo wording; omit reasoning, code and multi-step plans. Example: `Move the left gripper above the blue 8.` It predicts without moving and shows every fifth target, steps 5,10,...,50, rounded to three decimal places for display.
 3. Inspect the proposal and choose one action:

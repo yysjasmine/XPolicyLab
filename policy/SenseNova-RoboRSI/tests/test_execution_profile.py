@@ -108,3 +108,22 @@ def test_medium_catalog_does_not_fall_back_to_xhigh(tmp_path):
     model = json.loads(path.read_text())["models"][0]
     assert model["default_reasoning_level"] == "medium"
     assert model["slug"] == "fixture"
+
+
+def test_native_robot_namespace_is_preserved_with_exec_wait(tmp_path):
+    derived = profile.load_skillpack_profile(P, "arrange_largest_number", tmp_path)
+    robot = {"type": "namespace", "name": "mcp__robot", "tools": [
+        {"type": "function", "name": name, "parameters": {"type": "object"}}
+        for name in ("observe", "vla_propose", "act")]}
+    result, evidence = derived.transform({"input": [
+        {"type": "additional_tools", "tools": [robot]},
+        {"role": "developer", "content": [{"type": "input_text", "text": derived.core}]},
+        {"role": "user", "content": [{"type": "input_text", "text": "episode"}]}]})
+    groups = result["input"][0]["tools"]
+    assert next(g for g in groups if g["name"] == "mcp__robot") == robot
+    assert {t["name"] for g in groups if g["name"] == "functions" for t in g["tools"]} == {"exec", "wait"}
+    assert "automatic text and image" in evidence["robot_binding"]
+    assert "mcp__robot__observe" not in groups[0]["tools"][0]["description"]
+    with pytest.raises(ValueError, match="robot declarations missing"):
+        derived.transform({"input": [{"type": "additional_tools", "tools": []},
+            {"role": "developer", "content": [{"type": "input_text", "text": derived.core}]}]})

@@ -45,8 +45,12 @@ class SkillpackCodexCliPlanner(HybridCodexCliPlanner):
                 "model_context_window": 200000,
                 "mcp_servers.robot.url": self._robot_server.url,
                 "mcp_servers.robot.enabled": True,
+                "mcp_servers.robot.required": True,
+                "mcp_servers.robot.omit_tools_from": ["code_mode"],
                 "mcp_servers.robot.startup_timeout_sec": 30,
                 "mcp_servers.robot.tool_timeout_sec": 1200,
+                "features.code_mode": True,
+                "features.code_mode_only": False,
             })
             if (self.context.model_cfg or {}).get("provider_kind") == "cci":
                 overrides["model_catalog_json"] = "/workspace/preparation/cci-model-catalog.json"

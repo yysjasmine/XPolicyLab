@@ -1,5 +1,6 @@
 import json
 import unittest
+import pytest
 from importlib import import_module
 _module=import_module("XPolicyLab.policy.SenseNova-RoboRSI.cci_protocol")
 request_to_cci,response_to_cli,sse=_module.request_to_cci,_module.response_to_cli,_module.sse
@@ -34,3 +35,12 @@ class ProtocolTests(unittest.TestCase):
         self.assertEqual(events[-1]['type'], 'response.completed')
         self.assertEqual(events[-1]['response'], result)
         self.assertEqual([e['sequence_number'] for e in events], list(range(len(events))))
+@pytest.mark.parametrize("name", ["observe", "vla_propose", "act"])
+def test_direct_robot_namespace_roundtrip(name):
+    raw = {"output": [{"type": "function_call", "id": "fc1", "call_id": "c1",
+                       "name": "mcp__robot."+name, "arguments": "{}"}]}
+    item = response_to_cli(raw)["output"][0]
+    assert item["namespace"] == "mcp__robot"
+    assert item["name"] == name
+    assert item["arguments"] == "{}" and item["call_id"] == "c1"
+

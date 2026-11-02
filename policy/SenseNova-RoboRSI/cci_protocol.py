@@ -102,6 +102,8 @@ def response_to_cli(response):
                     item.update(name=name,namespace=ns)
             elif full=='functions.wait':
                 item.update(name=name,namespace=ns)
+            elif ns=='mcp__robot' and name in {'observe','vla_propose','act'}:
+                item.update(name=name,namespace=ns)
             # An unknown call likewise remains an unknown call for the CLI;
             # model mistakes are not synthetic HTTP/transport failures.
         out.append(item)

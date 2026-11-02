@@ -1,5 +1,5 @@
 {
-  "profile_id": "robodojo_execution_three_tools_v14_continuous_gripper_lean_case",
+  "profile_id": "robodojo_execution_three_tools_v15_direct_mcp",
   "task": "arrange_largest_number",
   "skills": [
     "robo-general",
@@ -10,7 +10,7 @@
     "native_tools.json": "aa97455a660c91cbf250ea98862507baf0d33dc798ffeba0fd440cc0641592b8",
     "robot_tools.json": "5a813922cdf38269f327c9fa4b7fd56a26cbcca37e7ee889cf707dd496354754",
     "skills/arrange_largest_number/SKILL.md": "003f4334b7991cfe2a3f2a8a3bfd44d13435c95a1f7f684ffdaa16606e86a0c8",
-    "skills/robo-general/SKILL.md": "461fc4af2fa0d3478e746cb262168840ecdb0128a24977ca6f40cb6d0afbb142",
+    "skills/robo-general/SKILL.md": "884b0f37ea4f4678f8507efe9cbb1ce8cf82a0ad6847738c7ec3ea9c4cb1a744",
     "skills_instruction.md": "6375cd7d5ec41cf7d02ac0fb8d6d4ddd4f08a3a1927eae680b99944e937fb302",
     "actual_robot_declarations.json": "4c8d3afd8853410888608e6a8c5395a708e6e6f10b6cdfed73d4e758809a5c4b",
     "skills/arrange_largest_number/scripts/arrange.py": "9565e6242b4c778e49f464678eb9811590222c7e771e0898150dd00d3a4c6daf"
@@ -133,7 +133,8 @@
       "one": "fully_open",
       "preview": "same clipped continuous values as stored VLA execution",
       "manual_execution": "preserved through TCP tracking and IK into native joint commands"
-    }
+    },
+    "tool_exposure": "native direct MCP with automatic text and image blocks; generic exec/wait retained"
   },
   "single_markdown_skills": [
     "robo-general",

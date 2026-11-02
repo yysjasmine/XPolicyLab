@@ -18,12 +18,8 @@ class RobotPromptProfile:
             raise ValueError('Expected the three-tool robot profile')
         if {t['name'] for t in self.deferred}!={'mcp__robot__'+n for n in self.expected_tools}:
             raise ValueError('Pinned real MCP runtime declarations differ')
-        # This native CLI defers MCP functions behind functions.exec. Preserve
-        # its actual generated declarations; do not invent direct tool names.
-        for group in self.tools:
-            for tool in group.get('tools',[]):
-                if tool.get('name')=='exec':
-                    tool['description']+='\n\n## robot\n'+ '\n\n'.join('### `'+t['name']+'`\n'+t['description'] for t in self.deferred)
+        # Native direct MCP calls render text and images without JS forwarding.
+        # Generic code execution retains the pinned exec/wait declarations.
         self.skills_instruction=(self.directory/'skills_instruction.md').read_text().strip()
         for relative,digest in self.manifest['sha256'].items():
             p=(self.directory/relative).resolve(strict=True)
@@ -164,11 +160,10 @@ class RobotPromptProfile:
                 if any(p.get('text')==self.core for p in content):
                     new.append({'type':'message','role':'developer','content':[{'type':'input_text','text':self.skills_instruction}]})
         if not found_core or not found_tools:raise ValueError('Pinned CLI prefix missing')
-        if names and names!={'observe','vla_propose','act'}:
+        if names!={'observe','vla_propose','act'}:
             raise ValueError('Actual CLI robot declarations missing: '+str(sorted(names)))
-        if not names:names={t['name'].rsplit('__',1)[-1] for t in self.deferred}
         result['input']=new
         return result,{'profile_id':self.profile_id,'removed_blocks':removed,'changed':result!=original,
                        'actual_robot_tools_preserved':sorted(names),
-                       'robot_binding':'actual deferred MCP functions via functions.exec',
+                       'robot_binding':'native direct MCP; automatic text and image blocks',
                        'user_history_images_and_responses_rewritten':False}

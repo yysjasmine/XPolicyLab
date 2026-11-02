@@ -143,5 +143,9 @@ def test_launch_binds_mcp_capture_and_short_prompt_on_instance(monkeypatch, tmp_
     current, prompt = seen[0]
     assert current.config_overrides["model_providers.runtime.base_url"] == capture.base_url
     assert current.config_overrides["mcp_servers.robot.url"] == server.url
+    assert current.config_overrides["mcp_servers.robot.required"] is True
+    assert current.config_overrides["mcp_servers.robot.omit_tools_from"] == ["code_mode"]
+    assert current.config_overrides["features.code_mode"] is True
+    assert current.config_overrides["features.code_mode_only"] is False
     assert current.config_overrides["model_context_window"] == 200000
     assert "3" not in prompt and "obsolete" not in prompt
