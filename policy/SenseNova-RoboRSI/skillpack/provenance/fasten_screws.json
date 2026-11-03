@@ -66,5 +66,17 @@
     "passed": 5,
     "command": "python3 -m unittest discover -s robodojo/harness/case_skills/v1/tests -p test_fasten_screws_helper.py -q",
     "kind": "offline arithmetic/selection/CLI checks; no simulator"
+  },
+  "completion_restore_20261103": {
+    "sources": [
+      {
+        "path": "skills/fasten-screws/references/completion-checklist.md",
+        "sha256": "47f1620ca0ab70a786564b6c1d5f81c5c80697400c0ec1d8c936f69c1b0572e3"
+      }
+    ],
+    "criterion_rows": 15,
+    "single_main_markdown": true,
+    "main_skill_sha256": "2264584b7c4a96957218e8532fa261b58105e955f6fba50144926f9c1101a3a3",
+    "scope": "all original task-goal/evidence rows plus public completion cautions; obsolete review/stop-window mechanics replaced by current harness protocol; unshipped reference paths described rather than exposed"
   }
 }

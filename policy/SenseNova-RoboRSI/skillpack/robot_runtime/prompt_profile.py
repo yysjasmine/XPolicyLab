@@ -92,7 +92,7 @@ class RobotPromptProfile:
         public=workspace.parent/'tools/BENCHMARK.md'
         if public.exists():public.write_text('# Public robot interface\n\nRead the registered robo-general and current case skills.\n')
         lengths={str(p.relative_to(workspace)):len(p.read_bytes()) for p in workspace.rglob('*.md') if p.is_file()}
-        if any(size>8192 for size in lengths.values()):raise ValueError('Workspace MD exceeds conservative byte cap')
+        if any(size>16384 for size in lengths.values()):raise ValueError('Workspace MD exceeds conservative byte cap')
         receipt={'profile_id':self.profile_id,'removed_legacy_md':removed,'assets':assets,
                  'markdown_utf8_bytes':lengths,'source_preparation_changed':False}
         marker.write_text(json.dumps(receipt,indent=2)+'\n');return receipt

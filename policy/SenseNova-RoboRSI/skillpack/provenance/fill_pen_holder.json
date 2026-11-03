@@ -137,5 +137,17 @@
   "source_archive_sha256": "e4d8304e6e9096105473e91f4f2f5bcc8faae44efcdd7f4a4f6206b1b7a27152",
   "public_source": "https://huggingface.co/datasets/sensenova/SenseNova-RoboRSI-Packages/resolve/d922d28766d11d761228a500ddb7a28abc1b121e/robodojo/v1.0.0/icl/fill_pen_holder.tar.gz",
   "local_paths_redacted": true,
-  "unredacted_local_receipt_sha256": "a01924904d4aa042dac3b3da776df80bc1f0480c3a030f076cc3242788765ff4"
+  "unredacted_local_receipt_sha256": "a01924904d4aa042dac3b3da776df80bc1f0480c3a030f076cc3242788765ff4",
+  "completion_restore_20261103": {
+    "sources": [
+      {
+        "path": "preparation/CHECKLIST.md",
+        "sha256": "fe1b88bcd4f31e4403a960efd6a72ed88d4031f92100fb78bfb53a477fcdc5f3"
+      }
+    ],
+    "criterion_rows": 24,
+    "single_main_markdown": true,
+    "main_skill_sha256": "b9571590cf4e577c46dbb50fb788d385c044e4bc1b256dc9961be5de63dd442c",
+    "scope": "all original task-goal/evidence rows plus public completion cautions; obsolete review/stop-window mechanics replaced by current harness protocol; unshipped reference paths described rather than exposed"
+  }
 }

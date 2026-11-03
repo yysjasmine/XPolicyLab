@@ -47,6 +47,49 @@ Keep the bin and other scene objects supported in their initial arrangement. Bot
 
 Historical pose captions are source measurements. Live targets use current TCP XYZ, downward-relative degree angles and continuous gripper opening.
 
+## Full completion evidence
+
+For each applicable row, record **met / unmet / uncertain** with current RGB/native-step and measured-state evidence. Compare the supplied task reference images. Start uncertain; an intended target, command, demo ending or occlusion is not evidence that this episode is complete. Apply the current instruction and observed inventory; demonstration counts/poses and variations are references, not hidden evaluator tolerances. Keep useful corrections or inspection going within the current harness protocol while checks remain unmet or uncertain. At a due checkpoint include this assessment in `act.review.ending_check`; native done means termination, not necessarily success.
+
+| Check | Required current evidence |
+|---|---|
+| episode / instruction match | Actual episode instruction and scene have been read; task scope is explicit. Public interface has contradictory toaster text; ten demonstrations and final instruction are bottles. |
+| episode / inventory count identity | Every initially visible task object, similar-looking bottle and unused scene entity has a distinct ledger entry; reconcile current count. Four bottles in every training example does not prove the evaluation count. |
+| episode / all bottles accounted | Every live bottle has a traceable current identity/location and observed manipulation history with no unexamined disappearance. Do not infer all bottles are in the bin merely from a clear tabletop. |
+| episode / table and surroundings clear | No intended bottle remains on the table, at an edge, under/behind a wrist or visibly outside the bin. Inspect head and both wrists; hidden areas remain uncertain until observed. |
+| episode / sequence and handover support | Recorded order accounts for each identity; in any handover receiver capture preceded donor relinquishment and transfer was observed. No fixed identity order or mandatory handover count is established. |
+| episode / several ending observations | Several physics-separated ending observations and measured states have been compared with later demo ending frames. Repeated observe calls without act do not advance time. Use useful corrections/retractions/view changes, not arbitrary idle holds. |
+| per bottle / identity | Current bottle identity is reconciled with its initial appearance, size/cap and history; similar white bottles are not conflated. |
+| per bottle / placement | Bottle is observed inside the intended dustbin; distinguish interior from rim, table, floor and occluded unknown location. A fall through the opening is historical evidence; later internal placement may remain occluded. |
+| per bottle / orientation | Record currently visible body/cap orientation and compare with demonstrated variation; no unsupported exact orientation target is imposed. Upright and sideways internal arrangements occur. Occluded final orientation must be uncertain. |
+| per bottle / support | Bottle is supported within the bin, not visibly held, falling, bridging the rim or resting outside. RGB may show rest/contact only partially; hidden contact forces or exact supports are unavailable. |
+| per bottle / stability | Several temporally separated observations show no continued fall, roll, tip, bounce-out or dangling contact for the visible bottle. Training endings do not prove every occluded bottle is settled. A single landing frame is insufficient. |
+| per bottle / released | Neither gripper retains this bottle; the observed release and current empty-jaw views agree. Opening command alone is not release evidence. |
+| scene / dustbin.count identity | The same intended single demonstrated-style bin is identified in the live scene; any additional container is separately inventoried. Do not confuse black robot/background shapes with a second bin. |
+| scene / dustbin.placement orientation | Bin remains at its observed initial placement/orientation, opening accessible, without an accidental relocation or tip. Absolute bin coordinates are layout-dependent; match the live initial observation. |
+| scene / dustbin.support stability | Bin is visibly supported and stable across current ending observations. Infer unseen contact only as inference; observe visible base/pose stability where possible. |
+| scene / table.placement support | Table retains its initial placement, orientation and visible support; bottles are cleared as checked separately. |
+| scene / fixed scene.unchanged | Visible fixtures/background objects remain accounted for in their initial arrangement and support, including those never manipulated. Record meaningful observed differences; do not invent exact object IDs or hidden geometry. |
+| per arm / empty | Current head/wrist views show no retained bottle or other object. Include unused right arm in ep00; a closed/open command is not occupancy evidence. |
+| per arm / gripper open | Current images show open jaws, corroborated by the reported opening command/state. Final reported opening is 1 in all ten demos. |
+| per arm / eef home | Measured EEF position and wxyz orientation have returned near the episode initial/home reference, with current residual recorded. Training residuals: L 0.06–0.24 mm; R 0–2.63 mm, up to 0.97 degrees. They do not define evaluator tolerances. |
+| per arm / joint configuration | All six measured joint coordinates in supplied order are compared with the initial/home configuration; meaningful differences are examined. EEF control only; no joint names or direct joint-action interface were supplied. Do not force a guessed joint command. |
+| per arm / clear stable pose | Arm is clear of objects/bin/other arm and no longer carrying or contacting a bottle; several measured ending states are consistent. |
+| additional unchanged entity / count identity | This initially present unused/unchanged entity remains individually accounted for. |
+| additional unchanged entity / placement orientation | Its current placement and orientation match the live initial state or an explicitly required change. |
+| additional unchanged entity / support stability release | Its visible support/stability and whether it is held are checked; uncertainty is explicit. |
+
+Completion cautions from the public source:
+
+- Every review rechecks every item against current RGB/proprio; an old met label is not proof.
+- Compare several matched demonstration ending frames and measured states, including initial states and all entities.
+- Historical direct evidence such as a visible release is useful, but current support/placement cannot be promoted to direct observation when occluded.
+- A command, aperture, empty table, elapsed time or inferred object trajectory alone does not verify a disposal/support/stability requirement.
+- Exact final bottle orientation and support contacts are not always visible in training and are not known evaluator rules. Record uncertainty, not an invented target.
+- No fixed identity order or handover count is supported across demonstrations. Preserve identity accounting and causal support order in any transfer.
+- Unused objects and arms remain part of the comparison. Include extra live entities even when not manipulated.
+- Native done is termination, not necessarily success; do not use stop to request success or end early because this checklist looks complete.
+
 ## Offline helpers
 
 Run from this skill directory; helpers calculate candidates without actuating.

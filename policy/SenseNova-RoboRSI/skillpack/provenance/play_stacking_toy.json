@@ -153,5 +153,17 @@
     "Current instruction, RGB and measured TCP state determine execution; demonstration counts/layouts are reference examples."
   ],
   "local_paths_redacted": true,
-  "unredacted_local_receipt_sha256": "28571b095299ae568f184da70fca41177c0750578964d2e3b8106adf5dc1517b"
+  "unredacted_local_receipt_sha256": "28571b095299ae568f184da70fca41177c0750578964d2e3b8106adf5dc1517b",
+  "completion_restore_20261103": {
+    "sources": [
+      {
+        "path": "skills/stacking-toy/references/completion-checklist.md",
+        "sha256": "e261eabfc79253f76a40e61c148bc8c5dbecf9ac0c2f7297738d08bee49e5cda"
+      }
+    ],
+    "criterion_rows": 19,
+    "single_main_markdown": true,
+    "main_skill_sha256": "c720366e24c7d4c4277f7ed1a7caae4769c9b22cdb17a2d7034f18caefbadde2",
+    "scope": "all original task-goal/evidence rows plus public completion cautions; obsolete review/stop-window mechanics replaced by current harness protocol; unshipped reference paths described rather than exposed"
+  }
 }

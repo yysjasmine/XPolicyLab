@@ -38,6 +38,35 @@ Verify the three matching near tiles are face up, other original hand tiles rema
 
 Image pose captions are historical; use current TCP targets and continuous `gripper_opening` (0 closed, 1 open).
 
+## Full completion evidence
+
+For each applicable row, record **met / unmet / uncertain** with current RGB/native-step and measured-state evidence. Compare the supplied task reference images. Start uncertain; an intended target, command, demo ending or occlusion is not evidence that this episode is complete. Apply the current instruction and observed inventory; demonstration counts/poses and variations are references, not hidden evaluator tolerances. Keep useful corrections or inspection going within the current harness protocol while checks remain unmet or uncertain. At a due checkpoint include this assessment in `act.review.ending_check`; native done means termination, not necessarily success.
+
+| Check | Required current evidence |
+|---|---|
+| Three matching H IDs | Initial observation: Upright, faces toward robot; identify by actual discarded face Consistently demonstrated ending: Each face up, stable on tabletop just forward of its original row region, separate from neighbors; correct face, released |
+| Other eleven H IDs | Initial observation: Upright, initial face pattern and order Consistently demonstrated ending: All remain upright and tabletop-supported, in original order/vicinity, faces oriented as initially; slight yaw/spacing shifts occur |
+| Discarded O ID | Initial observation: One of four far upright green-backed tiles Consistently demonstrated ending: Face up in the opponent's landing region; same identity as all three kong H tiles; tabletop supported, released |
+| Other three O IDs | Initial observation: Far upright, green backs toward robot Consistently demonstrated ending: Remain upright at original slots, tabletop supported; same visible back orientation |
+| RN_top | Initial observation: Top of near two-high reserve stack, flat green up Consistently demonstrated ending: Drawn, handed off, placed upright immediately to right of original H13; face aligned with hand; free of both grippers and supported |
+| RN_bottom | Initial observation: Bottom of near reserve stack, flat green up Consistently demonstrated ending: Single flat green-up tile stays at the original near reserve location on table |
+| RF_top | Initial observation: Top of far reserve stack, flat green up Consistently demonstrated ending: Still supported by RF_bottom, original far location/orientation |
+| RF_bottom | Initial observation: Bottom of far reserve stack Consistently demonstrated ending: Still flat/tabletop-supported under RF_top, original location |
+| Left arm/gripper | Demonstrated comparison: Empty, open = 1, near measured home `[-.2995,-.3523,.9216]`, wxyz `[.7073,0,0,.7069]` Verification: Current measured pose versus initial home; visual empty fingers, no contact supporting any tile |
+| Right arm/gripper | Demonstrated comparison: Empty, open = 1, remains near new rightmost tile at its adapted release pose; demo xyz x .4357–.4400, y -.1516–-.1503, z .9059–.9108, q roughly `[0,-.347,0,.938]` Verification: Measured pose, layout-relative relationship to tile, open visible gap and supported upright tile; returning right home differs from all ten endings |
+| Opponent arm | Demonstrated comparison: Separate white arm withdrawn/empty, not one of controlled arms Verification: RGB shows discard area clear and unused far tiles maintained |
+| Waiting/history | Demonstrated comparison: Opponent's actual discard precedes robot tipping; correct trio selected from the discarded face Verification: Cite earlier observed discard and matching inspection, not just a current kong-looking arrangement |
+| Stable released result | Demonstrated comparison: Several final frames preserve tile support/orientation while right fingers open and left rests Verification: Compare several current frames at different advanced steps, preferably head plus a wrist; avoid claiming long stability from the short demo release sequence |
+| Current instruction | Demonstrated comparison: Match the episode's actual task, resolving the public instruction mismatch Verification: If non-mahjong, this checklist alone does not specify that task |
+
+Completion cautions from the public source:
+
+- This checklist describes public, task-matched demonstrations. It is not a hidden evaluator specification. Reassess the episode instruction and observed initial inventory. All ten supplied examples have 22 tiles, with physical IDs assigned by initial location. At evaluation, use current RGB/proprio and several advanced observations to mark **each item** met, unmet or uncertain. An issued command, one apparent success image, an inferred identity, or a previous checklist entry is not proof.
+- Evidence format: `{kind: direct&#124;inferred&#124;uncertain, step, camera_or_state_field, claim}`. Attach matching demo episode/frame references. If a tile is occluded, state which part is directly visible and what still needs checking. Repeated `observe()` at the same native step does not establish stability. Support/release require visual base/finger relationships plus motion history; opening alone does not establish either.
+- At ending: **12 near upright** (11 unused originals + drawn tile), **3 near face-up kong tiles**, **3 far upright**, **1 far discard face up**, **3 reserve** (near 1, far 2). Total **22**, no duplicated/unaccounted objects. The original near hand has 14, not 13; the drawn piece makes 15 near tiles including the exposed trio.
+- All tasks/objects can be physically complete while `done=false`. This is a reason to challenge the evidence and test meaningful corrections, not a reason to invent success or invoke stop.
+- Reopen every status against **current** evidence. Record plausible mismatch, expected corrective effect, observed result and next decision. Prioritize wrong/missing kong tile, unsafely leaning tile, absent supplemental draw, drawn tile supported by fingers, row-end pose/orientation, reserve count, unused tiles, then final arms. A fully open gripper does not rule out fingertip contact; an upright-looking silhouette does not prove base contact.
+
 ## Offline helpers
 
 From this skill directory:

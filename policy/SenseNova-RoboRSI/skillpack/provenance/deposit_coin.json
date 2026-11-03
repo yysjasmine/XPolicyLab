@@ -64,5 +64,17 @@
     "passed": 4,
     "command": "python3 -m unittest discover -s robodojo/harness/case_skills/v1/tests -p test_deposit_coin_helper.py -q",
     "kind": "offline arithmetic/selection/CLI checks; no simulator"
+  },
+  "completion_restore_20261103": {
+    "sources": [
+      {
+        "path": "completion_checklist.json",
+        "sha256": "01d6c077058ef3f2b237ee3b3ee7a5708320a5cbcdeb019c2aeba960f13f4201"
+      }
+    ],
+    "criterion_rows": 17,
+    "single_main_markdown": true,
+    "main_skill_sha256": "e92cdd911b028a7a5e44ff3fdb23d957884ba2361e17d800688709a256132c82",
+    "scope": "all original task-goal/evidence rows plus public completion cautions; obsolete review/stop-window mechanics replaced by current harness protocol; unshipped reference paths described rather than exposed"
   }
 }

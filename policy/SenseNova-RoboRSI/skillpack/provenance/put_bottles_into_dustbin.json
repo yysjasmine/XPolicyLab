@@ -67,5 +67,17 @@
   "runtime_subagent_enabled": false,
   "raw_icl_training_in_skill": false,
   "native_physics_validation": false,
-  "data_qc_performed": false
+  "data_qc_performed": false,
+  "completion_restore_20261103": {
+    "sources": [
+      {
+        "path": "policylab/skills/completion_checklist.json",
+        "sha256": "0bcc630d8f7dab4798f5ba458002090f93581a634dc4b6cb5ae6ac460ecbeb1c"
+      }
+    ],
+    "criterion_rows": 25,
+    "single_main_markdown": true,
+    "main_skill_sha256": "15da8c52f37f37ed6bb80211d86073ad6442c73ccaecebbad05757ada19e0a69",
+    "scope": "all original task-goal/evidence rows plus public completion cautions; obsolete review/stop-window mechanics replaced by current harness protocol; unshipped reference paths described rather than exposed"
+  }
 }

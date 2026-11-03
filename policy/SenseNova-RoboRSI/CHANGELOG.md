@@ -3,7 +3,21 @@
 日期采用 Asia/Shanghai。开发目录：`/Users/wusilei/ws/RoboRSI-xpolicy-v2`；分支：`xpolicy-dev`。
 本日志分别记录本地代码、实际部署和原生结果。离线测试不代表仿真成功。
 
+## 2026-11-04
+
+- 任务专属验收条件保留在各case的SKILL.md；robo-general只保留通用检查原则和路由。
+- arrange_largest_number明确双臂相对本回合初始姿态的原生回位验收，区分末端link与工具TCP、完整三维旋转差与各Euler分量；要求预留收尾步数并核对实测到位。
+- 同seed0/layout0原生重试：Astra xhigh在776步成功、100分；834 medium在1050步结算5分。原生物理、评分及步数上限保持不变。
+
 ## 2026-11-03
+
+### 各case skill内保留终态规范（2026-11-03）
+
+- 26个case的主SKILL.md保留公开ICL中的任务终态判据、逐项met/unmet/uncertain及当前证据要求；不新增独立Markdown，不发布原始ICL。
+- 旧版review/stop窗口、旧API及不可用参考文件路径按当前harness接口处理；公开示范测量不作为隐藏评分阈值。
+- 为完整保留主文档内容，Markdown文件上限调整为16384 UTF-8字节；不改模型上下文窗口、原生步数或回合预算。全部54个任务映射分发检查及48项既有回归通过。
+- arrange_largest_number的Astra/834测试使用独立冻结快照；原生结算、基础设施记录及8799格式转换另行验收。
+
 
 ### 原生外层 RGB 直传、JPEG 归档（本地 v2）
 

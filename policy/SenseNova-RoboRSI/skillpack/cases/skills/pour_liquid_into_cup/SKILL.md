@@ -45,3 +45,26 @@ Choose `toward` from current bottle/cup geometry. The calculation assumes a rigi
 - [Pickup](assets/contact.jpg): body grasp and observed lift separation.
 - [Pour](assets/pour.jpg): mouth alignment, bottle sweep and stream entering the cup.
 - [Ending](assets/ending.jpg): upright return with retained grasp and liquid in the cup; inspect the actual bottle-base gap.
+
+## Full completion evidence
+
+For each applicable row, record **met / unmet / uncertain** with current RGB/native-step and measured-state evidence. Compare the supplied task reference images. Start uncertain; an intended target, command, demo ending or occlusion is not evidence that this episode is complete. Apply the current instruction and observed inventory; demonstration counts/poses and variations are references, not hidden evaluator tolerances. Keep useful corrections or inspection going within the current harness protocol while checks remain unmet or uncertain. At a due checkpoint include this assessment in `act.review.ending_check`; native done means termination, not necessarily success.
+
+| Check | Required current evidence |
+|---|---|
+| Current-instance check 1 | Current instruction read; initial full observation and three RGB views saved. |
+| Current-instance check 2 | Actual public return format, native step budget, review boundaries and flags inspected. |
+| Current-instance check 3 | Bottle, body, mouth, cup interior, rim, support plane and approach corridor identified. |
+| Current-instance check 4 | Measured left/right link6 poses read as xyz meters + quaternion wxyz. |
+| Current-instance check 5 | Training calibration/geometry treated as priors and visually checked if used. |
+| Current-instance check 6 | Right arm intended hold/open state chosen from the current scene. |
+| Current-instance check 7 | Open jaws straddle body below shoulder; bottle has not been pushed away or tipped. |
+| Current-instance check 8 | Closed grip followed by observed bottle/wrist co-motion during a small lift. |
+| Current-instance check 9 | Bottle base and swept body/arm clear table, cup and opposite arm. |
+| Current-instance check 10 | Mouth alignment uses actual cup interior and considers height/parallax, not pixels alone. |
+| Current-instance check 11 | Stream visibly enters cup; liquid accumulation is observed rather than assumed from tilt. |
+| Current-instance check 12 | Flow and cup retention inspected across multiple frames; no unsupported volume claim. |
+| Current-instance check 13 | Bottle returned upright before lateral withdrawal; no continued spill. |
+| Current-instance check 14 | Bottle lowered to a justified ending state; actual support/gap and stability assessed. |
+| Current-instance check 15 | Left grasp retained by default, matching every demonstration; right arm remains open. |
+| Current-instance check 16 | Several ending observations and measured arm poses compared with task-matched demos. |

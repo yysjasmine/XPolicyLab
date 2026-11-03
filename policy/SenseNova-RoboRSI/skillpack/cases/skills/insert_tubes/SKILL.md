@@ -38,6 +38,46 @@ Check each required tube individually: correct hole, cap-up, seated, released an
 - [Contact transitions](assets/demo00_contacts.jpg): compare grip, upright entry and release/settling.
 - [Ending views](assets/demo00_endings.jpg): check seated height, unused holes and arm withdrawal.
 
+## Full completion evidence
+
+For each applicable row, record **met / unmet / uncertain** with current RGB/native-step and measured-state evidence. Compare the supplied task reference images. Start uncertain; an intended target, command, demo ending or occlusion is not evidence that this episode is complete. Apply the current instruction and observed inventory; demonstration counts/poses and variations are references, not hidden evaluator tolerances. Keep useful corrections or inspection going within the current harness protocol while checks remain unmet or uncertain. At a due checkpoint include this assessment in `act.review.ending_check`; native done means termination, not necessarily success.
+
+| Check | Required current evidence |
+|---|---|
+| Inventory and identity | Demonstrated initial -> ending state: Exactly three similar light tubes with orange caps, all horizontal on table -> exactly three inserted; no new/missing tube or detached cap What to inspect now: Current head + wrists, full table, both hands, initial object ledger and observed manipulation history. Apparent occlusion is uncertainty, not absence. |
+| Initial leftmost tube | Demonstrated initial -> ending state: Horizontal -> front large-hole column **1**, cap-up, upright, released and stable What to inspect now: Identify by own history; check its entire visible body/axis, cap, target opening, exposed height, separation from jaws, and unchanged position across several real steps. |
+| Initial middle-x tube | Demonstrated initial -> ending state: Horizontal -> front large-hole column **3**, cap-up, upright, released and stable What to inspect now: Same checks separately for this tube. Either arm may have inserted it. Do not substitute a previous tube's verification. |
+| Initial rightmost tube | Demonstrated initial -> ending state: Horizontal -> front large-hole column **5**, cap-up, upright, released and stable What to inspect now: Same checks separately. Confirm the right tube is inside the front-row large opening, not behind it or resting on the plate. |
+| Seating and visible support, **each tube** | Demonstrated initial -> ending state: During release cap drops ~7.7–9.7 head pixels; final body passes through hole, cap remains above plate; position persists after hand leaves What to inspect now: Compare current exposed body height and rack-relative pose to ending crops. In training final cap centroid is about 20.2–22.8 head pixels above its **initial empty-hole** centroid; this is a matching-view diagnostic, not a tolerance rule. Use a side/wrist view if the hole is obscured. Internal tip-to-base contact is inferred, not directly visible in every view and not a separately established rule. |
+| Release, **each tube** | Demonstrated initial -> ending state: Open jaws separate; no final hand contact or retained grasp What to inspect now: Inspect both wrists plus head during/after retreat. Each tube remains after the arm moves away. Opening command/report alone is insufficient. |
+| Stability, **each tube** | Demonstrated initial -> ending state: Last four ending cap centroids differ by <0.14 px; no visible fall, lean or wobble What to inspect now: Compare temporally separated native observations during useful withdrawal/home motion. Similar images from repeated observe calls at the same step do not establish temporal stability. Exact numerical demo stability is evidence, not a hidden threshold. |
+| Rack identity and pose | Demonstrated initial -> ending state: One cyan perforated plate, posts and light base -> same rack, visually same table position, yaw and support What to inspect now: Compare initial and current fixed corners/base/posts with head/wrist views. Inserted tubes occlude cyan pixels, so a changed blue-mask bounding box alone does not establish rack motion. Correct visible displacement when feasible. |
+| Rack support/stability | Demonstrated initial -> ending state: Base supported on table, plate upright -> same, no collapse or hand contact What to inspect now: Inspect base/table relationship and rack landmarks across observations. Do not infer stability merely from tube count. |
+| Unused rack locations | Demonstrated initial -> ending state: Front large columns **2,4**, all **five back large holes**, and all smaller holes empty -> still empty What to inspect now: Inspect the unused row and openings. These unchanged states belong in the comparison even though the short instruction does not enumerate them. |
+| Remaining table objects | Demonstrated initial -> ending state: All three initially loose tubes moved into rack; no unused tube remains on table What to inspect now: Scan original tube locations and any region a failed grasp/drop could reach. No loose or fallen tube, detached cap, or tube held out of view. |
+| Left arm | Demonstrated initial -> ending state: Initial home/open/empty -> same home/open/empty What to inspect now: Compare latest measured link6 xyz and wxyz to saved initial left pose; inspect open empty fingers and clearance from rack/tubes. Training final position errors 0.005–0.229 mm across both arms, rotation errors 0.000015–0.000533 rad; joints within .00238 rad of initial zero, opening exactly 1. These are comparison evidence, not required hidden tolerances. |
+| Right arm | Demonstrated initial -> ending state: Initial home/open/empty -> same home/open/empty What to inspect now: Perform the same fresh comparison independently for the right arm. Earlier return of the right arm does not excuse rechecking it at the ending. |
+| Native outcome/protocol | Inspect current done, native budget and review_due after motion. At a required checkpoint submit current evidence through act.review. Continue useful authorized corrections; the current harness owns termination. Native done is not itself a success label. |
+| D00 | Initial: 0 Ending frames (0-based): 283, 299, 309, 315, 318 |
+| D01 | Initial: 0 Ending frames (0-based): 288, 304, 314, 320, 323 |
+| D02 | Initial: 0 Ending frames (0-based): 283, 299, 309, 315, 318 |
+| D03 | Initial: 0 Ending frames (0-based): 283, 299, 309, 315, 318 |
+| D04 | Initial: 0 Ending frames (0-based): 288, 304, 314, 320, 323 |
+| D05 | Initial: 0 Ending frames (0-based): 281, 297, 307, 313, 316 |
+| D06 | Initial: 0 Ending frames (0-based): 286, 302, 312, 318, 321 |
+| D07 | Initial: 0 Ending frames (0-based): 284, 300, 310, 316, 319 |
+| D08 | Initial: 0 Ending frames (0-based): 284, 300, 310, 316, 319 |
+| D09 | Initial: 0 Ending frames (0-based): 282, 298, 308, 314, 317 |
+
+Completion cautions from the public source:
+
+- This checklist records consistent **demonstrated endings**, not known evaluator logic. Use it with the actual episode instruction. Compare the initial scene, several current observations separated by real native steps, and several matching demonstration ending frames. `observe()` alone does not advance time.
+- All ten demos have three capped tubes, one rack, two arms and no other movable task object apparent in the supplied views. The table remains the support surface. If a new episode visibly contains additional objects, add them to the ledger and assess their instructed/demonstrated role instead of ignoring them.
+- For **each check**, mark `met`, `unmet`, or `uncertain`; record the current observation step, image paths or measured values, and demo references. Label evidence `directly_observed`, `inferred`, or `uncertain`. Inference alone does not verify a requirement. A past claim, issued action, detected cap or gripper opening is not fresh proof.
+- The initial home poses in these demos are approximately:
+- - L xyz `[-.299529,-.352300,.921500]`, wxyz `[.707000,0,0,.707214]`. - R xyz `[ .300471,-.352300,.921500]`, same wxyz.
+- Use the episode's recorded initial measured reference after confirming the home scene, not a fixed timed return script. The **n-10** ending sample still shows the left arm in motion; even **n-4** can remain about a centimeter from home (D00 f315). Compare the return across these frames, and use **n-1** for the measured final home state.
+
 ## Offline helpers
 
 From this skill directory run `python scripts/assist.py plan --input scene.json`. Supply `tubes:[{id,position:[x,y,z]}]`, `target_holes:[{id,position:[x,y,z]}]` and optional `row_direction` (default world +X). It pairs left-to-right ranks along that direction; for three tubes it suggests middle/right/left execution. Supply only the intended holes and use distinct IDs.

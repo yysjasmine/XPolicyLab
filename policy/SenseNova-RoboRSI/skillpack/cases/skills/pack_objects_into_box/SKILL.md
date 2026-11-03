@@ -43,6 +43,34 @@ Finish with all live objects inside, their fronts left, supported, released and 
 
 Legacy pose captions are historical references; command current TCP targets, downward-relative angles in degrees and continuous `gripper_opening`.
 
+## Full completion evidence
+
+For each applicable row, record **met / unmet / uncertain** with current RGB/native-step and measured-state evidence. Compare the supplied task reference images. Start uncertain; an intended target, command, demo ending or occlusion is not evidence that this episode is complete. Apply the current instruction and observed inventory; demonstration counts/poses and variations are references, not hidden evaluator tolerances. Keep useful corrections or inspection going within the current harness protocol while checks remain unmet or uncertain. At a due checkpoint include this assessment in `act.review.ending_check`; native done means termination, not necessarily success.
+
+| Check | Required current evidence |
+|---|---|
+| Current instruction | Required evidence / reference: Quote live instruction; compare with all ten public examples. Any change overrides the prepared task assumptions. |
+| Complete object inventory | Required evidence / reference: Identify every live object; in training: car, sneaker, hammer, toothbrush. Inspect areas hidden behind both arms. Initial ep4/6/7/8 show occlusions. |
+| Car in box | Required evidence / reference: Observed transfer, final support within the interior, release and later stability. ep2 car retry sheet; all final crops. |
+| Sneaker in box | Required evidence / reference: Toe/heel visible during orientation, supported placement and release. ep0 shoe sheet; ep3/4 leaning endings. |
+| Hammer in box | Required evidence / reference: Head/handle identity maintained through transfer, supported after opening. ep0 hammer rotation; ep8/9 final crops. |
+| Toothbrush in box | Required evidence / reference: Bristle/handle identity and transfer, not mistaken for a box edge; release confirmed before occlusion. ep7 brush retry; ep7/8/9 endings. |
+| Every semantic front faces left | Required evidence / reference: Head/hood, toe, hammer metal end (semantic interpretation inferred), brush bristle end points head-left/world −x. Use actual visible features before release and after any contact. Diagonal examples do not establish a numerical angular tolerance. |
+| Objects supported and released | Required evidence / reference: Gripper opens visibly, retreats, object stays supported in box over more than one observation. A command alone, overlap in one image, or disappearance is insufficient. |
+| Contents remain stable | Required evidence / reference: Several observations after release and after later placements; inspect sliding, toppling, bridging a rim, or an object outside. Histories can support an occluded object, but mark uncertainty if later contact could have disturbed it. |
+| Box remains usable/supporting contents | Required evidence / reference: Upright/stable on table with contents contained. Box pose is refreshed after shifts. Exact box coordinates and flap angles are not requirements. |
+| Both grippers clear and open | Required evidence / reference: Images show fingers away from objects/flaps; measured gripper command and latest poses agree with intent. All ten final frames are open. |
+| Final arm posture checked | Required evidence / reference: Compare several ending frames and measured EEF poses/joints to suitable live start and demo ends. All demos retract near home, but this is observed ending behavior, not a proven hidden requirement. |
+| Order and optional operations accounted for | Required evidence / reference: No universal order; document which objects were staged then packed. Empty-box relocation is an observed strategy, not an explicit goal. Avoid treating staging as final placement. |
+| Native state and permissions | Required evidence / reference: Actual returned done/step/budget/review/stop information. done means termination, not necessarily success. Never infer an unreported reward/success. |
+
+Completion cautions from the public source:
+
+- Read this and the public stopping guidance before evaluation motion and again before any stop. Initialize every item as **uncertain**. For each item record current native step, camera/frame path or measured state, relevant history, and demonstration reference. Update after disturbances. “Met” means the available observation supports it, not a claim about a hidden evaluator.
+- Additional live objects or changed instructions require new checklist rows. Remove no explicit task requirement to make the checklist pass. Do not add a requirement for upright cars, a box location, an exact angular tolerance, exact final joint values, or a fixed wait duration; none is established publicly.
+- At a review, submit the five required fields with evidence:
+- - `observed_state`: current scene, object ledger, active arm, support/release, measured posture, remaining steps. - `demo_comparison`: episode/frame references that match or differ, including more than one ending where relevant. - `why_not_done`: known visible defects or truthful uncertainty about native termination; avoid hidden-rule speculation. - `next_plan`: a concrete observation-conditioned correction, ending motion, or verification with reserved budget. - `ending_check`: every item above marked met/unmet/uncertain, supported by current observations and pertinent history.
+
 ## Offline helpers
 
 Run from this skill directory. Helpers calculate candidates without executing motion; inspect the object and free space before using them.

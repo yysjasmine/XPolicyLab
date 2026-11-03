@@ -447,7 +447,7 @@ def validate_case_skillpack(
             raise ValueError(f"Case package files differ from the catalog: {case}")
         for relative, digest in hashes.items():
             checked_file(base, relative, digest)
-        if (base / "SKILL.md").stat().st_size >= 8192:
+        if (base / "SKILL.md").stat().st_size > 16384:
             raise ValueError(f"Case main skill exceeds the UTF-8 byte bound: {case}")
     for task, selection in tasks.items():
         if not re.fullmatch(r"[A-Za-z0-9_]+", task) or not isinstance(selection, dict):

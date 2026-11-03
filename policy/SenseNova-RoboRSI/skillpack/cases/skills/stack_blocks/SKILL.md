@@ -34,6 +34,31 @@ Account for every required block in one vertical stack, with base on the table a
 - [Support and ending](assets/ep00_support.png): inspect actual settling, release and finger clearance.
 - [Wrist face orientation](assets/geometry_face_orientation.png): resolve which visible face is horizontal before using image geometry.
 
+## Full completion evidence
+
+For each applicable row, record **met / unmet / uncertain** with current RGB/native-step and measured-state evidence. Compare the supplied task reference images. Start uncertain; an intended target, command, demo ending or occlusion is not evidence that this episode is complete. Apply the current instruction and observed inventory; demonstration counts/poses and variations are references, not hidden evaluator tolerances. Keep useful corrections or inspection going within the current harness protocol while checks remain unmet or uncertain. At a due checkpoint include this assessment in `act.review.ending_check`; native done means termination, not necessarily success.
+
+| Check | Required current evidence |
+|---|---|
+| Instruction understood | Current evidence required: Exact instruction; any ordering/location constraint obeyed |
+| Three distinct blocks accounted for | Current evidence required: Three identities tracked from initial scene into final tower; no missing/occluded object assumed |
+| One vertical stack | Current evidence required: One block above another above the base; head and useful wrist views agree |
+| Base supported by table | Current evidence required: Base bottom rests on table; no visible hover, unsupported edge, or continuing motion |
+| Middle supported by base | Current evidence required: Broad face overlap; no side-by-side placement or edge-only balance |
+| Top supported by middle | Current evidence required: Top rests on middle with stable alignment and no obvious interpenetration/tilt |
+| All blocks released | Current evidence required: Fingers visibly separated; no block follows a withdrawing hand; both intended grippers open |
+| Fingers and arms clear of tower | Current evidence required: Both arms withdrawn; no tool supporting, pushing, or concealing uncertain contact |
+| Stability across native time | Current evidence required: Several ending observations separated by actual native steps show unchanged support/pose |
+| Left final pose compared | Current evidence required: Measured xyz and shortest quaternion angle from current initial home; interpret any discrepancy |
+| Right final pose compared | Current evidence required: Same comparison, including an arm that did not manipulate |
+| Gripper final state compared | Current evidence required: Both reported opening commands and visible finger separation consistent with open intent |
+| No visible outstanding correction | Current evidence required: Latest images checked after withdrawal/parking; recount/support/release rechecked |
+
+Completion cautions from the public source:
+
+- Fill this from the **latest public observations and this episode's history**. Every item starts `uncertain`; mark it `met` or `unmet` only with evidence. Use image paths/frame or native-step identifiers and measured values where relevant. A target, command, gripper opening, or demo's ending is not proof that the current goal is achieved. Native done is termination, not necessarily success.
+- - Exact current instruction: - Latest observation/native step and saved image paths: - Native done / supplied outcome (if any): - Current budget window, steps remaining, next review boundary: - Reviews completed at the first and second boundaries: - Current-step review submitted (step identifier): - Block identities, sizes/poses and uncertainty: - Initial measured home poses for both arms: - Chosen demonstration reference and why it matches this instance:
+
 ## Offline helpers
 
 From this skill directory run `python scripts/assist.py plan --input stack.json`. Supply `base_center:[x,y,z]` at the intended table contact and `blocks:[{id,height,width,depth}]` in chosen bottom-to-top order. It computes level-centred object positions, support tops, total top height and centred overhang relative to the previous footprint. Dimensions are observed estimates; revise after settling or displacement.

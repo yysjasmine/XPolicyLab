@@ -43,6 +43,28 @@ Use continuous `gripper_opening` from 0 closed to 1 open. Partial openings can e
 
 `assets/fold-sequence.jpg` shows cuff contacts, sleeve draping and the bimanual hem roll. `assets/ending-variation.jpg` compares several post-release shapes. Use their fabric progression; plan live motion from current TCP state.
 
+## Full completion evidence
+
+For each applicable row, record **met / unmet / uncertain** with current RGB/native-step and measured-state evidence. Compare the supplied task reference images. Start uncertain; an intended target, command, demo ending or occlusion is not evidence that this episode is complete. Apply the current instruction and observed inventory; demonstration counts/poses and variations are references, not hidden evaluator tolerances. Keep useful corrections or inspection going within the current harness protocol while checks remain unmet or uncertain. At a due checkpoint include this assessment in `act.review.ending_check`; native done means termination, not necessarily success.
+
+| Check | Required current evidence |
+|---|---|
+| Instruction and object identity | Basis and check: Confirm the current instruction, garment(s), and which visible object is being folded. All supplied demos show one long-sleeve shirt. Do not impose “exactly one” on a different current instruction. |
+| Sleeve folds / order | Basis and check: Demonstrations fold left sleeve, then right, then hem. Check both sleeves are brought inward over the torso. Sequence is demonstrated strategy, not proof the evaluator mandates this order. A pre-folded garment may not need every operation. |
+| Hem/body fold and neatness | Basis and check: Check the near hem is folded over the body, with compact supported layers and reasonable alignment. Inspect exposed sleeve/hem flaps and improve clear defects when useful. Some supplied red/green/blue endings are visibly loose; neither any heap nor a perfect rectangle is established as the hidden rule. |
+| Placement and support | Basis and check: The folded garment remains on the table in its original working area, predominantly over the upper body. Check no fabric is suspended from a gripper or hanging unintentionally off support. There is no demonstrated separate target container, marker or exact world coordinate. |
+| Orientation | Basis and check: Compare folds with the actual garment axes. Demonstrated initial yaws span about -25° to +22° and are largely retained. No fixed world-aligned final yaw is established. |
+| Left and right release | Basis and check: Both openings are commanded open in endings, but also verify visible separation and cloth staying on support during retreat. Cloth following fingers means release is unmet or uncertain. |
+| Settling / stability | Basis and check: Compare several observations after release separated by native steps. Cloth should remain supported with no major unfolding, sliding or persistent pull. `observe()` at the same simulation step cannot establish temporal stability. |
+| Final arm configuration | Basis and check: Compare fresh measured poses and open grippers to the current initial resting poses and demonstrated home. Both arms in every demo return near home; do not leave wrists above the cloth and infer completion. Clearance during return still matters. |
+| Honest outcome | Basis and check: Check native done and public status. If done=true, stop issuing actions and save the result without asserting success unless the permitted response explicitly establishes it. |
+
+Completion cautions from the public source:
+
+- For every row record **met / unmet / uncertain**, the current observation step/image/proprio evidence, and a task-matched demonstration reference. All rows start uncertain in a fresh instance. An issued action, gripper command or one ending image is insufficient. Demonstrated behavior is a comparison target, not a proven hidden evaluator requirement.
+- All twenty demo final arm poses are within 0.000299 m and 0.00203 rad of their own initial poses. This is **measured demonstration behavior, not an evaluator tolerance**. Home reference in these recordings: left approximately [-0.299529,-0.352300,0.921500], right [0.300471,-0.352300,0.921500], quaternion [0.707000,0,0,0.707214]. Use the current observed home and current measured error; do not command a full jump to these coordinates. Last-five-frame robot motion reaches 0.0253 m, so do not claim all robot endings were stationary for five frames.
+- After an authorized end, save `the public demonstration evidence` with the current instruction, actions that visibly helped or failed, evidence paths, termination/stop status as actually returned, and uncertainties. Evaluation experience is local to that isolated instance and is not shared with future episodes.
+
 ## Offline helpers
 
 From this skill directory, supply a JSON file with current `left_hem`, `right_hem` and `collar` XYZ landmarks:

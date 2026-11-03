@@ -159,5 +159,17 @@
   "source_archive_sha256": "124f0a3ad8505a779044bd1f7322a733769fc2558dc370a1e475a7fb1c751fc9",
   "public_source": "https://huggingface.co/datasets/sensenova/SenseNova-RoboRSI-Packages/resolve/d922d28766d11d761228a500ddb7a28abc1b121e/robodojo/v1.0.0/icl/fill_egg_holder.tar.gz",
   "local_paths_redacted": true,
-  "unredacted_local_receipt_sha256": "8cd7eae66b794363fea7f1beac88e23498d281f9275b484e843c44b9804a61c6"
+  "unredacted_local_receipt_sha256": "8cd7eae66b794363fea7f1beac88e23498d281f9275b484e843c44b9804a61c6",
+  "completion_restore_20261103": {
+    "sources": [
+      {
+        "path": "completion_checklist.md",
+        "sha256": "8ba4982f0db1ad61aa61810d0966f4f9f9105208b33a4cf246e8c824fcd64ab6"
+      }
+    ],
+    "criterion_rows": 15,
+    "single_main_markdown": true,
+    "main_skill_sha256": "df805156f4ea6dbf3106d138d61d69fc7df08cf07e96777aed44b000b29d3b5c",
+    "scope": "all original task-goal/evidence rows plus public completion cautions; obsolete review/stop-window mechanics replaced by current harness protocol; unshipped reference paths described rather than exposed"
+  }
 }

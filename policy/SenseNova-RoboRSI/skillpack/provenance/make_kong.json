@@ -59,5 +59,17 @@
   "runtime_subagent_enabled": false,
   "raw_icl_training_in_skill": false,
   "native_physics_validation": false,
-  "data_qc_performed": false
+  "data_qc_performed": false,
+  "completion_restore_20261103": {
+    "sources": [
+      {
+        "path": "completion_checklist.md",
+        "sha256": "170b849cf6273ffc2b02478c80a3cefa52c26be25a1dcf19058d5c1668c75632"
+      }
+    ],
+    "criterion_rows": 14,
+    "single_main_markdown": true,
+    "main_skill_sha256": "0bfb80112b1e0ebe640d5f262a1ccecd69d786698d7a747d60c56938af943209",
+    "scope": "all original task-goal/evidence rows plus public completion cautions; obsolete review/stop-window mechanics replaced by current harness protocol; unshipped reference paths described rather than exposed"
+  }
 }

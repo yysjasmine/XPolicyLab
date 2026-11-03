@@ -33,6 +33,28 @@ Account for every required bowl in one nested stack: bottom supported on the tab
 - [Deeper-bowl variant](assets/ep06_overview.jpg): inspect a different rim/depth and relocated base.
 - [Finger-clearance sequence](assets/ep09_overview.jpg): inspect the stage after opening when a finger can still catch the stack.
 
+## Full completion evidence
+
+For each applicable row, record **met / unmet / uncertain** with current RGB/native-step and measured-state evidence. Compare the supplied task reference images. Start uncertain; an intended target, command, demo ending or occlusion is not evidence that this episode is complete. Apply the current instruction and observed inventory; demonstration counts/poses and variations are references, not hidden evaluator tolerances. Keep useful corrections or inspection going within the current harness protocol while checks remain unmet or uncertain. At a due checkpoint include this assessment in `act.review.ending_check`; native done means termination, not necessarily success.
+
+| Check | Required current evidence |
+|---|---|
+| Instruction and identity | Evidence to seek now: Current instruction is followed; all three observed bowls are accounted for, including a partly occluded bowl. No separate bowl has been left elsewhere. |
+| One stack and order | Evidence to seek now: Three bowls form one nested stack. Identify bottom, middle, top from their visible rims/walls and manipulation history. No bowl is held or lying beside the stack. |
+| Placement and support | Evidence to seek now: The bottom bowl is supported on the tabletop; upper bowls sit within/on the bowl below. No visible hovering, gross lateral offset, or precarious edge support. Use head plus useful wrist view. |
+| Orientation | Evidence to seek now: Bowls open upward sufficiently to nest; no bowl is upside down or stranded on its side. Do not insist on mathematically level rims. |
+| Released | Evidence to seek now: Both grippers are commanded open and appear open. The final bowl stays supported after opening. No bowl is carried by a finger or clamped wall. |
+| Finger clearance | Evidence to seek now: Inner and outer fingers are clear of the stack; retreat does not drag or tip any layer. |
+| Stability over time | Evidence to seek now: Several observations **after physics has advanced** show the same supported stack with arms clear. Repeated observe() calls without act() do not create elapsed physical time. |
+| Final robot pose | Evidence to seek now: Both arms are safely withdrawn, grippers open, and measured poses approach the actual episode's starting/parked poses through clear paths. Record residual pose errors and visible clearance. |
+| Budget/review protocol | Inspect current done, native budget and review_due after motion. At a required checkpoint submit current evidence through act.review. Continue useful authorized corrections; the current harness owns termination. Native done is not itself a success label. |
+
+Completion cautions from the public source:
+
+- Reread the current instruction and public stopping guidance before evaluation actions. This checklist mixes the explicit task requirement with **demonstrated ending behavior**, identified below. It is not a hidden evaluator specification. Replace or extend it if the current episode gives a different instruction.
+- For every item record `met`, `unmet`, or `uncertain`, the current observation/step and image references, and a relevant demonstration reference. Do not promote uncertainty to met because a command was sent. Do not use a static training destination or exact home coordinates as an invented requirement.
+- Inspect support, all three layers, open jaws, finger clearance, stability, and measured parking errors. Make small corrections only where current evidence warrants them. Otherwise use measured holds that advance a few native steps, save and compare multiple frames, and honor required reviews. Never repeatedly manipulate an apparently stable stack merely to force termination.
+
 ## Offline helpers
 
 From this skill directory run `python scripts/assist.py plan --input rims.json`. Supply `held_rim_points` and `receiving_rim_points`, each at least three spread observed/estimated world XYZ points on one approximately horizontal physical rim. It fits XY circles and reports centres, radii, radial residuals, height spans and a horizontal alignment shift. Use more spread points when available. The helper does not infer world points from RGB or prescribe nesting depth; inspect the current views and assumptions.

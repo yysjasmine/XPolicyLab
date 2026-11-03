@@ -42,3 +42,28 @@ These scripts calculate geometry only; they do not inspect images, establish sup
 - [Overview](assets/overview.jpg): arm roles, rack pickup, handoff and placement in a gray-toaster layout.
 - [Second-slice contact](assets/contact.jpg): inspect alignment and withdrawal when another slice already occupies the toaster.
 - [Ending](assets/ending.jpg): compare lever position, released bread, remaining rack slices and open arms.
+
+## Full completion evidence
+
+For each applicable row, record **met / unmet / uncertain** with current RGB/native-step and measured-state evidence. Compare the supplied task reference images. Start uncertain; an intended target, command, demo ending or occlusion is not evidence that this episode is complete. Apply the current instruction and observed inventory; demonstration counts/poses and variations are references, not hidden evaluator tolerances. Keep useful corrections or inspection going within the current harness protocol while checks remain unmet or uncertain. At a due checkpoint include this assessment in `act.review.ending_check`; native done means termination, not necessarily success.
+
+| Check | Required current evidence |
+|---|---|
+| Correct objects/count | Evidence needed in this episode: Two distinct bread slices were acquired from observed bread; do not count one slice twice Basis: Explicit two-slice instruction; identity from RGB |
+| Two-slot placement | Evidence needed in this episode: A distinct slice occupies each observed toaster slot, with bread plane/long axis aligned sufficiently to enter Basis: Placement explicit; separate-slot arrangement demonstrated |
+| Release | Evidence needed in this episode: Both hands visibly separate from bread after opening; slices remain in toaster Basis: Demonstrated ending behavior |
+| Support/stability | Evidence needed in this episode: Several observations across native steps show bread stays in slots without the hands; it may lean on the divider Basis: Demonstrated behavior; perfect verticality is not established |
+| Lever action after placement | Evidence needed in this episode: Both slices were placed before empty hand engaged lever; lever visibly moved down relative to its fixed track Basis: Instruction order and demonstrated sequence |
+| Lever ending | Evidence needed in this episode: Lever remains lower on its track after withdrawal; distinguish tab from white toaster's round knob Basis: Demonstrated ending; exact latch rule unknown |
+| Hands empty/open | Evidence needed in this episode: All three views support empty hands clear of food/toaster; intended openings open, measured state compatible Basis: Demonstrated behavior, not grasp-state ground truth |
+| Arms clear/near rest | Evidence needed in this episode: Compare current link6 poses and raw joint states with initial and demonstrated ending states; route clear of objects Basis: Demonstrated near-home behavior; exact zeros not a proven criterion |
+| No unresolved observation | Evidence needed in this episode: Occlusions, suspected rim catches, rebounds or slips have been checked using another view or a safe clear pose Basis: Evidence quality needed to claim preceding items |
+
+Completion cautions from the public source:
+
+- The public instruction requires **two bread slices placed into the toaster, then the lever pressed down**. The supporting conditions below come from demonstrated behavior, not a claimed hidden evaluator. Reread the current `the public demonstration evidence` before evaluation actions.
+- For each entry maintain `status = met &#124; unmet &#124; uncertain`, the current observation/native step, concrete evidence, and a task-matched demo reference. Mark uncertain when occluded; an issued command, opening value or remembered earlier image is insufficient. Update after each manipulation transition and at every review. Keep observations of failed attempts too.
+- Do not invent requirements for color change, heating duration, toast ejection, restoring four slices, touching a round knob, exact slot order, exact millimeter insertion depth, exact gripper opening trajectory or an exact final pose. Initial bread already has a browned texture. Two slices remain in the training racks because those scenes start with four; the instruction requires moving two.
+- At every `review_due`, stop the action loop, inspect RGB/proprio and this episode's saved history, compare with relevant demos, then call public `review` with:
+- - `observed_state`: current bread locations, support/contact, lever, measured arms and uncertainty. - `demo_comparison`: matching demo/phase/frame references and observable similarities/differences. - `why_not_done`: native done is false; list incomplete/uncertain conditions without inventing hidden rules. If everything appears matched, say that the native outcome is still unconfirmed. - `next_plan`: concrete observation-conditioned correction or verification, with remaining-step awareness. - `ending_check`: every checklist item marked met/unmet/uncertain with current evidence and refs.
+- An early review is allowed but does not move the scheduled boundary. Record reviews and boundary/native step information from the actual public return fields; do not guess base budgets from demo lengths.

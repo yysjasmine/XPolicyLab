@@ -36,6 +36,36 @@ Account for every required doll once, in one left-to-right ascending row. Check 
 - [Green-family endings](assets/ep02_endings.jpg): compare increasing size, one-row placement and hand clearance.
 - [Duck-family endings](assets/ep03_endings.jpg): use for the alternate silhouette and uprightness comparison.
 
+## Full completion evidence
+
+For each applicable row, record **met / unmet / uncertain** with current RGB/native-step and measured-state evidence. Compare the supplied task reference images. Start uncertain; an intended target, command, demo ending or occlusion is not evidence that this episode is complete. Apply the current instruction and observed inventory; demonstration counts/poses and variations are references, not hidden evaluator tolerances. Keep useful corrections or inspection going within the current harness protocol while checks remain unmet or uncertain. At a due checkpoint include this assessment in `act.review.ending_check`; native done means termination, not necessarily success.
+
+| Check | Required current evidence |
+|---|---|
+| Instruction matched | Basis: Public task requirement Evidence needed in the current episode: Quote current instruction; note any difference and adjust goal |
+| All five identities accounted for | Basis: Public task requirement Evidence needed in the current episode: Five distinct observed dolls in the ledger, no missing/occluded/untracked doll |
+| Correct size ranks | Basis: Public task requirement Evidence needed in the current episode: Physical size order established with family/shape and depth-aware comparison; resolve ambiguity |
+| Left-to-right ascending order | Basis: Public task requirement Evidence needed in the current episode: Each adjacent pair increases in physical size in the current row; left/right anchored to scene |
+| One row | Basis: Public task requirement Evidence needed in the current episode: Five footprint/axis positions form the intended single row, not two depth rows or a stack |
+| Separate supported placements | Basis: Demonstrated ending behavior supporting a row Evidence needed in the current episode: Each doll rests on table, visibly separated, no doll balanced on another or supported by fingers |
+| Upright/stable orientation | Basis: Demonstrated ending behavior Evidence needed in the current episode: Generally upright like matched dolls in oblique views; no ongoing topple/roll. Perspective lean alone is insufficient |
+| All dolls released | Basis: Demonstrated ending behavior Evidence needed in the current episode: Fingers visibly clear; dolls remain at destinations after arms retreat |
+| Stability over time | Basis: Demonstrated ending behavior Evidence needed in the current episode: Compare several distinct later native-step observations, including after nearby arm motion; observe() alone does not advance time |
+| Both grippers open | Basis: Demonstrated ending behavior Evidence needed in the current episode: Intent/opening plus RGB separation; no retained object |
+| Final arms clear / comparable home | Basis: Demonstrated ending behavior Evidence needed in the current episode: Measured poses plus RGB, no finger/arm supporting or colliding with a doll; compare initial and demonstrated home |
+| Native termination understood | Basis: Public protocol Evidence needed in the current episode: Record actual done and any public outcome. done is not necessarily success |
+| Review/stop eligibility satisfied | Inspect current done, native budget and review_due after motion. At a required checkpoint submit current evidence through act.review. Continue useful authorized corrections; the current harness owns termination. Native done is not itself a success label. |
+
+Completion cautions from the public source:
+
+- Reread the public completion/stopping guidance before evaluation actions. Use the current instruction. All training instructions request five dolls in a row, smallest to largest from left to right. Ending behavior provides comparison evidence; it does not reveal hidden evaluator tolerances.
+- Before any stop, mark **every** item met, unmet or uncertain, with current frame, measured-state/history evidence and a task-matched demonstration reference. An action request, commanded opening or one image alone is insufficient.
+- Home comparison prior (xyz meters, quaternion wxyz):
+- - Left: approximately [−.29953,−.35230,.92150, .70700,0,0,.70721]. - Right: approximately [.30047,−.35230,.92150, .70700,0,0,.70721]. - All training endings return close to these poses with open grippers. Prefer the episode's observed initial home if consistent, and use a clear return route. Tiny numerical equality is not a proven success tolerance.
+- Suggested local ledger structure (replace every placeholder with actual evidence):
+- Review fields must be factual: `observed_state`, `demo_comparison`, `why_not_done`, `next_plan`, `ending_check`. When the apparent row is complete but done is false, say that native completion remains unconfirmed; do not invent an evaluator cause. Check support, release, stability and final poses, then do useful corrections or verification. Avoid rearranging a stable correct row solely to spend steps.
+- Stop is not a success button. A completion-based stop is unjustified with any unmet/uncertain checklist item or before the public eligibility boundary. If no useful recovery remains after that boundary, state the unmet items and concrete reason recovery is impossible, and label stopping as abandonment. If done occurs first, stop issuing actions, save the actual observed outcome and end the response.
+
 ## Offline helpers
 
 From this skill directory run `python scripts/assist.py plan --input dolls.json`. Supply `dolls:[{id,size,radius}]`, `row_start:[x,y,z]` for the smallest centre, optional horizontal `row_direction` (default +X), `gap` (default 0.02) and `available_length`. Size is a comparable observed physical dimension, radius the footprint half-width along the row. The helper sorts ascending and spaces centres by adjacent radii plus gap; tied sizes need visual resolution. All lengths are metres.

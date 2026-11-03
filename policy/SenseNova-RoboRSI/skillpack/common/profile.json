@@ -9,8 +9,8 @@
     "agent_core.md": "beef93c94767c02a18c0b80b220ff55b49358b8aa366e2dd3602d55cf1035b8b",
     "native_tools.json": "aa97455a660c91cbf250ea98862507baf0d33dc798ffeba0fd440cc0641592b8",
     "robot_tools.json": "ae26629f2a3c8fdf4a51271894d9ea76719b13c71b669868d71617029de97f52",
-    "skills/arrange_largest_number/SKILL.md": "d8411655badbb507539e54fe228d49de014cad00dfd733b95d8dd8761542f5ea",
-    "skills/robo-general/SKILL.md": "ea113aeebeb665dbb244ab630924022a1694d095ebcf8c0e25336a2e31f04923",
+    "skills/arrange_largest_number/SKILL.md": "ae20b680034040b2d7956a46bc4a3622f8678726e0c3a4bc4fe17fc6f9373aaa",
+    "skills/robo-general/SKILL.md": "35681b1eeb77783729bc1f81297d7d4721c62c5574dc48badeee55734d018ea8",
     "skills_instruction.md": "f1e7807b90f368244876392fca55455668f9d299ad4bc307e94324b8a5b5bf1b",
     "actual_robot_declarations.json": "968ea80e377d4464a141a319891ef21acae2a78d49114dcb06220574520f184e",
     "skills/arrange_largest_number/scripts/arrange.py": "82a3363e3a7ecc0091f80f1684a6081577e0263c415807a5f028102352baaa35"

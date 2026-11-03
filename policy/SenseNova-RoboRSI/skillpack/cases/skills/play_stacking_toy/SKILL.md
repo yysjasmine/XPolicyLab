@@ -35,6 +35,38 @@ Every required piece is accounted for on its assigned height-ranked peg, each ho
 - [Hole/peg contact](assets/ep00_contact.jpg): inspect alignment, descent and release for a round piece.
 - [Board endings](assets/board_endings.jpg): compare family counts, flat layers and base pose across layouts.
 
+## Full completion evidence
+
+For each applicable row, record **met / unmet / uncertain** with current RGB/native-step and measured-state evidence. Compare the supplied task reference images. Start uncertain; an intended target, command, demo ending or occlusion is not evidence that this episode is complete. Apply the current instruction and observed inventory; demonstration counts/poses and variations are references, not hidden evaluator tolerances. Keep useful corrections or inspection going within the current harness protocol while checks remain unmet or uncertain. At a due checkpoint include this assessment in `act.review.ending_check`; native done means termination, not necessarily success.
+
+| Check | Required current evidence |
+|---|---|
+| T1 | Condition to check: Correct current instruction and scene Required current evidence: Read instruction; identify actual task and object families |
+| I1 | Condition to check: Inventory complete: every initial toy piece accounted for Required current evidence: Initial multi-camera count + individual motion ledger + current remaining-table/board scan |
+| I2 | Condition to check: No loose, fallen, hidden-under-arm, or retained piece Required current evidence: Current head and relevant wrist/side views; examine original occlusions and hand interiors |
+| P1 | Condition to check: Four-piece family on tallest peg Required current evidence: Verify identities/count through visible layer edges and individually observed placements |
+| P2 | Condition to check: Three-piece family on second-tallest peg Required current evidence: Same; do not count only visible top face |
+| P3 | Condition to check: Two-piece family on third-tallest peg Required current evidence: Same |
+| P4 | Condition to check: One-piece family on shortest peg Required current evidence: Visible single piece on correct peg, no duplicate/missing item |
+| O1 | Condition to check: Each piece is flat, center hole surrounds intended peg Required current evidence: Head + wrist view of threading and post-release placement; no edge resting against peg |
+| O2 | Condition to check: Every layer is supported by base or previous layer Required current evidence: Layer/base contact visible from useful view; no floating, side lean or finger support |
+| O3 | Condition to check: Stack stable after release and hand withdrawal Required current evidence: Piece persists in multiple temporally separated observed states; no tilt, slide or collapse |
+| O4 | Condition to check: Shape orientation compared, any difference assessed Required current evidence: Rectangles generally across base, squares roughly aligned, stars point back; inspect tilted/fanned layers |
+| B1 | Condition to check: One cream base remains flat, in its initial place/orientation Required current evidence: Compare current corners/edges to initial image, accounting for occlusion; check table support |
+| B2 | Condition to check: All four pegs remain upright and attached; all occupied Required current evidence: Visible exposed peg portions and aligned stacks, compare initial peg axes |
+| U1 | Condition to check: Other initially present/unused objects remain accounted for Required current evidence: Explicit list from this episode; compare placement, orientation, support, stability, and note cropped/unknown extent |
+| L1 | Condition to check: Left gripper empty and fully open Required current evidence: Current measured opening plus visual empty fingers, not opening alone |
+| R1 | Condition to check: Right gripper empty and fully open Required current evidence: Current measured opening plus visual empty fingers |
+| L2 | Condition to check: Left arm returned to initial demonstrated home pose/posture Required current evidence: Current xyz/wxyz error to saved initial pose; compare six joints in recorded order and RGB posture |
+| R2 | Condition to check: Right arm returned to initial demonstrated home pose/posture Required current evidence: Same, including orientation and actual measured arrival |
+| E1 | Condition to check: Native termination/status understood Required current evidence: Check actual latest done and budget/review metadata |
+
+Completion cautions from the public source:
+
+- This is a **demonstration-derived checklist**, not a hidden evaluator specification. The episode instruction is authoritative. All ten matched demos show the conditions below; read variations and uncertainty in `the public demonstration evidence`. Preserve unchanged objects in the comparison.
+- Use statuses **met / unmet / uncertain** and evidence labels **directly observed / inferred / uncertain**. Cite current frame/step and measured values, plus matching demo frame(s). A command, earlier checklist assertion, a single ambiguous image, or inference alone does not verify a condition. Capture several observations with useful retreat/viewpoint/correction actions between them where needed. `observe()` alone does not advance physics.
+- Do not impose the demo residuals as exact success thresholds. As an operational goal, approach saved home within a few millimeters and a small angle, then inspect actual posture; continue correction when the difference is visible/measured and relevant. Keep exact residuals in the review so the next decision is grounded.
+
 ## Offline helpers
 
 From this skill directory run `python scripts/assist.py plan --input inventory.json`. Supply `pieces:[{id,family}]` and `pegs:[{id,position:[x,y,z],height}]`, with observed heights above the base. It groups pieces, sorts counts and heights, and returns family-to-peg assignments. IDs must be distinct. Tied counts/heights need an instruction-based decision instead of an automatic rank mapping.

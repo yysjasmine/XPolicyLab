@@ -3,13 +3,13 @@
   "robot_runtime/execution.py": "faea455fb03cae35a7adf423edfda4a9b4d9a39fc18b8abe72808b8c620b44c7",
   "robot_runtime/robot_tools.py": "7a42c91b3b76ec2a0b223313311fb965b007197b7edfcf43f9fe1de4ab4032c4",
   "robot_runtime/tcp_pose.py": "a3c544ceada5e6ac7d99165b13c757004ddfdd51cda354f67fccfe54a196db8d",
-  "robot_runtime/prompt_profile.py": "81de052321636310b37040aa5e624858f6fc8a676c5695ac8748682541ec4644",
+  "robot_runtime/prompt_profile.py": "42a24b50ae7238cdea75aded46f85c0055eef971934f3d5370a3103bc3fb6745",
   "common/agent_core.md": "beef93c94767c02a18c0b80b220ff55b49358b8aa366e2dd3602d55cf1035b8b",
   "common/native_tools.json": "aa97455a660c91cbf250ea98862507baf0d33dc798ffeba0fd440cc0641592b8",
   "common/skills_instruction.md": "f1e7807b90f368244876392fca55455668f9d299ad4bc307e94324b8a5b5bf1b",
-  "common/profile.json": "c383b77237f79e7726c0cd42a7f71ab580dd0f33b9d9e6976eba0e3b64aab106",
+  "common/profile.json": "e490760702804282357c8fb9713a70d65f8e86c425fbfce62e65d9d1ff665fab",
   "common/actual_robot_declarations.json": "968ea80e377d4464a141a319891ef21acae2a78d49114dcb06220574520f184e",
   "common/robot_tools.json": "ae26629f2a3c8fdf4a51271894d9ea76719b13c71b669868d71617029de97f52",
-  "common/skills/robo-general/SKILL.md": "ea113aeebeb665dbb244ab630924022a1694d095ebcf8c0e25336a2e31f04923",
+  "common/skills/robo-general/SKILL.md": "35681b1eeb77783729bc1f81297d7d4721c62c5574dc48badeee55734d018ea8",
   "robot_runtime/gripper_monitor.py": "847ea1a4dbbe9bee03142ed969eb8e4a386ab457f2688bd694f4999b8fe3b06b"
 }

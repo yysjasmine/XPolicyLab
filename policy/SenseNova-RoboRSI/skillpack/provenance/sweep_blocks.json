@@ -67,5 +67,17 @@
     "passed": 4,
     "command": "python3 -m unittest discover -s robodojo/harness/case_skills/v1/tests -p test_sweep_blocks_helper.py -q",
     "kind": "offline lane geometry; no simulator"
+  },
+  "completion_restore_20261103": {
+    "sources": [
+      {
+        "path": "skills/broom-dustpan/references/completion.md",
+        "sha256": "4a5173ebb4a196b62b403eb89d0c51c082d4654bb685c9518192b5ebc1ee1d21"
+      }
+    ],
+    "criterion_rows": 12,
+    "single_main_markdown": true,
+    "main_skill_sha256": "b5867d11f0684b1ced73a8afb69d58414d34fbea4c38be8c04f378f506f1a8f0",
+    "scope": "all original task-goal/evidence rows plus public completion cautions; obsolete review/stop-window mechanics replaced by current harness protocol; unshipped reference paths described rather than exposed"
   }
 }

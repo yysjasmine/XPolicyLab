@@ -55,5 +55,17 @@
     "passed": 4,
     "command": "python3 -m unittest discover -s robodojo/harness/case_skills/v1/tests -p test_insert_key_helper.py -q",
     "kind": "offline directed alignment and pivot math; no simulator"
+  },
+  "completion_restore_20261103": {
+    "sources": [
+      {
+        "path": "completion_checklist.json",
+        "sha256": "40abaf1a8c904167e6fbec17a4cfc85956028b3b9030b49b4f7d8e4e85410883"
+      }
+    ],
+    "criterion_rows": 14,
+    "single_main_markdown": true,
+    "main_skill_sha256": "760df400bc0aa5a089093ebfa3499dd21113c6ac3079268a3ef84bbc9a7732ca",
+    "scope": "all original task-goal/evidence rows plus public completion cautions; obsolete review/stop-window mechanics replaced by current harness protocol; unshipped reference paths described rather than exposed"
   }
 }

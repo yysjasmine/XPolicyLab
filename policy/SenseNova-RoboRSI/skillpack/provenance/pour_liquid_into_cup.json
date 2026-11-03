@@ -65,5 +65,17 @@
     "path": "robodojo/harness/robot_tools/v1/tcp_pose.py",
     "sha256": "a3c544ceada5e6ac7d99165b13c757004ddfdd51cda354f67fccfe54a196db8d",
     "reason": "Match public downward-reference Rz(yaw) Ry(roll) Rx(pitch); shared file unchanged"
+  },
+  "completion_restore_20261103": {
+    "sources": [
+      {
+        "path": "COMPLETION_CHECKLIST.md",
+        "sha256": "f7597194f607c37ed017c7ffaa0c2bbcabca831589bdcf2bb97fd5bad9bd43c6"
+      }
+    ],
+    "criterion_rows": 16,
+    "single_main_markdown": true,
+    "main_skill_sha256": "9a1cb989c239b0d16689d197c04ea7b2c72259a98a729a686152760452eb5c79",
+    "scope": "all original task-goal/evidence rows plus public completion cautions; obsolete review/stop-window mechanics replaced by current harness protocol; unshipped reference paths described rather than exposed"
   }
 }

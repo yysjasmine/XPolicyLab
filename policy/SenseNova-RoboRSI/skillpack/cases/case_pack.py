@@ -48,8 +48,8 @@ class CaseSkillLibrary:
             raise ValueError('Case package escapes library')
         if {p.relative_to(root).as_posix() for p in root.rglob('*.md')} != {'SKILL.md'}:
             raise ValueError('A case skill must contain exactly one Markdown file')
-        if (root/'SKILL.md').stat().st_size > 8192:
-            raise ValueError('Case MD exceeds conservative 8192-byte token bound')
+        if (root/'SKILL.md').stat().st_size > 16384:
+            raise ValueError('Case MD exceeds conservative 16384-byte main-document bound')
         actual = {p.relative_to(root).as_posix() for p in root.rglob('*') if p.is_file()}
         if actual != set(pack['sha256']):
             raise ValueError('Unregistered or missing case resources')
@@ -96,7 +96,7 @@ class CaseSkillLibrary:
                 if count != 1:
                     raise ValueError('Case skill name is missing')
                 main.write_text(text)
-            if (new_case/'SKILL.md').stat().st_size > 8192:
+            if (new_case/'SKILL.md').stat().st_size > 16384:
                 raise ValueError('Alias MD exceeds conservative token bound')
         moved = []
         for path in sorted(skills.iterdir()):

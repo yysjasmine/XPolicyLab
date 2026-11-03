@@ -21,9 +21,25 @@ Use TCP XYZ in metres and pitch/roll/yaw in degrees; zero angles point verticall
 
 Head projection uses original 640x480 pixels and an assumed plane height. Use current wrist RGB for close alignment and held/tilted digits.
 
-## Check the ending
+## Completion checklist
 
-Account for every digit once; verify descending order, upright/readable glyphs, support and clearance. Check release and stability after actual motion, then return both empty, open arms clear of the row using raised waypoints. `observe` alone does not advance physics. The harness owns termination and limits.
+Assess each applicable item as **met / unmet / uncertain**, citing current RGB/native steps and measured state. Compare the ending reference. Commands, demos and occlusion do not prove completion.
+
+| Check | Evidence required in this episode |
+|---|---|
+| Instruction and inventory | Read the instruction; identify every digit and pad. Resolve count/identity discrepancies, including 1/7 and 6/9. |
+| Coverage | Account for every digit exactly once in the row; none remains held, staged, at its source or unchecked behind an occlusion. |
+| Largest number | Read the actual row left to right and compare with the confirmed inventory sorted descending. Planned assignments do not prove actual order. |
+| Position and support | One digit per assigned pad. Inspect the whole footprint and support; no overlap, obvious overhang, floating or falling. Obtain a clear view when uncertain. |
+| Orientation | Glyphs are upright/readable as demonstrated; disambiguate 6/9 and 1/7. Demo yaw variation does not establish an exact tolerance. |
+| Release | Both hands visibly empty and commanded open; digits stay behind as fingers lift and arms withdraw. Opening alone does not prove separation. |
+| Stability | Compare views separated by actual native physics steps after release: occupancy, order, orientation and support remain stable. Observe alone advances no physics. |
+| Final robot state | Record both measured initial TCP poses. Return both empty/open arms through raised clear waypoints. For this case, both native end-links must be within 0.150 m per position axis and 20 degrees full 3D rotation of their initial poses. Verify measured arrival, not a requested target or home-looking image. |
+| Current evidence and protocol | Recheck after withdrawal/parking; preserve a clear view before occlusion, inspect done/review/budget state and resolve uncertain execution before replay. |
+
+Reserve native steps for release, retreat and return. Target the measured initial TCP poses with margin inside the limits; inspect actual convergence/status/residuals. The native check uses end-link positions and one 3D rotation angle, not separate Euler differences; tool targets use gripping-face-centre TCP. Budget exhaustion during return leaves this item unmet/uncertain. Correct digits alone cannot establish final success while an arm remains outside its return limits.
+
+Use `assets/ending.jpg` for support, release and final clearance. The verified return limits apply to this case only. Do not invent other evaluator tolerances or equate TCP with digit centre. Continue permitted useful correction/inspection for unmet/uncertain items. At required checkpoints include this assessment in `act.review.ending_check`, with observed_state, demo_comparison, why_not_done and next_plan. The harness owns termination/limits; native done need not mean success.
 
 ## Visual references
 

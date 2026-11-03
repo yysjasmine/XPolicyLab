@@ -60,5 +60,17 @@
     "passed": 3,
     "command": "python3 -m unittest discover -s robodojo/harness/case_skills/v1/tests -p test_hang_mugs_helper.py -q",
     "kind": "offline peg geometry checks; no simulator"
+  },
+  "completion_restore_20261103": {
+    "sources": [
+      {
+        "path": "skills/hang-mugs/references/completion.md",
+        "sha256": "09ba2fdc0d8894efd2451a7ccc58817bc78445a1c420f432908ba054caee1c70"
+      }
+    ],
+    "criterion_rows": 10,
+    "single_main_markdown": true,
+    "main_skill_sha256": "33fc251106cd18110603bc73c2bacf7b30060dcfe710698bdd0d9c355ac4591a",
+    "scope": "all original task-goal/evidence rows plus public completion cautions; obsolete review/stop-window mechanics replaced by current harness protocol; unshipped reference paths described rather than exposed"
   }
 }

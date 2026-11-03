@@ -200,5 +200,17 @@
     "Current instruction, RGB and measured TCP state determine execution; demonstration counts/layouts are reference examples."
   ],
   "local_paths_redacted": true,
-  "unredacted_local_receipt_sha256": "771c17931fedd4510311fada466271fdd34a7984a87599bb17816e139fd63fbf"
+  "unredacted_local_receipt_sha256": "771c17931fedd4510311fada466271fdd34a7984a87599bb17816e139fd63fbf",
+  "completion_restore_20261103": {
+    "sources": [
+      {
+        "path": "tower_study/docs/completion_checklist.md",
+        "sha256": "efe044e1533d581ca7a37558b99acb6af589db1b8010d99fdc439e048de4591b"
+      }
+    ],
+    "criterion_rows": 16,
+    "single_main_markdown": true,
+    "main_skill_sha256": "a6bb362934db8f34880e82b6ce2a3c1c30b433b9e6cb0530a86f4ff9a5ab18a7",
+    "scope": "all original task-goal/evidence rows plus public completion cautions; obsolete review/stop-window mechanics replaced by current harness protocol; unshipped reference paths described rather than exposed"
+  }
 }

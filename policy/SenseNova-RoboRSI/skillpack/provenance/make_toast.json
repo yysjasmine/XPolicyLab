@@ -55,5 +55,17 @@
     "passed": 4,
     "command": "python3 -m unittest discover -s robodojo/harness/case_skills/v1/tests -p test_make_toast_helper.py -q",
     "kind": "offline geometry; no simulator"
+  },
+  "completion_restore_20261103": {
+    "sources": [
+      {
+        "path": "completion_checklist.md",
+        "sha256": "d56fce2b1c926de849bf79665d9f4d08a93905f45c7cff274289fd3721a6df9d"
+      }
+    ],
+    "criterion_rows": 9,
+    "single_main_markdown": true,
+    "main_skill_sha256": "bab11dbfba4290a38631e58dbe1469befba00222244d7f7ec6d6db2a517edbc6",
+    "scope": "all original task-goal/evidence rows plus public completion cautions; obsolete review/stop-window mechanics replaced by current harness protocol; unshipped reference paths described rather than exposed"
   }
 }

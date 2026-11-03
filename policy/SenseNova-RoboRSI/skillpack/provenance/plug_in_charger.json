@@ -60,5 +60,17 @@
     "passed": 4,
     "command": "python3 -m unittest discover -s robodojo/harness/case_skills/v1/tests -p test_plug_in_charger_helper.py -q",
     "kind": "offline geometry; no simulator"
+  },
+  "completion_restore_20261103": {
+    "sources": [
+      {
+        "path": "completion_checklist.json",
+        "sha256": "e48d05f29e415594305ac537149c3df5b1d8e1bce244ccde203d32f5a4c7f7f2"
+      }
+    ],
+    "criterion_rows": 14,
+    "single_main_markdown": true,
+    "main_skill_sha256": "aabf4415b0405e48a10a32be48660c8f2711f54c27b67e95d3e30a7f40667efe",
+    "scope": "all original task-goal/evidence rows plus public completion cautions; obsolete review/stop-window mechanics replaced by current harness protocol; unshipped reference paths described rather than exposed"
   }
 }

@@ -39,6 +39,22 @@ Separate through a clear direction and lift without dragging, then open. Save a 
 
 Pose captions are historical measurements. Live targets use current TCP XYZ, downward-relative degree angles and continuous gripper opening.
 
+## Full completion evidence
+
+For each applicable row, record **met / unmet / uncertain** with current RGB/native-step and measured-state evidence. Compare the supplied task reference images. Start uncertain; an intended target, command, demo ending or occlusion is not evidence that this episode is complete. Apply the current instruction and observed inventory; demonstration counts/poses and variations are references, not hidden evaluator tolerances. Keep useful corrections or inspection going within the current harness protocol while checks remain unmet or uncertain. At a due checkpoint include this assessment in `act.review.ending_check`; native done means termination, not necessarily success.
+
+| Check | Required current evidence |
+|---|---|
+| Correct object and target | Basis: Explicit public instruction; all demos Required evidence to assess: The manipulated red/pink solid T and the gray T pad are identified in current RGB. If the current instruction differs, revise this checklist. |
+| Intended action and support | Basis: Instruction says push; demos show tabletop sliding Required evidence to assess: Block is supported and appears flat on the table/pad, not carried, wedged or tipped. Confirm side/contact views where possible. |
+| Position alignment | Basis: Explicit “align it precisely” Required evidence to assess: Entire red T footprint matches the remembered/visible gray T after accounting for height/parallax. Check crossbar ends, stem edges and tip; a matching centroid is insufficient. No exact native tolerance is known. |
+| Orientation alignment | Basis: Required by matching the T shapes Required evidence to assess: Stem points the correct direction; crossbar and stem axes match. A 180° reversal is not acceptable shape alignment. |
+| Order | Basis: No extra ordering requirement in public instruction Required evidence to assess: There is one block and one goal. Arm choice and handoffs vary. Do not add an invented arm order or required intermediate pose. Mark as no additional order requirement supported, with instruction reference. |
+| Separation/release | Basis: Demonstrated ending behavior in all ten demos Required evidence to assess: Fingers are visibly clear of the T and the object remains supported; opening alone does not establish separation. Compare pre-release, release and subsequent frames. |
+| Stability after release | Basis: Demonstrated ending behavior; needed to assess resting placement Required evidence to assess: Several successive native-step observations show no consequential translation/yaw or tipping after the arm clears. Repeated observe() without physics advancement is not a stability experiment. No fixed wait duration is proven. |
+| Final robot posture | Basis: Demonstrated ending behavior in all ten demos, not a proven hidden rule Required evidence to assess: Both measured arm poses are compared to the current appropriate resting pose and demonstrated open resting posture. Both grippers commanded open; arms clear, no contact. Target commands alone do not prove arrival. |
+| Evidence remains sufficient after parking | Basis: Occlusion occurs in several endings Required evidence to assess: Preserve a clear pre-park alignment view and use wrists/other views after parking. Occlusion does not turn an uncertain item into met. |
+
 ## Offline helpers
 
 Run from this skill directory. Input poses must come from inspected full shapes in the same world XY frame. Helpers do not segment images, detect contact or execute motion.

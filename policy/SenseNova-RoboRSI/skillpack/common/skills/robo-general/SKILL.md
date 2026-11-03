@@ -27,7 +27,7 @@ Both forms of `act` monitor measured gripper openings after every native step. A
 
 When VLA is disabled and direct control is enabled, use `observe` then `act` with one dual-arm TCP target and no proposal_id. Hold an inactive arm at its measured pose and intended opening.
 
-Check the instruction's object arrangement, support/release and final arm state. If a checkpoint requests evidence, provide the requested fields through `act.review`. Continue meaningful corrections while the task remains active. The harness controls termination and enforced limits; a tool-local success does not establish task completion.
+Assess the current case's completion checks individually as met / unmet / uncertain, with current RGB/native-step and measured-state evidence. Task-specific acceptance thresholds and final poses belong to that case's SKILL.md; apply only the current case's contract. A command, planned target, demo ending or occluded view does not make an uncertain item met. Check actual object position/orientation, coverage, support, release, stability after real native steps and final arm state; repeated observe alone does not advance physics. Keep useful corrections/inspection going while applicable items remain unmet or uncertain and the task permits it. At a required checkpoint report the assessment through act.review, including ending_check and concrete remaining work. Native done means termination, not necessarily success; tool-local success does not establish task completion. The current harness controls termination and enforced limits.
 
 ## Offline helper usage
 

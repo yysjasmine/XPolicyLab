@@ -35,6 +35,38 @@ Check the complete support chain: table → lower cuboids → long board → inn
 - [Assembly sequence](assets/ep00_overview.jpg): inspect stage order and paired board handling.
 - [Ending from three cameras](assets/ep00_ending_views.jpg): compare both board ends, roof orientation and hand clearance.
 
+## Full completion evidence
+
+For each applicable row, record **met / unmet / uncertain** with current RGB/native-step and measured-state evidence. Compare the supplied task reference images. Start uncertain; an intended target, command, demo ending or occlusion is not evidence that this episode is complete. Apply the current instruction and observed inventory; demonstration counts/poses and variations are references, not hidden evaluator tolerances. Keep useful corrections or inspection going within the current harness protocol while checks remain unmet or uncertain. At a due checkpoint include this assessment in `act.review.ending_check`; native done means termination, not necessarily success.
+
+| Check | Required current evidence |
+|---|---|
+| I0 | Item to check: Current instruction and scene match the tower plan Required observation evidence: Quote instruction; identify any mismatch, missing or extra pieces. |
+| I1 | Item to check: All eight original movable pieces are accounted for individually Required observation evidence: Four tracked white cuboids, long pale board, short pale board, tan board, green roof; none lost, duplicated or confused with fingers/background. |
+| B1 | Item to check: Left lower white support is on the table Required observation evidence: Visible stable base/table contact, upright/flat cuboid, long axis approximately world Y, left of center. |
+| B2 | Item to check: Right lower white support is on the table Required observation evidence: Same, right of center, common height and suitable spacing for long board. |
+| B3 | Item to check: Long pale board spans both lower whites Required observation evidence: Flat and roughly level; long axis world X/head horizontal; both ends overlap supports with overhang, no unsupported floating or one-ended tipping. |
+| U1 | Item to check: Left upper white is on the long board Required observation evidence: Directly visible seating, inward of lower left support, stable and appropriately oriented. |
+| U2 | Item to check: Right upper white is on the long board Required observation evidence: Directly visible seating, inward of lower right support, similar height; both clear of board edges. |
+| U3 | Item to check: Short pale board spans both upper whites Required observation evidence: Level, centered approximately over lower structure, parallel to long board, securely supported at both ends. |
+| T1 | Item to check: Tan board is centered and flat on the short pale board Required observation evidence: Long axis parallel to pale boards, no substantial tilt or edge overhang; visible support and release. |
+| T2 | Item to check: Green roof is upright on the tan board Required observation evidence: Base down, ridge up, triangular front and common demonstrated orientation, centered without slipping. |
+| R1 | Item to check: All eight pieces are released Required observation evidence: Open fingers visibly separate and withdraw without taking/dragging a piece; no retained grasp by either arm. Opening command alone is insufficient. |
+| S1 | Item to check: Whole stack is stable across several observations Required observation evidence: Compare multiple time-separated RGB observations during withdrawal/verification; all object positions/orientations/supports remain stable within visible resolution. Observe subtle lower-level shifts as well as roof. |
+| A1 | Item to check: Left arm returns near its demonstrated initial/home pose, open Required observation evidence: Current measured link6 pose and joints compared with saved initial/final; visible open empty hand clear of tower. |
+| A2 | Item to check: Right arm returns near its demonstrated initial/home pose, open Required observation evidence: Same for right arm; do not verify it merely because it was inactive recently. |
+| X1 | Item to check: Unused/unchanged objects and original side locations checked Required observation evidence: Demos use every movable task piece; side locations end empty. Explicitly inventory any current extra/unused item and compare appropriate evidence. Table/background remain undisturbed; no unrelated clutter displacement inferred away. |
+| N1 | Item to check: Native termination status and reviews handled Required observation evidence: Check returned `done`, remaining steps and `review_due`; `done` means termination, not guaranteed success. Never use stop to assert or trigger success. |
+
+Completion cautions from the public source:
+
+- This is the **demonstrated tower ending**, not a claim about hidden evaluator predicates. All 10 initial/late comparisons support it. Evidence references and per-episode frames are in `the public demonstration evidence` and `the public demonstration evidence`; comparison images are `the public demonstration evidence` and `the public demonstration evidence`. Also inspect matching `the public demonstration evidence` for wrist release views.
+- For every item, record: **met / unmet / uncertain**, **directly observed / inferred / uncertain evidence**, current observation step and RGB path/view or measured value, matching demo/frame, and corrective plan if needed. An inference alone cannot verify a requirement. Lack of visibility means uncertain, not met. Recheck after every disturbing manipulation and at ending review.
+- **Demonstrated measured home:** left position approximately `[-0.29953, -0.35230, 0.92150]`, right `[0.30047, -0.35230, 0.92150]` m; both quaternions wxyz approximately `[0.70700, 0, 0, 0.70721]`; both gripper openings 1.0. Both arms start and finish near six joint values zero. Final errors relative to initial are under 0.00036 m and 0.0029 rad in the demonstrations. These observed errors are **not proven evaluator tolerances** and are not a mandate for endless microscopic corrections. Use a safe approach followed by measured verification.
+- **When done remains false:** first inspect checklist uncertainty and plausible ending differences. In particular check hidden-by-board white supports using wrists/history/current oblique view, roof actually resting on tan board, no piece still retained, small settling/sliding, correct board order, tan yaw, and both home poses/openings. Reobserve and correct the most evidence-supported mismatch. If apparently complete, challenge that appearance and document an alternative hypothesis, the corrective action, and its actual effect. Do not consume unchanged retries or idle holds without a reason.
+- **Before an authorized stop:** fill every row afresh; include attempted alternatives and effects, remaining uncertainty and why meaningful recovery is no longer available. Unknown failure cause or all rows previously marked met does not alone justify abandonment. A completion-based stop is not justified while any requirement is unmet/uncertain. Obey the minimum window and current-step review rules in the public interface.
+- Suggested review record structure (adapt only to the public function's accepted arguments):
+
 ## Offline helpers
 
 From this skill directory run `python scripts/assist.py plan --input supports.json`. Input: `left_support_top`, `right_support_top` (observed 3-vectors), `board_length`, `support_width` along the span. Returns board underside centre/yaw, span, level difference, overhang and one-dimensional overlap. It does not infer load stability or board thickness.

@@ -37,13 +37,26 @@ and tool declarations. `skillpack/frozen_common.json` verifies their bytes.
 12 explicit generalization aliases and 16 open tasks. Only the current task's
 case is staged. Open tasks receive `robo-general` alone.
 
-Every skill has one `SKILL.md`, below 8192 UTF-8 bytes (a conservative bound on
-8192 tokens). Case packages contain concise demonstration references, at most
+Every skill has one `SKILL.md`. Main documents are bounded at 16,384 UTF-8 bytes
+to retain complete public completion criteria and current-evidence checks in the
+same file. Case packages contain concise demonstration references, at most
 three selected reference images and offline numerical helpers. They contain no
 raw ICL corpus or nested Markdown. Source hashes and authoring receipts stay
 outside the model's workspace under `skillpack/provenance/`. Runtime subagents
 remain disabled. Supplied reference images are ordinary RGB JPEGs; they are not
 serialized XPolicyLab trajectory buffers.
+
+The 26 case main documents retain the original public completion goal/evidence
+checks and task-specific uncertainty cautions. Assess each applicable item as
+met, unmet or uncertain from current RGB/native-step and measured-state evidence;
+a request or demonstration ending alone does not establish completion. Historical
+review/stop-window mechanics are replaced by the current harness protocol.
+Generalization aliases inherit the base case; open tasks use their current
+instruction with the same general evidence discipline. Original ICL archives and
+additional checklist Markdown are not installed in the agent workspace.
+Task-specific acceptance thresholds and final poses belong in the corresponding
+case's completion checklist. `robo-general` provides shared checking principles;
+one case's verified numerical contract is not inherited by other tasks.
 
 Helpers are used through their documented CLI or explicitly documented Python
 API. Normal use needs no source inspection: consult the case skill and `--help`
