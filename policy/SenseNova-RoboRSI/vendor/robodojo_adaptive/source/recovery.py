@@ -47,6 +47,8 @@ def prepare_retry(task,row):
  source=retry_source
  records=list((source/'episodes').glob('*/result.json'))
  previous_cfg=json.loads((source/'config.json').read_text())
+ if globals().get('unlimited_wall_time',False):
+  previous_cfg=dict(previous_cfg,episode_seconds=None)
  if len(records)==1 and (source/'observations/latest.json').exists():
   result=json.loads(records[0].read_text())
   if result.get('native_done'):return False
@@ -62,7 +64,8 @@ def prepare_retry(task,row):
   failed_cfg=json.loads((failed_source/'config.json').read_text())
   began=datetime.strptime(failed_source.name.split('-')[0],'%Y%m%dT%H%M%SZ').replace(tzinfo=timezone.utc).timestamp()
   reset_wall=max(0,(failed_source/'summary.json').stat().st_mtime-began)
-  previous_cfg=dict(previous_cfg,episode_seconds=failed_cfg['episode_seconds']-reset_wall)
+  seconds=None if globals().get('unlimited_wall_time',False) else failed_cfg['episode_seconds']
+  previous_cfg=dict(previous_cfg,episode_seconds=None if seconds is None else seconds-reset_wall)
  segment_path=source/'segments/evaluation-0001/result.json'
  if segment_path.exists():
   segment=json.loads(segment_path.read_text())
@@ -74,8 +77,9 @@ def prepare_retry(task,row):
   if not ended:
    row['recovery_block']='No end-time evidence for cumulative wall budget';return False
   segment={'wall_seconds':max(0,max(ended)-started)}
- remaining=previous_cfg['episode_seconds'] if failed_source != source else previous_cfg['episode_seconds']-segment.get('wall_seconds_total',segment['wall_seconds'])
- if remaining<300:
+ seconds=previous_cfg['episode_seconds']
+ remaining=seconds if seconds is None or failed_source != source else seconds-segment.get('wall_seconds_total',segment['wall_seconds'])
+ if remaining is not None and remaining<300:
   row['recovery_block']='Original cumulative 24h wall budget exhausted'
   return False
  cfg=json.loads((ROOT/'config'/f'{task}.json').read_text())

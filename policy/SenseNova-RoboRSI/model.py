@@ -408,9 +408,11 @@ class Model(ModelTemplate):
         cfg = copy.deepcopy(cfg)
         cfg["model"] = self._agent_config.document["agent"]["model"]
         cfg["reasoning_effort"] = self._agent_config.document["agent"]["reasoning_effort"]
-        cfg["episode_seconds"] = self.model_cfg.get("episode_seconds", 14400)
-        if type(cfg["episode_seconds"]) is not int or not 1 <= cfg["episode_seconds"] <= 14400:
-            raise ValueError("episode_seconds must be an integer from 1 to 14400")
+        cfg["episode_seconds"] = self.model_cfg.get("episode_seconds")
+        if cfg["episode_seconds"] is not None and (
+            type(cfg["episode_seconds"]) is not int or cfg["episode_seconds"] <= 0
+        ):
+            raise ValueError("episode_seconds must be null or a positive integer")
         cfg.pop("continue_from_run", None)
         cfg["options"]["task"] = self.model_cfg["task_name"]
         cfg["options"].update(self._adaptive_steps)

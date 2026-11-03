@@ -1,6 +1,7 @@
 """Bind the original own-episode recovery to the official XPolicyLab adapter.
 
-The source recovery policy and recorded-joint replay/validation stay unchanged.
+Recorded-joint replay and pose/RGB tolerances stay unchanged; checkpoints may
+use the existing public JPEG instead of an additional PNG.
 This module supplies host-owned identity, stopped-writer checks and attempt
 records for the websocket adapter, which doesn't use RoboRSI Runner receipts.
 No resume source or host receipt is mounted into the model sandbox.
@@ -287,6 +288,7 @@ def action_chain(run: Path, cfg: dict) -> tuple[int, dict[str, str]]:
         chains.append((rows, cutoff))
         for path in [
             current / "config.json",
+            current / "proposal_ids.json",
             record / "episode.json",
             record / "result.json",
             actions,
@@ -342,7 +344,12 @@ def action_chain(run: Path, cfg: dict) -> tuple[int, dict[str, str]]:
         run / "observations/latest.json"
     )
     if step:
-        image = run / f"observations/evaluation-0001/{step:05d}_cam_head.png"
+        directory = run / "observations/evaluation-0001"
+        image = next((directory / f"{step:05d}_cam_head{suffix}"
+                      for suffix in (".png", ".jpg", ".jpeg")
+                      if (directory / f"{step:05d}_cam_head{suffix}").is_file()), None)
+        if image is None:
+            raise ValueError("Replay checkpoint image is missing")
         seals[str(image)] = digest(image)
     return step, seals
 
@@ -355,6 +362,7 @@ def prepare_resume(
     trace_root: Path | None = None,
     native_progress: Path | None = None,
     reason: str = "Infrastructure recovery: outer case timeout",
+    unlimited_wall_time: bool = False,
 ) -> dict:
     """Apply unchanged prepare_retry after adapter-specific ownership checks."""
     root = Path(source).absolute()
@@ -504,6 +512,7 @@ def prepare_resume(
             module = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(module)
             module.ROOT = stage
+            module.unlimited_wall_time = unlimited_wall_time or cfg.get("episode_seconds") is None
             accepted = module.prepare_retry(instance, row)
             if not accepted:
                 write_json(state_path, row)
@@ -536,6 +545,7 @@ def prepare_resume(
             "created_at": time.time(),
             "native_validation_required": True,
             "native_identity": native_identity,
+            "wall_time_unlimited": recovered.get("episode_seconds") is None,
         }
         if failed_replay:
             request.update(
@@ -691,12 +701,16 @@ def validate_policy(resumed: dict, fresh: dict) -> None:
     new = {k: v for k, v in fresh["options"].items() if k not in deployed}
     if old != new:
         raise ValueError("Resume changes original action/review/context options")
-    if not 0 < resumed["episode_seconds"] <= fresh["episode_seconds"]:
+    remaining, limit = resumed["episode_seconds"], fresh["episode_seconds"]
+    if remaining is None and limit is None:
+        return
+    if (type(remaining) not in (int, float) or not math.isfinite(remaining)
+            or remaining <= 0 or (limit is not None and remaining > limit)):
         raise ValueError("Resume grants an invalid cumulative wall budget")
 
 
 def original_replay_reset(reference, adapter, begin_reset, **kwargs):
-    """Execute the unmodified original replay reset with a deferred native owner."""
+    """Run pinned recorded-joint replay with the deferred native episode owner."""
     original = reference.HybridAdapter.__mro__[1].reset
     namespace = {
         **original.__globals__,
@@ -719,6 +733,7 @@ def main() -> None:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--trace-root", type=Path)
     parser.add_argument("--native-progress", type=Path)
+    parser.add_argument("--unlimited-wall-time", action="store_true")
     parser.add_argument(
         "--reason", default="Infrastructure recovery: outer case timeout"
     )
@@ -739,6 +754,7 @@ def main() -> None:
         trace_root=args.trace_root,
         native_progress=args.native_progress,
         reason=args.reason,
+        unlimited_wall_time=args.unlimited_wall_time,
     )
     print(
         json.dumps(

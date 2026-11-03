@@ -44,12 +44,18 @@ def fit(d):
 
 
 def display(value):
+    """Format public numeric output only; calculations retain full precision."""
+    if type(value).__module__.split('.')[0] == 'numpy':
+        value = value.tolist()
     if isinstance(value, float):
-        return round(value, 3)
-    if isinstance(value, list):
-        return [display(v) for v in value]
+        if not math.isfinite(value):
+            raise ValueError('Public output numbers must be finite')
+        result = round(float(value), 3)
+        return 0.0 if result == 0 else result
+    if isinstance(value, (list, tuple)):
+        return [display(item) for item in value]
     if isinstance(value, dict):
-        return {k: display(v) for k, v in value.items()}
+        return {key: display(item) for key, item in value.items()}
     return value
 
 
@@ -60,4 +66,4 @@ if __name__ == '__main__':
     args = p.parse_args()
     with open(args.input) as f:
         data = json.load(f)
-    print(json.dumps(display(globals()[args.command](data)), allow_nan=False))
+    print(json.dumps(display(globals()[args.command](data)), allow_nan=False, separators=(',', ':')))

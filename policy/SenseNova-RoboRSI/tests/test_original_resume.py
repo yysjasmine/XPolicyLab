@@ -107,6 +107,28 @@ def test_original_recovery_budget_workspace_and_ownership(stopped, reference, tm
         resume.prepare_resume(root, tmp_path / "duplicate.json", reference)
 
 
+@pytest.mark.parametrize("source_unlimited", [False, True])
+def test_unlimited_resume_keeps_native_steps_and_source_records(stopped, reference, tmp_path, source_unlimited):
+    root, cfg, identity, _ = stopped
+    source = root / "agent/controller/config.json"
+    if source_unlimited:
+        cfg["episode_seconds"] = None
+        resume.write_json(source, cfg)
+    original = source.read_bytes()
+    output = tmp_path / "unlimited-resume.json"
+    request = resume.prepare_resume(root, output, reference, unlimited_wall_time=True)
+    assert request["step_offset"] == 1
+    assert request["native_identity"]["step_limit"] == 200
+    assert request["config"]["episode_seconds"] is None
+    assert request["wall_time_unlimited"] is True
+    assert source.read_bytes() == original
+    assert resume.load_resume(output, identity) == request
+    fresh = dict(request["config"], episode_seconds=None)
+    resume.validate_policy(request["config"], fresh)
+    with pytest.raises(ValueError, match="wall budget"):
+        resume.validate_policy(request["config"], dict(fresh, episode_seconds=14400))
+
+
 def native_progress(tmp_path, identity):
     path = tmp_path / "native-progress.json"
     resume.write_json(path, {
@@ -220,11 +242,21 @@ def test_resume_policy_rejects_changed_action_options(stopped, reference, tmp_pa
 
 
 
-@pytest.mark.parametrize("diverge", [False, True])
-def test_unchanged_native_replay_validator_on_real_bridge(
-    stopped, reference, robot, tmp_path, diverge
+@pytest.mark.parametrize("source_format", ["png", "jpg"])
+@pytest.mark.parametrize("divergence", ["none", "pose", "rgb"])
+def test_replay_validates_png_or_jpeg_checkpoints_on_real_bridge(
+    stopped, reference, robot, tmp_path, source_format, divergence
 ):
     root, cfg, _, command = stopped
+    source_image = root/"agent/controller/observations/evaluation-0001/00001_cam_head.png"
+    if source_format == "jpg":
+        with Image.open(source_image) as image:
+            image.save(source_image.with_suffix(".jpg"), format="JPEG", quality=95, subsampling=0)
+        source_image.unlink()
+        source_image = source_image.with_suffix(".jpg")
+    prepared = resume.prepare_resume(root, tmp_path/"resume-image.json", reference)
+    assert prepared["source_files"][str(source_image)] == sha(source_image)
+    resume.load_resume(tmp_path/"resume-image.json", prepared["identity"])
     episode = cfg["test_episodes"][0]
     directory = tmp_path / "attempt"
     directory.mkdir()
@@ -257,10 +289,13 @@ def test_unchanged_native_replay_validator_on_real_bridge(
             pending = backend.next_action(timeout=10)
             assert pending.step_index == 0 and pending.action == command
             obs = observation()
-            if diverge:
+            if divergence == "pose":
                 obs["state"]["left_ee_pose"][0] += 0.1
+            if divergence == "rgb":
+                import numpy as np
+                obs["vision"]["cam_head"]["color"] = np.zeros((3, 4, 3), dtype=np.uint8)
             backend.acknowledge(pending.request_id, obs)
-            if diverge:
+            if divergence != "none":
                 with pytest.raises(RuntimeError, match="does not match"):
                     future.result(timeout=10)
             else:
@@ -268,8 +303,11 @@ def test_unchanged_native_replay_validator_on_real_bridge(
                 assert result["observation"]["control_step"] == 1
                 assert not result["done"]
             validation = resume.read_json(record / "replay_validation.json")
-            assert validation["matched"] is not diverge
+            assert validation["matched"] == (divergence == "none")
             assert validation["replayed_steps"] == 1
+            assert validation["head_rgb_tolerance"] == 6.0
+            assert validation["head_rgb_source_image"].endswith("."+source_format)
+            assert validation["head_rgb_replay_image"].endswith(".jpg")
         finally:
             backend.cancel()
 
@@ -392,7 +430,7 @@ def test_model_start_uses_shared_interface_for_each_task(tmp_path, monkeypatch, 
     value._tool_python = Path(sys.executable)
     value._obs = {}
     value._agent_config = SimpleNamespace(
-        document={"agent": {"model": "fixture-model"}},
+        document={"agent": {"model": "fixture-model", "reasoning_effort": "xhigh"}},
         create_agent=lambda _case: object(),
     )
     workspace = value._directory / "workspace"
@@ -421,6 +459,7 @@ def test_model_start_uses_shared_interface_for_each_task(tmp_path, monkeypatch, 
     assert context.execution_profile.task == task_name
     assert context.prepared_workspace.name == "prepared-skills"
     assert context.cfg["reasoning_effort"] == "xhigh"
+    assert context.cfg["episode_seconds"] is None
     assert context.cfg["options"]["codex_compact_tokens"] == 200000
     assert context.cfg["options"]["task"] == task_name
     assert context.cfg["test_episodes"][0]["task"] == task_name

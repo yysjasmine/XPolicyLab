@@ -58,7 +58,7 @@
     "source_path": "vendor/robodojo_adaptive/source",
     "profile_path": "vendor/robodojo_adaptive",
     "manifest_path": "vendor/robodojo_adaptive/provenance/source-files.json",
-    "manifest_sha256": "b782c1b3ecef787753c5b4142226f90304d61a5a5146fd35c311fc48c1dc96a8",
+    "manifest_sha256": "c2daaa7222dc3d646aa84fe57538b91c6c3f7016aa14c6acbb45db3d7174a836",
     "version_kind": "Pinned adaptive_2_50 source baseline with runtime-configurable approved-step minimum (ROBORSI_ADAPTIVE_MIN_STEPS, default5); upper bound50 and action budgets preserved; effective limits recorded per episode.",
     "public_task_configs": 42,
     "original_source_files": 21,
@@ -88,8 +88,20 @@
   },
   "skillpack": {
     "catalog_path": "skillpack/cases/catalog.json",
-    "catalog_sha256": "3d6937aa3fc4618e348c829fbf7606a7d93361fcfa423dded981648b4e06dfd4",
+    "catalog_sha256": "e38d882305bd97aa878d0578ef7eb5e1e1975c5b5c44f559e5b0322b2155bbe1",
     "frozen_common_path": "skillpack/frozen_common.json",
-    "frozen_common_sha256": "941f54ec96b3e2c417cda7fcb29d2c6b67ae0402e8eb9cb499fdf2bf6dd9e154"
+    "frozen_common_sha256": "bd538a78dee2384bd576465f411cf6f2e59c0aaf093bac8fcddcfb00c424dec4"
+  },
+  "native_rgb": {
+    "transport": "native_rgb_bytes_v1",
+    "adapter_path": "native_rgb_adapter.py",
+    "runner_path": "native_rgb_episode.py",
+    "archive": "JPEG95_444_no_resize",
+    "pixels": "raw uint8 RGB bytes in private IPC; never JPEG decoded for Model/VLA",
+    "sha256": {
+      "native_rgb.py": "225744d46efe288d034e380692ad268662667d76840a037f7708d3fa1c11afe1",
+      "native_rgb_adapter.py": "ef5eea0b106102bd1e728d51967cbad6630acc9c4e9ee8703619a249e4e5d831",
+      "native_rgb_episode.py": "f064fc7b31cac4e8679fa974362cd9def0c2f61ceb9c2ea94e807f7405e543c7"
+    }
   }
 }

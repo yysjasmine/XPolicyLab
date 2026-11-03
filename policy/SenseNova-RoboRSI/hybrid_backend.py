@@ -447,14 +447,12 @@ class HybridBackend:
                 raw = owner._latest
                 pictures = {}
                 for camera in _CAMERAS:
-                    name = f"{self.frame:05d}_{camera}.png"
+                    name = f"{self.frame:05d}_{camera}.jpg"
                     path = self.observation_dir / name
                     if path.exists() or path.is_symlink():
                         raise ValueError("Refusing to overwrite an episode observation")
-                    # Match the original controller's lossless RGB tool images.
-                    Image.fromarray(raw["vision"][camera]["color"]).save(
-                        path, format="PNG"
-                    )
+                    image = Image.fromarray(raw["vision"][camera]["color"])
+                    image.save(path, format="JPEG", quality=95, subsampling=0, optimize=True)
                     pictures[camera] = "obs://" + name
                 observation = {
                     "instruction": raw["instruction"],

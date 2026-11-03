@@ -120,7 +120,7 @@ def cache_statistics(rows):
 
 
 class GuardedCapture(ProviderCapture):
-    """Capture exact provider bytes, then stop unsafe or unaccounted dispatch."""
+    """Retain provider evidence; cache misses alert without stopping dispatch."""
 
     def __init__(self, *args, case_dir, model, model_label, cohort_root, prior_rows=(), prompt_profile=None, case_deadline=None, enforce_paid_cache=True, expected_effort="xhigh", **kwargs):
         super().__init__(*args,**kwargs)
@@ -147,6 +147,14 @@ class GuardedCapture(ProviderCapture):
         write(self.case/'dispatch_hold.json',value)
         if cohort:write(self.cohort/'provider_blocks'/f'{self.model_label}.json',value)
 
+    def _cache_alert(self, evidence):
+        value={'at':round(time.time(),3),'kind':'cache_below_50_percent',
+               'action':'alert_only','threshold':0.5,'evidence':evidence,
+               'model':self.model,'dispatch_paused':False}
+        with (self.case/'cache_alerts.jsonl').open('a') as stream:
+            stream.write(json.dumps(value,allow_nan=False)+'\n')
+        write(self.case/'cache_alert.latest.json',value)
+
     async def _buffered_error(self, kind, evidence):
         self._hold(kind, evidence)
         messages=[]
@@ -161,9 +169,6 @@ class GuardedCapture(ProviderCapture):
         transient_retries=0
         first_request_id=None
         while True:
-            if self._attempts>=330 or sum(r['completed'] for r in self.rows)>=300:
-                return await self._buffered_error('model_call_budget',
-                    {'attempts':self._attempts,'first_request_id':first_request_id})
             remaining=None if self.case_deadline is None else self.case_deadline-time.time()
             if remaining is not None and remaining<=0:
                 return await self._buffered_error('case_wall_budget',
@@ -194,9 +199,6 @@ class GuardedCapture(ProviderCapture):
                     return await self._buffered_error('output_length_retry_exhausted',
                         {**row,'max_retries':1,'first_request_id':first_request_id,
                          'last_request_id':row['request_id'],'attempts':self._attempts})
-                if self._attempts>=330:
-                    return await self._buffered_error('model_call_budget',
-                        {'attempts':self._attempts,'last_request_id':row['request_id']})
                 length_retries+=1
                 write(self.case/'model-retries'/f'{row["request_id"]:06d}-output-length.json',
                       {'at':time.time(),'reason':'max_output_tokens','retry_number':length_retries,
@@ -271,8 +273,6 @@ class GuardedCapture(ProviderCapture):
             self._hold('model_or_effort_mismatch',{'model':request.get('model'),'reasoning':request.get('reasoning'),
                                                    'expected_effort':self.expected_effort})
             await self._error(send,400,b'Model/effort differs');return
-        if self._attempts>=330 or sum(r['completed'] for r in self.rows)>=300:
-            self._hold('model_call_budget',{'attempts':self._attempts});await self._error(send,503,b'Model call budget exhausted');return
         original=deepcopy(request)
         write(self.case/'cli-input'/f"{self.summary['requests']+1:06d}.json",_redact(original))
         try:
@@ -354,6 +354,6 @@ class GuardedCapture(ProviderCapture):
                 recent=epoch[-3:]
                 total=sum(r['usage'].get('input_tokens',0) for r in recent)
                 hits=sum((r['usage'].get('input_tokens_details') or {}).get('cached_tokens',0) for r in recent)
-                if len(recent)==3 and total and hits/total<0.65:
-                    self._hold('cache_below_65_percent',{'request_ids':[r['request_id'] for r in recent],
-                               'input_tokens':total,'cached_input_tokens':hits,'weighted_ratio':hits/total})
+                if len(recent)==3 and total and hits/total<0.5:
+                    self._cache_alert({'request_ids':[r['request_id'] for r in recent],
+                               'input_tokens':total,'cached_input_tokens':hits,'weighted_ratio':round(hits/total,3)})

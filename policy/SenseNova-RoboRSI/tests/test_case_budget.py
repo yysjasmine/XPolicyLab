@@ -3,6 +3,7 @@
 from importlib import import_module
 
 import json
+import math
 
 import pytest
 
@@ -66,3 +67,21 @@ def test_invalid_receipt_fails_closed(tmp_path):
     marker.write_text(json.dumps({"format": "unsupported"}))
     with pytest.raises(ValueError, match="Unsupported"):
         CaseWatchdog(started_at=1000).remaining(marker, now=1050)
+
+
+def test_unlimited_execution_keeps_json_null_and_no_deadline(tmp_path):
+    marker = tmp_path / "execution-budget.json"
+    write_execution_budget(marker, None, started_at=1100)
+    assert json.loads(marker.read_text())["remaining_seconds"] is None
+    budget = CaseWatchdog(started_at=1000)
+    assert math.isinf(budget.remaining(marker, now=10**9))
+    assert budget.phase == "agent"
+
+
+def test_unlimited_marker_does_not_renew_an_existing_finite_budget(tmp_path):
+    marker = tmp_path / "execution-budget.json"
+    budget = CaseWatchdog(started_at=1000)
+    write_execution_budget(marker, 600, started_at=1100)
+    assert budget.remaining(marker, now=1200) == 500
+    write_execution_budget(marker, None, started_at=1300)
+    assert budget.remaining(marker, now=1400) == 300

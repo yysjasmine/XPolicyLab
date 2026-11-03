@@ -8,6 +8,7 @@ import math
 import time
 
 from tcp_pose import link6_to_tcp_pose, tcp_to_link6_pose, validate_gripper_opening
+from gripper_monitor import monitor_for
 
 
 DEFAULT_MAX_NATIVE_STEPS = 80
@@ -25,7 +26,7 @@ def stage_owned_adapter(source, config, modules):
     entry = source / Path(original_file).name
     if not entry.is_file():
         raise ValueError("Configured native adapter entry is absent from owned source")
-    for name in ("execution.py", "tcp_pose.py"):
+    for name in ("execution.py", "tcp_pose.py", "gripper_monitor.py"):
         shutil.copy2(modules/name, source/name)
     hybrid = source/"hybrid_adapter.py"
     suffix = "\nfrom execution import adapter_class\nAdapter = adapter_class(Adapter)\n"
@@ -81,6 +82,7 @@ def execute_tcp(owner, req, native_request, *, invalid_action_type):
     if type(budget) is not int or not 1 <= budget <= MAX_NATIVE_STEPS:
         raise invalid_action_type("max_native_steps must be an integer from 1 to 160")
     completed, status, errors = 0, "reached", {}
+    monitor, gripper_event = monitor_for(owner), None
     for goal in req["targets"]:
         waypoint_start = owner.latest["observation"]["control_step"]
         state = owner.public["observation"]["state"]
@@ -109,10 +111,14 @@ def execute_tcp(owner, req, native_request, *, invalid_action_type):
                 previous_cost, last_progress = cost, step
             elif step - last_progress >= max(8, minimum_steps):
                 status = "stalled_reobserve"; break
+            monitor.prepare(owner.latest["observation"], target)
             native_request(owner, dict(op="act", repeat=1, action=dict(
                 mode="eef", target=target, reason=req["reason"], assessment=req["assessment"])))
             if owner.latest["observation"]["control_step"] <= step:
                 status = "no_progress_reobserve"; break
+            gripper_event = monitor.sample(owner.latest["observation"])
+            if gripper_event is not None:
+                status = "gripper_change_reobserve"; break
         if status != "reached":
             break
     # Report the latest actual residual even when the final update terminated.
@@ -125,6 +131,7 @@ def execute_tcp(owner, req, native_request, *, invalid_action_type):
                 position_tolerance_m=POSITION_TOLERANCE_M,
                 orientation_tolerance_rad=ROTATION_TOLERANCE_RAD,
                 grasp_verification="Requires RGB evidence; pose convergence alone does not verify grasp",
+                **({"gripper_event": gripper_event} if gripper_event else {}),
                 **deepcopy(owner.public))
 
 
@@ -157,11 +164,19 @@ def execute_vla(owner, req, native_request, *, invalid_action_type):
     event(log, event="review", proposal_id=pending["proposal_id"], decision="accept",
           approved_steps=span, reason=req["reason"], assessment=assessment,
           execution_mode="stored_vla_joint", selected_targets=pending["targets"][:span])
+    monitor, gripper_event, status = monitor_for(owner), None, "executed"
     try:
         for index in range(span):
+            step = owner.latest["observation"]["control_step"]
+            monitor.prepare(owner.latest["observation"], pending["targets"][index])
             native_request(owner, dict(op="act", repeat=1, action=dict(
                 mode="stored_vla_joint", proposal_id=pending["proposal_id"], index=index,
                 reason=req["reason"], assessment=assessment)))
+            if owner.latest["observation"]["control_step"] <= step:
+                status = "no_progress_reobserve"; break
+            gripper_event = monitor.sample(owner.latest["observation"])
+            if gripper_event is not None:
+                status = "gripper_change_reobserve"; break
             if owner.latest["done"] or owner.public["observation"].get("review_due"):
                 break
     finally:
@@ -170,9 +185,11 @@ def execute_vla(owner, req, native_request, *, invalid_action_type):
             owner.vla_pending = None
         event(log, event="execution", proposal_id=pending["proposal_id"],
               execution_mode="stored_vla_joint", approved_steps=span,
-              executed_steps=moved, remaining_queue_cancelled=moved < span)
+              executed_steps=moved, remaining_queue_cancelled=moved < span,
+              status=status, **({"gripper_event": gripper_event} if gripper_event else {}))
     owner.vla_pending = None
-    return dict(status="executed", action_source="vla_original_joints", executed_steps=moved,
+    return dict(status=status, action_source="vla_original_joints", executed_steps=moved,
+                **({"gripper_event": gripper_event} if gripper_event else {}),
                 **deepcopy(owner.public))
 
 

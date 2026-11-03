@@ -14,12 +14,20 @@ def direction(v):
     if math.hypot(*v)<1e-9:raise ValueError('Direction must be nonzero')
     return math.degrees(math.atan2(v[1],v[0]))
 
-def rounded(v):
-    if isinstance(v,float):
-        v=round(v,3);return 0.0 if v==0 else v
-    if isinstance(v,list):return [rounded(x) for x in v]
-    if isinstance(v,dict):return {k:rounded(x) for k,x in v.items()}
-    return v
+def rounded(value):
+    """Format public numeric output only; calculations retain full precision."""
+    if type(value).__module__.split('.')[0] == 'numpy':
+        value = value.tolist()
+    if isinstance(value, float):
+        if not math.isfinite(value):
+            raise ValueError('Public output numbers must be finite')
+        result = round(float(value), 3)
+        return 0.0 if result == 0 else result
+    if isinstance(value, (list, tuple)):
+        return [rounded(item) for item in value]
+    if isinstance(value, dict):
+        return {key: rounded(item) for key, item in value.items()}
+    return value
 
 def slot(tcp,tcp_yaw,bread_xy,bread_axis,slot_xy,slot_axis,target_z):
     tcp=vec(tcp);bread_xy,slot_xy=vec(bread_xy,2),vec(slot_xy,2)
@@ -54,5 +62,5 @@ def main():
     b.add_argument('--advance',type=float,required=True);a=p.parse_args();v=vars(a);command=v.pop('command')
     try:r=globals()[command](**v)
     except ValueError as e:p.exit(2,str(e)+'\n')
-    print(json.dumps(r,allow_nan=False,indent=2))
+    print(json.dumps(rounded(r), allow_nan=False, separators=(',', ':')))
 if __name__=='__main__':main()

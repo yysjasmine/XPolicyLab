@@ -33,11 +33,20 @@ def sequence(d):
             'remaining_keys':keys[len(prefix):],'issues':issues,'ordered_sequence_supported':len(prefix)==len(keys)}
 
 
-def display(v):
-    if isinstance(v,float):return round(v,3)
-    if isinstance(v,list):return [display(x) for x in v]
-    if isinstance(v,dict):return {k:display(x) for k,x in v.items()}
-    return v
+def display(value):
+    """Format public numeric output only; calculations retain full precision."""
+    if type(value).__module__.split('.')[0] == 'numpy':
+        value = value.tolist()
+    if isinstance(value, float):
+        if not math.isfinite(value):
+            raise ValueError('Public output numbers must be finite')
+        result = round(float(value), 3)
+        return 0.0 if result == 0 else result
+    if isinstance(value, (list, tuple)):
+        return [display(item) for item in value]
+    if isinstance(value, dict):
+        return {key: display(item) for key, item in value.items()}
+    return value
 
 
 if __name__=='__main__':
@@ -46,4 +55,4 @@ if __name__=='__main__':
     a=p.parse_args()
     with open(a.input) as f:d=json.load(f)
     fn=head_target if a.command=='head-target' else sequence
-    print(json.dumps(display(fn(d)),allow_nan=False))
+    print(json.dumps(display(fn(d)), allow_nan=False, separators=(',', ':')))

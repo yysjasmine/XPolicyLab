@@ -49,6 +49,28 @@ def test_shared_bytes_and_tools_are_unchanged(tmp_path):
     assert derived.expected_tools == {"observe", "vla_propose", "act"}
 
 
+@pytest.mark.parametrize("suffix,media_type", [("jpg", "image/jpeg"), ("jpeg", "image/jpeg"), ("png", "image/png")])
+def test_observe_attaches_original_image_bytes_with_matching_mime(tmp_path, suffix, media_type):
+    import base64
+    from PIL import Image
+
+    runtime = profile.runtime_modules(P)
+    cameras = {}
+    for camera in ("cam_head", "cam_left_wrist", "cam_right_wrist"):
+        name = f"00000_{camera}.{suffix}"
+        Image.new("RGB", (13, 9), (240, 20, 10)).save(tmp_path/name)
+        cameras[camera] = "/observations/"+name
+    native = {"observation": {"cameras": cameras, "control_step": 0}, "done": False}
+    tools = runtime.robot_tools.RobotTools(lambda request: native, setting="simate_vla", image_root=tmp_path)
+    result = tools.execute_tool("observe", {})
+    images = [block["source"] for block in result.content_blocks if block["type"] == "image"]
+    assert len(images) == 3
+    for camera, encoded in zip(cameras, images):
+        assert encoded["media_type"] == media_type
+        assert base64.b64decode(encoded["data"]) == (tmp_path/f"00000_{camera}.{suffix}").read_bytes()
+    assert native["observation"]["cameras"] == cameras
+
+
 def test_unknown_task_and_cross_task_profile_are_rejected(tmp_path):
     with pytest.raises(ValueError, match="Unknown public"):
         profile.load_skillpack_profile(P, "made_up_task", tmp_path)
@@ -69,13 +91,14 @@ def test_cci_reasoning_null_content_does_not_rewrite_visible_history():
     assert evidence["cci_null_content_as_empty_array"] == [0]
 
 
-def test_cci_attempt_timeout_is_not_replaced_by_four_hour_episode(tmp_path, monkeypatch):
+@pytest.mark.parametrize("episode_seconds", [None, 14400, 86400])
+def test_cci_attempt_timeout_is_not_replaced_by_four_hour_episode(tmp_path, monkeypatch, episode_seconds):
     cci = import_module("XPolicyLab.policy.SenseNova-RoboRSI.cci_protocol")
     guard = import_module("XPolicyLab.policy.SenseNova-RoboRSI.skillpack.capture_guard")
     seen = {}
 
     class Adapter:
-        def __init__(self, endpoint, model, directory, request_timeout=300, sampling=None):
+        def __init__(self, endpoint, model, directory, request_timeout=300, sampling=None, enable_thinking=True):
             seen["attempt_timeout"] = request_timeout
             seen["sampling"] = sampling
             self.base_url = "http://127.0.0.1:12345/v1"
@@ -95,7 +118,7 @@ def test_cci_attempt_timeout_is_not_replaced_by_four_hour_episode(tmp_path, monk
     monkeypatch.setenv("ROBORSI_CODEX_BASE_URL", "http://127.0.0.1:819/v1")
     sampling = {"temperature": 1.0, "top_k": 20, "top_p": 0.95}
     capture = profile.start_capture(None, tmp_path/"controller", {
-        "provider_kind": "cci", "episode_seconds": 14400, "case_wall_deadline": 20000,
+        "provider_kind": "cci", "episode_seconds": episode_seconds, "case_wall_deadline": 20000,
         "reasoning_effort": "medium", "sampling": sampling})
     assert seen == {"attempt_timeout": 300, "deadline": 20000,
                     "expected_effort": "medium", "sampling": sampling}

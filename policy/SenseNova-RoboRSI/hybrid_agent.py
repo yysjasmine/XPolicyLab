@@ -260,8 +260,9 @@ class HybridEmbodiedAgent(EmbodiedAgent):
             if context.resume:
                 # Physical replay is part of this episode's cumulative wall budget.
                 replay_seconds = time.monotonic() - attempt_started
-                cfg["episode_seconds"] -= replay_seconds
-                if cfg["episode_seconds"] <= 0:
+                if cfg["episode_seconds"] is not None:
+                    cfg["episode_seconds"] -= replay_seconds
+                if cfg["episode_seconds"] is not None and cfg["episode_seconds"] <= 0:
                     raise TimeoutError(
                         "Original cumulative episode wall budget exhausted during replay"
                     )
@@ -309,7 +310,7 @@ class HybridEmbodiedAgent(EmbodiedAgent):
                 root / "codex-home",
                 "evaluation-0001",
                 prompt,
-                cfg["episode_seconds"],
+                float("inf") if cfg["episode_seconds"] is None else cfg["episode_seconds"],
                 None,
                 launch=planner.launch_segment,
             )

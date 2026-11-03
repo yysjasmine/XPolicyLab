@@ -137,7 +137,17 @@ class SkillpackEmbodiedAgent(HybridEmbodiedAgent):
     def bind_experiment(self, context, planner, experiment, run):
         from .execution_profile import start_toolkit
 
-        self._skillpack_toolkit = start_toolkit(experiment, run, context.episode_dir, context.model_cfg or {})
+        proposal_ids = None
+        if context.resume:
+            # Carry only private ID bookkeeping; old pending motion is not restored.
+            for source in dict.fromkeys((context.resume.get("workspace_source"), context.resume["source"])):
+                if source:
+                    path = Path(source)/"agent/controller/proposal_ids.json"
+                    if path.is_file():
+                        proposal_ids = json.loads(path.read_text())
+                        break
+        self._skillpack_toolkit = start_toolkit(
+            experiment, run, context.episode_dir, context.model_cfg or {}, proposal_ids_seed=proposal_ids)
         planner.toolkit = self._skillpack_toolkit
 
 

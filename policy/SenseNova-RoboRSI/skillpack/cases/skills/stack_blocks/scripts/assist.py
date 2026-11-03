@@ -18,13 +18,18 @@ def vec(value, name='position'):
 
 
 def rounded(value):
+    """Format public numeric output only; calculations retain full precision."""
+    if type(value).__module__.split('.')[0] == 'numpy':
+        value = value.tolist()
     if isinstance(value, float):
-        result = round(number(value), 3)
+        if not math.isfinite(value):
+            raise ValueError('Public output numbers must be finite')
+        result = round(float(value), 3)
         return 0.0 if result == 0 else result
-    if isinstance(value, list):
-        return [rounded(v) for v in value]
+    if isinstance(value, (list, tuple)):
+        return [rounded(item) for item in value]
     if isinstance(value, dict):
-        return {k: rounded(v) for k, v in value.items()}
+        return {key: rounded(item) for key, item in value.items()}
     return value
 
 
@@ -77,7 +82,7 @@ def main():
     try:
         data = load(args.input)
         result = plan(data) if args.command == 'plan' else offset(data)
-        print(json.dumps(rounded(result), allow_nan=False, indent=2))
+        print(json.dumps(rounded(result), allow_nan=False, separators=(',', ':')))
     except (ValueError, KeyError, TypeError, OSError) as error:
         parser.exit(2, f'assist: {error}\n')
 

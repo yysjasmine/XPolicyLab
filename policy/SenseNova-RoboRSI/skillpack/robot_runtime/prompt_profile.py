@@ -103,8 +103,8 @@ class RobotPromptProfile:
         data={'task':self.task,'phase':'evaluation','setting':'simate_vla',
               'vla_backend':'Simate_beta','seed':0,'layout':0,'modality':'RGB-only',
               'reset_allowed':False,'direct_act_enabled':True,
-              'native_step_limit':options['review_window_steps']*options['review_max_windows'],
-              'wall_seconds_budget':cfg['episode_seconds']}
+              'native_step_limit':options['review_window_steps']*options['review_max_windows']}
+        if cfg['episode_seconds'] is not None:data['wall_seconds_budget']=cfg['episode_seconds']
         for key in ['max_repeat','review_window_steps','review_max_windows','stop_min_steps','review_allow_reset']:
             if key in options:data[key]=options[key]
         return ('Carry out the current episode task.\nEpisode configuration:\n'

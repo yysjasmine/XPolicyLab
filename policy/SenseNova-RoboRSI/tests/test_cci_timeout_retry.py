@@ -86,3 +86,44 @@ def test_bounded_timeout_retains_request_and_original_budget(tmp_path, monkeypat
     finally:
         capture.stop()
         adapter.stop()
+
+
+def test_completed_requests_continue_past_former_total_call_limit(tmp_path, monkeypatch):
+    """Keep real buffered transport/accounting while crossing both old caps."""
+    original_open = urllib.request.urlopen
+
+    class Response:
+        status = 200
+        def __enter__(self): return self
+        def __exit__(self, *args): pass
+        def read(self):
+            return json.dumps({"id": "after-old-cap", "status": "completed", "output": [],
+                "usage": {"input_tokens": 10, "output_tokens": 1,
+                          "input_tokens_details": {"cached_tokens": 0}}}).encode()
+
+    def upstream(request, *args, **kwargs):
+        return Response() if request.full_url.startswith("http://provider.invalid/") else original_open(request, *args, **kwargs)
+
+    monkeypatch.setattr(urllib.request, "urlopen", upstream)
+    adapter = cci.CciAdapter("http://provider.invalid/v1", "fixture", tmp_path/"cci")
+    adapter.start()
+    prior = [{"request_id": i+1, "completed": True, "usage": {"input_tokens": 10},
+              "request_kind": "turn"} for i in range(350)]
+    capture = guard.GuardedCapture(config(adapter.base_url, "runtime"), tmp_path/"api",
+        case_dir=tmp_path, model="fixture", model_label="fixture", cohort_root=tmp_path,
+        prior_rows=prior, prompt_profile=SimpleNamespace(transform=lambda value: (value, {})),
+        enforce_paid_cache=False, expected_effort="medium")
+    capture.start()
+    request = {"model": "fixture", "reasoning": {"effort": "medium"}, "stream": False,
+               "input": [{"role": "user", "content": [{"type": "input_text", "text": "continue"}]}]}
+    try:
+        call = urllib.request.Request(capture.base_url+"/responses", data=json.dumps(request).encode(),
+                                      headers={"Content-Type": "application/json"})
+        response = json.load(urllib.request.urlopen(call, timeout=30))
+        assert response["status"] == "completed"
+        assert capture._attempts == 351 and sum(x["completed"] for x in capture.rows) == 351
+        assert not (tmp_path/"dispatch_hold.json").exists()
+        assert capture.case_deadline is None
+    finally:
+        capture.stop()
+        adapter.stop()

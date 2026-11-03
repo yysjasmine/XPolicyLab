@@ -28,7 +28,7 @@ def _number(value: object, name: str, *, positive: bool = False) -> float:
 
 def write_execution_budget(
     path: Path,
-    remaining_seconds: float,
+    remaining_seconds: float | None,
     *,
     phase: str = "agent",
     started_at: float | None = None,
@@ -47,7 +47,7 @@ def write_execution_budget(
         "started_at": _number(
             time.time() if started_at is None else started_at, "started_at"
         ),
-        "remaining_seconds": _number(
+        "remaining_seconds": None if remaining_seconds is None else _number(
             remaining_seconds, "remaining_seconds", positive=True
         ),
     }
@@ -97,15 +97,17 @@ class CaseWatchdog:
             if record.get("format") != _FORMAT or record.get("phase") not in _PHASES:
                 raise ValueError("Unsupported execution budget receipt")
             start = _number(record.get("started_at"), "started_at")
-            remaining = _number(
-                record.get("remaining_seconds"), "remaining_seconds", positive=True
-            )
+            if "remaining_seconds" not in record:
+                raise ValueError("Execution budget receipt is missing remaining_seconds")
+            remaining = record["remaining_seconds"]
+            if remaining is not None:
+                remaining = _number(remaining, "remaining_seconds", positive=True)
             if start > current + 5:
                 raise ValueError("Execution start is later than the supervisor clock")
             # A late marker cannot revive an expired startup attempt.
             if self.execution_deadline is None and start > self.startup_deadline:
                 return self.startup_deadline - current
-            deadline = start + remaining
+            deadline = float("inf") if remaining is None else start + remaining
             self.execution_deadline = (
                 deadline
                 if self.execution_deadline is None

@@ -9,12 +9,20 @@ def vec(v,n):
     if not isinstance(v,(list,tuple)) or len(v)!=n:raise ValueError('Wrong vector length')
     return [finite(x) for x in v]
 
-def rounded(v):
-    if isinstance(v,float):
-        v=round(v,3);return 0.0 if v==0 else v
-    if isinstance(v,list):return [rounded(x) for x in v]
-    if isinstance(v,dict):return {k:rounded(x) for k,x in v.items()}
-    return v
+def rounded(value):
+    """Format public numeric output only; calculations retain full precision."""
+    if type(value).__module__.split('.')[0] == 'numpy':
+        value = value.tolist()
+    if isinstance(value, float):
+        if not math.isfinite(value):
+            raise ValueError('Public output numbers must be finite')
+        result = round(float(value), 3)
+        return 0.0 if result == 0 else result
+    if isinstance(value, (list, tuple)):
+        return [rounded(item) for item in value]
+    if isinstance(value, dict):
+        return {key: rounded(item) for key, item in value.items()}
+    return value
 
 def lane(tcp,edge,object,lip_a,lip_b,inside,edge_z,setback,advance,margin=0):
     tcp,edge=vec(tcp,3),vec(edge,3);obj,a,b,inside=[vec(v,2) for v in [object,lip_a,lip_b,inside]]
@@ -45,5 +53,5 @@ def main():
     a.add_argument('--margin',type=float,default=0);v=vars(p.parse_args());v.pop('command')
     try:r=lane(**v)
     except ValueError as e:p.exit(2,str(e)+'\n')
-    print(json.dumps(r,allow_nan=False,indent=2))
+    print(json.dumps(rounded(r), allow_nan=False, separators=(',', ':')))
 if __name__=='__main__':main()

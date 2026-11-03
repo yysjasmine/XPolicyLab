@@ -26,7 +26,7 @@ def runtime_modules(policy_dir):
         if not path.is_relative_to(root) or _hash(path) != digest:
             raise ValueError("Frozen shared interface differs: "+relative)
     runtime = root/"robot_runtime"
-    for name in ("robot_tools", "tcp_pose", "execution", "native_request", "prompt_profile"):
+    for name in ("robot_tools", "tcp_pose", "gripper_monitor", "execution", "native_request", "prompt_profile"):
         loaded = sys.modules.get(name)
         if loaded is not None and Path(loaded.__file__).resolve() != runtime/(name+".py"):
             raise ValueError("Robot runtime already imported from another source: "+name)
@@ -117,7 +117,7 @@ def extend_reference(reference):
     return replace(reference, HybridAdapter=runtime.execution.adapter_class(reference.HybridAdapter))
 
 
-def start_toolkit(experiment, run, owner, model_cfg):
+def start_toolkit(experiment, run, owner, model_cfg, *, proposal_ids_seed=None):
     """Keep recording and optional operator stop outside the model tool schema."""
     runtime = runtime_modules(Path(__file__).parent)
     RobotTools, ToolInputError = runtime.robot_tools.RobotTools, runtime.robot_tools.ToolInputError
@@ -133,7 +133,8 @@ def start_toolkit(experiment, run, owner, model_cfg):
             self.executed_act_calls = self.sequence = 0
             self.closed = False
             super().__init__(experiment.request, setting="simate_vla", direct_act_enabled=True,
-                             image_root=run/"observations")
+                             image_root=run/"observations", proposal_ids_path=run/"proposal_ids.json",
+                             proposal_ids_seed=proposal_ids_seed)
 
         def dispatch(self, name, arguments):
             if self.closed:
@@ -207,9 +208,11 @@ def start_capture(profile, run, model_cfg):
     provider_kind = model_cfg.get("provider_kind", "responses")
     if provider_kind == "cci":
         from .cci_protocol import CciAdapter
+        seconds = model_cfg.get("episode_seconds")
         cci = CciAdapter(upstream, resolve_model(), owner/"cci-wire",
-                         request_timeout=min(300, model_cfg.get("episode_seconds", 14400)),
-                         sampling=model_cfg.get("sampling"))
+                         request_timeout=300 if seconds is None else min(300, seconds),
+                         sampling=model_cfg.get("sampling"),
+                         enable_thinking=model_cfg.get("enable_thinking", True))
         cci.start()
         upstream = cci.base_url
         profile = CciPromptProfile(profile)

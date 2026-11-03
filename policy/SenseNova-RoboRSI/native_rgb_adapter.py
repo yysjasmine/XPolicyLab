@@ -1,0 +1,53 @@
+"""Native owner: preserve physics/video/scoring, archive JPEG, send exact RGB."""
+from pathlib import Path
+import importlib.util
+import hashlib
+import json
+
+from native_rgb import TRANSPORT, archive_rgb, encode_rgb
+
+SOURCE = Path(__file__).resolve().parent/"vendor/robodojo_adaptive/source"
+BASE = SOURCE/"code/configurations/robodojo/20261005_standard_1x_10x/adapters/adapter.py"
+pins = json.loads((Path(__file__).resolve().parent/"submission.json").read_text())["hybrid"]
+manifest = Path(__file__).resolve().parent/pins["manifest_path"]
+if hashlib.sha256(manifest.read_bytes()).hexdigest() != pins["manifest_sha256"]:
+    raise ValueError("Native RGB original-source manifest differs")
+entry = next(row for row in json.loads(manifest.read_text())["files"]
+             if row["path"] == "source/"+BASE.relative_to(SOURCE).as_posix())
+if hashlib.sha256(BASE.read_bytes()).hexdigest() != entry["sha256"] or BASE.stat().st_size != entry["bytes"]:
+    raise ValueError("Native RGB original adapter differs from pinned physics source")
+spec = importlib.util.spec_from_file_location("_native_rgb_original_adapter", BASE)
+module = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(module)
+
+
+class Adapter(module.Adapter):
+    """Only observation transport/storage differs from the original adapter."""
+    def _transition(self, applied_action=None):
+        import numpy as np
+
+        raw = self.env.get_obs()
+        # Freeze renderer buffers once, so the archive and live bytes describe
+        # the same frame even if the renderer later reuses its array storage.
+        vision = {camera: dict(color=np.array(fields["color"], copy=True, order="C"))
+                  for camera, fields in raw["vision"].items()}
+        payload = encode_rgb(vision)
+        cameras, artifacts = archive_rgb(vision, self.observation_dir, self.frame)
+        state = {key: np.asarray(value).tolist() for key, value in raw["state"].items()}
+        step = int(self.env.take_action_cnt[0])
+        meta = dict(transport=TRANSPORT, frame=self.frame, control_step=step,
+                    rgb_sha256={name: item["sha256"] for name, item in payload.items()},
+                    archive=artifacts)
+        with (self.record_dir/"rgb_frames.jsonl").open("a") as stream:
+            stream.write(json.dumps(meta, allow_nan=False)+"\n")
+        observation = dict(instruction=raw["instruction"], state=state, cameras=cameras,
+                           control_step=step,
+                           control_frequency_hz=int(raw["additional_info"]["frequency"]))
+        self.frame += 1
+        done = bool(self.env.end_flag[0])
+        result = dict(observation=observation, done=done,
+                      metrics=self._native_result() if done else {},
+                      native_rgb=meta, _native_rgb=payload)
+        if applied_action is not None:
+            result["applied_action"] = applied_action
+        return result

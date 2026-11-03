@@ -44,12 +44,20 @@ def point(data,lateral_fraction,forward_fraction,height):
                 reference_point='TCP/GRASP_POINT',candidate_only=True,robot_executed=False)
 
 
-def display(v):
-    if isinstance(v,float):
-        n=round(v,3);return 0.0 if n==0 else n
-    if isinstance(v,list):return [display(x) for x in v]
-    if isinstance(v,dict):return {k:display(x) for k,x in v.items()}
-    return v
+def display(value):
+    """Format public numeric output only; calculations retain full precision."""
+    if type(value).__module__.split('.')[0] == 'numpy':
+        value = value.tolist()
+    if isinstance(value, float):
+        if not math.isfinite(value):
+            raise ValueError('Public output numbers must be finite')
+        result = round(float(value), 3)
+        return 0.0 if result == 0 else result
+    if isinstance(value, (list, tuple)):
+        return [display(item) for item in value]
+    if isinstance(value, dict):
+        return {key: display(item) for key, item in value.items()}
+    return value
 
 
 def main():
@@ -63,7 +71,7 @@ def main():
     try:
         data=json.loads(a.input.read_text())
         out=frame(data) if a.command=='frame' else point(data,a.lateral_fraction,a.forward_fraction,a.height)
-        print(json.dumps(display(out),indent=2,allow_nan=False))
+        print(json.dumps(display(out), allow_nan=False, separators=(',', ':')))
     except (ValueError,KeyError,TypeError,OSError) as e:p.exit(2,str(e)+'\n')
 
 

@@ -23,14 +23,18 @@ def vector(value, count, name):
 
 
 def display(value):
-    """Round numeric results to three decimal places."""
+    """Format public numeric output only; calculations retain full precision."""
+    if type(value).__module__.split('.')[0] == 'numpy':
+        value = value.tolist()
     if isinstance(value, float):
-        rounded = round(finite(value), 3)
-        return 0.0 if rounded == 0 else rounded
-    if isinstance(value, list):
-        return [display(x) for x in value]
+        if not math.isfinite(value):
+            raise ValueError('Public output numbers must be finite')
+        result = round(float(value), 3)
+        return 0.0 if result == 0 else result
+    if isinstance(value, (list, tuple)):
+        return [display(item) for item in value]
     if isinstance(value, dict):
-        return {k: display(v) for k, v in value.items()}
+        return {key: display(item) for key, item in value.items()}
     return value
 
 
@@ -185,7 +189,7 @@ def main(argv=None):
                 args.object_yaw, args.pad_xy, args.desired_yaw, args.target_z)
         else:
             result = project_head_pixel(args.pixel, args.plane_z, args.programs_root)
-        print(json.dumps(result, ensure_ascii=False, allow_nan=False, indent=2))
+        print(json.dumps(display(result), ensure_ascii=False, allow_nan=False, separators=(',', ':')))
     except (ValueError, OSError, ImportError) as error:
         cli.exit(2, f"arrange: {error}\n")
     return 0

@@ -33,11 +33,20 @@ def contact(d):
             'agrees_with_requested_yaw':lever*desired>0 if abs(desired)>1e-10 else None}
 
 
-def display(v):
-    if isinstance(v,float):return round(v,3)
-    if isinstance(v,list):return [display(x) for x in v]
-    if isinstance(v,dict):return {k:display(x) for k,x in v.items()}
-    return v
+def display(value):
+    """Format public numeric output only; calculations retain full precision."""
+    if type(value).__module__.split('.')[0] == 'numpy':
+        value = value.tolist()
+    if isinstance(value, float):
+        if not math.isfinite(value):
+            raise ValueError('Public output numbers must be finite')
+        result = round(float(value), 3)
+        return 0.0 if result == 0 else result
+    if isinstance(value, (list, tuple)):
+        return [display(item) for item in value]
+    if isinstance(value, dict):
+        return {key: display(item) for key, item in value.items()}
+    return value
 
 
 if __name__=='__main__':
@@ -45,4 +54,4 @@ if __name__=='__main__':
     p.add_argument('command',choices=['alignment','contact']);p.add_argument('--input',required=True)
     a=p.parse_args()
     with open(a.input) as f:d=json.load(f)
-    print(json.dumps(display(globals()[a.command](d)),allow_nan=False))
+    print(json.dumps(display(globals()[a.command](d)), allow_nan=False, separators=(',', ':')))

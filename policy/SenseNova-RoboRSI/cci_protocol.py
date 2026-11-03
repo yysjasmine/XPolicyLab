@@ -30,7 +30,9 @@ def declarations(items, prefix=''):
     return result
 
 
-def request_to_cci(request):
+def request_to_cci(request, *, enable_thinking=True):
+    if type(enable_thinking) is not bool:
+        raise ValueError('CCI enable_thinking must be a boolean')
     raw=deepcopy(request)
     tools=declarations(raw.get('tools',[]))
     source=raw.get('input',[])
@@ -60,7 +62,7 @@ def request_to_cci(request):
     result=dict(model=raw['model'],instructions='\n\n'.join(system),input=items,
         tools=tools,tool_choice='auto',parallel_tool_calls=False,stream=False,store=False,
         reasoning=raw.get('reasoning',{'effort':'xhigh'}),
-        chat_template_kwargs={'enable_thinking':True,'reasoning_effort':(raw.get('reasoning') or {}).get('effort','xhigh')},
+        chat_template_kwargs={'enable_thinking':enable_thinking,'reasoning_effort':(raw.get('reasoning') or {}).get('effort','xhigh')},
         temperature=0)
     requested_cap=raw.get('max_output_tokens')
     if requested_cap is not None and (type(requested_cap) is not int or requested_cap<=0):
@@ -142,7 +144,10 @@ def sse(response):
 
 
 class CciAdapter:
-    def __init__(self,endpoint,model,directory,request_timeout=300,sampling=None):
+    def __init__(self,endpoint,model,directory,request_timeout=300,sampling=None,enable_thinking=True):
+        if type(enable_thinking) is not bool:
+            raise ValueError('CCI enable_thinking must be a boolean')
+        self.enable_thinking=enable_thinking
         self.endpoint=endpoint.rstrip('/')+'/responses';self.model=model
         self.directory=Path(directory);self.directory.mkdir(parents=True,exist_ok=True)
         self.counter=0;self.lock=threading.Lock();self.request_timeout=request_timeout
@@ -169,7 +174,7 @@ class CciAdapter:
                 prefix.with_suffix('.cli-request.json').write_text(json.dumps(request,ensure_ascii=False))
                 try:
                     assert self.path=='/v1/responses' and request['model']==owner.model
-                    payload=request_to_cci(request)
+                    payload=request_to_cci(request,enable_thinking=owner.enable_thinking)
                     payload.update(owner.sampling)
                     prefix.with_suffix('.request.json').write_text(json.dumps(payload,ensure_ascii=False))
                     req=urllib.request.Request(owner.endpoint,data=json.dumps(payload,ensure_ascii=False).encode(),headers={'Content-Type':'application/json'})

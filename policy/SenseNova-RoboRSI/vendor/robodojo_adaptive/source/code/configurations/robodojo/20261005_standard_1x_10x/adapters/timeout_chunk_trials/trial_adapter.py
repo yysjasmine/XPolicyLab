@@ -13,6 +13,16 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from adapter import Adapter as BaseAdapter
 
 
+def checkpoint_image(directory, step):
+    """Reuse public JPEG checkpoints; retain compatibility with sealed PNG runs."""
+    directory = Path(directory)
+    for suffix in (".png", ".jpg", ".jpeg"):
+        path = directory / f"{step:05d}_cam_head{suffix}"
+        if path.is_file():
+            return path
+    raise ValueError(f"Replay checkpoint image is missing at step {step}")
+
+
 class Adapter(BaseAdapter):
     def __init__(self, environment_dir, options):
         self.replay = options.get("replay")
@@ -96,8 +106,8 @@ class Adapter(BaseAdapter):
             )), 0, 1)))
             for arm in ("left", "right")
         )
-        original_image = source.parent.parent / "observations" / source.name / f"{target_step:05d}_cam_head.png"
-        replay_image = Path(observation_dir) / f"{target_step:05d}_cam_head.png"
+        original_image = checkpoint_image(source.parent.parent / "observations" / source.name, target_step)
+        replay_image = checkpoint_image(observation_dir, target_step)
         a = np.asarray(Image.open(original_image), dtype=np.int16)
         b = np.asarray(Image.open(replay_image), dtype=np.int16)
         rgb_mean_error = float(np.abs(a - b).mean()) if a.shape == b.shape else float("inf")
@@ -111,6 +121,8 @@ class Adapter(BaseAdapter):
             "eef_orientation_max_error_rad": angle_error_rad,
             "head_rgb_mean_absolute_error": rgb_mean_error,
             "head_rgb_tolerance": rgb_tolerance,
+            "head_rgb_source_image": str(original_image),
+            "head_rgb_replay_image": str(replay_image),
             "matched": pose_error_m <= 0.015 and angle_error_rad <= 0.15 and rgb_mean_error <= rgb_tolerance,
         }
         (Path(record_dir) / "replay_validation.json").write_text(json.dumps(validation, indent=2) + "\n")

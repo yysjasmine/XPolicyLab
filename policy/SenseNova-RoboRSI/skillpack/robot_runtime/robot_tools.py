@@ -10,7 +10,9 @@ from __future__ import annotations
 import base64
 from copy import deepcopy
 import json
+import math
 from pathlib import Path
+import re
 import socket
 import threading
 from typing import Any, Callable
@@ -85,9 +87,9 @@ def tool_specs() -> list[dict[str, Any]]:
     """Return three model-facing schemas using the grasp-centre TCP contract."""
     return [
         dict(name="observe", description="Read current RGB, measured TCP positions, pitch/roll/yaw degrees relative to the downward reference, permissions and budgets without advancing physics. Display floats use at most three decimal places.", input_schema=_object({}, [])),
-        dict(name="vla_propose", description="Predict a trajectory without moving. Give one short English sentence describing an immediate action, the observed object and a destination when needed; use task/demo wording and omit reasoning, code and multi-step plans. Example: Move the left gripper above the blue 8. Return proposal_id and TCP samples at steps 5,10,...,50. A new request replaces an unexecuted old proposal.", input_schema=_object({"subgoal": {**TEXT, "maxLength": 2000}}, ["subgoal"])),
-        dict(name="act", description="Accept stored original VLA joint steps, or track model-supplied TCP targets with internal measured-state feedback and IK. TCP targets use continuous gripper_opening (0 closed, 1 open). Supplying targets declines the proposal. Return reached/stalled/budget status, actual native steps, residual errors, RGB and measured TCP state. Pose arrival does not verify grasp. Keep reason/assessment concise.", input_schema=_object({
-            "proposal_id": {**TEXT, "description": "Use only when accepting the current VLA proposal; omit when supplying targets."},
+        dict(name="vla_propose", description="Predict a trajectory without moving. Give one short English sentence describing an immediate action, the observed object and a destination when needed; use task/demo wording and omit reasoning, code and multi-step plans. Example: Move the left gripper above the blue 8. Return a short proposal_id (p1, p2, ...) and TCP samples at steps 5,10,...,50. A new request replaces an unexecuted old proposal.", input_schema=_object({"subgoal": {**TEXT, "maxLength": 2000}}, ["subgoal"])),
+        dict(name="act", description="Accept stored original VLA joint steps, or track model-supplied TCP targets with internal measured-state feedback and IK. TCP targets use continuous gripper_opening (0 closed, 1 open). Supplying targets declines the proposal. Check measured gripper openings every native step; a change of at least 0.02 after settling under a steady command interrupts with gripper_change_reobserve and gripper_event. Return status, actual native steps, residual errors, current RGB and measured TCP state. Inspect interrupted results before choosing another action; opening changes do not prove object loss. Pose arrival does not verify grasp. Keep reason/assessment concise.", input_schema=_object({
+            "proposal_id": {**TEXT, "description": "Copy the current short VLA proposal_id, e.g. p1; omit when supplying targets."},
             "steps": dict(type="integer", minimum=1, maximum=50,
                           description="Consecutive prefix length; VLA allows 5..50, default 5."),
             "targets": dict(type="array", items=DUAL, minItems=1, maxItems=50,
@@ -132,10 +134,14 @@ def sparse_proposal(proposal: dict[str, Any]) -> dict[str, Any]:
 
 def _round_display(value: Any) -> Any:
     """Round model-facing float outputs; preserve IDs, integers and booleans."""
+    if type(value).__module__.split(".")[0] == "numpy":
+        value = value.tolist()
     if isinstance(value, float):
-        rounded = round(value, 3)
+        if not math.isfinite(value):
+            raise ValueError("Public output numbers must be finite")
+        rounded = round(float(value), 3)
         return 0.0 if rounded == 0 else rounded
-    if isinstance(value, list):
+    if isinstance(value, (list, tuple)):
         return [_round_display(item) for item in value]
     if isinstance(value, dict):
         return {key: _round_display(item) for key, item in value.items()}
@@ -146,7 +152,8 @@ class RobotTools:
     """Map three outer tools to one existing, original episode bridge."""
 
     def __init__(self, call: Callable[[dict], dict], *, setting: str,
-                 direct_act_enabled: bool = False, image_root: Path | None = None):
+                 direct_act_enabled: bool = False, image_root: Path | None = None,
+                 proposal_ids_path: Path | None = None, proposal_ids_seed: dict | None = None):
         if setting not in ("simate_vla", "no_vla"):
             raise ValueError("Explicit simate_vla or no_vla setting required")
         self.call = call
@@ -155,6 +162,36 @@ class RobotTools:
         self.image_root = image_root.resolve(strict=True) if image_root else None
         self._lock = threading.Lock()
         self._specs = {spec["name"]: spec for spec in tool_specs()}
+        self._proposal_ids_path = proposal_ids_path
+        self._proposal_ids = dict(proposal_ids_seed or {})
+        if proposal_ids_path is not None and proposal_ids_path.exists():
+            self._proposal_ids.update(json.loads(proposal_ids_path.read_text()))
+        if (any(not isinstance(k, str) or not k or not isinstance(v, str)
+                or re.fullmatch(r"p[1-9][0-9]*", v) is None
+                for k, v in self._proposal_ids.items())
+                or len(set(self._proposal_ids.values())) != len(self._proposal_ids)):
+            raise ValueError("Invalid private proposal ID mapping")
+        self._proposal_sequence = max((int(v[1:]) for v in self._proposal_ids.values()), default=0)
+        if proposal_ids_path is not None:
+            self._save_proposal_ids(self._proposal_ids)
+
+    def _save_proposal_ids(self, mapping: dict) -> None:
+        if self._proposal_ids_path is not None:
+            temporary = self._proposal_ids_path.with_suffix(".tmp")
+            temporary.write_text(json.dumps(mapping) + "\n")
+            temporary.replace(self._proposal_ids_path)
+
+    def _public_proposal(self, proposal: dict) -> dict:
+        public = sparse_proposal(proposal)
+        native_id = proposal["proposal_id"]
+        if native_id not in self._proposal_ids:
+            mapping = {**self._proposal_ids, native_id: f"p{self._proposal_sequence + 1}"}
+            # Persist before exposing the alias, so reconnects never recycle it.
+            self._save_proposal_ids(mapping)
+            self._proposal_ids = mapping
+            self._proposal_sequence += 1
+        public["proposal_id"] = self._proposal_ids[native_id]
+        return public
 
     def get_tools_spec(self) -> list[dict]:
         return deepcopy(list(self._specs.values()))
@@ -172,7 +209,7 @@ class RobotTools:
                 state[key] = link6_to_public_pose(state[key])
         public["pose_contract"] = deepcopy(POSE_CONTRACT)
         if public.get("pending_vla_proposal") is not None:
-            public["pending_vla_proposal"] = sparse_proposal(public["pending_vla_proposal"])
+            public["pending_vla_proposal"] = self._public_proposal(public["pending_vla_proposal"])
         # Convert from full-precision native poses first, then quantize only
         # the model-visible copy. Native measurements and execution stay raw.
         return _round_display(public)
@@ -210,7 +247,7 @@ class RobotTools:
                                    decision="reject", targets=None,
                                    reason="Replace the unexecuted proposal with a new prediction",
                                    assessment={"current_subgoal": arguments["subgoal"]}))
-                return sparse_proposal(self.call({"op": "vla_propose", **arguments}))
+                return self._public_proposal(self.call({"op": "vla_propose", **arguments}))
             return self._act(arguments)
 
     def _act(self, args: dict) -> dict:
@@ -255,7 +292,12 @@ class RobotTools:
         elif self.setting == "simate_vla" and native_targets is not None:
             raise ToolInputError("This episode bridge has not enabled direct TCP fallback")
         elif self.setting == "simate_vla":
-            result = self.call(dict(op="vla_review", proposal_id=args["proposal_id"],
+            supplied_id = args["proposal_id"]
+            # The native host still rejects stale/consumed UUIDs. Preserve full
+            # native IDs for pre-change conversations without alias guessing.
+            native_id = next((key for key, value in self._proposal_ids.items()
+                              if value == supplied_id), supplied_id)
+            result = self.call(dict(op="vla_review", proposal_id=native_id,
                                     decision="accept", targets=None, approved_steps=steps,
                                     reason=args["reason"], assessment=args["assessment"]))
         else:
@@ -268,7 +310,7 @@ class RobotTools:
         from roborsi.tools import ToolResult
 
         try:
-            value = self.dispatch(name, arguments)
+            value = _round_display(self.dispatch(name, arguments))
         except ToolInputError as error:
             return ToolResult(name=name, result={"error": str(error)})
         result = ToolResult(name=name, result=value)
@@ -279,12 +321,13 @@ class RobotTools:
                 if not isinstance(ref, str) or not ref.startswith("/observations/"):
                     continue
                 path = (self.image_root / ref.removeprefix("/observations/")).resolve(strict=True)
-                if not path.is_relative_to(self.image_root) or path.suffix.lower() != ".png":
+                media_type = {".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".png": "image/png"}.get(path.suffix.lower())
+                if not path.is_relative_to(self.image_root) or media_type is None:
                     raise RuntimeError("Invalid public RGB image path")
                 result.content_blocks.extend([
                     {"type": "text", "text": camera + " RGB"},
                     {"type": "image", "source": {
-                        "type": "base64", "media_type": "image/png",
+                        "type": "base64", "media_type": media_type,
                         "data": base64.b64encode(path.read_bytes()).decode(),
                     }},
                 ])

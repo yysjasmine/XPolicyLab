@@ -16,8 +16,31 @@ losslessly. It does not call `encode_image_bit` before RPC:
    `decode_obs_images` before the model. That shared helper passes already
    decoded arrays through unchanged.
 
-The controller's image receipts are PNG. The shared `encode_image_bit` helper
-still creates marked JPEG buffers when a caller explicitly encodes images,
+Model-facing controller images are JPEG files (quality 95, 4:4:4, no resizing)
+and tool content uses `image/jpeg`. Physical replay reuses the controller's
+head-camera JPEG, without writing any additional PNG checkpoint. Old sealed PNG
+records remain supported. Pose and decoded RGB error thresholds stay unchanged;
+comparison receipts identify both image files. Older PNG tool images remain
+readable. This file encoding does not change the raw RGB RPC above.
+
+The standalone native wrapper uses `native_rgb_episode.py` and
+`native_rgb_adapter.py`. The adapter snapshots renderer RGB buffers once,
+archives JPEG95/4:4:4 files and sends the exact snapshot bytes over private
+JSON-lines IPC. Raw bytes are base64-framed with shape/dtype/SHA256 metadata,
+then reconstructed as immutable uint8 arrays by `NativeRgbBackend`. The byte
+payload is removed before transitions are logged or exposed to Model. No
+PNG, image-codec round trip, resize or channel swap occurs on the live path.
+Malformed/checksum-mismatched or stale responses fail closed, including
+invalidating the last frame after an uncertain step request.
+
+The simulator's original stepping, reward/score and video-finalization methods
+are inherited unchanged. JPEG archive files are plain RGB photos, separate
+from serialized XPolicyLab image-bit buffers. `rgb_frames.jsonl` distinguishes
+live RGB byte hashes from JPEG file hashes. Moving archives from public cloud
+to M is a file-byte copy checked against the latter hashes, with no extra
+image encoding. Old frozen PNG-based wrappers are not rewritten.
+
+The shared `encode_image_bit` helper creates marked JPEG buffers when a caller explicitly encodes images,
 including `DEBUG_OBS_ENCODED=1` fixtures and dataset storage. JPEG quality 100
 does not guarantee pixel equality. That optional encoded path must not be
 confused with the native raw observation RPC above; legacy and marked JPEGs

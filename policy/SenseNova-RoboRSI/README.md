@@ -8,6 +8,8 @@ trajectories; the agent uses three robot tools to inspect and execute them.
 XPolicyLab owns the simulator, physical layout, native step feedback and scoring.
 Vendored RoboRSI, kinematics and OpenPI wire-codec sources remain pinned.
 
+See [CHANGELOG.md](CHANGELOG.md) for iteration history, deployment scope and evidence.
+
 ## Installation
 
 Place `XPolicyLab/` beside the official RoboDojo `env_cfg/` directory. Run from
@@ -43,6 +45,15 @@ outside the model's workspace under `skillpack/provenance/`. Runtime subagents
 remain disabled. Supplied reference images are ordinary RGB JPEGs; they are not
 serialized XPolicyLab trajectory buffers.
 
+Helpers are used through their documented CLI or explicitly documented Python
+API. Normal use needs no source inspection: consult the case skill and `--help`
+for syntax, and inspect only a small relevant excerpt for an actual unresolved
+error. All 26 helper CLIs emit one compact JSON object with numeric outputs
+rounded to at most three decimal places. The documented batch projection API
+uses the same output precision; calibration and internal calculations retain
+their original precision. Continuation notes retain invocations and input/output
+contracts rather than implementation source.
+
 ## Robot tools
 
 The external CLI exposes `functions.exec` / `functions.wait` with the registered
@@ -51,7 +62,10 @@ MCP robot tools `observe`, `vla_propose` and `act`:
 - `observe` returns current RGB and measured state, with displayed floats rounded
   to three decimals. Native measurements retain their precision.
 - `vla_propose` takes a short immediate-action instruction. Its 50-step joint
-  trajectory remains private; TCP previews show steps 5,10,…,50.
+  trajectory remains private; TCP previews show steps 5,10,…,50. Proposals use
+  short IDs such as `p1`, `p2`, …; copy the current ID into `act.proposal_id`.
+  IDs continue across same-episode recovery, and superseded or consumed IDs
+  cannot execute a different proposal. Native UUIDs remain in private records.
 - `act` accepts an unchanged consecutive VLA joint prefix (5–50 steps, no IK),
   or tracks supplied dual-arm TCP targets using measured feedback and IK.
   Targets use metres, pitch/roll/yaw degrees relative to vertical down, and
@@ -62,7 +76,28 @@ Each physical joint step is returned by `Model.get_action()` and acknowledged
 with the actual executed observation. FK preview, stored joints and manual IK
 remain separate execution paths. The model has no stop tool.
 
+Both forms of `act` check measured gripper openings after each acknowledged
+native control step. An intentional command change greater than 0.005 starts a
+settling phase: three readings must span at most 0.003 before monitoring arms.
+A subsequent opening change of at least 0.02 from that fixed reference in
+either arm cancels the remaining motion and returns
+`status=gripper_change_reobserve`, a `gripper_event` with the arm, command,
+reference, measurement and delta, plus current RGB and state. References persist
+across act calls; the accepted VLA tail is discarded on interruption. This is
+an indication to inspect contact and possession, not proof of a dropped object.
+Thresholds use full-precision normalized feedback internally. The initial and
+command-change settling phases do not classify intentional opening/closing as
+slippage. These defaults require native-physics validation.
+
 ## Evaluation
+
+Model-call totals are uncapped. `episode_seconds: null` (the default) disables
+the harness episode wall-time limit; a positive integer opts into a limit.
+Native task step limits remain authoritative. Individual CCI requests still
+time out after 300 seconds and use bounded retries with the same request,
+model, credentials and route. API failures retain their raw evidence and do
+not become native zero scores. Recovery can explicitly remove a previous wall
+limit with `hybrid_resume --unlimited-wall-time` without renewing native steps.
 
 ```bash
 export ROBORSI_CODEX_BASE_URL='https://your-service.example/v1'
@@ -81,8 +116,9 @@ The agent defaults to xhigh; `model_cfg.reasoning_effort` also accepts `medium`.
 It uses a 200K input context, all images within each append-only
 window, and default same-model text compaction before the next request exceeds
 50 images or after 120 completed model turns. General Responses calls have no
-additional output-token cap. There is no cumulative ledger or injected current-state summary. Provider attempt and
-completion budgets are 330 and 300; the episode wall budget is four hours.
+additional output-token cap. There is no injected current-state summary or
+additional cumulative model-call cap. Episode wall time is unlimited by default;
+an evaluation wrapper must not silently add a smoke act limit or wall-time cap.
 Authentication, policy and quota failures retain evidence and stop dispatch.
 The harness never changes a key or model route to bypass such failures.
 
@@ -94,9 +130,11 @@ the exact upstream request records their effective values. CCI requests wait at
 most 300 seconds, with up to three attempts for transient failures, and cap each
 output at 65,536 tokens (or retain a smaller caller-supplied cap).
 It retains upstream JSON and translated CLI JSON separately. Cache usage is
-measured; the paid-provider cache fuse is not applied to self-hosted CCI.
+measured. After cache warmup, a three-request weighted hit rate below 50%
+produces an alert and continues dispatch; cache hit rate never stops a run.
+Paid-provider cache alerts are not applied to self-hosted CCI.
 A single output-limit response may retry the same request once, before any tool
-result is delivered. Retries consume the original call and wall budgets.
+result is delivered. Every attempt and retry retains usage and error evidence.
 
 For a node-local persistent Simate service, set `ROBORSI_SHARED_VLA_PORT`.
 Episodes have separate session UUIDs; closing an episode releases its history
@@ -119,3 +157,46 @@ tracking and joint-prefix execution. Synthetic checks do not establish native
 physics success. Actual native smoke results and full-evaluation scores must be
 reported separately. This is an eval-only adapter; training/data conversion is
 not provided here. Training release timing is not specified.
+
+Model-facing RGB observations are JPEG files (quality 95, 4:4:4, no resizing)
+with `image/jpeg` tool content. Replay reuses the existing head-camera JPEG;
+this controller creates no extra PNG checkpoints. Old sealed PNG checkpoints
+remain supported. The pose and decoded RGB error thresholds are unchanged;
+validation receipts record the actual source and replay image paths.
+
+The standalone native evaluation entry is `native_rgb_episode.py`. It uses
+`native_rgb_adapter.py` for the original simulator owner and `native_rgb.py`
+for private lossless RGB IPC. Live uint8 camera bytes go directly to Model/VLA;
+JPEG is never decoded to construct live input. Only JPEG95/4:4:4 files are
+archived in `case/native/observations/`. Scoring, physics, joint stepping and
+native video finalization remain inherited from the pinned original adapter.
+
+```bash
+python policy/SenseNova-RoboRSI/native_rgb_episode.py \
+  --root /your/owned/batch \
+  --workspace /your/owned/workspace \
+  --native-python /your/native_python.sh \
+  --native-root /your/RoboDojo --label 819
+```
+
+The workspace contains the frozen `XPolicyLab` checkout. The batch contains
+`cases.json` with the existing model/endpoint/task/native-step-limit settings;
+self-hosted CCI needs no credential input. Paid-provider credentials retain the
+existing one-line stdin JSON contract and are never saved in captures. The
+launcher keeps seed0/layout0, native per-step ACKs, source identity and the
+unlimited default wall budget. Existing frozen runs retain their old launchers.
+The ordinary XPolicyLab websocket evaluation path already transports raw arrays.
+
+Native `rgb_frames.jsonl` records each camera's live `rgb_sha256` separately
+from its archival JPEG `archive.sha256`. Cloud-to-M migration copies the
+existing JPEG bytes and verifies **archive** hashes; it must not decode,
+resize, re-encode or change colour channels. JPEG encoding introduces one
+lossy archival step; IPC and subsequent byte-preserving copies are lossless.
+
+After copying archives to M, verify the original manifest against copied files:
+
+```bash
+python policy/SenseNova-RoboRSI/native_rgb.py \
+  --records /your/copied/native/episode/rgb_frames.jsonl \
+  --images /your/copied/native/observations
+```

@@ -33,11 +33,30 @@ Account for every digit once; verify descending order, upright/readable glyphs, 
 
 ## Offline helpers
 
-From this skill directory run `python scripts/arrange.py <command>`. Save working files in the episode directory.
+From this skill directory run `python scripts/arrange.py <command>` directly. Save working files in the episode directory. Use `python scripts/arrange.py --help` or `<command> --help` for syntax; normal use does not require reading either Python file. Results are compact JSON, with numeric values rounded to at most three decimal places.
 
 - `plan --input inventory.json`: supply `digits:[{id,value,position:[x,y,z]}]` and `pads:[{id,position:[x,y,z]}]`; returns sorted assignments. IDs must be unique; repeated digit values are allowed.
 - `crop --image head.png --box x0 y0 x1 y1 --output crop.png`: crop original pixels.
 - `project --pixel U V --plane-z Z`: head-pixel projection using the bundled public-demo calibration.
 - `placement --tcp X Y Z --tcp-yaw A --object-xy X Y --object-yaw B --pad-xy X Y --desired-yaw C [--target-z Z]`: offset-corrected TCP position/yaw candidate. Add pitch, roll, `gripper_opening` and the other arm when constructing `act` targets.
+
+`project` returns `position:[x,y,z]` in environment-origin metres. Pixels are original 640x480 head-image coordinates, with U right and V down; `plane-z` is the assumed world height in metres, not measured depth. Calibration is bundled; do not copy its constants into your prompt or reimplement projection.
+
+For example, write an observed inventory to `/workspace/episode/inventory.json` with this JSON shape (replace values from current RGB):
+```json
+{"digits":[{"id":"digit-a","value":8,"position":[-0.2,-0.1,0.774]}],"pads":[{"id":"pad-a","position":[0.1,-0.06,0.77]}]}
+```
+`python scripts/arrange.py plan --input /workspace/episode/inventory.json` returns `largest_number`, `row_values` and `assignments` containing digit/pad IDs and their positions. `placement` returns `target.position`, `target.yaw_deg` and the rotated offset; it does not fill pitch, roll or opening.
+
+For batched projection, the supported Python API is `geometry.pixel_to_plane(uv, z)`: `uv` is `[u,v]` or an N-by-2 list, and the result is a NumPy array with matching XYZ shape, rounded to three decimals. From this skill directory:
+```bash
+python - <<'PY'
+import sys, json
+sys.path.insert(0, "scripts")
+from geometry import pixel_to_plane
+print(json.dumps(pixel_to_plane([[187,285],[223,247]],0.774).tolist()))
+PY
+```
+`arrange.assignment_plan(inventory)` is the equivalent documented planning API and returns the same rounded JSON-compatible dictionary as `plan`. Other functions and calibration constants are implementation details. In continuation notes, keep the API/command and input/output shape, not the source.
 
 Helpers return calculations and images; execute motions through `act`.

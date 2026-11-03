@@ -232,21 +232,79 @@ def test_original_proposal_rgb_joint_order_and_gripper_only_clip(
     assert (source_rgb[0, 0] == [241, 18, 9]).all()
 
 
-def test_gpt_observations_preserve_rgb_pixels_in_png(experiment):
+def test_gpt_observations_use_jpeg_without_extra_png_checkpoint(experiment):
     from PIL import Image
 
     cameras = experiment.latest["observation"]["cameras"]
     assert len(cameras) == 3
     for camera, uri in cameras.items():
-        assert uri.startswith("obs://") and uri.endswith(".png")
+        assert uri.startswith("obs://") and uri.endswith(".jpg")
         path = experiment.active["observation_dir"] / uri.removeprefix("obs://")
         encoded = path.read_bytes()
-        assert encoded.startswith(b"\x89PNG\r\n\x1a\n")
+        assert encoded.startswith(b"\xff\xd8")
         with Image.open(path) as image:
-            assert image.format == "PNG" and image.mode == "RGB"
+            assert image.format == "JPEG" and image.mode == "RGB"
             rgb = np.asarray(image)
         assert rgb.shape == (3, 4, 3) and rgb.dtype == np.uint8
-        np.testing.assert_array_equal(rgb, observation()["vision"][camera]["color"])
+        expected = observation()["vision"][camera]["color"]
+        assert np.abs(rgb.astype(np.int16)-expected).max() <= 3
+    assert not list(experiment.active["observation_dir"].glob("*.png"))
+
+
+def test_jpeg_history_has_no_extra_png_after_steps_and_repeated_observations(experiment, backend, vla):
+    from PIL import Image
+
+    directory = experiment.active["observation_dir"]
+    proposal = propose(experiment)
+    with ThreadPoolExecutor(max_workers=1) as executor:
+        future = executor.submit(experiment.request, review(proposal))
+        try:
+            for step in range(1, 6):
+                pending = backend.next_action(timeout=2)
+                backend.acknowledge(pending.request_id, observation())
+            assert future.result(timeout=2)["executed_steps"] == 5
+        finally:
+            if not future.done():
+                backend.cancel()
+    assert not list(directory.glob("*.png"))
+    assert len(list(directory.glob("*.jpg"))) == 6 * 3
+    for name in ("00004_cam_head.jpg", "00005_cam_head.jpg"):
+        with Image.open(directory/name) as image:
+            assert np.abs(np.asarray(image).astype(np.int16) -
+                          observation()["vision"]["cam_head"]["color"]).max() <= 3
+    # Several snapshots at the same physical step keep the original JPEG intact.
+    saved = (directory/"00005_cam_head.jpg").read_bytes()
+    for _ in range(3):
+        backend._adapter._transition()
+    assert not list(directory.glob("*.png"))
+    assert (directory/"00005_cam_head.jpg").read_bytes() == saved
+
+
+def test_failed_replay_image_write_keeps_previous_checkpoint(experiment, backend, vla, monkeypatch):
+    from PIL import Image
+
+    directory = experiment.active["observation_dir"]
+    original = Image.Image.save
+    def save(image, filename, *args, **kwargs):
+        if kwargs.get("format") == "JPEG" and Path(filename).name == "00003_cam_head.jpg":
+            raise OSError("Synthetic full disk while saving replay image")
+        return original(image, filename, *args, **kwargs)
+    monkeypatch.setattr(Image.Image, "save", save)
+    proposal = propose(experiment)
+    with ThreadPoolExecutor(max_workers=1) as executor:
+        future = executor.submit(experiment.request, review(proposal))
+        try:
+            for _ in range(3):
+                pending = backend.next_action(timeout=2)
+                backend.acknowledge(pending.request_id, observation())
+            with pytest.raises(OSError, match="Synthetic full disk"):
+                future.result(timeout=2)
+        finally:
+            if not future.done():
+                backend.cancel()
+    assert not list(directory.glob("*.png"))
+    assert (directory/"00001_cam_head.jpg").is_file() and (directory/"00002_cam_head.jpg").is_file()
+    assert experiment.latest["observation"]["control_step"] == 2
 
 
 def test_original_default_five_review_yields_one_joint_per_real_ack(

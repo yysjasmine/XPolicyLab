@@ -1,5 +1,5 @@
 {
-  "profile_id": "robodojo_execution_three_tools_v15_direct_mcp",
+  "profile_id": "robodojo_execution_three_tools_v18_short_proposal_ids",
   "task": "arrange_largest_number",
   "skills": [
     "robo-general",
@@ -8,12 +8,12 @@
   "sha256": {
     "agent_core.md": "beef93c94767c02a18c0b80b220ff55b49358b8aa366e2dd3602d55cf1035b8b",
     "native_tools.json": "aa97455a660c91cbf250ea98862507baf0d33dc798ffeba0fd440cc0641592b8",
-    "robot_tools.json": "5a813922cdf38269f327c9fa4b7fd56a26cbcca37e7ee889cf707dd496354754",
-    "skills/arrange_largest_number/SKILL.md": "003f4334b7991cfe2a3f2a8a3bfd44d13435c95a1f7f684ffdaa16606e86a0c8",
-    "skills/robo-general/SKILL.md": "884b0f37ea4f4678f8507efe9cbb1ce8cf82a0ad6847738c7ec3ea9c4cb1a744",
-    "skills_instruction.md": "6375cd7d5ec41cf7d02ac0fb8d6d4ddd4f08a3a1927eae680b99944e937fb302",
-    "actual_robot_declarations.json": "4c8d3afd8853410888608e6a8c5395a708e6e6f10b6cdfed73d4e758809a5c4b",
-    "skills/arrange_largest_number/scripts/arrange.py": "9565e6242b4c778e49f464678eb9811590222c7e771e0898150dd00d3a4c6daf"
+    "robot_tools.json": "ae26629f2a3c8fdf4a51271894d9ea76719b13c71b669868d71617029de97f52",
+    "skills/arrange_largest_number/SKILL.md": "d8411655badbb507539e54fe228d49de014cad00dfd733b95d8dd8761542f5ea",
+    "skills/robo-general/SKILL.md": "ea113aeebeb665dbb244ab630924022a1694d095ebcf8c0e25336a2e31f04923",
+    "skills_instruction.md": "f1e7807b90f368244876392fca55455668f9d299ad4bc307e94324b8a5b5bf1b",
+    "actual_robot_declarations.json": "968ea80e377d4464a141a319891ef21acae2a78d49114dcb06220574520f184e",
+    "skills/arrange_largest_number/scripts/arrange.py": "82a3363e3a7ecc0091f80f1684a6081577e0263c415807a5f028102352baaa35"
   },
   "remove_legacy_markdown": [
     ".agents/skills/arrange_largest_number/SKILL.md",
@@ -134,7 +134,23 @@
       "preview": "same clipped continuous values as stored VLA execution",
       "manual_execution": "preserved through TCP tracking and IK into native joint commands"
     },
-    "tool_exposure": "native direct MCP with automatic text and image blocks; generic exec/wait retained"
+    "tool_exposure": "native direct MCP with automatic text and image blocks; generic exec/wait retained",
+    "gripper_monitor": {
+      "implementation": "robot_runtime/gripper_monitor.py",
+      "execution_paths": [
+        "model_tcp_closed_loop",
+        "vla_original_joints"
+      ],
+      "sampling": "after every acknowledged native control step",
+      "opening_change_threshold": 0.02,
+      "command_change_tolerance": 0.005,
+      "settle_range": 0.003,
+      "settle_samples": 3,
+      "reference": "fixed after settling; retained across act calls until command change, interruption or feedback discontinuity",
+      "interrupt_status": "gripper_change_reobserve",
+      "response": "gripper_event, current RGB and measured state; remaining act cancelled",
+      "interpretation": "contact change requiring visual inspection; not confirmed object loss"
+    }
   },
   "single_markdown_skills": [
     "robo-general",
@@ -142,5 +158,16 @@
   ],
   "remove_legacy_assets": [
     ".agents/skills/arrange_largest_number/assets/demonstrations.json"
-  ]
+  ],
+  "helper_output_contract": {
+    "decimal_places": 3,
+    "cli_json": "compact",
+    "usage": "documented CLI/API, then help; minimal source only for an actual unresolved error",
+    "calculation_precision": "unchanged before public result formatting"
+  },
+  "proposal_ids": {
+    "public_format": "p1, p2, ...",
+    "native_uuid": "preserved privately",
+    "mapping": "private controller/proposal_ids.json; continued on same-episode recovery"
+  }
 }

@@ -11,12 +11,20 @@ def vec(x,n):
 
 def wrap(x):return (x+180)%360-180
 
-def rounded(x):
-    if isinstance(x,float):
-        x=round(x,3);return 0.0 if x==0 else x
-    if isinstance(x,list):return [rounded(v) for v in x]
-    if isinstance(x,dict):return {k:rounded(v) for k,v in x.items()}
-    return x
+def rounded(value):
+    """Format public numeric output only; calculations retain full precision."""
+    if type(value).__module__.split('.')[0] == 'numpy':
+        value = value.tolist()
+    if isinstance(value, float):
+        if not math.isfinite(value):
+            raise ValueError('Public output numbers must be finite')
+        result = round(float(value), 3)
+        return 0.0 if result == 0 else result
+    if isinstance(value, (list, tuple)):
+        return [rounded(item) for item in value]
+    if isinstance(value, dict):
+        return {key: rounded(item) for key, item in value.items()}
+    return value
 
 def rotate_xy(offset,degrees):
     a=math.radians(degrees);x,y=offset
@@ -50,5 +58,5 @@ def main():
         if a.command=='align':r=align(a.tcp,a.tcp_yaw,a.tip_xy,a.key_teeth_axis,a.hole_xy,a.hole_teeth_axis,a.target_z)
         else:r=turn(a.tcp,a.yaw,a.pivot,a.start_yaw,a.turned,a.total_deg,a.chunk_deg)
     except ValueError as e:p.exit(2,str(e)+'\n')
-    print(json.dumps(r,allow_nan=False,indent=2))
+    print(json.dumps(rounded(r), allow_nan=False, separators=(',', ':')))
 if __name__=='__main__':main()

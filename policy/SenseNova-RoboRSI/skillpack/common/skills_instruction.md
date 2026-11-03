@@ -1,4 +1,4 @@
-Read each skill's main SKILL.md. Use its scripts, data and images as needed.
+Read each skill's main SKILL.md. Run bundled offline helpers through the documented CLI or explicitly documented Python API; routine use does not require reading their implementation. For a usage question, consult SKILL.md, then `--help` (or subcommand `--help`) with a small output limit. Forward helper stdout, not the entire command metadata envelope. Inspect only the relevant source excerpt if an actual error remains unexplained. Do not preload scripts or calibration tables into context. After compaction, reuse the known invocation or consult SKILL.md/help again. Preserve short helper commands, input/output contracts and result-file paths in continuation notes, rather than source code. Use reference images as needed.
 
 Available skills:
 - robo-general: Robot interface and setting-specific execution. (file: /workspace/.agents/skills/robo-general/SKILL.md)

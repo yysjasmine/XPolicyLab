@@ -19,8 +19,14 @@ def pixel_rays(uv, k, camera_to_world):
     return t[:3,3], rays
 
 def pixel_to_plane(uv, z, k=HEAD_K, camera_to_world=HEAD_T):
+    """Public single/batch projection in metres, displayed to three decimals.
+
+    Calibration and ray/intersection calculations keep their original precision.
+    """
     origin, rays = pixel_rays(uv, k, camera_to_world)
     t = (z-origin[2]) / rays[...,2]
     if np.any(t <= 0) or not np.all(np.isfinite(t)):
         raise ValueError('Plane intersection is behind camera or ill conditioned')
-    return origin + t[...,None]*rays
+    result = np.round(origin + t[...,None]*rays, 3)
+    result[result == 0] = 0.0
+    return result

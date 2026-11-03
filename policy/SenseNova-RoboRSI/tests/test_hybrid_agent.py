@@ -321,9 +321,11 @@ def make_offline_tool_planner(callback):
 
 
 
+@pytest.mark.parametrize("episode_seconds", [14400, None])
 def test_skillpack_tools_five_acknowledged_steps_close_without_self_scoring(
-    reference, cfg, robot, vla, tmp_path, monkeypatch
+    reference, cfg, robot, vla, tmp_path, monkeypatch, episode_seconds
 ):
+    cfg["episode_seconds"] = episode_seconds
     reference = execution_profile.extend_reference(reference)
     episode = tmp_path / "episode"
     episode.mkdir()
@@ -337,6 +339,9 @@ def test_skillpack_tools_five_acknowledged_steps_close_without_self_scoring(
     completed = []
     def execute(toolkit, _cfg, _run, _segment, prompt):
         assert prompt.startswith("Carry out the current episode task.")
+        assert ("wall_seconds_budget" in prompt) == (episode_seconds is not None)
+        saved_cfg = json.loads((_run/"config.json").read_text())
+        assert saved_cfg["episode_seconds"] == episode_seconds
         assert toolkit.execute_tool("observe", {}).result["observation"]["control_step"] == 0
         proposal = toolkit.execute_tool("vla_propose", {"subgoal": "Align the visible blocks."}).result
         result = toolkit.execute_tool("act", {"proposal_id": proposal["proposal_id"], "steps": 5,

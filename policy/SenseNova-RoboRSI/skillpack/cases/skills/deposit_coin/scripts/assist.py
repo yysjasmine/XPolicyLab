@@ -9,12 +9,20 @@ def vec(x,n):
     if not isinstance(x,(list,tuple)) or len(x)!=n:raise ValueError('Wrong vector length')
     return [finite(v) for v in x]
 
-def rounded(x):
-    if isinstance(x,float):
-        x=round(x,3);return 0.0 if x==0 else x
-    if isinstance(x,list):return [rounded(v) for v in x]
-    if isinstance(x,dict):return {k:rounded(v) for k,v in x.items()}
-    return x
+def rounded(value):
+    """Format public numeric output only; calculations retain full precision."""
+    if type(value).__module__.split('.')[0] == 'numpy':
+        value = value.tolist()
+    if isinstance(value, float):
+        if not math.isfinite(value):
+            raise ValueError('Public output numbers must be finite')
+        result = round(float(value), 3)
+        return 0.0 if result == 0 else result
+    if isinstance(value, (list, tuple)):
+        return [rounded(item) for item in value]
+    if isinstance(value, dict):
+        return {key: rounded(item) for key, item in value.items()}
+    return value
 
 def align(tcp,tcp_yaw,coin_xy,coin_axis,slot_xy,slot_axis,target_z=None):
     tcp=vec(tcp,3);coin_xy=vec(coin_xy,2);slot_xy=vec(slot_xy,2)
@@ -36,5 +44,5 @@ def main():
     args=p.parse_args()
     try:r=align(args.tcp,args.tcp_yaw,args.coin_xy,args.coin_axis,args.slot_xy,args.slot_axis,args.target_z)
     except ValueError as e:p.exit(2,str(e)+'\n')
-    print(json.dumps(r,allow_nan=False,indent=2))
+    print(json.dumps(rounded(r), allow_nan=False, separators=(',', ':')))
 if __name__=='__main__':main()

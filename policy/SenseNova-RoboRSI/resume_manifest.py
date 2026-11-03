@@ -316,7 +316,8 @@ def load_manifest(
     if session_id is not None and codex_home is None:
         raise ResumeManifestError("session_id requires its retained Codex home")
     elapsed = _safe_float(document.get("elapsed_seconds", 0), label="elapsed_seconds")
-    if elapsed > _safe_float(document.get("episode_seconds", elapsed), label="episode_seconds"):
+    episode_seconds = document.get("episode_seconds", elapsed)
+    if episode_seconds is not None and elapsed > _safe_float(episode_seconds, label="episode_seconds"):
         raise ResumeManifestError("elapsed_seconds exceeds episode_seconds")
     return ResumeState(
         manifest=manifest,

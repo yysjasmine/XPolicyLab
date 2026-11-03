@@ -490,7 +490,7 @@ def test_formal_model_original_review_feedback_and_terminal_unknown(adapter_fact
     assert records(record / "native/vla_proposals_private.jsonl")
     assert records(record / "vla_review.jsonl")[-1]["executed_steps"] == 3
     for camera in CAMERAS:
-        pictures = sorted((trajectory / "controller/observations/evaluation-0001").glob(f"*_{camera}.png"))
+        pictures = sorted((trajectory / "controller/observations/evaluation-0001").glob(f"*_{camera}.jpg"))
         assert len(pictures) >= 9 and pictures[-1].stat().st_size > 0
     assert (trajectory / "controller/observations/latest.json").is_file()
     assert not any(path.is_symlink() for path in (trajectory / "controller").rglob("*"))

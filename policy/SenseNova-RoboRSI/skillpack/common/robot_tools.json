@@ -11,7 +11,7 @@
   },
   {
     "name": "vla_propose",
-    "description": "Predict a trajectory without moving. Give one short English sentence describing an immediate action, the observed object and a destination when needed; use task/demo wording and omit reasoning, code and multi-step plans. Example: Move the left gripper above the blue 8. Return proposal_id and TCP samples at steps 5,10,...,50. A new request replaces an unexecuted old proposal.",
+    "description": "Predict a trajectory without moving. Give one short English sentence describing an immediate action, the observed object and a destination when needed; use task/demo wording and omit reasoning, code and multi-step plans. Example: Move the left gripper above the blue 8. Return a short proposal_id (p1, p2, ...) and TCP samples at steps 5,10,...,50. A new request replaces an unexecuted old proposal.",
     "input_schema": {
       "type": "object",
       "properties": {
@@ -29,14 +29,14 @@
   },
   {
     "name": "act",
-    "description": "Accept stored original VLA joint steps, or track model-supplied TCP targets with internal measured-state feedback and IK. TCP targets use continuous gripper_opening (0 closed, 1 open). Supplying targets declines the proposal. Return reached/stalled/budget status, actual native steps, residual errors, RGB and measured TCP state. Pose arrival does not verify grasp. Keep reason/assessment concise.",
+    "description": "Accept stored original VLA joint steps, or track model-supplied TCP targets with internal measured-state feedback and IK. TCP targets use continuous gripper_opening (0 closed, 1 open). Supplying targets declines the proposal. Check measured gripper openings every native step; a change of at least 0.02 after settling under a steady command interrupts with gripper_change_reobserve and gripper_event. Return status, actual native steps, residual errors, current RGB and measured TCP state. Inspect interrupted results before choosing another action; opening changes do not prove object loss. Pose arrival does not verify grasp. Keep reason/assessment concise.",
     "input_schema": {
       "type": "object",
       "properties": {
         "proposal_id": {
           "type": "string",
           "minLength": 1,
-          "description": "Use only when accepting the current VLA proposal; omit when supplying targets."
+          "description": "Copy the current short VLA proposal_id, e.g. p1; omit when supplying targets."
         },
         "steps": {
           "type": "integer",

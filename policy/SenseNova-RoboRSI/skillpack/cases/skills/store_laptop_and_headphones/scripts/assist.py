@@ -47,11 +47,20 @@ def slot_alignment(d):
             'transverse_center_error_m':dot(delta,normal), 'edge_endpoint_height_difference_m':b[2]-a[2]}
 
 
-def display(v):
-    if isinstance(v,float):return round(v,3)
-    if isinstance(v,list):return [display(x) for x in v]
-    if isinstance(v,dict):return {k:display(x) for k,x in v.items()}
-    return v
+def display(value):
+    """Format public numeric output only; calculations retain full precision."""
+    if type(value).__module__.split('.')[0] == 'numpy':
+        value = value.tolist()
+    if isinstance(value, float):
+        if not math.isfinite(value):
+            raise ValueError('Public output numbers must be finite')
+        result = round(float(value), 3)
+        return 0.0 if result == 0 else result
+    if isinstance(value, (list, tuple)):
+        return [display(item) for item in value]
+    if isinstance(value, dict):
+        return {key: display(item) for key, item in value.items()}
+    return value
 
 
 if __name__=='__main__':
@@ -60,4 +69,4 @@ if __name__=='__main__':
     a=p.parse_args()
     with open(a.input) as f:d=json.load(f)
     fn=lid_angle if a.command=='lid-angle' else slot_alignment
-    print(json.dumps(display(fn(d)),allow_nan=False))
+    print(json.dumps(display(fn(d)), allow_nan=False, separators=(',', ':')))
