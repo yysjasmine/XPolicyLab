@@ -1,5 +1,11 @@
 # XPolicyLab Agent Guide
 
+## 本地开发目录约定（2026-11-03 用户指定）
+
+- 后续本项目的代码修改、测试和 Git 开发操作，默认在 `/Users/wusilei/ws/RoboRSI-xpolicy-v2` 执行。
+- `/Users/wusilei/ws/RoboRSI-xpolicy` 是此次复制来源；如需参考旧目录，可只读查看，后续修改统一落在 v2。
+- v2 保留原仓库的提交历史和 `xpolicy-dev` 分支。文件夹名 `v2` 不代表另起一套分支或改变评测协议。
+
 XPolicyLab wraps each robot policy as a self-contained adapter under `policy/<POLICY>/`. The policy
 server imports it as `XPolicyLab.policy.<POLICY>.model`, so this checkout is always used as a
 package inside a parent workspace — never as the top-level project.
