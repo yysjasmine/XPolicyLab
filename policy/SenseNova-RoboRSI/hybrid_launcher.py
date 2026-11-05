@@ -67,15 +67,12 @@ class HybridCodexCliPlanner(CodexCliPlanner):
             raise ValueError(
                 "Original hybrid CLI requires external tools and original CLI flags"
             )
-        if self.config.expected_version != "codex-cli 0.160.1":
-            raise ValueError("Original hybrid requires codex-cli 0.160.1")
-        if (
-            self.config.expected_sha256
-            != "f34a4d2301892ae96c90097786bfe5dc269f187b6f69faf42a7b357b8c081e35"
-        ):
-            raise ValueError(
-                "Original hybrid requires the reference native CLI SHA-256"
-            )
+        from .custom_cli import selected_cli
+        from .runtime_config import POLICY_DIR, submission
+        identity = selected_cli(POLICY_DIR, submission()["cli"])
+        if (self.config.expected_version != identity["expected_version"]
+                or self.config.expected_sha256 != identity["sha256"]):
+            raise ValueError("Hybrid CLI differs from the explicitly selected CLI identity")
         if "CODEX_API_KEY" not in self.config.env_vars:
             raise ValueError(
                 "agent.codex_cli.env_vars must explicitly forward CODEX_API_KEY"

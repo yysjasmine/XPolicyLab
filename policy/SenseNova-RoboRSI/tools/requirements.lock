@@ -1996,3 +1996,7 @@ wrapt==2.5.0 \
     # via
     #   -r tool_runtime/requirements.in
     #   dm-tree
+
+# RGB spatial localization; Linux x86_64 cp37-abi3 wheel
+opencv-python-headless==4.10.0.84 \
+    --hash=sha256:377d08a7e48a1405b5e84afcbe4798464ce7ee17081c1c23619c8b398ff18295

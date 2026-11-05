@@ -1,19 +1,35 @@
 {
-  "profile_id": "robodojo_execution_three_tools_v18_short_proposal_ids",
+  "profile_id": "robodojo_execution_three_tools_wsl6_spatial_memory",
   "task": "arrange_largest_number",
   "skills": [
     "robo-general",
+    "robodojo-spatial-localize",
     "arrange_largest_number"
   ],
   "sha256": {
-    "agent_core.md": "beef93c94767c02a18c0b80b220ff55b49358b8aa366e2dd3602d55cf1035b8b",
+    "agent_core.md": "1acbd17a084858303da9368133d4809ccf9b64eb3448f53ad6a6d7d4d41e8647",
     "native_tools.json": "aa97455a660c91cbf250ea98862507baf0d33dc798ffeba0fd440cc0641592b8",
     "robot_tools.json": "ae26629f2a3c8fdf4a51271894d9ea76719b13c71b669868d71617029de97f52",
     "skills/arrange_largest_number/SKILL.md": "ae20b680034040b2d7956a46bc4a3622f8678726e0c3a4bc4fe17fc6f9373aaa",
-    "skills/robo-general/SKILL.md": "35681b1eeb77783729bc1f81297d7d4721c62c5574dc48badeee55734d018ea8",
-    "skills_instruction.md": "f1e7807b90f368244876392fca55455668f9d299ad4bc307e94324b8a5b5bf1b",
+    "skills/robo-general/SKILL.md": "795113fd24f4b075ed72d8b05099b436d99a9b71d86cb36c819ec6cf7f95de02",
+    "skills_instruction.md": "24dbc691364770bdeac57b871fa34ebdb775d7f0e1235b296c2e2278fd423e05",
     "actual_robot_declarations.json": "968ea80e377d4464a141a319891ef21acae2a78d49114dcb06220574520f184e",
-    "skills/arrange_largest_number/scripts/arrange.py": "82a3363e3a7ecc0091f80f1684a6081577e0263c415807a5f028102352baaa35"
+    "skills/arrange_largest_number/scripts/arrange.py": "82a3363e3a7ecc0091f80f1684a6081577e0263c415807a5f028102352baaa35",
+    "skills/robodojo-spatial-localize/SKILL.md": "518cc046daf3d51ba2eb3ccea26b44f6b87b97619449e80c495881e943713d1a",
+    "skills/robodojo-spatial-localize/inputs.md": "733f6156b85b90e6b91c31cc258bb5ede5601ce123157d69f599f4d745a3ece0",
+    "skills/robodojo-spatial-localize/requirements.txt": "8c15f330f28dc8845538b0bac6d87773590ebda96e1e6ecd73d653b1bf686b25",
+    "skills/robodojo-spatial-localize/scripts/curved_plate.py": "3ade327d18f7b1a1b5d9ad1cbdea18a0d9cac7e45ce364ec4832f8535ac560c1",
+    "skills/robodojo-spatial-localize/scripts/curved_strip.py": "10dae8cf0a96151e7d76e74ee9ac51a3e68137d09b7a2cc51d32a2ebcfb4ae1c",
+    "skills/robodojo-spatial-localize/scripts/local_rgb_features.py": "33b0ece4c748241d1ae358f8514a496ff28c79f094523e7bf5d5d4cbbafa25f9",
+    "skills/robodojo-spatial-localize/scripts/localize_rgb.py": "b76728ce2258610384f67cc9add09c84b59eee74c6d9a7b3f8b01e13d62ac873",
+    "skills/robodojo-spatial-localize/scripts/rgb_consensus.py": "e7348a2793f40cdddfd5717e5f951c8a168cee68d3be080135ef73b9364c2a20",
+    "skills/robodojo-spatial-localize/scripts/rgb_geometry.py": "66f87aa665c2871429106a7dce2cd184e3d661cd6f0cd25e7982b54ec6ada686",
+    "skills/robodojo-spatial-localize/scripts/rgb_measure.py": "a82ac2fb9e3d9b71e13d327782de55106d4801fe1c99299f845158ca987bb29c",
+    "skills/robodojo-spatial-localize/scripts/rgb_surface_support.py": "a5fba000e5b68a7b24f8b71942c81238ed67e6b941fde323682a3bbb777fe6cc",
+    "skills/robodojo-spatial-localize/scripts/run_localize.py": "a7cd768e3db0d49be4075dd9b81563526d9e77dc5607e46bdb959b24abdd9121",
+    "skills/robodojo-spatial-localize/scripts/space_memory.py": "92f41de564b53a01d49ce0406a1a09001444c3be15805ddffa6a3c95c3b1469a",
+    "skills/robodojo-spatial-localize/scripts/support_plane.py": "2bdbecedc90b2e4c075e850bc561002689a7257c3e45cb98a88be00eec3316e5",
+    "space.json": "c50bb7390e0aa547176790d968b06a2a1fc4e2516b022d394968527704d89d07"
   },
   "remove_legacy_markdown": [
     ".agents/skills/arrange_largest_number/SKILL.md",

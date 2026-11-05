@@ -84,14 +84,16 @@ from preflight import (
 )
 
 metadata = load_submission(policy)
-cli = metadata["cli"]
+from custom_cli import selected_cli
+cli = selected_cli(policy, metadata["cli"])
+custom = cli["selection"] == "operator_custom_build"
 if platform.system() != "Linux" or platform.machine() not in {"x86_64", "amd64"}:
     raise SystemExit("The confirmed Codex standalone release supports Linux x86_64 only")
 archive = validate_archive(metadata, policy)
 runtime = policy / "runtime"
 runtime.mkdir(exist_ok=True)
 
-if not archive.is_file():
+if not custom and not archive.is_file():
     archive.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.NamedTemporaryFile(dir=archive.parent, prefix=".codex-download-", delete=False) as stream:
         temporary_archive = Path(stream.name)
@@ -141,7 +143,13 @@ binary = codex_root / "bin" / "codex"
 if codex_root.exists():
     if not binary.is_file() or sha256_file(binary) != cli["sha256"]:
         raise SystemExit("runtime/codex exists with an unexpected executable; move it aside before installing")
-    validate_companions(metadata, codex_root)
+    validate_companions({"cli": cli}, codex_root)
+elif custom:
+    original = Path(cli["executable"]).parent.parent
+    validate_companions({"cli": cli}, original)
+    if sha256_file(Path(cli["executable"])) != cli["sha256"]:
+        raise SystemExit("Custom CLI changed after operator identity was pinned")
+    codex_root.symlink_to(original, target_is_directory=True)
 else:
     with tempfile.TemporaryDirectory(prefix=".codex-", dir=runtime) as temporary:
         staging = Path(temporary)
@@ -157,7 +165,7 @@ else:
             raise SystemExit("Codex artifact bin/codex is not executable")
         validate_companions(metadata, extracted)
         extracted.replace(codex_root)
-print("Committed RoboRSI source and authenticated Codex artifact are ready.")
+print("Committed RoboRSI source and selected native Codex artifact are verified.")
 PY
 
 if [[ ! -x "${POLICY_ENV}/bin/python" ]]; then
@@ -219,6 +227,8 @@ sys.path.insert(0, str(policy))
 from preflight import load_submission, sha256_file
 
 metadata = load_submission(policy)
+from custom_cli import selected_cli
+metadata["cli"] = selected_cli(policy, metadata["cli"])
 import yaml
 backend = yaml.safe_load((policy / "deploy.yml").read_text()).get("vla_backend", "pi05")
 receipt = {
@@ -226,6 +236,7 @@ receipt = {
     "installed_at": datetime.now(timezone.utc).isoformat(),
     "source_commit": metadata["source"]["commit"],
     "agent_label": metadata["agent_label"],
+    "cli_selection": metadata["cli"]["selection"],
     "cli_version": metadata["cli"]["expected_version"],
     "cli_sha256": sha256_file(policy / "runtime/codex/bin/codex"),
     "cli_companion_sha256": metadata["cli"]["companion_sha256"],

@@ -23,7 +23,7 @@ ROBORSI_CLIENT_XPL_ROOT="$(cd "${ROBORSI_CLIENT_SCRIPT_DIR}/../.." && pwd)"
 ROBORSI_CLIENT_BENCH_ROOT="$(cd "${ROBORSI_CLIENT_XPL_ROOT}/.." && pwd)"
 ROBORSI_CLIENT_UTILS_DIR="${ROBORSI_CLIENT_XPL_ROOT}/utils"
 ROBORSI_CLIENT_POLICY_NAME="$(basename "${ROBORSI_CLIENT_SCRIPT_DIR}")"
-ROBORSI_CLIENT_YAML_FILE="${ROBORSI_CLIENT_SCRIPT_DIR}/deploy.yml"
+ROBORSI_CLIENT_YAML_FILE="${ROBORSI_DEPLOY_CONFIG:-${ROBORSI_CLIENT_SCRIPT_DIR}/deploy.yml}"
 export PYTHONPATH="${ROBORSI_CLIENT_BENCH_ROOT}:${ROBORSI_CLIENT_XPL_ROOT}${PYTHONPATH:+:${PYTHONPATH}}"
 
 # shellcheck disable=SC1091
@@ -64,19 +64,30 @@ if [[ "${eval_env_mode}" == "debug" ]]; then
 fi
 
 if [[ "${eval_env_mode}" == "sim" ]]; then
-    if ! command -v conda >/dev/null 2>&1; then
-        echo "[CLIENT][ERROR] Simulator execution requires the benchmark's Conda environment." >&2
-        exit 1
+    if [[ -n "${ROBORSI_SIM_PYTHON:-}" ]]; then
+        if [[ "${ROBORSI_SIM_PYTHON}" != /* || ! -x "${ROBORSI_SIM_PYTHON}" ]]; then
+            echo "[CLIENT][ERROR] ROBORSI_SIM_PYTHON requires an executable absolute path." >&2
+            exit 1
+        fi
+        sim_python="${ROBORSI_SIM_PYTHON}"
+        export PATH="$(dirname "${sim_python}"):${PATH}"
+        if [[ -n "${ROBORSI_SIM_EXTRA_PYTHONPATH:-}" ]]; then
+            export PYTHONPATH="${PYTHONPATH}:${ROBORSI_SIM_EXTRA_PYTHONPATH}"
+        fi
+    else
+        if ! command -v conda >/dev/null 2>&1; then
+            echo "[CLIENT][ERROR] Simulator execution requires the benchmark's Conda environment." >&2
+            exit 1
+        fi
+        conda_base="$(conda info --base)"
+        # SDK activation hooks may read unset shell variables.
+        set +u
+        # shellcheck disable=SC1091
+        source "${conda_base}/etc/profile.d/conda.sh" >&2 || { set -u; exit 1; }
+        conda activate "${eval_env_conda_env}" >&2 || { set -u; exit 1; }
+        set -u
+        sim_python="$(command -v python)"
     fi
-    conda_base="$(conda info --base)"
-    # SDK activate.d hooks may read unset shell variables. Preserve their
-    # exported SDK paths in this client process, then restore our strict mode.
-    set +u
-    # shellcheck disable=SC1091
-    source "${conda_base}/etc/profile.d/conda.sh" >&2 || { set -u; exit 1; }
-    conda activate "${eval_env_conda_env}" >&2 || { set -u; exit 1; }
-    set -u
-    sim_python="$(command -v python)"
     sim_prefix="$("${sim_python}" -S -c 'import os, sys; print(os.path.realpath(sys.prefix))')"
     export ROBORSI_SIM_BOOTSTRAP=1
     export ROBORSI_SIM_BENCH_ROOT="${ROBORSI_CLIENT_BENCH_ROOT}"
@@ -100,6 +111,17 @@ if [[ "${eval_env_mode}" == "sim" ]]; then
         fi
     }
     export -f python
+    if [[ -n "${ROBORSI_SIM_PYTHON:-}" ]]; then
+        # Use the verified existing simulator venv with the official evaluator.
+        # Native identity/layout wrapping and scoring remain on the same path.
+        cd "${ROBORSI_CLIENT_BENCH_ROOT}"
+        exec bash "${ROBORSI_CLIENT_BENCH_ROOT}/scripts/eval_policy.sh" \
+            --bench_name "${bench_name}" --task_name "${task_name}" \
+            --env_cfg_type "${env_cfg_type}" --policy_name "${ROBORSI_CLIENT_POLICY_NAME}" \
+            --host "${policy_server_ip}" --port "${policy_server_port}" --protocol ws \
+            --eval_batch false --root_dir "${ROBORSI_CLIENT_BENCH_ROOT}" \
+            --device_id "${env_gpu_id}" --additional_info "${additional_info}" --seed "${seed}"
+    fi
 fi
 
 # The benchmark's own conda environment owns simulator execution and scoring.

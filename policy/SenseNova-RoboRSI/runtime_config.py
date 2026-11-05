@@ -90,7 +90,11 @@ def load_agent_config(
     else:
         base_url, model = resolve_base_url(), resolve_model()
     pins = submission()
-    cli = pins["cli"]
+    if __package__:
+        from .custom_cli import selected_cli
+    else:
+        from custom_cli import selected_cli
+    cli = selected_cli(POLICY_DIR, pins["cli"])
     if not cli.get("version") or not cli.get("expected_version"):
         raise ValueError("RoboDojo Codex CLI version is missing from submission.json")
     label = model_cfg.get("ckpt_name") or pins["agent_label"]
@@ -150,7 +154,7 @@ def load_agent_config(
     overrides = {
         "agent.model": model,
         "agent.reasoning_effort": model_cfg.get("reasoning_effort", "xhigh"),
-        "agent.codex_cli.executable": str(runtime / "codex/bin/codex"),
+        "agent.codex_cli.executable": cli["executable"],
         "agent.codex_cli.expected_version": cli["expected_version"],
         "agent.codex_cli.expected_sha256": cli["sha256"],
         "agent.codex_cli.env": environment,

@@ -4,7 +4,7 @@
   "source_commit": "cfa591575172b638a8436fa95db28e9469785c9c",
   "official_source_commit": "726e9aabfaa642203722eb126f5eaf0f37f3e1ad",
   "subagents_enabled": false,
-  "frozen_general_sha256": "35681b1eeb77783729bc1f81297d7d4721c62c5574dc48badeee55734d018ea8",
+  "frozen_general_sha256": "795113fd24f4b075ed72d8b05099b436d99a9b71d86cb36c819ec6cf7f95de02",
   "raw_icl_training_material_in_runtime": false,
   "tasks": {
     "align_blocks": {
@@ -716,5 +716,9 @@
       },
       "authoring_receipt_sha256": "5087b5d264a72fcfc51853b0ef6cf975cb843228b695e4a3c4755ef2264ec434"
     }
-  }
+  },
+  "shared_skills": [
+    "robo-general",
+    "robodojo-spatial-localize"
+  ]
 }

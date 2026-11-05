@@ -56,6 +56,22 @@ class RobotPromptProfile:
     def stage_live_workspace(self,workspace,*,owner):
         workspace=Path(workspace).resolve(strict=True);owner=Path(owner).resolve(strict=True)
         if not workspace.is_relative_to(owner):raise ValueError('Workspace escapes owned runtime')
+        # Mutable task memory is not a pinned skill asset. Preserve it across
+        # repeated staging, compaction and same-episode workspace copies.
+        memory=workspace/'space.json'
+        if memory.is_symlink():raise ValueError('Spatial memory must be a workspace file')
+        if memory.exists():
+            state=json.loads(memory.read_text())
+            if (state.get('task')!=self.task or state.get('schema_version')!=1
+                    or state.get('frame')!='environment_origin' or state.get('units')!='meters'
+                    or not isinstance(state.get('objects'),dict)):
+                raise ValueError('Spatial memory belongs to another task or schema')
+        else:
+            with memory.open('x') as stream:
+                initial=json.loads((self.directory/'space.json').read_text())
+                initial['task']=self.task
+                json.dump(initial,stream,indent=2)
+                stream.write('\n')
         public=workspace.parent/'tools/BENCHMARK.md'
         if public.exists():public.write_text('# Public robot interface\n\nRead the registered robo-general and current case skills.\n')
         marker=workspace/'.skillpack-staged.json'
@@ -94,6 +110,7 @@ class RobotPromptProfile:
         lengths={str(p.relative_to(workspace)):len(p.read_bytes()) for p in workspace.rglob('*.md') if p.is_file()}
         if any(size>16384 for size in lengths.values()):raise ValueError('Workspace MD exceeds conservative byte cap')
         receipt={'profile_id':self.profile_id,'removed_legacy_md':removed,'assets':assets,
+                 'spatial_memory':'space.json',
                  'markdown_utf8_bytes':lengths,'source_preparation_changed':False}
         marker.write_text(json.dumps(receipt,indent=2)+'\n');return receipt
 

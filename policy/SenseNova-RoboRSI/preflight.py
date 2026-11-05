@@ -477,7 +477,7 @@ def validate_case_skillpack(
             raise ValueError(f"Unknown public RoboDojo task: {task_name}")
         selected = tasks[task_name]
         result["selection"] = {"task": task_name, **selected,
-                               "skills": ["robo-general"] + ([task_name] if selected["case_skill"] else [])}
+                               "skills": catalog.get("shared_skills", ["robo-general"]) + ([task_name] if selected["case_skill"] else [])}
     return result
 
 
@@ -524,11 +524,21 @@ def check_runtime(
     identity = preflight_codex_cli(cli, repo_root=POLICY_DIR, env=environment)
     metadata = load_submission()
     validate_source_manifest(metadata)
-    if identity["sha256"] != metadata["cli"]["sha256"]:
+    try:
+        from .custom_cli import selected_cli
+    except ImportError:
+        from custom_cli import selected_cli
+    selected = selected_cli(POLICY_DIR, metadata["cli"])
+    if identity["sha256"] != selected["sha256"]:
         raise ValueError(
             "Installed CLI SHA-256 does not match the confirmed standalone release"
         )
-    validate_companions(metadata, POLICY_DIR / "runtime/codex")
+    validate_companions({"cli": selected}, POLICY_DIR / "runtime/codex")
+    if selected["selection"] == "operator_custom_build":
+        validate_companions({"cli": selected}, Path(selected["executable"]).parent.parent)
+    identity["selection"] = selected["selection"]
+    if "manifest" in selected:
+        identity["selection_manifest"] = selected["manifest"]
     try:
         from .runtime_capabilities import (
             check_python_capabilities,

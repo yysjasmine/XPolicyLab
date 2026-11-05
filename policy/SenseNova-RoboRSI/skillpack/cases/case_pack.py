@@ -32,7 +32,7 @@ class CaseSkillLibrary:
             raise ValueError('Unknown task: '+str(task))
         result = deepcopy(self.index['tasks'][task])
         result.update(task=task, subagents_enabled=False,
-                      visible_skills=['robo-general']+([task] if result['case_skill'] else []))
+                      visible_skills=self.index.get('shared_skills',['robo-general'])+([task] if result['case_skill'] else []))
         return result
 
     def verify(self, task):
@@ -100,7 +100,7 @@ class CaseSkillLibrary:
                 raise ValueError('Alias MD exceeds conservative token bound')
         moved = []
         for path in sorted(skills.iterdir()):
-            if path.name == 'robo-general':
+            if path.name in self.index.get('shared_skills',['robo-general']):
                 continue
             archive.mkdir(parents=True,exist_ok=True)
             path.rename(archive/path.name)

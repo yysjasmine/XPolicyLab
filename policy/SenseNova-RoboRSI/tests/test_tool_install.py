@@ -86,7 +86,7 @@ def test_public_inputs_need_no_private_environment_archive(monkeypatch):
     monkeypatch.delenv("ROBORSI_TOOL_ARCHIVE_URL", raising=False)
     result = installer.check_input()
     assert result["status"] == "public_build_inputs_verified"
-    assert result["distribution_count"] == 82
+    assert result["distribution_count"] == 83
 
 
 def test_openpi_source_is_checked_before_downloading(tmp_path, monkeypatch):

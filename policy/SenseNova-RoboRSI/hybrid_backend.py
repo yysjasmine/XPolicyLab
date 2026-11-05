@@ -200,6 +200,8 @@ def _observation(obs: dict) -> dict:
         color = color.copy()
         color.flags.writeable = False
         vision[camera] = {"color": color}
+    from .spatial_observation import validate as validate_calibration
+    calibration = validate_calibration(obs.get("additional_info", {}).get("spatial_calibration"), vision)
     frequency = obs.get("additional_info", {}).get("frequency", 25)
     if (
         isinstance(frequency, bool)
@@ -212,7 +214,8 @@ def _observation(obs: dict) -> dict:
         "instruction": instruction,
         "state": state,
         "vision": vision,
-        "additional_info": {"frequency": frequency},
+        "additional_info": {"frequency": frequency,
+                            **({"spatial_calibration": calibration} if calibration is not None else {})},
     }
 
 
@@ -462,6 +465,11 @@ class HybridBackend:
                     "step_limit": step_limit,
                     "steps_remaining": max(0, step_limit - owner._step),
                 }
+                from .spatial_observation import stage as stage_calibration
+                spatial = stage_calibration(raw["additional_info"].get("spatial_calibration"),
+                                            self.observation_dir, self.frame, step=owner._step)
+                if spatial is not None:
+                    observation["spatial_localization"] = spatial
                 self.frame += 1
                 result = {
                     "observation": observation,

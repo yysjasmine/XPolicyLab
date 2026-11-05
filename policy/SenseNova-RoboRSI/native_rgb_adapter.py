@@ -46,6 +46,11 @@ class Adapter(module.Adapter):
         import numpy as np
 
         raw = self.env.get_obs()
+        if hasattr(self.env, "camera_manager") and not raw.get("additional_info", {}).get("spatial_calibration"):
+            import os
+            if os.environ.get("ROBORSI_SPATIAL_CALIBRATION", "1") == "1":
+                from native_camera import calibrated_observation
+                calibrated_observation(self.env, raw)
         # Freeze renderer buffers once, so the archive and live bytes describe
         # the same frame even if the renderer later reuses its array storage.
         vision = {camera: dict(color=np.array(fields["color"], copy=True, order="C"))
@@ -62,6 +67,8 @@ class Adapter(module.Adapter):
         observation = dict(instruction=raw["instruction"], state=state, cameras=cameras,
                            control_step=step,
                            control_frequency_hz=int(raw["additional_info"]["frequency"]))
+        if raw["additional_info"].get("spatial_calibration") is not None:
+            observation["spatial_calibration"] = raw["additional_info"]["spatial_calibration"]
         self.frame += 1
         done = bool(self.env.end_flag[0])
         result = dict(observation=observation, done=done,

@@ -58,7 +58,7 @@
     "source_path": "vendor/robodojo_adaptive/source",
     "profile_path": "vendor/robodojo_adaptive",
     "manifest_path": "vendor/robodojo_adaptive/provenance/source-files.json",
-    "manifest_sha256": "c2daaa7222dc3d646aa84fe57538b91c6c3f7016aa14c6acbb45db3d7174a836",
+    "manifest_sha256": "03888b8224ff924ddaf701246e830b19894e27d80ffcd189a400ecc84a67afdf",
     "version_kind": "Pinned adaptive_2_50 source baseline with runtime-configurable approved-step minimum (ROBORSI_ADAPTIVE_MIN_STEPS, default5); upper bound50 and action budgets preserved; effective limits recorded per episode.",
     "public_task_configs": 42,
     "original_source_files": 21,
@@ -84,13 +84,13 @@
   },
   "tool_runtime": {
     "manifest_path": "tools/runtime.json",
-    "manifest_sha256": "fb14b393e9338ab6920d12dba88264e7c028efc4b66b12b41a5949191f16443a"
+    "manifest_sha256": "80292873e06060ece4974982d75e7fa2325dcc1ffc97ed3e9a3d2cdf8cc080a7"
   },
   "skillpack": {
     "catalog_path": "skillpack/cases/catalog.json",
-    "catalog_sha256": "ca89fcbd435725426ac9b0ae8881f7d4267f3e49aee144cdf05dad905688985d",
+    "catalog_sha256": "de8e6e225e60c1d6527a66260d105c909e82a27679192570d1b96e7af202f0c0",
     "frozen_common_path": "skillpack/frozen_common.json",
-    "frozen_common_sha256": "f7fa01db36f23bad28bb4051c6744a196afd0119302f81dac549e4da5ea0b45a"
+    "frozen_common_sha256": "3a0d0a570930669d85753f80af1c7b30bb6c7a9ee5b49a9852d21df9107c9f00"
   },
   "native_rgb": {
     "transport": "native_rgb_bytes_v1",

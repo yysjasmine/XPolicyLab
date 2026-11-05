@@ -76,7 +76,7 @@ def _default_root(policy: Path, *, selected: str | None = None) -> Path:
             "ROBORSI_TOOL_ROOT must be a private directory outside reserved sandbox mounts"
         )
     resolved = root.resolve()
-    if any(resolved.is_relative_to(Path(item)) for item in protected):
+    if any(resolved.is_relative_to(Path(item).resolve()) for item in protected):
         raise ValueError("Tool root resolves below a reserved sandbox mount")
     return resolved
 
@@ -170,7 +170,7 @@ def check_input(policy_dir: Path = POLICY_DIR) -> dict:
     return {
         "status": "public_build_inputs_verified",
         "python_version": metadata["python_version"],
-        "distribution_count": 82,
+        "distribution_count": 83,
     }
 
 
@@ -291,7 +291,7 @@ def install_tools(policy_dir: Path = POLICY_DIR) -> dict:
             "-I",
             "-B",
             "-c",
-            "import openpi_client,numpy,scipy,PIL",
+            "import openpi_client,numpy,scipy,PIL,cv2",
         ]
     )
     for payload in (base, environment):
@@ -320,7 +320,7 @@ def install_tools(policy_dir: Path = POLICY_DIR) -> dict:
         "python_version": "3.11.13",
         "installation_mode": "public-source-build",
         "source_payloads_verified": True,
-        "b_alignment": "82 original distribution versions; unused historical heart-runtime editable is omitted",
+        "b_alignment": "82 original distribution versions plus OpenCV for spatial localization; unused historical heart-runtime editable is omitted",
     }
     with receipt_path.open("x") as output:
         output.write(json.dumps(receipt, indent=2) + "\n")
