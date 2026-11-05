@@ -117,6 +117,19 @@ class SkillpackEmbodiedAgent(HybridEmbodiedAgent):
         owner = self
 
         class RegisteredExperiment(base):
+            def checkpoint(self, name):
+                from .training_store import storage_mode
+                if storage_mode(context.model_cfg) == 'raw':
+                    return super().checkpoint(name)
+                # Recovery uses the live workspace and native ACK/action chain.
+                # Copying every generated image into workspace snapshots doubles
+                # storage; terminal archives only need the compact source rows.
+                path = self.run/'checkpoints'/name
+                path.mkdir(parents=True,exist_ok=True)
+                (path/'files.json').write_text(json.dumps({'storage':'live_workspace',
+                    'workspace':str(self.run/'workspace')})+'\n')
+                return str(path.relative_to(self.run))
+
             def request(self, req):
                 toolkit = getattr(owner, "_skillpack_toolkit", None)
                 if toolkit is None or toolkit.operation_thread != threading.get_ident():

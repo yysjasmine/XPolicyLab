@@ -1,6 +1,6 @@
 # RoboDojo harness 迭代日志
 
-日期采用 Asia/Shanghai。开发目录：`/Users/wusilei/ws/RoboRSI-xpolicy-v2`；分支：`xpolicy-dev`。
+日期采用 Asia/Shanghai。开发目录：`/Users/wusilei/ws/RoboRSI-xpolicy-v2`；历史主线：`xpolicy-dev`。2026-11-06 保存改造分支：`xpolicy-wsl4`（基于 `d375ab8e`）。
 本日志分别记录本地代码、实际部署和原生结果。离线测试不代表仿真成功。
 
 ## 2026-11-04
@@ -284,3 +284,10 @@ SHA256 `559c63c9d69e52f06c0f96ce896e3385df3fb2626d16a8cd7efa9037c4e83b2b`。
 - 其余127个原始关闭目录仍按52个有界组推进；first-source-export清理不能作为canonical原始回合已全部备份或可清理的证明。
 
 证据：[清理回执](../../../gpt6-brainstorm/robodojo/ops/additional_raw_20261103/first-source-export/cloud-cleanup.receipt.json)、[清理进度](../../../gpt6-brainstorm/robodojo/ops/additional_raw_20261103/cleanup.latest.json)。
+
+## 2026-11-06 — compact training-source storage on d375ab8e
+
+- 默认按真实连续上下文和真实 compact 保存 actor/compact 训练源行；明文 think 留空，保留 reasoning ID、密文、完整工具调用/回复及末尾原生工具结果。仅做格式与原材料保存，不做 decode 或语义质检。
+- 原生分数由外层结算后写入每行，未结算保持 null；保留身份、媒体哈希、消费证据及轻量基础设施日志。默认不长期保存逐 API 全量请求/响应。
+- 模型可见图片去重保存 JPG；原生视频默认关闭，可显式开启。仅在原生终态被接纳、源数据落盘及评分绑定后精简重复工作区、快照和逐步图片；中断现场保留恢复所需文件。
+- 不修改技能、模型提示、工具接口、物理动作、原生判分或既有冻结评测。开发基于 d375ab8e，独立分支 xpolicy-wsl4。

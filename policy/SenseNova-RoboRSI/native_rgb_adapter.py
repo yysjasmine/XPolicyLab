@@ -1,4 +1,4 @@
-"""Native owner: preserve physics/video/scoring, archive JPEG, send exact RGB."""
+"""Native owner: preserve physics/scoring, archive JPEG, send exact RGB."""
 from pathlib import Path
 import importlib.util
 import hashlib
@@ -23,6 +23,25 @@ spec.loader.exec_module(module)
 
 class Adapter(module.Adapter):
     """Only observation transport/storage differs from the original adapter."""
+    def __init__(self, environment_dir, options):
+        self.save_video = options.get('save_video', False)
+        if type(self.save_video) is not bool:
+            raise ValueError('save_video must be boolean')
+        super().__init__(environment_dir, options)
+
+    def _native_result(self):
+        # Same pinned native scoring calculation, with opt-in file publication.
+        if not self.finalized:
+            success = bool(self.env.success[0])
+            score = 1.0 if success else (float(self.env.reward_manager.get_score()[0]) / 100.0
+                                         if hasattr(self.env, 'get_score') else 0.0)
+            if getattr(self, 'save_video', False):
+                self.env.save_video(0, str(self.record_dir/'episode_0000000.mp4'),
+                                    'success' if success else 'fail')
+            self.result = {'success':success,'score':score,'layout_id':int(self.env.env_seeds[0])}
+            self.finalized = True
+        return self.result
+
     def _transition(self, applied_action=None):
         import numpy as np
 

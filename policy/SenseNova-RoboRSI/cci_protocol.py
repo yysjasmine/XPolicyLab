@@ -144,10 +144,12 @@ def sse(response):
 
 
 class CciAdapter:
-    def __init__(self,endpoint,model,directory,request_timeout=300,sampling=None,enable_thinking=True):
+    def __init__(self,endpoint,model,directory,request_timeout=300,sampling=None,enable_thinking=True,save_raw=True):
         if type(enable_thinking) is not bool:
             raise ValueError('CCI enable_thinking must be a boolean')
         self.enable_thinking=enable_thinking
+        if type(save_raw) is not bool:raise ValueError('save_raw must be boolean')
+        self.save_raw=save_raw
         self.endpoint=endpoint.rstrip('/')+'/responses';self.model=model
         self.directory=Path(directory);self.directory.mkdir(parents=True,exist_ok=True)
         self.counter=0;self.lock=threading.Lock();self.request_timeout=request_timeout
@@ -171,18 +173,19 @@ class CciAdapter:
                     owner.counter+=1;n=owner.counter
                 prefix=owner.directory/f'{n:06d}'
                 request=json.loads(self.rfile.read(int(self.headers['Content-Length'])))
-                prefix.with_suffix('.cli-request.json').write_text(json.dumps(request,ensure_ascii=False))
+                if owner.save_raw:prefix.with_suffix('.cli-request.json').write_text(json.dumps(request,ensure_ascii=False))
                 try:
                     assert self.path=='/v1/responses' and request['model']==owner.model
                     payload=request_to_cci(request,enable_thinking=owner.enable_thinking)
                     payload.update(owner.sampling)
-                    prefix.with_suffix('.request.json').write_text(json.dumps(payload,ensure_ascii=False))
+                    if owner.save_raw:prefix.with_suffix('.request.json').write_text(json.dumps(payload,ensure_ascii=False))
                     req=urllib.request.Request(owner.endpoint,data=json.dumps(payload,ensure_ascii=False).encode(),headers={'Content-Type':'application/json'})
                     try:
                         with urllib.request.urlopen(req,timeout=owner.request_timeout) as r:status=r.status;body=r.read()
                     except urllib.error.HTTPError as error:status=error.code;body=error.read()
-                    prefix.with_suffix('.response.json').write_bytes(body)
-                    prefix.with_suffix('.receipt.json').write_text(json.dumps(dict(at=time.time(),status=status,endpoint=owner.endpoint,model=owner.model)))
+                    if owner.save_raw:prefix.with_suffix('.response.json').write_bytes(body)
+                    parsed=json.loads(body) if 200<=status<300 else {}
+                    prefix.with_suffix('.receipt.json').write_text(json.dumps(dict(at=time.time(),status=status,endpoint=owner.endpoint,model=owner.model,usage=parsed.get('usage'),response_id=parsed.get('id'))))
                     content_type='application/json'
                     if 200<=status<300:
                         response=response_to_cli(json.loads(body))

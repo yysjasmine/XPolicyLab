@@ -202,6 +202,8 @@ def start_capture(profile, run, model_cfg):
     from roborsi.planner.provider_capture import ProviderCaptureConfig
     from .skillpack.capture_guard import GuardedCapture
     from .runtime_config import resolve_base_url, resolve_model
+    from .training_store import storage_mode
+    mode=storage_mode(model_cfg)
     owner = Path(run).parent
     upstream = resolve_base_url()
     cci = None
@@ -212,7 +214,7 @@ def start_capture(profile, run, model_cfg):
         cci = CciAdapter(upstream, resolve_model(), owner/"cci-wire",
                          request_timeout=300 if seconds is None else min(300, seconds),
                          sampling=model_cfg.get("sampling"),
-                         enable_thinking=model_cfg.get("enable_thinking", True))
+                         enable_thinking=model_cfg.get("enable_thinking", True), save_raw=mode=='raw')
         cci.start()
         upstream = cci.base_url
         profile = CciPromptProfile(profile)
@@ -228,6 +230,13 @@ def start_capture(profile, run, model_cfg):
         cohort_root=owner, prompt_profile=profile, enforce_paid_cache=provider_kind != "cci",
         case_deadline=model_cfg.get("case_wall_deadline"),
         prior_rows=prior_rows,
+        storage_mode=mode,
+        training_metadata={'task_id':model_cfg.get('task_name',profile.task if hasattr(profile,'task') else None),
+            'model':resolve_model(),'reasoning_effort':model_cfg.get('reasoning_effort','xhigh'),
+            'provider_kind':provider_kind,'sampling':model_cfg.get('sampling'),
+            'enable_thinking':model_cfg.get('enable_thinking',True),
+            'source_runtime':str(owner),'harness_commit':model_cfg.get('harness_commit'),
+            'source_identity':json.loads((owner.parent/'episode-owner.json').read_text()) if (owner.parent/'episode-owner.json').is_file() else None},
     )
     try:
         capture.start()

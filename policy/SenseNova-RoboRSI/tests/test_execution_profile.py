@@ -98,9 +98,10 @@ def test_cci_attempt_timeout_is_not_replaced_by_four_hour_episode(tmp_path, monk
     seen = {}
 
     class Adapter:
-        def __init__(self, endpoint, model, directory, request_timeout=300, sampling=None, enable_thinking=True):
+        def __init__(self, endpoint, model, directory, request_timeout=300, sampling=None, enable_thinking=True, save_raw=True):
             seen["attempt_timeout"] = request_timeout
             seen["sampling"] = sampling
+            seen['save_raw'] = save_raw
             self.base_url = "http://127.0.0.1:12345/v1"
         def start(self): pass
         def stop(self): pass
@@ -109,6 +110,7 @@ def test_cci_attempt_timeout_is_not_replaced_by_four_hour_episode(tmp_path, monk
         def __init__(self, *args, **kwargs):
             seen["deadline"] = kwargs["case_deadline"]
             seen["expected_effort"] = kwargs["expected_effort"]
+            seen['storage_mode'] = kwargs['storage_mode']
         def start(self): pass
         def stop(self): pass
 
@@ -121,7 +123,8 @@ def test_cci_attempt_timeout_is_not_replaced_by_four_hour_episode(tmp_path, monk
         "provider_kind": "cci", "episode_seconds": episode_seconds, "case_wall_deadline": 20000,
         "reasoning_effort": "medium", "sampling": sampling})
     assert seen == {"attempt_timeout": 300, "deadline": 20000,
-                    "expected_effort": "medium", "sampling": sampling}
+                    "expected_effort": "medium", "sampling": sampling,
+                    'storage_mode':'training', 'save_raw':False}
     capture.stop()
 
 

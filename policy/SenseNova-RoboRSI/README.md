@@ -181,8 +181,10 @@ The standalone native evaluation entry is `native_rgb_episode.py`. It uses
 `native_rgb_adapter.py` for the original simulator owner and `native_rgb.py`
 for private lossless RGB IPC. Live uint8 camera bytes go directly to Model/VLA;
 JPEG is never decoded to construct live input. Only JPEG95/4:4:4 files are
-archived in `case/native/observations/`. Scoring, physics, joint stepping and
-native video finalization remain inherited from the pinned original adapter.
+written to a temporary native replay archive. Physics, native score calculation
+and joint stepping retain the pinned original behavior.
+Video publication is opt-in with `save_video: true` in the batch's case spec;
+the default is `false`.
 
 ```bash
 python policy/SenseNova-RoboRSI/native_rgb_episode.py \
@@ -206,10 +208,58 @@ existing JPEG bytes and verifies **archive** hashes; it must not decode,
 resize, re-encode or change colour channels. JPEG encoding introduces one
 lossy archival step; IPC and subsequent byte-preserving copies are lossless.
 
-After copying archives to M, verify the original manifest against copied files:
+In `storage_mode: raw`, the native replay archive is retained. After copying it
+to M, verify the original manifest against copied files:
 
 ```bash
 python policy/SenseNova-RoboRSI/native_rgb.py \
   --records /your/copied/native/episode/rgb_frames.jsonl \
   --images /your/copied/native/observations
 ```
+
+## Compact training-source storage (default)
+
+`storage_mode: training` is the default deployment and standalone case setting.
+It saves pre-decode source data, not a rendered Swift dataset. It does not decode
+reasoning, run semantic quality checks, create teacher answers or call a model.
+Use `storage_mode: raw` explicitly for full diagnostic captures.
+
+Each runtime publishes `agent/training/`:
+
+- `actor.jsonl`: one row per continuous model context. Real invocation, system,
+  tool-schema or history changes start another row; there is no fixed-turn split.
+- `compact.jsonl`: one row per actual completed compactor response, including
+  its full generation input and complete output. A compact produces the three
+  distinct samples: preceding actor, compact generation, following actor.
+- `images/*.jpg`: content-addressed model-visible pictures, including the final
+  native tool-result tail. Existing JPEGs are marked without recompression;
+  PNG and other conforming files are converted once at quality 95, 4:4:4.
+- `manifest.json`, `native-evidence.json`, `cipher_variants.jsonl`: identity,
+  image hashes, target/consumption evidence, and alternate ciphertext versions.
+
+Assistant `reasoning_content` is empty. Original reasoning IDs and complete
+`encrypted_content` remain available. Messages retain tool names, arguments,
+call IDs, multi-item response order and real tool replies. The original tool
+schema is retained alongside the nested function projection. Native session
+records supply the final tool reply when no following HTTP request exists.
+
+Rows carry `score: null` until an external, completed native result is attached.
+The standalone launcher attaches the native 0–1 score to every actor/compact row
+after the controller closes; outcome is never injected into the model prompt.
+Other supervisors can run the same offline operation:
+
+```bash
+python -m XPolicyLab.policy.SenseNova-RoboRSI.training_store \
+  --case /your/owned/case --native-result /your/owned/case/native-terminal.json
+```
+
+Completed HTTP attempts are reduced to compact source rows plus small usage,
+retry/error and hash receipts. Full API bodies are temporary, not an accumulating
+request/response archive. Live workspaces, native sessions and ACK/action journals
+remain available during interrupted runs. Following an accepted native terminal,
+successful score attachment and source export, duplicate workspace/checkpoint,
+CLI-session and per-native-step replay pictures are removed with a storage
+receipt. Export failures retain their source evidence for repair. Temporary
+native video streams are removed after their writer exits when `save_video`
+is false; explicit `save_video: true` retains the native video. Existing frozen
+evaluations are unchanged.

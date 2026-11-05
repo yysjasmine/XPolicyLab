@@ -48,6 +48,8 @@ def main():
     args = configure()
     label = args.label
     spec = json.loads((ROOT/"cases.json").read_text())[label]
+    save_video=spec.get('save_video',False)
+    if type(save_video) is not bool:raise ValueError('save_video must be boolean')
     route = spec["model"]
     task = spec["task"]
     step_limit = spec["native_step_limit"]
@@ -71,7 +73,8 @@ def main():
                environment_dir=os.environ["ROBORSI_ROBODOJO_NATIVE_ROOT"], request_seconds=180,
                episode_seconds=None, explore_seconds=0, training_set=str(case/"empty-training"))
     cfg["options"].update(action_mode="joint", review_window_steps=step_limit, review_max_windows=1,
-                           stop_min_steps=step_limit, max_repeat=1, gpu=0, physical_gpu=0, reset_request_seconds=180)
+                           stop_min_steps=step_limit, max_repeat=1, gpu=0, physical_gpu=0, reset_request_seconds=180,
+                           save_video=save_video)
     native = case/"native"
     native.mkdir()
     (case/"empty-training").mkdir()
@@ -84,6 +87,8 @@ def main():
                      ckpt_name="roborsi-codex-v1", trajectory_dir=str(case/"trajectories"),
                      provider_kind=spec["provider_kind"], reasoning_effort=spec["reasoning_effort"], episode_seconds=None)
     if "sampling" in spec:model_cfg["sampling"] = spec["sampling"]
+    model_cfg['storage_mode']=spec.get('storage_mode','training')
+    model_cfg['save_video']=save_video
     if "enable_thinking" in spec:model_cfg["enable_thinking"] = spec["enable_thinking"]
     prior=ROOT/"prior_usage_files.json"
     if prior.exists():model_cfg["prior_usage_files"]=json.loads(prior.read_text())
@@ -93,6 +98,7 @@ def main():
           "policy_source": str(POLICY), "native_step_limit": step_limit, "score": None,
           "native_rgb_transport": rgb_module.TRANSPORT, "archive_image_format": "JPEG95_444"})
     backend = model = None
+    prune_native = False
     started = time.time()
     control_steps = 0
     try:
@@ -145,6 +151,17 @@ def main():
         # Persist the native terminal reply before controller/capture cleanup.
         write(case/"native-terminal.json", reply)
         receipt = model.end_episode(current_observation(reply))
+        if model_cfg['storage_mode']=='training':
+            try:
+                training_module=importlib.import_module('XPolicyLab.policy.SenseNova-RoboRSI.training_store')
+                finalized=training_module.finalize_case(case,case/'native-terminal.json')
+                stores=list(case.glob('trajectories/*/seed-*/*/runtime-*/agent/training'))
+                prune_native=bool(finalized and all((root.parent.parent/'storage-receipt.json').is_file() for root in stores))
+            except Exception as error:
+                # Storage is infrastructure accounting; the completed native
+                # score remains authoritative even if export needs repair.
+                write(case/'storage-review.json',{'stage':'finalize_training_source',
+                    'error_type':type(error).__name__,'error':str(error),'at':time.time()})
         write(case/"status.json", {"phase": "completed", "model": route, "native_steps": control_steps,
               "at": time.time(), "wall_seconds": time.time()-started, "cleanup_receipt": receipt,
               "policy_source": str(POLICY), "score": reply.get("metrics", {}).get("score"), "native_score_at_stop": reply.get("metrics", {}).get("score"), "full_episode_evaluation": True, "episode_seconds": None, "smoke_act_limit": None,
@@ -159,6 +176,17 @@ def main():
             model.shutdown()
         if backend is not None:
             backend.close()
+        # Writers have exited; no late native flush can recreate a stream.
+        try:
+            import shutil
+            if prune_native and (native/'observations').is_dir():
+                shutil.rmtree(native/'observations')
+            if backend is not None and not save_video:
+                for stream in native.rglob('_stream'):
+                    if stream.is_dir() and not stream.is_symlink():shutil.rmtree(stream)
+        except OSError as error:
+            write(case/'storage-review.json',{'stage':'prune_native_cache',
+                'error_type':type(error).__name__,'error':str(error),'at':time.time()})
 
 
 if __name__ == "__main__":

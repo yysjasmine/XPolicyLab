@@ -10,6 +10,7 @@ code:
   - execution_profile.py
   - cci_protocol.py
   - cci_model_template.json
+  - training_store.py
 agent:
   planner: codex_cli
   model: ""  # Required at runtime: ROBORSI_CODEX_MODEL

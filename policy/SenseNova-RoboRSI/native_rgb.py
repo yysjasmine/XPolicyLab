@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import base64
 from copy import deepcopy
+from functools import lru_cache
 import hashlib
 import json
 from pathlib import Path
@@ -64,9 +65,30 @@ def decode_rgb(payload):
     return result
 
 
+@lru_cache(maxsize=1)
+def _shared_encoder():
+    # The private simulator worker drops PYTHONPATH. Load the shared codec from
+    # this frozen checkout, also when an isolated worktree has another name.
+    import importlib.util
+    import sys
+    checkout = Path(__file__).resolve().parents[2]
+    if 'XPolicyLab' not in sys.modules:
+        spec = importlib.util.spec_from_file_location('XPolicyLab', checkout/'__init__.py',
+                                                      submodule_search_locations=[str(checkout)])
+        package = importlib.util.module_from_spec(spec)
+        sys.modules['XPolicyLab'] = package
+        spec.loader.exec_module(package)
+    # A simulator environment can already import another XPolicyLab checkout.
+    # Load this checkout's shared helper by path without replacing that package.
+    spec = importlib.util.spec_from_file_location('_roborsi_archive_codec', checkout/'utils/process_data.py')
+    codec = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(codec)
+    return codec.encode_image_bit
+
+
 def archive_rgb(vision, directory, frame):
     """Encode JPEG once for archives; raw RGB remains the live input contract."""
-    from PIL import Image
+    encode_image_bit = _shared_encoder()
 
     directory = Path(directory)
     directory.mkdir(parents=True, exist_ok=True)
@@ -75,8 +97,7 @@ def archive_rgb(vision, directory, frame):
         path = directory/f"{frame:05d}_{camera}.jpg"
         if path.exists() or path.is_symlink():
             raise ValueError("Refusing to overwrite a native RGB archive")
-        Image.fromarray(vision[camera]["color"]).save(
-            path, format="JPEG", quality=95, subsampling=0, optimize=True)
+        path.write_bytes(encode_image_bit(vision[camera]["color"], quality=95, subsampling='444'))
         cameras[camera] = "obs://"+path.name
         artifacts[camera] = dict(file=path.name, bytes=path.stat().st_size,
                                  sha256=hashlib.sha256(path.read_bytes()).hexdigest())

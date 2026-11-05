@@ -21,6 +21,12 @@ def archive_episode(source: Path, *, task: str, episode_id: str) -> str | None:
     root_value = os.environ.get("ROBORSI_TRACE_ROOT", "").strip()
     if not root_value or not source.is_dir():
         return None
+    training = source/'agent/training'
+    compact = (training/'manifest.json').is_file()
+    if compact and json.loads((training/'manifest.json').read_text())['state'] != 'closed':
+        # An interrupted/current writer is retained at source, not published as
+        # a completed export. Legacy/raw episodes retain the original layout.
+        return None
     root = Path(root_value).expanduser().resolve()
     root.mkdir(parents=True, exist_ok=True)
     run_id = os.environ.get("ROBODOJO_RUN_ID", "unassigned")
@@ -28,12 +34,24 @@ def archive_episode(source: Path, *, task: str, episode_id: str) -> str | None:
     target.parent.mkdir(parents=True, exist_ok=True)
     staging = Path(tempfile.mkdtemp(prefix=".trace-", dir=str(target.parent)))
     try:
-        shutil.copytree(
-            source,
-            staging / "runtime",
-            ignore=shutil.ignore_patterns(*_EXCLUDED, "*.sock", "__pycache__", "*.pyc"),
-            symlinks=True,
-        )
+        if compact:
+            shutil.copytree(training, staging/'runtime/agent/training')
+            for name in ('episode-owner.json','archive.pending.json','storage-receipt.json','resume-lineage.json'):
+                path = source/name
+                if path.is_file() and not path.is_symlink():
+                    shutil.copyfile(path, staging/'runtime'/name)
+            # These are explanations/accounting, not duplicated request bodies.
+            for name in ('usage.jsonl','usage.latest.json','prompt-transforms.jsonl','dispatch_hold.json'):
+                path = source/'agent'/name
+                if path.is_file() and not path.is_symlink():
+                    shutil.copyfile(path, staging/'runtime/agent'/name)
+        else:
+            shutil.copytree(
+                source,
+                staging / "runtime",
+                ignore=shutil.ignore_patterns(*_EXCLUDED, "*.sock", "__pycache__", "*.pyc"),
+                symlinks=True,
+            )
         files = []
         for path in sorted((staging / "runtime").rglob("*")):
             if path.is_symlink():
@@ -58,6 +76,7 @@ def archive_episode(source: Path, *, task: str, episode_id: str) -> str | None:
             "run_id": run_id,
             "created_at": datetime.now(timezone.utc).isoformat(),
             "source": str(source),
+            "storage_mode": "training" if compact else "raw",
             "files": files,
         }
         (staging / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")

@@ -104,9 +104,8 @@ def test_bad_transport_fails_closed_without_reading_jpeg(native_adapter,tmp_path
     with pytest.raises(ValueError,match='current'):consumer.model_observation(first)
 
 
-def test_current_frame_only_and_terminal_score_video_use_original_code(native_adapter,tmp_path):
+def test_current_frame_only_and_joint_stepping_use_original_code(native_adapter,tmp_path):
     value,raw=adapter(native_adapter,tmp_path)
-    assert native_adapter.Adapter._native_result is native_adapter.module.Adapter._native_result
     assert native_adapter.Adapter._step_joint is native_adapter.module.Adapter._step_joint
     wire=value._transition()
     consumer=rgb.NativeRgbBackend(SimpleNamespace(request=lambda **kw:deepcopy(wire),close=lambda:None))
@@ -118,17 +117,22 @@ def test_current_frame_only_and_terminal_score_video_use_original_code(native_ad
 
 
 @pytest.mark.parametrize('success,expected_score',[(True,1.0),(False,.375)])
-def test_original_native_finalizer_records_video_once(native_adapter,tmp_path,success,expected_score):
+@pytest.mark.parametrize('save_video',[False,True])
+def test_native_score_matches_original_and_video_is_opt_in(native_adapter,tmp_path,success,expected_score,save_video):
     value,raw=adapter(native_adapter,tmp_path)
     calls=[]
     value.finalized=False
+    value.save_video=save_video
     value.env.end_flag=[True];value.env.success=[success];value.env.env_seeds=[0]
     value.env.get_score=lambda:None
     value.env.reward_manager=SimpleNamespace(get_score=lambda:[37.5])
     value.env.save_video=lambda *args:calls.append(args)
     first=value._transition();second=value._transition()
     assert first['metrics']==second['metrics']==dict(success=success,score=expected_score,layout_id=0)
-    assert calls==[(0,str(value.record_dir/'episode_0000000.mp4'),'success' if success else 'fail')]
+    assert calls==([(0,str(value.record_dir/'episode_0000000.mp4'),'success' if success else 'fail')] if save_video else [])
+    # The pinned original remains the oracle for score calculation.
+    value.finalized=False
+    assert native_adapter.module.Adapter._native_result(value)==first['metrics']
     assert not list(tmp_path.rglob('*.png'))
 
 

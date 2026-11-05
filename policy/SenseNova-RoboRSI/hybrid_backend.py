@@ -442,7 +442,7 @@ class HybridBackend:
                 return self._transition()
 
             def _transition(self, applied_action=None):
-                from PIL import Image
+                from XPolicyLab.utils.process_data import encode_image_bit
 
                 raw = owner._latest
                 pictures = {}
@@ -451,8 +451,7 @@ class HybridBackend:
                     path = self.observation_dir / name
                     if path.exists() or path.is_symlink():
                         raise ValueError("Refusing to overwrite an episode observation")
-                    image = Image.fromarray(raw["vision"][camera]["color"])
-                    image.save(path, format="JPEG", quality=95, subsampling=0, optimize=True)
+                    path.write_bytes(encode_image_bit(raw["vision"][camera]["color"], quality=95, subsampling='444'))
                     pictures[camera] = "obs://" + name
                 observation = {
                     "instruction": raw["instruction"],

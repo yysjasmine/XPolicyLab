@@ -281,15 +281,13 @@ def test_jpeg_history_has_no_extra_png_after_steps_and_repeated_observations(exp
 
 
 def test_failed_replay_image_write_keeps_previous_checkpoint(experiment, backend, vla, monkeypatch):
-    from PIL import Image
-
     directory = experiment.active["observation_dir"]
-    original = Image.Image.save
-    def save(image, filename, *args, **kwargs):
-        if kwargs.get("format") == "JPEG" and Path(filename).name == "00003_cam_head.jpg":
+    original = Path.write_bytes
+    def save(path, data):
+        if path.name == "00003_cam_head.jpg":
             raise OSError("Synthetic full disk while saving replay image")
-        return original(image, filename, *args, **kwargs)
-    monkeypatch.setattr(Image.Image, "save", save)
+        return original(path, data)
+    monkeypatch.setattr(Path, "write_bytes", save)
     proposal = propose(experiment)
     with ThreadPoolExecutor(max_workers=1) as executor:
         future = executor.submit(experiment.request, review(proposal))

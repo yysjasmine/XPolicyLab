@@ -122,7 +122,7 @@ def cache_statistics(rows):
 class GuardedCapture(ProviderCapture):
     """Retain provider evidence; cache misses alert without stopping dispatch."""
 
-    def __init__(self, *args, case_dir, model, model_label, cohort_root, prior_rows=(), prompt_profile=None, case_deadline=None, enforce_paid_cache=True, expected_effort="xhigh", **kwargs):
+    def __init__(self, *args, case_dir, model, model_label, cohort_root, prior_rows=(), prompt_profile=None, case_deadline=None, enforce_paid_cache=True, expected_effort="xhigh", storage_mode="raw", training_metadata=None, **kwargs):
         super().__init__(*args,**kwargs)
         self.case=Path(case_dir)
         self.model=model
@@ -139,6 +139,17 @@ class GuardedCapture(ProviderCapture):
         self._guard_lock=threading.RLock()
         self._attempts=len(self.rows)
         self.context=ContextWindows(Path(__file__).resolve().parent)
+        if storage_mode not in ('training','raw'):raise ValueError('Unknown storage mode')
+        self.storage_mode=storage_mode
+        self.training_store=None
+        if storage_mode=='training':
+            from ..training_store import TrainingStore
+            self.training_store=TrainingStore(self.case/'training',metadata=training_metadata)
+
+    def stop(self, **kwargs):
+        result=super().stop(**kwargs)
+        if self.training_store is not None:self.training_store.close(session_root=self.case)
+        return result
 
     def _hold(self, kind, evidence, *, cohort=False):
         value={'at':time.time(),'kind':kind,'evidence':evidence,
@@ -266,7 +277,8 @@ class GuardedCapture(ProviderCapture):
             await self._error(send,503,b'Experiment dispatch paused; see evidence');return
         request=json.loads(body)
         if (self.case/'user_smoke_complete.json').exists():
-            write(self.case/'post_smoke.original_cli_request.json',_redact(request))
+            evidence = _redact(request) if self.storage_mode=='raw' else {'request_sha256':hashlib.sha256(body).hexdigest(), 'forwarded':False}
+            write(self.case/'post_smoke.original_cli_request.json',evidence)
             await self._error(send,409,b'Operator act limit reached; no further provider dispatch')
             return
         if request.get('model')!=self.model or (request.get('reasoning') or {}).get('effort')!=self.expected_effort:
@@ -274,7 +286,8 @@ class GuardedCapture(ProviderCapture):
                                                    'expected_effort':self.expected_effort})
             await self._error(send,400,b'Model/effort differs');return
         original=deepcopy(request)
-        write(self.case/'cli-input'/f"{self.summary['requests']+1:06d}.json",_redact(original))
+        if self.storage_mode=='raw':
+            write(self.case/'cli-input'/f"{self.summary['requests']+1:06d}.json",_redact(original))
         try:
             normalized,profile_evidence=self.prompt_profile.transform(request)
             kind=request_kind(normalized,scope['path'])
@@ -283,9 +296,14 @@ class GuardedCapture(ProviderCapture):
         except (ValueError,KeyError,TypeError,RuntimeError) as error:
             self._hold('context_or_profile_error',{'error_type':type(error).__name__,'error':str(error)})
             await self._error(send,503,b'Context/profile dispatch held; raw evidence retained');return
-        write(self.case/'prompt-input'/f"{self.summary['requests']+1:06d}.json",{
-            'original_cli_request':_redact(original),'model_request':_redact(normalized),
-            'normalization':profile_evidence,'context':context_evidence})
+        if self.storage_mode=='raw':
+            write(self.case/'prompt-input'/f"{self.summary['requests']+1:06d}.json",{
+                'original_cli_request':_redact(original),'model_request':_redact(normalized),
+                'normalization':profile_evidence,'context':context_evidence})
+        else:
+            with (self.case/'prompt-transforms.jsonl').open('a') as stream:
+                stream.write(json.dumps({'request_id':self.summary['requests']+1,
+                    'normalization':profile_evidence,'context':context_evidence})+'\n')
         before=len(self.rows)
         buffered=await self._buffered_forward(scope,json.dumps(normalized,ensure_ascii=False,separators=(',',':')).encode())
         for message in buffered:await send(message)
@@ -357,3 +375,21 @@ class GuardedCapture(ProviderCapture):
                 if len(recent)==3 and total and hits/total<0.5:
                     self._cache_alert({'request_ids':[r['request_id'] for r in recent],
                                'input_tokens':total,'cached_input_tokens':hits,'weighted_ratio':round(hits/total,3)})
+        if self.training_store is not None:
+            # Persist compact source before dropping the temporary HTTP attempt.
+            # A failed training write leaves that attempt available for repair.
+            if row['completed'] and not row['output_length_limit']:
+                from ..training_store import response_items
+                output,terminal=response_items(raw,record['content_type'],parsed.get('response'))
+                record['training_segment']=self.training_store.append(request,output,
+                    kind='compact' if kind=='compaction' else 'actor',
+                    request_id=record['request_id'],response_id=record.get('response_id'),
+                    alternatives=[item for item in terminal if item.get('type')=='reasoning'
+                                  and not any(item.get('id')==other.get('id') and item.get('encrypted_content')==other.get('encrypted_content') for other in output)])
+            for file in (request_path,path,path.with_suffix('.json'),path.parent/'reasoning.jsonl'):
+                file.unlink(missing_ok=True)
+            record['raw_response']=None
+            record['raw_payload_retained']=False
+            record['storage_mode']='training'
+            with (path.parent/'requests.jsonl').open('a') as stream:
+                stream.write(json.dumps(record,ensure_ascii=False)+'\n')

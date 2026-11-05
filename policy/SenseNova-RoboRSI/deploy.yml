@@ -18,3 +18,5 @@ request_timeout_s: 3660.0
 trajectory_dir: null
 vla_backend: "simate_beta"
 provider_kind: responses  # Use cci for the existing self-hosted Responses tool adapter.
+storage_mode: training  # Compact decode-source rows; raw is an explicit debugging option.
+save_video: false  # Native RGB episode launcher; video recording is opt-in.

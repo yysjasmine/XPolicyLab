@@ -425,9 +425,12 @@ def _insert_rgb_marker(jpeg_bytes: bytes) -> bytes:
     return jpeg_bytes[:offset] + segment + jpeg_bytes[offset:]
 
 
-def _decode_single_image_bit(image_bit):
+def _decode_single_image_bit(image_bit, *, standard=False):
     """Decode one encoded image buffer into an HWC uint8 RGB array."""
-    image_bit = _normalize_image_buffer(image_bit)
+    if standard:
+        image_bit = image_bit.encode('utf-8') if isinstance(image_bit, str) else bytes(image_bit)
+    else:
+        image_bit = _normalize_image_buffer(image_bit)
 
     image = cv2.imdecode(np.frombuffer(image_bit, np.uint8), cv2.IMREAD_COLOR)
 
@@ -441,7 +444,7 @@ def _decode_single_image_bit(image_bit):
     # it needs the swap; a legacy buffer stores reversed channels that imdecode
     # has already reversed back, so swapping it is what would break the order.
     # Either way the caller gets RGB, which is why no caller ever swaps.
-    if _has_rgb_marker(image_bit):
+    if standard or _has_rgb_marker(image_bit):
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
     return image
@@ -462,7 +465,7 @@ def _decode_image_bit_sequence(image_bits):
     return np.stack(frames, axis=0)
 
 
-def decode_image_bit(image_bits):
+def decode_image_bit(image_bits, *, standard=False):
     """
     Decode encoded image bit stream(s) into uint8 RGB image array(s).
 
@@ -508,6 +511,13 @@ def decode_image_bit(image_bits):
     Raises:
         ValueError: if any buffer fails to decode.
     """
+    # Responses input_image data URLs are conforming external image files,
+    # rather than the historical unmarked XPolicyLab RGB-as-BGR buffers.
+    # Keep this explicit at the shared decoding boundary; legacy is unchanged.
+    if standard:
+        if not isinstance(image_bits, (bytes, bytearray, memoryview, str)):
+            raise TypeError('standard=True requires one encoded image buffer')
+        return _decode_single_image_bit(image_bits, standard=True)
     if isinstance(image_bits, (bytes, bytearray, memoryview, str)):
         return _decode_single_image_bit(image_bits)
 
@@ -599,7 +609,7 @@ def decode_obs_images(obs):
 
     return obs
 
-def _encode_single_image_bit(image, quality=None):
+def _encode_single_image_bit(image, quality=None, subsampling=None):
     """Encode one uint8 RGB image into a marked standard JPEG buffer."""
     array = np.asarray(image)
 
@@ -618,6 +628,10 @@ def _encode_single_image_bit(image, quality=None):
         )
 
     params = [] if quality is None else [int(cv2.IMWRITE_JPEG_QUALITY), int(quality)]
+    if subsampling is not None:
+        if subsampling != '444':
+            raise ValueError('Only explicit 444 JPEG subsampling is supported')
+        params.extend([int(cv2.IMWRITE_JPEG_SAMPLING_FACTOR), int(cv2.IMWRITE_JPEG_SAMPLING_FACTOR_444)])
     bgr = cv2.cvtColor(np.ascontiguousarray(array), cv2.COLOR_RGB2BGR)
     success, encoded_image = cv2.imencode(".jpg", bgr, params)
 
@@ -666,7 +680,7 @@ def _encode_image_bit_sequence(images, quality):
     return buffers
 
 
-def encode_image_bit(images, quality=None):
+def encode_image_bit(images, quality=None, *, standard=False, subsampling=None):
     """
     Encode uint8 RGB image(s) into the image bit stream(s) that
     `decode_image_bit` reads back, and mark them as standard RGB.
@@ -696,6 +710,11 @@ def encode_image_bit(images, quality=None):
     Args:
         images: One RGB image, a sequence of them, or already-encoded buffers.
         quality: Optional JPEG quality; OpenCV's default is used when omitted.
+        standard: Explicit conforming encoded file input, such as a Responses
+            data URL; JPEG receives the RGB marker without recompression, other
+            formats are converted once. Never set for unmarked legacy buffers.
+        subsampling: Optional '444' for one RGB frame, preserving all chroma
+            samples. Default encoding behavior is unchanged.
 
     Returns:
         bytes for a single image, list[bytes] for a sequence.
@@ -705,6 +724,17 @@ def encode_image_bit(images, quality=None):
         ValueError: if a frame has an unsupported shape, fails to encode, or is
             an already-encoded buffer in the legacy format.
     """
+    if standard:
+        # Explicit conforming image-file input (e.g. a Responses data URL).
+        # Stamp JPEG without recompressing it; convert other containers once.
+        if not isinstance(images, (bytes, bytearray, memoryview, str)):
+            raise TypeError('standard=True requires one encoded image buffer')
+        value = images.encode('utf-8') if isinstance(images,str) else bytes(images)
+        if value.startswith(b'\xff\xd8'):
+            return value if _has_rgb_marker(value) else _insert_rgb_marker(value)
+        return _encode_single_image_bit(decode_image_bit(value, standard=True), quality, subsampling)
+    if subsampling is not None:
+        return _encode_single_image_bit(images, quality, subsampling)
     if isinstance(images, (bytes, bytearray, memoryview, str)):
         return _passthrough_encoded_buffer(images)
 
