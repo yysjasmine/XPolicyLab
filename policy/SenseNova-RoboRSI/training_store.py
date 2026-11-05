@@ -359,9 +359,15 @@ class TrainingStore:
                             stream.write(json.dumps(row, ensure_ascii=False, separators=(',', ':'))+'\n')
                 os.replace(temporary, path)
             self.closed = True
-            self._manifest()
-            write(self.root/'native-evidence.json', {'consumed_output_item_ids': sorted(consumed),
-                'gaps': gaps, 'session_root': str(session_root) if session_root else None})
+            try:
+                self._manifest()
+                write(self.root/'native-evidence.json', {'consumed_output_item_ids': sorted(consumed),
+                    'gaps': gaps, 'session_root': str(session_root) if session_root else None})
+            except BaseException:
+                # Rows and segments remain recoverable if final publication
+                # runs out of space. The same capture must be able to retry.
+                self.closed = False
+                raise
             shutil.rmtree(self.root / 'segments')
 
 
@@ -461,11 +467,8 @@ def compact_closed_runtime(runtime):
             or (sibling != runtime and not _training_images_complete(sibling_training, sibling_saved))):
             return False
         sibling_evidence = sibling_training/'native-evidence.json'
-        if sibling_evidence.is_file() and json.loads(sibling_evidence.read_text()).get('gaps'):
+        if not sibling_evidence.is_file() or json.loads(sibling_evidence.read_text()).get('gaps'):
             return False
-    evidence = runtime/'agent/training/native-evidence.json'
-    if evidence.is_file() and json.loads(evidence.read_text()).get('gaps'):
-        return False
     receipt = runtime/'storage-receipt.json'
     removed = json.loads(receipt.read_text())['removed'] if receipt.is_file() else []
     for relative in ('agent/cli-input', 'agent/prompt-input', 'agent/codex-home', 'agent/workspace',

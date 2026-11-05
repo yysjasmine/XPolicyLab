@@ -270,3 +270,5 @@ persistence errors remain explicit evidence gaps. Before removing duplicate
 controller pictures from either the runtime or its shared trajectory directory,
 cleanup verifies each closed continuation's training rows, image references and
 image hashes. An incomplete continuation keeps the recovery material available.
+Failed manifest/evidence publication leaves segments available for retry;
+cleanup also requires the native-evidence receipt to exist without gaps.

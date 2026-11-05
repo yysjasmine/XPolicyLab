@@ -281,6 +281,31 @@ def test_stopped_capture_keeps_persistence_error_and_closes_only_collected_sourc
         {'kind':'capture_persistence_error','error_type':'OSError'}]
 
 
+@pytest.mark.parametrize('publication',['manifest.json','native-evidence.json'])
+def test_capture_retries_failed_training_publication_without_losing_segments(tmp_path,monkeypatch,publication):
+    capture=make_capture(tmp_path)
+    capture.training_store.append(request([message('start')]),
+        [message('retained after ENOSPC','assistant','m')],kind='actor',request_id=1,response_id='r1')
+    original=store.write
+    failures=[]
+    def write_with_full_disk(path,value):
+        if path==tmp_path/'training'/publication and not failures:
+            failures.append(str(path))
+            raise OSError(28,'Synthetic disk full')
+        return original(path,value)
+    monkeypatch.setattr(store,'write',write_with_full_disk)
+    with pytest.raises(OSError,match='Synthetic disk full'):
+        capture.stop()
+    assert capture._closed and not capture.training_store.closed
+    assert (tmp_path/'training/segments').is_dir()
+    capture.stop()
+    assert capture.training_store.closed
+    assert json.loads((tmp_path/'training/manifest.json').read_text())['state']=='closed'
+    assert (tmp_path/'training/native-evidence.json').is_file()
+    assert rows(tmp_path/'training/actor.jsonl')[0]['messages'][-1]['content'][0]['text']=='retained after ENOSPC'
+    assert not (tmp_path/'training/segments').exists()
+
+
 def closed_image_case(tmp_path):
     case=tmp_path/'case';trajectory=case/'trajectories/align_blocks/seed-1/episode'
     runtime=trajectory/'runtime-a';root=runtime/'agent/training'
@@ -329,7 +354,7 @@ def test_all_continuation_stores_are_scored_before_shared_cleanup(tmp_path):
     assert journal.read_text()=='original ACK\n'
 
 
-@pytest.mark.parametrize('damage',['missing_image','corrupt_image','unresolved_reference','active_sibling','closed_sibling_incomplete','capture_gap','foreign_trajectory'])
+@pytest.mark.parametrize('damage',['missing_image','corrupt_image','unresolved_reference','active_sibling','closed_sibling_incomplete','missing_evidence','capture_gap','foreign_trajectory'])
 def test_cleanup_retains_recovery_material_until_training_source_is_verified(tmp_path,damage):
     case,trajectory,runtime,root,terminal,workspace,shared,legacy,journal=closed_image_case(tmp_path)
     picture=next((root/'images').glob('*.jpg'))
@@ -347,6 +372,8 @@ def test_cleanup_retains_recovery_material_until_training_source_is_verified(tmp
         next((sibling/'agent/training/images').glob('*.jpg')).unlink()
     elif damage=='capture_gap':
         store.write(root/'native-evidence.json',{'gaps':[{'kind':'capture_persistence_error'}]})
+    elif damage=='missing_evidence':
+        (root/'native-evidence.json').unlink()
     elif damage=='foreign_trajectory':
         store.write(runtime/'archive.pending.json',{'native_terminal_accepted':True,
             'trajectory_directory':str(tmp_path/'another_episode')})

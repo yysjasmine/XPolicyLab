@@ -6,6 +6,7 @@
 ## 2026-11-06
 
 - Capture 停止超时保留原对象，允许控制器收尾再次等待同一 writer；writer 真正退出后才闭合训练段，保存错误另记 evidence gap 并保留修复现场。
+- 训练manifest或native-evidence发布失败时撤回内存closed标记，保留segments供同一capture重试；缺少native-evidence的回合不可清理恢复材料。
 - 原生结算先为所有续跑 runtime 附分，再检查各段训练行、图片引用和 SHA256。仅在所有 owner 已关闭且数据完整时，清理 runtime 与 trajectory 两处重复观测图；保留规范训练 JPEG、真实 compact、密文及动作/ACK 文本记录。
 - 修复只用于后续固定源码的任务。既有运行和已完成评测保留原 commit，不自动重跑或回填。
 
