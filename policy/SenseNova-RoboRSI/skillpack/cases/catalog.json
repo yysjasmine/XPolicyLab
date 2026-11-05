@@ -183,9 +183,10 @@
       "case_skill": "pour_liquid_into_cup"
     },
     "press_by_number": {
-      "kind": "open",
-      "base_task": null,
-      "case_skill": null
+      "kind": "standard",
+      "base_task": "press_by_number",
+      "case_skill": "press_by_number",
+      "benchmark_dimension": "memory"
     },
     "push_T": {
       "kind": "standard",
@@ -349,19 +350,19 @@
     "fasten_screws": {
       "directory": "skills/fasten_screws",
       "description": "Pair observed nuts and screws, seat each nut, and tighten through visually checked clockwise strokes.",
-      "markdown_utf8_bytes": 4157,
-      "token_count_upper_bound": 4157,
+      "markdown_utf8_bytes": 12807,
+      "token_count_upper_bound": 12807,
       "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
       "reference_images": 3,
-      "bytes": 1264506,
+      "bytes": 1273569,
       "sha256": {
-        "SKILL.md": "2264584b7c4a96957218e8532fa261b58105e955f6fba50144926f9c1101a3a3",
+        "SKILL.md": "6f9e837907d189e1961e304919ee1c16902d5a6f1f59d35c266cb91ce073a4ad",
         "assets/assembly.jpg": "c4f8f9422ac4615d4beeb14a2c329361c09978c5bb4da8d61e6c743b0f0cb317",
         "assets/ending.jpg": "d28b0bc2192d8f2d998435f001037dee04e4a80505e0ea203837956ec2529cb7",
         "assets/turns.jpg": "498bdd102dfe97e95ebd93ccdf761cab8f582e86d4d7f17e0b820fa007be92b9",
         "scripts/assist.py": "cc84324d2dd9113c580c39d3db73cc078d9b6106ccbae670a08b1f2616e6718b"
       },
-      "authoring_receipt_sha256": "831d9e81dca5ab8e13738e2fdb31659f808a2a480a2531ed76599bfb8753692b"
+      "authoring_receipt_sha256": "4cd528811fe0e29cca38778d462b517118095e8eaaeb56112b18e8af01794842"
     },
     "fill_egg_holder": {
       "directory": "skills/fill_egg_holder",
@@ -466,18 +467,18 @@
     "make_kong": {
       "directory": "skills/make_kong",
       "description": "Expose the three hand tiles matching an observed discard, draw a reserve tile, and stand it at the row end.",
-      "markdown_utf8_bytes": 4817,
-      "token_count_upper_bound": 4817,
+      "markdown_utf8_bytes": 11558,
+      "token_count_upper_bound": 11558,
       "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
       "reference_images": 2,
-      "bytes": 1305617,
+      "bytes": 1312762,
       "sha256": {
-        "SKILL.md": "0bfb80112b1e0ebe640d5f262a1ccecd69d786698d7a747d60c56938af943209",
+        "SKILL.md": "19c99a5007944dc28a322078f78fdfe1f5d8f97d13910ce0d5846a54e7ce27e6",
         "assets/draw-handoff-place.jpg": "9ee9246a48c5f519bce714a71e2bed0257a621c85a659eec37cd127f45b8ad7a",
         "assets/identity-and-ending.jpg": "d9fb1923a00130b1e1ebc0a7fa7bb9a471169ad811f83ca641a16c10fa67a13a",
         "scripts/assist.py": "1745ad42d3f45472c50428c5567a563bed6457fdcf68f25227ab75578a80fd65"
       },
-      "authoring_receipt_sha256": "b47268b31e5e608b7e59df41f6c0616752c3350a1e38f752a5d783ef4b2bb596"
+      "authoring_receipt_sha256": "36581053abc05b498fbdd323e908c46c3cb780673d57079ccec5c755595968e6"
     },
     "make_toast": {
       "directory": "skills/make_toast",
@@ -583,19 +584,19 @@
     "pour_liquid_into_cup": {
       "directory": "skills/pour_liquid_into_cup",
       "description": "Grasp a bottle, position its mouth over a cup, pour with feedback and return upright while retaining the grasp.",
-      "markdown_utf8_bytes": 5404,
-      "token_count_upper_bound": 5404,
+      "markdown_utf8_bytes": 8474,
+      "token_count_upper_bound": 8474,
       "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
       "reference_images": 3,
-      "bytes": 668655,
+      "bytes": 672138,
       "sha256": {
-        "SKILL.md": "9a1cb989c239b0d16689d197c04ea7b2c72259a98a729a686152760452eb5c79",
+        "SKILL.md": "cb3935d4b279ed02836fd56956535758d6a7d01b61fa75f042589256af370a85",
         "assets/contact.jpg": "eeb122ac46459f2a50baf91d18dee859eea6121cb115e0b9ce1dced05ae6ff26",
         "assets/ending.jpg": "6925bcd51f0a0be4a8f9c8f7585be35f30d80dc14c52c84895637f1c9125f5e9",
         "assets/pour.jpg": "4b89f2d11de8226e5c354f9fff15c1a7e15d360f2110afb63a97d13913c98cb0",
         "scripts/assist.py": "28e3a3b919237a439b0f56e55cf08af85a769f1420bb3ec406f588593568a22d"
       },
-      "authoring_receipt_sha256": "1f8cf490feaf9f204e84d2bd9e4aabe34879121da76c284fa8eea12f829113c9"
+      "authoring_receipt_sha256": "d58f44c97e84b5f066e24a4fbe972ee0b5d9fbed7e2368e2aa6ea5d009ee8288"
     },
     "push_T": {
       "directory": "skills/push_T",
@@ -702,19 +703,31 @@
     "sweep_blocks": {
       "directory": "skills/sweep_blocks",
       "description": "Acquire a broom and dustpan, sweep the currently requested objects into the bowl, and release the tools on support.",
-      "markdown_utf8_bytes": 5647,
-      "token_count_upper_bound": 5647,
+      "markdown_utf8_bytes": 12642,
+      "token_count_upper_bound": 12642,
       "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
       "reference_images": 3,
-      "bytes": 1240009,
+      "bytes": 1247417,
       "sha256": {
-        "SKILL.md": "b5867d11f0684b1ced73a8afb69d58414d34fbea4c38be8c04f378f506f1a8f0",
+        "SKILL.md": "3e903691f4b15474cc8f736f08788f49f02401efdef805c4ce57aa2df8cad99b",
         "assets/ending.jpg": "f80015504fcac19c318f21a0b18e9c357bf3c134290209b243ca2080e2b7a682",
         "assets/overview.jpg": "984ea91ebb859516ddbc2d3f6e73493b25df387e90095cbd767eed2c7a85894e",
         "assets/sweep.jpg": "5580eaf94843b28a63c5526594addebf6bc71094fcfc9c150f5ab265f886a7e9",
         "scripts/assist.py": "37249936c81539e2e3c53a6a6245a55387aaf8cd348c24c5f14ea2db7ec058e4"
       },
-      "authoring_receipt_sha256": "5087b5d264a72fcfc51853b0ef6cf975cb843228b695e4a3c4755ef2264ec434"
+      "authoring_receipt_sha256": "0901b41fd7109ae3e703f18c60a39d043ec4ec4e40f2d26fddc4a3cdd6c47120"
+    },
+    "press_by_number": {
+      "directory": "skills/press_by_number",
+      "description": "Count distinct red-button down-and-rebound cycles, with a blue confirmation after each red group.",
+      "markdown_utf8_bytes": 1343,
+      "token_count_upper_bound": 1343,
+      "token_bound_method": "UTF-8 byte count, conservative for this English skill file",
+      "reference_images": 0,
+      "bytes": 1343,
+      "sha256": {
+        "SKILL.md": "dcb41c822b42827881f28db38dfc4c199eaaa288de15bacb1076d0442b4bad04"
+      }
     }
   }
 }

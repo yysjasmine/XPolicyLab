@@ -18,8 +18,8 @@
   "files": [
     {
       "path": "SKILL.md",
-      "bytes": 4817,
-      "sha256": "32963bf15fd76043a5d86f877f0d66397e587803ca008a362dce50e9b7848ce9"
+      "bytes": 11558,
+      "sha256": "19c99a5007944dc28a322078f78fdfe1f5d8f97d13910ce0d5846a54e7ce27e6"
     },
     {
       "path": "scripts/assist.py",
@@ -71,5 +71,16 @@
     "single_main_markdown": true,
     "main_skill_sha256": "0bfb80112b1e0ebe640d5f262a1ccecd69d786698d7a747d60c56938af943209",
     "scope": "all original task-goal/evidence rows plus public completion cautions; obsolete review/stop-window mechanics replaced by current harness protocol; unshipped reference paths described rather than exposed"
+  },
+  "case_skill_port_20261105": {
+    "source_branch": "xpolicy-lpf-astra",
+    "source_commit": "84842083",
+    "scope": "Port case-specific contact, post-action and ending guidance onto xpolicy-dev; preserve target reference, geometry and task criteria",
+    "before_sha256": "32963bf15fd76043a5d86f877f0d66397e587803ca008a362dce50e9b7848ce9",
+    "after_sha256": "c2587246fe531888e7b7719300ffc3143b8a8db5ceada56fb073279e940dc7e7",
+    "native_physics_changed": false,
+    "native_scoring_changed": false,
+    "integration_base": "d5a090aef8623aee32e70a5de012a99dc7c33aa0",
+    "integrated_main_skill_sha256": "19c99a5007944dc28a322078f78fdfe1f5d8f97d13910ce0d5846a54e7ce27e6"
   }
 }
