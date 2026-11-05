@@ -3,6 +3,12 @@
 日期采用 Asia/Shanghai。开发目录：`/Users/wusilei/ws/RoboRSI-xpolicy-v2`；历史主线：`xpolicy-dev`。2026-11-06 保存改造分支：`xpolicy-wsl4`（基于 `d375ab8e`）。
 本日志分别记录本地代码、实际部署和原生结果。离线测试不代表仿真成功。
 
+## 2026-11-06
+
+- Capture 停止超时保留原对象，允许控制器收尾再次等待同一 writer；writer 真正退出后才闭合训练段，保存错误另记 evidence gap 并保留修复现场。
+- 原生结算先为所有续跑 runtime 附分，再检查各段训练行、图片引用和 SHA256。仅在所有 owner 已关闭且数据完整时，清理 runtime 与 trajectory 两处重复观测图；保留规范训练 JPEG、真实 compact、密文及动作/ACK 文本记录。
+- 修复只用于后续固定源码的任务。既有运行和已完成评测保留原 commit，不自动重跑或回填。
+
 ## 2026-11-04
 
 - 任务专属验收条件保留在各case的SKILL.md；robo-general只保留通用检查原则和路由。

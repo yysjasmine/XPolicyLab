@@ -147,9 +147,15 @@ class GuardedCapture(ProviderCapture):
             self.training_store=TrainingStore(self.case/'training',metadata=training_metadata)
 
     def stop(self, **kwargs):
-        result=super().stop(**kwargs)
-        if self.training_store is not None:self.training_store.close(session_root=self.case)
-        return result
+        try:
+            return super().stop(**kwargs)
+        finally:
+            # The base capture marks itself closed only after its writer
+            # thread has stopped. A persistence error may then be raised; keep
+            # that error, but still close the collected training segments.
+            # A timed-out live writer must retain its open recovery state.
+            if self.training_store is not None and self._closed:
+                self.training_store.close(session_root=self.case, capture_errors=self._errors)
 
     def _hold(self, kind, evidence, *, cohort=False):
         value={'at':time.time(),'kind':kind,'evidence':evidence,

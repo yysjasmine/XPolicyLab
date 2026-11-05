@@ -307,11 +307,13 @@ class TrainingStore:
             state['tail'] = tail
             self._save(state)
 
-    def close(self, *, session_root=None):
+    def close(self, *, session_root=None, capture_errors=()):
         with self.lock:
             if self.closed:
                 return
-            consumed, native, gaps = set(), [], []
+            consumed, native = set(), []
+            gaps = [{'kind': 'capture_persistence_error', 'error_type': name}
+                    for name in capture_errors]
             calls = {i['call_id'] for i in self.current['output'] if i.get('call_id')} if self.current else set()
             if session_root is not None:
                 # Only this runtime's private sessions, never global ~/.codex.
@@ -416,6 +418,7 @@ def finalize_case(case, native_result):
     stores = list(case.glob('trajectories/*/seed-*/*/runtime-*/agent/training'))
     for root in stores:
         finalize(root, native_result)
+    for root in stores:
         compact_closed_runtime(root.parent.parent)
     return len(stores)
 
@@ -430,6 +433,36 @@ def compact_closed_runtime(runtime):
         or not json.loads(pending.read_text()).get('native_terminal_accepted')
         or not manifest.is_file() or json.loads(manifest.read_text()).get('score_status') != 'native_terminal'):
         return False
+    pending_record = json.loads(pending.read_text())
+    saved = json.loads(manifest.read_text())
+    training = manifest.parent
+    if saved.get('state') != 'closed' or not _training_images_complete(training, saved):
+        return False
+    trajectory = runtime.parent
+    declared = pending_record.get('trajectory_directory')
+    if declared and Path(declared).resolve() != trajectory.resolve():
+        return False
+    case = Path(saved['native_result']['path']).resolve().parent
+    if not trajectory.resolve().is_relative_to(case/'trajectories'):
+        return False
+    # Controller observations may be shared by several continuation runtimes.
+    # Never prune them while another owner can still be reading or writing.
+    for sibling in trajectory.glob('runtime-*'):
+        sibling_owner = sibling/'episode-owner.json'
+        if not sibling_owner.is_file() or not json.loads(sibling_owner.read_text()).get('closed'):
+            return False
+        sibling_training = sibling/'agent/training'
+        sibling_manifest = sibling_training/'manifest.json'
+        if not sibling_manifest.is_file():
+            return False
+        sibling_saved = json.loads(sibling_manifest.read_text())
+        if (sibling_saved.get('state') != 'closed'
+            or sibling_saved.get('score_status') != 'native_terminal'
+            or (sibling != runtime and not _training_images_complete(sibling_training, sibling_saved))):
+            return False
+        sibling_evidence = sibling_training/'native-evidence.json'
+        if sibling_evidence.is_file() and json.loads(sibling_evidence.read_text()).get('gaps'):
+            return False
     evidence = runtime/'agent/training/native-evidence.json'
     if evidence.is_file() and json.loads(evidence.read_text()).get('gaps'):
         return False
@@ -447,15 +480,58 @@ def compact_closed_runtime(runtime):
             removed.append(relative)
     # The canonical training image set is now self-contained. Native per-step
     # replay images are regenerable; retain the action/state/ACK text journals.
-    controller = runtime/'agent/controller'
-    observations = controller/'observations'
-    if observations.is_dir() and not observations.is_symlink():
-        for path in observations.rglob('*'):
-            if path.is_file() and path.suffix.lower() in ('.jpg','.jpeg','.png','.webp'):
-                path.unlink()
-                removed.append(str(path.relative_to(runtime)))
+    for observations in (runtime/'agent/controller/observations', trajectory/'controller/observations'):
+        if not observations.is_dir() or observations.is_symlink():
+            continue
+        if not observations.resolve().is_relative_to(case/'trajectories'):
+            continue
+        for directory, directories, files in os.walk(observations, followlinks=False):
+            directories[:] = [name for name in directories if not (Path(directory)/name).is_symlink()]
+            for name in files:
+                path = Path(directory)/name
+                if not path.is_symlink() and path.suffix.lower() in ('.jpg','.jpeg','.png','.webp'):
+                    path.unlink()
+                    removed.append(os.path.relpath(path, runtime))
     write(receipt, {'storage_mode':'training', 'removed':removed,
         'canonical_images':'agent/training/images', 'native_score_attached':True})
+    return True
+
+
+def _training_images_complete(root, manifest):
+    """Require intact, self-contained training rows before pruning observations."""
+    try:
+        if (root/'images').is_symlink():
+            return False
+        known = {}
+        for item in manifest.get('images', {}).values():
+            relative = Path(item['path'])
+            path = root/relative
+            if (relative.is_absolute() or '..' in relative.parts or path.is_symlink()
+                or not path.resolve().is_relative_to((root/'images').resolve())
+                or not path.is_file() or digest(path.read_bytes()) != item['sha256']):
+                return False
+            known[item['path']] = item
+
+        def references(value):
+            if isinstance(value, dict):
+                if value.get('type') == 'image_paths':
+                    if any(path not in known for path in value['paths']):
+                        raise ValueError('Unresolved training image')
+                for item in value.values():
+                    references(item)
+            elif isinstance(value, list):
+                for item in value:
+                    references(item)
+
+        for kind in ('actor', 'compact'):
+            rows = 0
+            for line in (root/(kind+'.jsonl')).open():
+                references(json.loads(line))
+                rows += 1
+            if rows != manifest[kind+'_rows']:
+                return False
+    except (OSError, ValueError, KeyError, TypeError):
+        return False
     return True
 
 

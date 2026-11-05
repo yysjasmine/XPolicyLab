@@ -263,3 +263,10 @@ receipt. Export failures retain their source evidence for repair. Temporary
 native video streams are removed after their writer exits when `save_video`
 is false; explicit `save_video: true` retains the native video. Existing frozen
 evaluations are unchanged.
+
+Capture shutdown retains ownership after a timeout so controller cleanup can
+retry the same writer. Training rows close only after that writer has stopped;
+persistence errors remain explicit evidence gaps. Before removing duplicate
+controller pictures from either the runtime or its shared trajectory directory,
+cleanup verifies each closed continuation's training rows, image references and
+image hashes. An incomplete continuation keeps the recovery material available.

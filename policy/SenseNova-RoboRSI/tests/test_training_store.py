@@ -7,6 +7,8 @@ from importlib import import_module
 import base64
 import io
 import json
+import shutil
+import threading
 
 import numpy as np
 from PIL import Image
@@ -229,3 +231,126 @@ def test_compact_publication_keeps_source_and_skips_duplicate_workspaces(tmp_pat
     assert (target/'runtime/agent/training/actor.jsonl').is_file()
     assert not (target/'runtime/agent/workspace').exists()
     assert (workspace/'large.png').is_file()  # Publication never deletes source.
+
+
+def make_capture(tmp_path):
+    guard=import_module('XPolicyLab.policy.SenseNova-RoboRSI.skillpack.capture_guard')
+    config=import_module('roborsi.planner.provider_capture').ProviderCaptureConfig
+    return guard.GuardedCapture(config('https://fixture.invalid/v1','runtime'),tmp_path/'api',
+        case_dir=tmp_path,model='fixture',model_label='fixture',cohort_root=tmp_path,
+        storage_mode='training')
+
+
+def test_capture_timeout_keeps_segments_open_until_final_writer_has_stopped(tmp_path):
+    capture=make_capture(tmp_path)
+    ready=threading.Event();release=threading.Event()
+    def writer():
+        ready.set()
+        assert release.wait(5)
+        capture.training_store.append(request([message('start')]),
+            [{'type':'reasoning','id':'late','encrypted_content':'final-seal'},
+             message('last response','assistant','last')],kind='actor',request_id=1,response_id='r1')
+    thread=threading.Thread(target=writer)
+    capture._thread=thread
+    thread.start()
+    assert ready.wait(1)
+    try:
+        with pytest.raises(RuntimeError,match='cleanup deadline'):
+            capture.stop(timeout_s=0)
+        assert json.loads((tmp_path/'training/manifest.json').read_text())['state']=='open'
+    finally:
+        release.set();thread.join(5)
+    assert not thread.is_alive()
+    capture.stop(timeout_s=1)
+    actor=rows(tmp_path/'training/actor.jsonl')
+    assert actor[0]['messages'][-1]['content'][0]['text']=='last response'
+    assert actor[0]['messages'][-1]['reasoning_items'][0]['encrypted_content']=='final-seal'
+    assert json.loads((tmp_path/'training/manifest.json').read_text())['state']=='closed'
+
+
+def test_stopped_capture_keeps_persistence_error_and_closes_only_collected_source(tmp_path):
+    capture=make_capture(tmp_path)
+    capture.training_store.append(request([message('start')]),
+        [message('retained','assistant','m')],kind='actor',request_id=1,response_id='r1')
+    capture._errors.append('OSError')
+    with pytest.raises(RuntimeError,match='persist all response records'):
+        capture.stop()
+    assert json.loads((tmp_path/'training/manifest.json').read_text())['state']=='closed'
+    assert rows(tmp_path/'training/actor.jsonl')[0]['messages'][-1]['content'][0]['text']=='retained'
+    assert json.loads((tmp_path/'training/native-evidence.json').read_text())['gaps']==[
+        {'kind':'capture_persistence_error','error_type':'OSError'}]
+
+
+def closed_image_case(tmp_path):
+    case=tmp_path/'case';trajectory=case/'trajectories/align_blocks/seed-1/episode'
+    runtime=trajectory/'runtime-a';root=runtime/'agent/training'
+    value=store.TrainingStore(root,metadata={'task_id':'align_blocks'})
+    value.append(request([message('start'),{'type':'message','role':'user','content':[image(png())]}]),
+        [message('answer','assistant','m')],kind='actor',request_id=1,response_id='r1')
+    value.close()
+    store.write(runtime/'episode-owner.json',{'closed':True,
+        'native_identity':{'task':'align_blocks','layout':4,'scene_sha256':'scene'}})
+    store.write(runtime/'archive.pending.json',{'native_terminal_accepted':True,
+        'source':str(runtime),'trajectory_directory':str(trajectory)})
+    store.write(case/'native-identity.json',{'layout_sha256':'scene'})
+    terminal=case/'native-terminal.json'
+    store.write(terminal,{'done':True,'metrics':{'score':1,'success':True,'layout_id':4}})
+    workspace=runtime/'agent/workspace';workspace.mkdir();(workspace/'recovery.txt').write_text('keep until verified')
+    shared=trajectory/'controller/observations/evaluation-0001/frame.jpg'
+    legacy=runtime/'agent/controller/observations/frame.jpg'
+    for path in [shared,legacy]:
+        path.parent.mkdir(parents=True);path.write_bytes(b'derived controller frame')
+    journal=trajectory/'controller/acknowledgements.jsonl';journal.write_text('original ACK\n')
+    return case,trajectory,runtime,root,terminal,workspace,shared,legacy,journal
+
+
+def test_terminal_cleanup_reaches_shared_trajectory_observations_and_keeps_journals(tmp_path):
+    case,trajectory,runtime,root,terminal,workspace,shared,legacy,journal=closed_image_case(tmp_path)
+    outside=tmp_path/'other';outside.mkdir();(outside/'keep.jpg').write_bytes(b'not this episode')
+    (shared.parent/'external').symlink_to(outside,target_is_directory=True)
+    assert store.finalize_case(case,terminal)==1
+    assert not shared.exists() and not legacy.exists() and not workspace.exists()
+    assert journal.read_text()=='original ACK\n'
+    assert (outside/'keep.jpg').read_bytes()==b'not this episode'
+    assert len(list((root/'images').glob('*.jpg')))==1
+    assert rows(root/'actor.jsonl')[0]['score']==1
+    assert any('../controller/observations/' in name
+               for name in json.loads((runtime/'storage-receipt.json').read_text())['removed'])
+
+
+def test_all_continuation_stores_are_scored_before_shared_cleanup(tmp_path):
+    case,trajectory,runtime,root,terminal,workspace,shared,legacy,journal=closed_image_case(tmp_path)
+    sibling=trajectory/'runtime-b'
+    shutil.copytree(runtime,sibling)
+    assert store.finalize_case(case,terminal)==2
+    assert all((path/'storage-receipt.json').is_file() for path in (runtime,sibling))
+    assert not shared.exists()
+    assert all(rows(path/'agent/training/actor.jsonl')[0]['score']==1 for path in (runtime,sibling))
+    assert journal.read_text()=='original ACK\n'
+
+
+@pytest.mark.parametrize('damage',['missing_image','corrupt_image','unresolved_reference','active_sibling','closed_sibling_incomplete','capture_gap','foreign_trajectory'])
+def test_cleanup_retains_recovery_material_until_training_source_is_verified(tmp_path,damage):
+    case,trajectory,runtime,root,terminal,workspace,shared,legacy,journal=closed_image_case(tmp_path)
+    picture=next((root/'images').glob('*.jpg'))
+    if damage=='missing_image':picture.unlink()
+    elif damage=='corrupt_image':picture.write_bytes(b'corrupt')
+    elif damage=='unresolved_reference':
+        actor=rows(root/'actor.jsonl')[0]
+        actor['messages'][2]['content'][0]['paths']=['images/not-captured.jpg']
+        (root/'actor.jsonl').write_text(json.dumps(actor)+'\n')
+    elif damage=='active_sibling':
+        store.write(trajectory/'runtime-b/episode-owner.json',{'closed':False})
+    elif damage=='closed_sibling_incomplete':
+        sibling=trajectory/'runtime-b'
+        shutil.copytree(runtime,sibling)
+        next((sibling/'agent/training/images').glob('*.jpg')).unlink()
+    elif damage=='capture_gap':
+        store.write(root/'native-evidence.json',{'gaps':[{'kind':'capture_persistence_error'}]})
+    elif damage=='foreign_trajectory':
+        store.write(runtime/'archive.pending.json',{'native_terminal_accepted':True,
+            'trajectory_directory':str(tmp_path/'another_episode')})
+    assert store.finalize_case(case,terminal)==(2 if damage=='closed_sibling_incomplete' else 1)
+    assert workspace.exists() and shared.exists() and legacy.exists()
+    assert journal.read_text()=='original ACK\n'
+    assert not (runtime/'storage-receipt.json').exists()

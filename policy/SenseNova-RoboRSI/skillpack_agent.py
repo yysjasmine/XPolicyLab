@@ -81,7 +81,6 @@ class SkillpackCodexCliPlanner(HybridCodexCliPlanner):
         with self._resource_lock:
             for name in ("_robot_server", "_capture"):
                 resource = getattr(self, name)
-                setattr(self, name, None)
                 if resource is not None:
                     try:
                         resource.stop()
@@ -90,6 +89,12 @@ class SkillpackCodexCliPlanner(HybridCodexCliPlanner):
                         path = Path(self.context.episode_dir)/"skillpack-cleanup.jsonl"
                         with path.open("a") as stream:
                             stream.write(json.dumps({"resource": name, "error_type": type(error).__name__})+"\n")
+                    else:
+                        # A bounded stop may time out while the capture still
+                        # flushes its final response. Keep ownership on failure
+                        # so controller-finally/shutdown can retry that same
+                        # resource instead of abandoning an open TrainingStore.
+                        setattr(self, name, None)
 
 
 class SkillpackEmbodiedAgent(HybridEmbodiedAgent):

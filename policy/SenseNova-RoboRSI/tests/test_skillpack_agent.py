@@ -112,6 +112,30 @@ def test_controller_cleanup_is_bounded(monkeypatch):
     assert calls == [15.0]
 
 
+def test_failed_capture_stop_is_retried_with_the_same_owner(monkeypatch, tmp_path):
+    monkeypatch.setattr(skillpack.HybridCodexCliPlanner, 'cancel', lambda self: None)
+    calls = []
+
+    class Capture:
+        def stop(self):
+            calls.append('capture')
+            if calls.count('capture') == 1:
+                raise RuntimeError('Synthetic writer is still flushing')
+
+    capture = Capture()
+    planner = object.__new__(skillpack.SkillpackCodexCliPlanner)
+    planner._resource_lock = threading.RLock()
+    planner.context = SimpleNamespace(episode_dir=tmp_path)
+    planner._capture = capture
+    planner._robot_server = SimpleNamespace(stop=lambda: calls.append('mcp'))
+    planner.cancel()
+    assert planner._capture is capture
+    assert planner._robot_server is None
+    planner.cancel()
+    assert calls == ['mcp', 'capture', 'capture']
+    assert planner._capture is None
+
+
 def test_launch_binds_mcp_capture_and_short_prompt_on_instance(monkeypatch, tmp_path):
     @dataclass
     class Config:
