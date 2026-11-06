@@ -11,7 +11,7 @@
   },
   {
     "name": "vla_propose",
-    "description": "Predict a trajectory without moving. Give one short English sentence describing an immediate action, the observed object and a destination when needed; use task/demo wording and omit reasoning, code and multi-step plans. Example: Move the left gripper above the blue 8. Return a short proposal_id (p1, p2, ...) and TCP samples at steps 5,10,...,50. A new request replaces an unexecuted old proposal.",
+    "description": "Predict without moving. Give one short English immediate action naming the observed object and destination when needed; omit reasoning, code and multi-step plans. Return proposal_id and preview at steps 5,10,15,20,25,30,35,40,45,50 only. Each arm has pos_m (TCP XYZ), angles_deg ([pitch about +X, roll about +Y, yaw about +Z] from downward), grip (0 closed, 1 open), and measured-start prefix diagnostics: delta_cm, path_cm, max_step_cm, max_rotation_step_deg, max_joint_step_rad, grip_delta and grip_range (including start). Row bounds are cumulative existing warnings through that step. Statistics include every original step in the prefix. Read with RGB; predictions do not establish grasp or safety. No full 50-point inspection. A new proposal replaces the old one; act uses its stored original joint prefix.",
     "input_schema": {
       "type": "object",
       "properties": {
@@ -213,6 +213,73 @@
       "required": [
         "reason",
         "assessment"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "hold_current",
+    "description": "Calculate one full dual-arm TCP target from the latest measured state, preserving both poses and gripper openings. Read-only: no motion, VLA call, physics step or proposal replacement. Returns control_step, computed_only and targets; inspect them, then call act with targets to execute. Recalculate after any intervening action.",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "close_in_place",
+    "description": "Calculate one full dual-arm TCP target from the latest measured state. Keep both poses and the other gripper unchanged; set the selected arm's opening (default 0, fully closed). Read-only; does not close or verify grasp. Returns control_step, computed_only and targets; inspect them, then call act with targets. Recalculate after any intervening action.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "arm": {
+          "type": "string",
+          "enum": [
+            "left",
+            "right"
+          ]
+        },
+        "opening": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "default": 0,
+          "description": "Selected gripper's target opening, 0 closed and 1 open."
+        }
+      },
+      "required": [
+        "arm"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "move_relative",
+    "description": "Calculate one full dual-arm TCP target from the latest measured state. Add delta_m to the selected arm's TCP XYZ in environment axes; preserve both orientations, gripper openings and the other arm. Read-only; no motion or collision planning. Returns control_step, computed_only and targets; inspect them, then call act with targets. Recalculate after any intervening action.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "arm": {
+          "type": "string",
+          "enum": [
+            "left",
+            "right"
+          ]
+        },
+        "delta_m": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 3,
+          "maxItems": 3,
+          "description": "Environment-frame XYZ offsets in metres, not tool-local axes."
+        }
+      },
+      "required": [
+        "arm",
+        "delta_m"
       ],
       "additionalProperties": false
     }

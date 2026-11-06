@@ -1,16 +1,16 @@
 {
-  "robot_runtime/native_request.py": "2dd9f166389b1f48d9cc5c436d66cd9325d160f0054382ee4c021b356573a079",
-  "robot_runtime/execution.py": "f99d55adcf554f0adf810aba352636cc91574850dc7285f532696cf6271cf835",
-  "robot_runtime/robot_tools.py": "7a42c91b3b76ec2a0b223313311fb965b007197b7edfcf43f9fe1de4ab4032c4",
+  "robot_runtime/native_request.py": "92d7495f7deb70365225857f0efbce8805a81735c5852d34d4e2287b14267b88",
+  "robot_runtime/execution.py": "e98d004092971a4b2f9896a5ff5bda7f812f46ad03ff5791c368b5caf0a47a2e",
+  "robot_runtime/robot_tools.py": "c4c5b489ce835f6b2802e34756da7d2b2cd35f7cf2d7471dcf94c706c1d91e1e",
   "robot_runtime/tcp_pose.py": "a3c544ceada5e6ac7d99165b13c757004ddfdd51cda354f67fccfe54a196db8d",
-  "robot_runtime/prompt_profile.py": "38525027f98d367fd33772471b732e5eab28e76128866a80b8aacf83cb8a81a9",
+  "robot_runtime/prompt_profile.py": "60938ac526d5838a78c24e94e0f6eceb225ce2a354e70bfd620ea79bb290f398",
   "common/agent_core.md": "1acbd17a084858303da9368133d4809ccf9b64eb3448f53ad6a6d7d4d41e8647",
   "common/native_tools.json": "aa97455a660c91cbf250ea98862507baf0d33dc798ffeba0fd440cc0641592b8",
   "common/skills_instruction.md": "24dbc691364770bdeac57b871fa34ebdb775d7f0e1235b296c2e2278fd423e05",
-  "common/profile.json": "226aa06cf9a21431687e545eaee0699d6d8b0b0fcaab6baa3917e7f2701a8acf",
-  "common/actual_robot_declarations.json": "968ea80e377d4464a141a319891ef21acae2a78d49114dcb06220574520f184e",
-  "common/robot_tools.json": "ae26629f2a3c8fdf4a51271894d9ea76719b13c71b669868d71617029de97f52",
-  "common/skills/robo-general/SKILL.md": "795113fd24f4b075ed72d8b05099b436d99a9b71d86cb36c819ec6cf7f95de02",
+  "common/profile.json": "1ed5abb014fddeb9134a4c0997c090aca98fffb40bc52b2317746587a5eb2e27",
+  "common/actual_robot_declarations.json": "7b2490f4e6225d6de6478bcb3fd784eb13bc5057b1e4e77581b108e14b66116e",
+  "common/robot_tools.json": "2ff4d966a08d40e5488967dd8330054c570b1e4ab6214bb9d9b19402ea2a31f4",
+  "common/skills/robo-general/SKILL.md": "a693633dc9087a7120991ef42c6cb46ec1bf815d6820d1f5e8f16530deb81255",
   "robot_runtime/gripper_monitor.py": "847ea1a4dbbe9bee03142ed969eb8e4a386ab457f2688bd694f4999b8fe3b06b",
   "common/space.json": "c50bb7390e0aa547176790d968b06a2a1fc4e2516b022d394968527704d89d07",
   "common/skills/robodojo-spatial-localize/SKILL.md": "518cc046daf3d51ba2eb3ccea26b44f6b87b97619449e80c495881e943713d1a",
@@ -28,5 +28,6 @@
   "common/skills/robodojo-spatial-localize/scripts/support_plane.py": "2bdbecedc90b2e4c075e850bc561002689a7257c3e45cb98a88be00eec3316e5",
   "common/skills/robodojo-spatial-localize/scripts/run_localize.py": "a7cd768e3db0d49be4075dd9b81563526d9e77dc5607e46bdb959b24abdd9121",
   "robot_runtime/bounded_curobo.py": "eda06d95f1966217882d9fb2fe700075f3ba46f808f7e35ceafe1ec4eaa8f7eb",
-  "robot_runtime/curobo_execution.py": "580e3952e8b468a2481714f6308b62ca78f58824e491464688e07670c99e9c21"
+  "robot_runtime/curobo_execution.py": "580e3952e8b468a2481714f6308b62ca78f58824e491464688e07670c99e9c21",
+  "robot_runtime/proposal_diagnostics.py": "8458fc2cbdc09e922aa8f6746bfbcf6481b68ecb2d162a7297762e36eb3361f9"
 }

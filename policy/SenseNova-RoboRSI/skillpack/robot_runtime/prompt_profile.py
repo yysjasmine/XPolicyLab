@@ -1,8 +1,9 @@
-"""Load the current three-tool profile for a normal task episode."""
+"""Load the current robot-tool profile for a normal task episode."""
 from copy import deepcopy
 import hashlib
 import json
 from pathlib import Path
+from robot_tools import TOOL_NAMES
 
 
 class RobotPromptProfile:
@@ -14,8 +15,8 @@ class RobotPromptProfile:
         self.tools=json.loads((self.directory/'native_tools.json').read_text())
         self.deferred=json.loads((self.directory/'actual_robot_declarations.json').read_text())
         self.expected_tools=set(self.manifest['robot_tool_registration']['tools'])
-        if self.expected_tools!={'observe','vla_propose','act'}:
-            raise ValueError('Expected the three-tool robot profile')
+        if self.expected_tools!=TOOL_NAMES:
+            raise ValueError('Expected the registered robot-operation and target-calculation tools')
         if {t['name'] for t in self.deferred}!={'mcp__robot__'+n for n in self.expected_tools}:
             raise ValueError('Pinned real MCP runtime declarations differ')
         # Native direct MCP calls render text and images without JS forwarding.
@@ -50,7 +51,7 @@ class RobotPromptProfile:
                          model_auto_compact_token_limit=200000,model_context_window=200000)
         request['prompt_profile']={'id':self.profile_id,'task':task,'directory':str(self.directory),
             'sha256':self.manifest['sha256'],'registered_skills':self.manifest['skills'],
-            'model_tools':['functions.exec','functions.wait','robot.observe','robot.vla_propose','robot.act'],'stage':'before CLI input construction'}
+            'model_tools':['functions.exec','functions.wait']+['robot.'+name for name in sorted(self.expected_tools)],'stage':'before CLI input construction'}
         request.setdefault('baseline_adaptations',[]).append('two_skillpack_and_short_episode_prompt')
 
     def stage_live_workspace(self,workspace,*,owner):
@@ -140,7 +141,7 @@ class RobotPromptProfile:
                         value=deepcopy(spec);value['tools']=children;kept.append(value)
                 else:
                     name=spec.get('name','');leaf=name.rsplit('__',1)[-1]
-                    if leaf in {'observe','vla_propose','act'} and 'robot' in '.'.join(full):
+                    if leaf in self.expected_tools and 'robot' in '.'.join(full):
                         names.add(leaf);kept.append(deepcopy(spec))
             return kept
         def merge(groups, additions):
@@ -177,7 +178,7 @@ class RobotPromptProfile:
                 if any(p.get('text')==self.core for p in content):
                     new.append({'type':'message','role':'developer','content':[{'type':'input_text','text':self.skills_instruction}]})
         if not found_core or not found_tools:raise ValueError('Pinned CLI prefix missing')
-        if names!={'observe','vla_propose','act'}:
+        if names!=self.expected_tools:
             raise ValueError('Actual CLI robot declarations missing: '+str(sorted(names)))
         result['input']=new
         return result,{'profile_id':self.profile_id,'removed_blocks':removed,'changed':result!=original,

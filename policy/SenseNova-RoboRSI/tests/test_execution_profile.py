@@ -46,7 +46,8 @@ def test_shared_bytes_and_tools_are_unchanged(tmp_path):
     cfg = {"options": {"review_window_steps": 1050, "review_max_windows": 1}, "episode_seconds": 14000}
     prompt = derived.episode_prompt(cfg)
     assert "smoke" not in prompt.lower() and "three" not in prompt.lower()
-    assert derived.expected_tools == {"observe", "vla_propose", "act"}
+    assert derived.expected_tools == {"observe", "vla_propose", "act",
+                                      "hold_current", "close_in_place", "move_relative"}
 
 
 @pytest.mark.parametrize("suffix,media_type", [("jpg", "image/jpeg"), ("jpeg", "image/jpeg"), ("png", "image/png")])
@@ -140,7 +141,7 @@ def test_native_robot_namespace_is_preserved_with_exec_wait(tmp_path):
     derived = profile.load_skillpack_profile(P, "arrange_largest_number", tmp_path)
     robot = {"type": "namespace", "name": "mcp__robot", "tools": [
         {"type": "function", "name": name, "parameters": {"type": "object"}}
-        for name in ("observe", "vla_propose", "act")]}
+        for name in sorted(derived.expected_tools)]}
     result, evidence = derived.transform({"input": [
         {"type": "additional_tools", "tools": [robot]},
         {"role": "developer", "content": [{"type": "input_text", "text": derived.core}]},

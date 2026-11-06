@@ -1,4 +1,4 @@
-"""Frozen three-tool skillpack on this checkout's native XPolicyLab ACK loop."""
+"""Registered robot tools on this checkout's native XPolicyLab ACK loop."""
 from __future__ import annotations
 
 from dataclasses import replace
@@ -185,5 +185,5 @@ def make_agent(case_dir, *, config):
         raise ValueError("The frozen execution profile owns prompts and skills")
     options["codex_cli"] = CodexCliConfig.from_dict(options.get("codex_cli", {}))
     if options["codex_cli"].tools != "external":
-        raise ValueError("Skillpack requires its three registered robot MCP tools")
+        raise ValueError("Skillpack requires its registered robot MCP tools")
     return SkillpackEmbodiedAgent(mcp_servers=(), output_dir=case_dir, local_tools=(), **options)

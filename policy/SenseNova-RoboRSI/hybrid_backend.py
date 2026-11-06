@@ -470,6 +470,11 @@ class HybridBackend:
                                             self.observation_dir, self.frame, step=owner._step)
                 if spatial is not None:
                     observation["spatial_localization"] = spatial
+                # This facade overrides the native adapter's _transition. Reuse
+                # the emitted state for diagnostics without another observation.
+                remember = getattr(self, "_cache_review_observation", None)
+                if remember is not None:
+                    remember(observation)
                 self.frame += 1
                 result = {
                     "observation": observation,
