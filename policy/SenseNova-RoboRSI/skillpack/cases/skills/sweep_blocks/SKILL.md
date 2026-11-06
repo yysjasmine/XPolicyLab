@@ -11,16 +11,19 @@ Identify the brush bristles, exposed handle, pan bowl, lip and handle. Record ev
 
 1. Choose a brush neck/handle grip that leaves a free segment for the receiving hand. Approach open above the observed handle, align the jaws across it, then descend and close. Test-lift a few centimetres and confirm that the brush follows. A preliminary miss calls for reopening and corrected alignment while the brush is supported.
 2. Lift clear and present the free handle in reachable central space. The right receiver closes while the left still supports; inspect engagement before opening the left. Withdraw the donor and verify right-hand retention. If the receiver misses, preserve donor support and realign rather than pulling the two closed hands apart.
+   Before releasing the left hand, make a small right-hand test lift and confirm in RGB that the brush follows the receiver rather than remaining with the donor or table. Continue to pan pickup only after this check.
 3. Keep the brush head clear while the left hand acquires the pan handle. Both neck and distal-handle grips appear in the demonstrations and give different bowl offsets. Test-lift, then orient the mouth toward the outside objects.
-4. Support the pan near the tabletop with its lip low enough for the objects to enter, while retaining the handle. The useful order is brush → outside objects → pan lip → bowl. Inspect lip height and tilt: a raised lip is a barrier, and an elevated bowl can let items pass underneath.
+4. Set the pan body stably on the tabletop while retaining its handle. Keep the front lip in contact with the table and facing the objects; a raised lip is a barrier and a hovering bowl can let items pass underneath. Make only small handle-angle corrections, then verify the body remains supported and the lip has not lifted. The useful order is brush → outside objects → pan lip → bowl.
 
 ## Sweep a visible lane
 
-Choose one remaining object or a narrow group with a clear route into the mouth. Locate the actual bristle sweeping edge relative to the current TCP; the handle grip point does not locate that edge. Re-estimate after handoff, a tool rotation or slipping. Wrist views may be filled by the held tools, so use the head view to track object movement and pan position.
+Choose one remaining object or a narrow group. Before each push, identify the actual bristle sweeping edge, target objects, usable span of the pan lip and a point inside the bowl in the current RGB views. Confirm a visible brush → object → lip → bowl lane; the handle TCP does not locate the bristle edge. Re-estimate after handoff, a tool rotation or slipping. Wrist views may be filled by the held tools, so use the head view to track object movement and pan position.
+
+If scattered objects have no direct lane through the current mouth, first use short contact strokes to gather them into a reachable area in front of the lip, checking actual movement after each stroke. If a direct lane exists, sweep straight into the bowl without an extra gathering phase. Reposition the pan if its mouth cannot cover the remaining object; do not sweep objects into a raised lip or across the bowl.
 
 Lift the brush for the return, position it beyond the selected objects, then lower its edge onto the visible outside lane. Push a short span toward the lip and inspect what moved. Continue from the new arrangement while contact and the lane remain valid. At the lip, use small corrections and keep the pan stable. Lift before retracting so collected objects are not dragged back out.
 
-After each pass, account for remaining objects and reveal the bowl. An item hidden by bristles is uncertain, not collected. Do not copy a fixed stroke count, brush height or lane width from a demonstration.
+After each pass, check that the pan stayed supported with its lip on the table, identify which objects actually crossed into the bowl, and update a short count of objects inside, outside and uncertain. An item hidden by bristles is uncertain, not collected. Plan a separate short pass for a remaining or escaped object. Do not copy a fixed stroke count, brush height or lane width from a demonstration.
 
 | Observation | Next adjustment |
 |---|---|
@@ -34,7 +37,7 @@ Move a filled pan cautiously and inspect its contents after relocation. A prior 
 
 ## Release and ending
 
-With the brush clear, verify that each requested object is inside and supported by the bowl, not beside it, at the lip or hidden under a hand. Settle the pan on the table, place the brush on a clear patch beside it, and support each tool before opening. Withdraw without dragging handles or disturbing the contents.
+With the brush clear, verify that each requested object is inside and supported by the bowl, not beside it, at the lip or hidden under a hand. Do not start cleanup while a requested object is visibly outside. Settle the pan on the table, place the brush on a clear patch beside it, and support each tool before opening. Withdraw without dragging handles or disturbing the contents.
 
 Return both empty open arms near their observed starting poses. Compare several views after withdrawal for retained contents, supported/released tools and unobstructed hands. Exact final tool yaw and the demonstrations' very small arm residuals are reference details, not fixed tolerances.
 

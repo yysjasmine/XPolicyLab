@@ -5,7 +5,7 @@ description: Pair observed nuts and screws, seat each nut, and tighten through v
 
 # Fasten the screws
 
-Distinguish a loose nut's hollow hexagonal centre from a screw's raised shaft and base. Match each nut to a screw by observed colour and identity, using wrist/oblique RGB when fingers or highlights obscure the shape. Work on one pair at a time while keeping earlier assemblies clear.
+Distinguish a loose nut's hollow hexagonal centre from a screw's raised shaft and base. Match each nut to a screw by observed colour and identity, using wrist/oblique RGB when fingers or highlights obscure the shape. Keep each pair's placement and tightening checks separate. When the arms have clear, non-crossing paths, let them work on different pairs in parallel; one can prepare the next nut while the other seats or tightens. Keep earlier assemblies clear.
 
 ## Pick and seat
 
@@ -13,7 +13,7 @@ Distinguish a loose nut's hollow hexagonal centre from a screw's raised shaft an
 - If a nut must cross sides, set it down on a free central table patch, release and withdraw the donor, then relocalize with the receiving arm. The demonstrations used tabletop transfers rather than hand-to-hand exchanges.
 - Approach top-down with the jaws around the nut body and its hole clear. Inspect the wrist view before descending. Close, test-lift and verify that the nut follows the fingers.
 - Carry clear of other parts. Centre the held nut hole over its same-colour shaft, compensate the observed grasp offset, and lower gently. Inspect coaxial support and distinguish shaft entry from a nut merely perched on the tip.
-- Release and inspect seating before a separate tightening grasp. Most demonstrations separate these phases; a few integrate the first turn into insertion.
+- Release, then inspect the nut and shaft before tightening. Use the wrist view of the arm doing the placement, or the head view if the wrist is blocked. Confirm that the hole surrounds the matching shaft, the nut is upright and it remains supported after release. If the view is uncertain or the nut is perched on the tip, lift, re-centre and reseat it before turning. Do not count a commanded placement or turn as evidence of seating. Most demonstrations separate seating and tightening; a few integrate the first turn into insertion.
 
 ## Tighten
 

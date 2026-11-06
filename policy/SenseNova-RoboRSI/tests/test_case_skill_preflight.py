@@ -119,6 +119,6 @@ def test_changed_catalog_or_shared_manifest_pin_rejected(skillpack, relative):
 def test_committed_skillpack_is_complete_and_hash_verified():
     policy = Path(__file__).resolve().parents[1]
     result = preflight.validate_case_skillpack(policy, 'arrange_largest_number_random')
-    assert result['case_packs_verified'] == 26
+    assert result['case_packs_verified'] == 27
     assert result['selection']['case_skill'] == 'arrange_largest_number'
     assert result['selection']['skills'] == ['robo-general', 'arrange_largest_number_random']

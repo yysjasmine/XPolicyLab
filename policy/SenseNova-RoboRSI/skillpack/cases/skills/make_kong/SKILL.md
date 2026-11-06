@@ -11,9 +11,9 @@ Read the actual discard and hand faces from current RGB. The demonstrations show
 
 Keep the controlled arms clear while the separate white opponent arm makes its discard. Begin contact after the discard is visibly face up and the opponent has withdrawn. Match three near-hand faces to that actual discard; opponent slot and demonstration index do not identify them.
 
-Tip each matching hand tile forward onto the table with closed fingers. Approach from the robot side, align over the selected tile, and use short forward/downward pushes. Stop once its correct face is up and the tile is supported. Retract along the approach before moving sideways, preserving upright neighbours. Choose the arm by current access; clear one arm before the other enters the central row. Leave the opponent discard in its landing region, as in the examples.
+Before each flip, identify the intended physical tile and its immediate neighbours in the current views. Choose a fingertip contact point and approach that clear the neighbours. Tip only the intended tile forward with a short forward/downward push, then retract along a clear path before moving sideways. If the fingers begin to sweep toward a neighbour, stop and change the contact point. Keep the other arm clear of the row. Stop once the correct face is up and the tile is supported. Leave the opponent discard in its landing region, as in the examples.
 
-If a target remains upright, inspect the actual contact point before changing height or approach. If already face up, avoid another full stroke. Re-localize and correct any fallen neighbour while preserving the selected trio.
+After each stroke, check the returned view for the intended flip and any accidental neighbour contact. If a target remains upright, inspect the actual contact point before changing height or approach. If already face up, avoid another full stroke. If `act` reports `native_step_budget_exhausted` or `stalled_reobserve`, do not assume the TCP target was reached; inspect the measured pose and image, then adjust the next short approach. Correct a fallen neighbour if feasible, without repeating a collision-prone stroke or getting stuck in a repair loop.
 
 ## Draw and transfer the reserve tile
 
@@ -29,7 +29,7 @@ The demonstrated ending leaves the left arm empty/open near home and the right a
 
 ## Ending inventory
 
-Verify the three matching near tiles are face up, other original hand tiles remain upright and in order, the discard is unchanged, and the unused opponent/reserve pieces remain supported. In the examples, 14 original hand tiles plus one draw become 12 near upright and 3 near face up; the other regions contain 3 far upright, 1 discard and 3 reserve pieces. Use the current observed inventory if counts differ. Check every region and both empty grippers after release.
+After releasing the drawn tile, verify that it stands independently at the row end, both grippers are open/empty, the three matching near tiles are face up, other original hand tiles remain upright and in order, the discard is unchanged, and the unused opponent/reserve pieces remain supported. In the examples, 14 original hand tiles plus one draw become 12 near upright and 3 near face up; the other regions contain 3 far upright, 1 discard and 3 reserve pieces. Use the initial observed inventory if the scene begins with different counts; do not redefine the target inventory after an accidental displacement. Check every region before waiting or stopping. If a specific condition is unmet, use remaining steps for the smallest feasible correction instead of repeated idle actions.
 
 ## Compact visual references
 
