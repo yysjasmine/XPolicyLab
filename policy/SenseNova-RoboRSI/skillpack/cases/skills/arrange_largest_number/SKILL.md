@@ -39,7 +39,7 @@ Assess each applicable item as **met / unmet / uncertain**, citing current RGB/n
 
 Reserve native steps for release, retreat and return. Target the measured initial TCP poses with margin inside the limits; inspect actual convergence/status/residuals. The native check uses end-link positions and one 3D rotation angle, not separate Euler differences; tool targets use gripping-face-centre TCP. Budget exhaustion during return leaves this item unmet/uncertain. Correct digits alone cannot establish final success while an arm remains outside its return limits.
 
-Use `assets/ending.jpg` for support, release and final clearance. The verified return limits apply to this case only. Do not invent other evaluator tolerances or equate TCP with digit centre. Continue permitted useful correction/inspection for unmet/uncertain items. At required checkpoints include this assessment in `act.review.ending_check`, with observed_state, demo_comparison, why_not_done and next_plan. The harness owns termination/limits; native done need not mean success.
+Use `assets/ending.jpg` for support, release and final clearance. The verified return limits apply to this case only. Do not invent other evaluator tolerances or equate TCP with digit centre. Continue permitted useful correction/inspection for unmet/uncertain items. The harness owns termination/limits; native done need not mean success.
 
 ## Visual references
 

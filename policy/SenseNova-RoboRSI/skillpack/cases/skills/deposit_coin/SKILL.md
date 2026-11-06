@@ -41,7 +41,7 @@ Axes and centres are current world-plane estimates from RGB. The command chooses
 
 ## Full completion evidence
 
-For each applicable row, record **met / unmet / uncertain** with current RGB/native-step and measured-state evidence. Compare the supplied task reference images. Start uncertain; an intended target, command, demo ending or occlusion is not evidence that this episode is complete. Apply the current instruction and observed inventory; demonstration counts/poses and variations are references, not hidden evaluator tolerances. Keep useful corrections or inspection going within the current harness protocol while checks remain unmet or uncertain. At a due checkpoint include this assessment in `act.review.ending_check`; native done means termination, not necessarily success.
+For each applicable row, assess **met / unmet / uncertain** from current RGB, measured state and advancing-step history. Apply the current instruction and inventory; demonstrations are comparison evidence, not hidden evaluator tolerances. Follow robo-general for the shared execution and checkpoint protocol.
 
 | Check | Required current evidence |
 |---|---|
@@ -57,8 +57,8 @@ For each applicable row, record **met / unmet / uncertain** with current RGB/nat
 | bank identity count | The same single pink bank remains present and intact Compare initial/current visible bank identity and count; account for all other scene objects. No other bank or substitute receptacle was demonstrated. |
 | bank placement orientation | Bank stays near its initial footprint/yaw, upright with slot facing up Compare current head view to own initial and layout-matched ending frames; inspect for shift, tipping, or slot rotation. Snout direction differs among demonstrations. Preserve current layout rather than imposing another demo yaw. |
 | bank support stability | Bank is table-supported, released and stable during/after retreat Check visible support and absence of hand contact across distinct returned observations. Tiny unseen movement and exact internal support are not measured. |
-| left final pose | Left arm returns near its corresponding initial demonstrated home configuration Record current-vs-initial link6 position and sign-invariant quaternion errors and six-joint difference, plus clear RGB posture. Demo maxima are descriptive, not hidden thresholds. Same EEF may not imply the same joint configuration. |
-| right final pose | Right arm returns near its corresponding initial demonstrated home configuration Record current-vs-initial link6 position, quaternion and six-joint difference, plus RGB; ep09 right remained unchanged throughout. Unused-arm home/open state remains part of ending comparison. |
+| left final pose | Left arm returns near its corresponding initial demonstrated home configuration Record current-vs-initial TCP position and full orientation errors and six-joint difference, plus clear RGB posture. Demo maxima are descriptive, not hidden thresholds. Same EEF may not imply the same joint configuration. |
+| right final pose | Right arm returns near its corresponding initial demonstrated home configuration Record current-vs-initial TCP position/orientation and six-joint difference, plus RGB; ep09 right remained unchanged throughout. Unused-arm home/open state remains part of ending comparison. |
 | both grippers open | Both grippers end open and visibly empty Use current measured normalized openings and RGB of both fingers; compare final demo openings=1. Opening is a command/state and is not proof of successful grasp or release by itself. |
 | other unchanged objects | Every other initially visible object/support remains accounted for Use complete initial/current inventory, including table/supports and any episode-specific unused objects. If none additional, state that based on images. Do not silently drop unused objects from the ending checklist. |
 | multi frame ending | Ending claims are supported by several distinct current action-step observations Cite step numbers and images showing release, object support/stability and final measured arm states; compare multiple demonstration ending frames. A command, previous checklist claim, or one screenshot is not verification. |
@@ -69,6 +69,6 @@ Completion cautions from the public source:
 - Use latest current RGB/proprio plus directly observed episode history, and cite step/frame paths.
 - Opaque bank interior: record observed slot-entry transition and current exterior separately from inferred internal resting pose.
 - Never dismiss a demonstrated ending difference because the short task instruction omits it.
-- Native done means termination, not necessarily success; stop cannot trigger success.
-- Unmet or uncertain items prohibit a completion-based stop. Respect review and minimum-stop-window rules.
-- When done is false, challenge prior claims and test useful evidence-conditioned corrections before abandonment.
+- Native done means termination, not necessarily success; the harness controls termination.
+- Unmet or uncertain items require useful inspection or correction while the task and budget permit it; do not mark them complete.
+- When done is false, challenge prior claims and test useful evidence-conditioned corrections while the episode remains active.

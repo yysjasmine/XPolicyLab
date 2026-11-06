@@ -88,7 +88,7 @@ def tool_specs() -> list[dict[str, Any]]:
     return [
         dict(name="observe", description="Read current RGB, measured TCP positions, pitch/roll/yaw degrees relative to the downward reference, permissions and budgets without advancing physics. Display floats use at most three decimal places.", input_schema=_object({}, [])),
         dict(name="vla_propose", description="Predict a trajectory without moving. Give one short English sentence describing an immediate action, the observed object and a destination when needed; use task/demo wording and omit reasoning, code and multi-step plans. Example: Move the left gripper above the blue 8. Return a short proposal_id (p1, p2, ...) and TCP samples at steps 5,10,...,50. A new request replaces an unexecuted old proposal.", input_schema=_object({"subgoal": {**TEXT, "maxLength": 2000}}, ["subgoal"])),
-        dict(name="act", description="Accept stored original VLA joint steps, or track model-supplied TCP targets with internal measured-state feedback and IK. TCP targets use continuous gripper_opening (0 closed, 1 open). Supplying targets declines the proposal. Check measured gripper openings every native step; a change of at least 0.02 after settling under a steady command interrupts with gripper_change_reobserve and gripper_event. Return status, actual native steps, residual errors, current RGB and measured TCP state. Inspect interrupted results before choosing another action; opening changes do not prove object loss. Pose arrival does not verify grasp. Keep reason/assessment concise.", input_schema=_object({
+        dict(name="act", description="Accept stored original VLA joint steps, or track model-supplied TCP targets with internal measured-state feedback and IK. TCP targets use continuous gripper_opening (0 closed, 1 open). Supplying targets declines the proposal. Return status, actual native steps, residual errors, current RGB and measured TCP state. Inspect interrupted results before choosing another action; an interrupted VLA proposal cannot be reused. Pose arrival does not verify grasp. Keep reason/assessment concise. Only when observe reports review_due, act.review records legacy checkpoint analysis; it does not determine the native score.", input_schema=_object({
             "proposal_id": {**TEXT, "description": "Copy the current short VLA proposal_id, e.g. p1; omit when supplying targets."},
             "steps": dict(type="integer", minimum=1, maximum=50,
                           description="Consecutive prefix length; VLA allows 5..50, default 5."),
@@ -98,7 +98,7 @@ def tool_specs() -> list[dict[str, Any]]:
                                      description="Shared native-step budget for TCP tracking, default 80. Omit for original VLA acceptance."),
             "reason": TEXT,
             "assessment": _object({"current_subgoal": TEXT}, ["current_subgoal"]),
-            "review": {**REVIEW, "description": "Evidence at a required checkpoint. Without proposal_id/steps/targets, records the due review without motion."},
+            "review": {**REVIEW, "description": "Legacy harness checkpoint record, only when observe reports review_due. These fields are not native scoring conditions. Without proposal_id/steps/targets, records the due checkpoint without motion."},
         }, ["reason", "assessment"])),
     ]
 

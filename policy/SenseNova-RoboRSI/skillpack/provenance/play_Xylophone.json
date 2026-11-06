@@ -79,5 +79,19 @@
     "single_main_markdown": true,
     "main_skill_sha256": "88342c1b553d86cb5f0711328a16715be13da7604f38533aded09b57b56e8c01",
     "scope": "all original task-goal/evidence rows plus public completion cautions; obsolete review/stop-window mechanics replaced by current harness protocol; unshipped reference paths described rather than exposed"
+  },
+  "wsl7_prompt_docs_integration": {
+    "source_range": [
+      "d375ab8e",
+      "fc762b13"
+    ],
+    "integration_base": "bf8c39e9",
+    "scope": "Shared protocol cleanup and public TCP/degree reference poses; retain wsl5 case enhancements and original task acceptance criteria.",
+    "before_sha256": "88342c1b553d86cb5f0711328a16715be13da7604f38533aded09b57b56e8c01",
+    "after_sha256": "556246c88dd4fc51682f445b011c10c56ec3d051394d6b2af06dd898ade139d2",
+    "main_md_bytes": 11360,
+    "native_scoring_changed": false,
+    "native_physics_changed": false,
+    "physical_validation_performed": false
   }
 }

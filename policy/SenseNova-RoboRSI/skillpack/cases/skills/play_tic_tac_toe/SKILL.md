@@ -39,11 +39,9 @@ Check one supported, released, flat piece per cell; supplies empty; both control
 - `assets/opponent-turns.jpg`: opponent motion and alternating-turn evidence.
 - `assets/ending-sequence.jpg`: compare full board, empty supplies and completed arm return.
 
-Historical pose captions are references. Use the current TCP, downward-relative angles and continuous gripper opening for live targets.
-
 ## Full completion evidence
 
-For each applicable row, record **met / unmet / uncertain** with current RGB/native-step and measured-state evidence. Compare the supplied task reference images. Start uncertain; an intended target, command, demo ending or occlusion is not evidence that this episode is complete. Apply the current instruction and observed inventory; demonstration counts/poses and variations are references, not hidden evaluator tolerances. Keep useful corrections or inspection going within the current harness protocol while checks remain unmet or uncertain. At a due checkpoint include this assessment in `act.review.ending_check`; native done means termination, not necessarily success.
+For each applicable row, assess **met / unmet / uncertain** from current RGB, measured state and advancing-step history. Apply the current instruction and inventory; demonstrations are comparison evidence, not hidden evaluator tolerances. Follow robo-general for the shared execution and checkpoint protocol.
 
 | Check | Required current evidence |
 |---|---|
@@ -63,10 +61,10 @@ For each applicable row, record **met / unmet / uncertain** with current RGB/nat
 | X_supply_empty | Condition to inspect: All four original X supply slots and nearby table are visibly empty of X pieces; no X remains in the opponent hand or outside the board. |
 | pieces_released_and_stable | Condition to inspect: Every board piece stays in the same flat cell placement in at least three distinct native-step observations after all fingers clear it. Visible independent resting support is confirmed; physical contact forces are unavailable. |
 | left_empty_open | Condition to inspect: Left fingers are visibly empty and open; current measured opening is at its demonstrated open value near 1, and no ring follows the hand. |
-| left_home_pose | Condition to inspect: Left measured link6 position and wxyz orientation return close to this episode's visually matched initial home, both open and outside the board workspace. Compare with initial and final demo poses, not only the command. |
+| left_home_pose | Condition to inspect: Left measured TCP position and orientation return close to this episode's visually matched initial home, both open and outside the board workspace. Compare with initial and final demo poses, not only the command. |
 | left_home_joints | Condition to inspect: Left six measured joints in supplied order match the demonstrated initial/home configuration; demo initial joints are near zero and final values within about .0021 rad. No direct joint action is permitted. |
 | right_empty_open | Condition to inspect: Right fingers are visibly empty and open; current measured opening is at its demonstrated open value near 1, and no ring follows the hand. |
-| right_home_pose | Condition to inspect: Right measured link6 position and wxyz orientation return close to this episode's visually matched initial home, both open and outside the board workspace. Compare with initial and final demo poses, not only the command. |
+| right_home_pose | Condition to inspect: Right measured TCP position and orientation return close to this episode's visually matched initial home, both open and outside the board workspace. Compare with initial and final demo poses, not only the command. |
 | right_home_joints | Condition to inspect: Right six measured joints in supplied order match the demonstrated initial/home configuration; demo initial joints are near zero and final values within about .0021 rad. No direct joint action is permitted. |
 | opponent_raised_open | Condition to inspect: The far-side opponent manipulator is visibly raised/open and clear, matching the initial/final reference, with no X retained. Its joint state is not supplied. |
 | board_unchanged_supported | Condition to inspect: The single board remains visibly in its initial scene-relative placement/orientation, flat on the same table, without displacement or tipping. |

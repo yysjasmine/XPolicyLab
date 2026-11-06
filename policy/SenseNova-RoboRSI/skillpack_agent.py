@@ -60,7 +60,8 @@ class SkillpackCodexCliPlanner(HybridCodexCliPlanner):
             previous = self.config
             forwarded = tuple(name for name in previous.env_vars if name not in {"NO_PROXY", "no_proxy"})
             self.config = replace(previous, config_overrides=overrides, env=environment, env_vars=forwarded)
-            short = self.profile.episode_prompt(cfg)
+            from .execution_profile import episode_prompt
+            short = episode_prompt(self.profile, cfg)
             Path(segment).mkdir(parents=True, exist_ok=True)
             (Path(segment)/"prompt-assets.json").write_text(json.dumps({
                 "profile_id": self.profile.profile_id,
@@ -112,7 +113,8 @@ class SkillpackEmbodiedAgent(HybridEmbodiedAgent):
             stage_cci_catalog(workspace, self.model, reasoning_effort=self.reasoning_effort)
 
     def evaluation_prompt(self, context, cfg):
-        return context.execution_profile.episode_prompt(cfg)
+        from .execution_profile import episode_prompt
+        return episode_prompt(context.execution_profile, cfg)
 
     def make_experiment(self, context, cfg, run):
         from .execution_profile import runtime_modules

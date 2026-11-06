@@ -48,14 +48,14 @@ Choose `toward` from current bottle/cup geometry. The calculation assumes a rigi
 
 ## Full completion evidence
 
-For each applicable row, record **met / unmet / uncertain** with current RGB/native-step and measured-state evidence. Compare the supplied task reference images. Start uncertain; an intended target, command, demo ending or occlusion is not evidence that this episode is complete. Apply the current instruction and observed inventory; demonstration counts/poses and variations are references, not hidden evaluator tolerances. Keep useful corrections or inspection going within the current harness protocol while checks remain unmet or uncertain. At a due checkpoint include this assessment in `act.review.ending_check`; native done means termination, not necessarily success.
+For each applicable row, assess **met / unmet / uncertain** from current RGB, measured state and advancing-step history. Apply the current instruction and inventory; demonstrations are comparison evidence, not hidden evaluator tolerances. Follow robo-general for the shared execution and checkpoint protocol.
 
 | Check | Required current evidence |
 |---|---|
 | Current-instance check 1 | Current instruction read; initial full observation and three RGB views saved. |
 | Current-instance check 2 | Actual public return format, native step budget, review boundaries and flags inspected. |
 | Current-instance check 3 | Bottle, body, mouth, cup interior, rim, support plane and approach corridor identified. |
-| Current-instance check 4 | Measured left/right link6 poses read as xyz meters + quaternion wxyz. |
+| Current-instance check 4 | Measured left/right TCP positions read in metres with downward-relative pitch/roll/yaw in degrees. |
 | Current-instance check 5 | Training calibration/geometry treated as priors and visually checked if used. |
 | Current-instance check 6 | Right arm intended hold/open state chosen from the current scene. |
 | Current-instance check 7 | Open jaws straddle body below shoulder; bottle has not been pushed away or tipped. |

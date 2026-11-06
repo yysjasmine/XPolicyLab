@@ -323,3 +323,15 @@ cleanup verifies each closed continuation's training rows, image references and
 image hashes. An incomplete continuation keeps the recovery material available.
 Failed manifest/evidence publication leaves segments available for retry;
 cleanup also requires the native-evidence receipt to exist without gaps.
+
+## Current-scene prompts and case reference poses
+
+The episode prompt uses the selected task, layout and evaluation seed. The 26
+original case guides share the general review/completion protocol and express
+converted reference poses as public TCP positions and downward-relative degree
+angles; their task-specific acceptance evidence remains intact. Existing case
+enhancements, spatial localization and memory remain available. `act.review` is
+a legacy checkpoint record requested only when `observe` reports `review_due`;
+it does not determine native success or score. This branch retains the three
+robot tools and every-fifth-step VLA preview; these documentation changes do
+not change gripper monitoring, native scoring, physics or episode limits.

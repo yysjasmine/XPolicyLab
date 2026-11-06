@@ -38,7 +38,7 @@ Account for every required doll once, in one left-to-right ascending row. Check 
 
 ## Full completion evidence
 
-For each applicable row, record **met / unmet / uncertain** with current RGB/native-step and measured-state evidence. Compare the supplied task reference images. Start uncertain; an intended target, command, demo ending or occlusion is not evidence that this episode is complete. Apply the current instruction and observed inventory; demonstration counts/poses and variations are references, not hidden evaluator tolerances. Keep useful corrections or inspection going within the current harness protocol while checks remain unmet or uncertain. At a due checkpoint include this assessment in `act.review.ending_check`; native done means termination, not necessarily success.
+For each applicable row, assess **met / unmet / uncertain** from current RGB, measured state and advancing-step history. Apply the current instruction and inventory; demonstrations are comparison evidence, not hidden evaluator tolerances. Follow robo-general for the shared execution and checkpoint protocol.
 
 | Check | Required current evidence |
 |---|---|
@@ -54,17 +54,16 @@ For each applicable row, record **met / unmet / uncertain** with current RGB/nat
 | Both grippers open | Basis: Demonstrated ending behavior Evidence needed in the current episode: Intent/opening plus RGB separation; no retained object |
 | Final arms clear / comparable home | Basis: Demonstrated ending behavior Evidence needed in the current episode: Measured poses plus RGB, no finger/arm supporting or colliding with a doll; compare initial and demonstrated home |
 | Native termination understood | Basis: Public protocol Evidence needed in the current episode: Record actual done and any public outcome. done is not necessarily success |
-| Review/stop eligibility satisfied | Inspect current done, native budget and review_due after motion. At a required checkpoint submit current evidence through act.review. Continue useful authorized corrections; the current harness owns termination. Native done is not itself a success label. |
+| Native outcome and budget | Inspect returned done and remaining native budget after motion. Native done is termination, not a success label; the current harness owns termination and enforced limits. |
 
 Completion cautions from the public source:
 
-- Reread the public completion/stopping guidance before evaluation actions. Use the current instruction. All training instructions request five dolls in a row, smallest to largest from left to right. Ending behavior provides comparison evidence; it does not reveal hidden evaluator tolerances.
-- Before any stop, mark **every** item met, unmet or uncertain, with current frame, measured-state/history evidence and a task-matched demonstration reference. An action request, commanded opening or one image alone is insufficient.
-- Home comparison prior (xyz meters, quaternion wxyz):
-- - Left: approximately [−.29953,−.35230,.92150, .70700,0,0,.70721]. - Right: approximately [.30047,−.35230,.92150, .70700,0,0,.70721]. - All training endings return close to these poses with open grippers. Prefer the episode's observed initial home if consistent, and use a clear return route. Tiny numerical equality is not a proven success tolerance.
-- Suggested local ledger structure (replace every placeholder with actual evidence):
-- Review fields must be factual: `observed_state`, `demo_comparison`, `why_not_done`, `next_plan`, `ending_check`. When the apparent row is complete but done is false, say that native completion remains unconfirmed; do not invent an evaluator cause. Check support, release, stability and final poses, then do useful corrections or verification. Avoid rearranging a stable correct row solely to spend steps.
-- Stop is not a success button. A completion-based stop is unjustified with any unmet/uncertain checklist item or before the public eligibility boundary. If no useful recovery remains after that boundary, state the unmet items and concrete reason recovery is impossible, and label stopping as abandonment. If done occurs first, stop issuing actions, save the actual observed outcome and end the response.
+- Use the current instruction and the shared execution protocol in robo-general. All training instructions request five dolls in a row, smallest to largest from left to right. Ending behavior provides comparison evidence; it does not reveal hidden evaluator tolerances.
+- After release and arm return, mark **every** item met, unmet or uncertain, with current frame, measured-state/history evidence and a task-matched demonstration reference. An action request, commanded opening or one image alone is insufficient.
+- Approximate demonstration home:
+  TCP `position` (metres) left `[-0.3, -0.202, 0.921]`, right `[0.3, -0.202, 0.921]`; both `pitch_deg=90.0`, `roll_deg=0.0`, `yaw_deg=0.017`, `gripper_opening=1`. Prefer this episode's saved initial TCP state and a clear return route. Exact numerical equality is not a proven success tolerance.
+- When the apparent row is complete but done is false, native completion remains unconfirmed; do not invent an evaluator cause. Check support, release, stability and final poses, then make useful corrections or verification. Avoid rearranging a stable correct row solely to spend steps.
+- When native done occurs, stop issuing actions and retain the actual observed outcome. The harness controls termination; unresolved rows do not establish success.
 
 ## Offline helpers
 

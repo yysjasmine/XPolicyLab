@@ -45,11 +45,9 @@ Keep the bin and other scene objects supported in their initial arrangement. Bot
 - `assets/handover.jpg`: receiver access, overlapping support and donor withdrawal.
 - `assets/ending-sequence.jpg`: compare empty hands, bin/scene preservation and final arm return.
 
-Historical pose captions are source measurements. Live targets use current TCP XYZ, downward-relative degree angles and continuous gripper opening.
-
 ## Full completion evidence
 
-For each applicable row, record **met / unmet / uncertain** with current RGB/native-step and measured-state evidence. Compare the supplied task reference images. Start uncertain; an intended target, command, demo ending or occlusion is not evidence that this episode is complete. Apply the current instruction and observed inventory; demonstration counts/poses and variations are references, not hidden evaluator tolerances. Keep useful corrections or inspection going within the current harness protocol while checks remain unmet or uncertain. At a due checkpoint include this assessment in `act.review.ending_check`; native done means termination, not necessarily success.
+For each applicable row, assess **met / unmet / uncertain** from current RGB, measured state and advancing-step history. Apply the current instruction and inventory; demonstrations are comparison evidence, not hidden evaluator tolerances. Follow robo-general for the shared execution and checkpoint protocol.
 
 | Check | Required current evidence |
 |---|---|
@@ -72,7 +70,7 @@ For each applicable row, record **met / unmet / uncertain** with current RGB/nat
 | scene / fixed scene.unchanged | Visible fixtures/background objects remain accounted for in their initial arrangement and support, including those never manipulated. Record meaningful observed differences; do not invent exact object IDs or hidden geometry. |
 | per arm / empty | Current head/wrist views show no retained bottle or other object. Include unused right arm in ep00; a closed/open command is not occupancy evidence. |
 | per arm / gripper open | Current images show open jaws, corroborated by the reported opening command/state. Final reported opening is 1 in all ten demos. |
-| per arm / eef home | Measured EEF position and wxyz orientation have returned near the episode initial/home reference, with current residual recorded. Training residuals: L 0.06–0.24 mm; R 0–2.63 mm, up to 0.97 degrees. They do not define evaluator tolerances. |
+| per arm / eef home | Measured TCP position and orientation have returned near the saved episode initial/home reference, with current residual recorded. Training residuals: L 0.06–0.24 mm; R 0–2.63 mm, up to 0.97 degrees. They do not define evaluator tolerances. |
 | per arm / joint configuration | All six measured joint coordinates in supplied order are compared with the initial/home configuration; meaningful differences are examined. EEF control only; no joint names or direct joint-action interface were supplied. Do not force a guessed joint command. |
 | per arm / clear stable pose | Arm is clear of objects/bin/other arm and no longer carrying or contacting a bottle; several measured ending states are consistent. |
 | additional unchanged entity / count identity | This initially present unused/unchanged entity remains individually accounted for. |
