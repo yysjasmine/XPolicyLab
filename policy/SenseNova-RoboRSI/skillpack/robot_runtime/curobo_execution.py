@@ -1,14 +1,16 @@
-"""cuRobo solving inside the original bounded joint-action harness.
+"""Native cuRobo with wsl4-scale bounds and no joint-target EMA.
 
-No official simulator source changes. Original DLS task-error and measured-q
-limits are retained; only the mathematical IK solver is replaced.
+The original simulator and joint executor are retained. Predicted FK keeps
+the wider joint allowance inside the native 5 cm / 0.35 rad pose bounds.
 """
 from __future__ import annotations
 import json
 import numpy as np
 from scipy.spatial.transform import Rotation
 from policylab.api import InvalidAction
-from bounded_curobo import bounded_goal, canonical_solution, bounded_joints, pose_residual, smooth_bounded_joints
+from bounded_curobo import (bounded_goal, canonical_solution, bounded_joints, pose_residual,
+                           TRANSLATION_ERROR_CAP_M, ROTATION_ERROR_CAP_RAD,
+                           JOINT_DELTA_CAP_RAD)
 
 def _command(action, state):
     """Apply the existing EEF contract before entering native execution."""
@@ -77,7 +79,7 @@ def execute(adapter, action, *, receipt_sink=None):
     kin=adapter.kinematics;manager=env.robot_manager;check=kin.check()
     before=int(env.take_action_cnt[0]);physics_before=int(env.sim._sim_step_counter)
     receipt={"backend":"harness_bounded_curobo","control_step_before":before,
-             "limits":{"translation_error_vector_m":.02,"rotation_error_vector_rad":.1,"joint_delta_from_measured_rad":.05,"joint_target_ema_alpha":.5,"zero_error_translation_m":1e-6,"zero_error_rotation_rad":1e-5},
+             "limits":{"translation_error_vector_m":TRANSLATION_ERROR_CAP_M,"rotation_error_vector_rad":ROTATION_ERROR_CAP_RAD,"joint_delta_from_measured_rad":JOINT_DELTA_CAP_RAD,"joint_target_ema_enabled":False,"joint_target_ema_alpha":1.0,"predicted_link6_step_m":.05,"predicted_rotation_step_rad":.35,"zero_error_translation_m":1e-6,"zero_error_rotation_rad":1e-5},
              "requested_native_action":requested,"fk_validation":check,"arms":{},"status":"solving"}
     command={};diagnostics={}
     try:
@@ -114,8 +116,23 @@ def execute(adapter, action, *, receipt_sink=None):
             elif raw.get("status")=="Fail":
                 candidate=previous if previous is not None else current;info.update(status="Fail",fallback="bounded_previous_command"if previous is not None else"bounded_measured_hold")
             else:raise RuntimeError("Unexpected native IK solver status")
-            actual,smoothing=smooth_bounded_joints(candidate,current,limits,previous=previous,alpha=.5)
-            info["smoothing"]=smoothing
+            # Disable EMA on every manual move, including fine/contact moves.
+            # Previous control is consulted only for the existing IK fallback.
+            actual=bounded_joints(candidate,current,limits)
+            info["smoothing"]={"method":"disabled","enabled":False,"alpha":1.0}
+            # Independent joint clipping can change the IK solution's pose.
+            # Backtrack the actual command, retaining the original native bound.
+            for scale in (1., .5, .25, .125, .0625, .03125, 0.):
+                trial=np.asarray(current+scale*(actual-current),dtype=np.float32)
+                trial_pose=root@kin.fk[arm].matrix(trial)
+                trial_rotation=Rotation.from_matrix(trial_pose[:3,:3]@now[:3,:3].T).magnitude()
+                if (np.linalg.norm(trial_pose[:3,3]-now[:3,3])<=.05+1e-9 and
+                        trial_rotation<=.35+1e-9):
+                    actual=trial
+                    info["predicted_step_limit_scale"]=scale
+                    break
+            else:
+                raise RuntimeError("No joint command satisfies native predicted pose bounds")
             actual_pose=root@kin.fk[arm].matrix(actual)
             info.update(joint_value=actual.tolist(),proposed_joint_delta=(actual-current).tolist(),joint_limited=bool(np.any(np.abs(actual-np.asarray(candidate))>1e-6)),predicted_residual_to_bounded_goal=pose_residual(actual_pose,effective),predicted_residual_to_requested_goal=pose_residual(actual_pose,target),previous_command_change=(actual-previous).tolist()if previous is not None else None)
             # Error caps are incremental task-vector limits, not false claims

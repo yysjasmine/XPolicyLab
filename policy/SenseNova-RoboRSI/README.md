@@ -180,8 +180,10 @@ Authentication, policy and quota failures retain evidence and stop dispatch.
 The harness never changes a key or model route to bypass such failures.
 
 Fresh manual TCP actions use `bounded_curobo`: each solver step bounds the
-translation vector to 2 cm, rotation to 0.1 rad and joint target to measured
-position ±0.05 rad, with joint-target EMA alpha 0.5. The real native owner runs
+translation vector to 4.5 cm, rotation to 0.3 rad and joint target to measured
+position ±0.4 rad, with joint-target EMA disabled. Predicted FK backtracking
+keeps the executed joint target inside the native 5 cm / 0.35 rad pose bounds.
+The outer tracker's fine targets remain 2 cm / 0.1 rad. The real native owner runs
 the official solver and joint executor, and returns a verified one-step ACK.
 Stored VLA joint prefixes retain their original execution path. Set
 `eef_execution_backend: legacy_dls` for the existing DLS comparison, including

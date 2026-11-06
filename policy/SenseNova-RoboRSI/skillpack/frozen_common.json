@@ -7,7 +7,7 @@
   "common/agent_core.md": "1acbd17a084858303da9368133d4809ccf9b64eb3448f53ad6a6d7d4d41e8647",
   "common/native_tools.json": "aa97455a660c91cbf250ea98862507baf0d33dc798ffeba0fd440cc0641592b8",
   "common/skills_instruction.md": "24dbc691364770bdeac57b871fa34ebdb775d7f0e1235b296c2e2278fd423e05",
-  "common/profile.json": "46bf41c48e03768a44d650e4b876d998c8e2d299ccbc7287c598335791efb417",
+  "common/profile.json": "8e15aa58f3a8a7b2b78dbc66de5f37cd6a06146ff2e40b518b19d8cd8eddefe6",
   "common/actual_robot_declarations.json": "968ea80e377d4464a141a319891ef21acae2a78d49114dcb06220574520f184e",
   "common/robot_tools.json": "ae26629f2a3c8fdf4a51271894d9ea76719b13c71b669868d71617029de97f52",
   "common/skills/robo-general/SKILL.md": "795113fd24f4b075ed72d8b05099b436d99a9b71d86cb36c819ec6cf7f95de02",
@@ -27,6 +27,6 @@
   "common/skills/robodojo-spatial-localize/scripts/space_memory.py": "92f41de564b53a01d49ce0406a1a09001444c3be15805ddffa6a3c95c3b1469a",
   "common/skills/robodojo-spatial-localize/scripts/support_plane.py": "2bdbecedc90b2e4c075e850bc561002689a7257c3e45cb98a88be00eec3316e5",
   "common/skills/robodojo-spatial-localize/scripts/run_localize.py": "a7cd768e3db0d49be4075dd9b81563526d9e77dc5607e46bdb959b24abdd9121",
-  "robot_runtime/bounded_curobo.py": "30afba5385b060beb64ddb3759820a42a67345f8fa467a0950800c994845a803",
-  "robot_runtime/curobo_execution.py": "41ec708b7e4a3c5fb269b5a3d9a530e299d2e1ec2efd2ca76a8a36f716165071"
+  "robot_runtime/bounded_curobo.py": "4429ee63f77f1db3b39bf00ac945baaa6b04de42350d3440920ef10b94e9ff6a",
+  "robot_runtime/curobo_execution.py": "5ee040b916370ee4e4ccc957d2c40b504872ba108a0e3a56eec23af0bc91accf"
 }

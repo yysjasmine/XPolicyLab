@@ -1,5 +1,5 @@
 {
-  "profile_id": "robodojo_execution_wsl9_native_bounded_curobo",
+  "profile_id": "robodojo_execution_wsl10_native_curobo_no_ema",
   "task": "arrange_largest_number",
   "skills": [
     "robo-general",

@@ -260,4 +260,7 @@ Native RGB case specifications can carry the same optional field. Checkpoint
 recovery preserves the recorded backend and rejects a solver change. Manual
 cuRobo actions wait for an actual joint/physics ACK from the native owner;
 accepted VLA proposals still execute their original stored joint sequence.
+On `xpolicy-wsl10`, manual cuRobo uses 4.5 cm / 0.3 rad / 0.4 rad step bounds
+with joint-target EMA disabled. Predicted FK retains the native 5 cm / 0.35 rad
+pose bound. Existing frozen wsl9 runs retain their original source and limits.
 See [CUROBO_EXECUTION.md](CUROBO_EXECUTION.md) for the execution contract.

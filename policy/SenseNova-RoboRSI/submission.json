@@ -90,7 +90,7 @@
     "catalog_path": "skillpack/cases/catalog.json",
     "catalog_sha256": "eba094295e1fc317840285cf1addbca8d8148befd6da884084607379cc71e38d",
     "frozen_common_path": "skillpack/frozen_common.json",
-    "frozen_common_sha256": "73018959f2424a883b4e51c6edec7bca41a24615bfa97ff3f1e8027dd9b4c9d5"
+    "frozen_common_sha256": "ea9e5e3c0f087d0552f0a3405491fb0883f1d79d7917eeb5f1b7c47d437a23da"
   },
   "native_rgb": {
     "transport": "native_rgb_bytes_v1",
