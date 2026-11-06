@@ -22,7 +22,7 @@ spec.loader.exec_module(module)
 
 
 class Adapter(module.Adapter):
-    """Only observation transport/storage differs from the original adapter."""
+    """Preserve RGB/storage/scoring and dispatch private native cuRobo requests."""
     def __init__(self, environment_dir, options):
         self.save_video = options.get('save_video', False)
         if type(self.save_video) is not bool:
@@ -58,6 +58,7 @@ class Adapter(module.Adapter):
         payload = encode_rgb(vision)
         cameras, artifacts = archive_rgb(vision, self.observation_dir, self.frame)
         state = {key: np.asarray(value).tolist() for key, value in raw["state"].items()}
+        self._current_state = state
         step = int(self.env.take_action_cnt[0])
         meta = dict(transport=TRANSPORT, frame=self.frame, control_step=step,
                     rgb_sha256={name: item["sha256"] for name, item in payload.items()},
@@ -77,3 +78,10 @@ class Adapter(module.Adapter):
         if applied_action is not None:
             result["applied_action"] = applied_action
         return result
+
+    def step(self, action):
+        if isinstance(action, dict) and action.get("_roborsi_control") == "bounded_curobo":
+            from native_curobo import execute_control
+            return execute_control(self.env, action, step_joint=self._step_joint,
+                initial_observation={"state": self._current_state}, record_dir=self.record_dir)
+        return super().step(action)

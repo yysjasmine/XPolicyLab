@@ -5,6 +5,7 @@ from __future__ import annotations
 import logging
 import math
 import sys
+from copy import deepcopy
 
 logger = logging.getLogger(__name__)
 
@@ -50,8 +51,13 @@ def eval_one_episode(TASK_ENV, model_client):
     """Preserve each action's feedback and close the owned agent after a trial."""
     try:
         model_client.call(func_name="reset")
+        cached_observation = None
+        execution_ack = None
         while not TASK_ENV.is_episode_end():
-            obs = TASK_ENV.get_obs()
+            obs = TASK_ENV.get_obs() if cached_observation is None else cached_observation
+            cached_observation = None
+            if execution_ack is not None:
+                obs = {**obs, "roborsi_execution": deepcopy(execution_ack)}
             model_client.call(func_name="update_obs", obs=obs)
             actions = model_client.call(func_name="get_action")
             while actions == []:
@@ -64,14 +70,32 @@ def eval_one_episode(TASK_ENV, model_client):
                 )
             action = actions[0]
             if isinstance(action, dict) and "_roborsi_control" in action:
-                if set(action) != {"_roborsi_control"} or action["_roborsi_control"] != "finish":
+                if action == {"_roborsi_control": "finish"}:
+                    _finish_native_episode(TASK_ENV)
+                    break
+                if action.get("_roborsi_control") != "bounded_curobo":
                     raise ValueError("Unsupported RoboRSI native control request")
-                _finish_native_episode(TASK_ENV)
-                break
-            TASK_ENV.take_action(action)
+                import numpy as np
+                from .native_curobo import execute_control
+                def original_joint_step(command):
+                    nonlocal cached_observation
+                    TASK_ENV.take_action(command)
+                    cached_observation = TASK_ENV.get_obs()
+                    return {"observation": {"state": {k: np.asarray(v).tolist()
+                            for k, v in cached_observation["state"].items()}},
+                            "done": TASK_ENV.is_episode_end()}
+                result = execute_control(TASK_ENV, action, step_joint=original_joint_step,
+                                         initial_observation=obs)
+                execution_ack = result["roborsi_execution"]
+            else:
+                TASK_ENV.take_action(action)
+                execution_ack = None
 
         # The final action also needs feedback, even though no next action is due.
-        receipt = model_client.call(func_name="end_episode", obs=TASK_ENV.get_obs())
+        terminal = TASK_ENV.get_obs() if cached_observation is None else cached_observation
+        if execution_ack is not None:
+            terminal = {**terminal, "roborsi_execution": deepcopy(execution_ack)}
+        receipt = model_client.call(func_name="end_episode", obs=terminal)
         _report_cleanup_issue(receipt)
     finally:
         if sys.exc_info()[0] is None:

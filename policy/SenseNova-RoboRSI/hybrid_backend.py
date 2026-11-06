@@ -1,7 +1,7 @@
 """Run the pinned hybrid rules against public observations and deferred joints.
 
-This boundary never creates, resets, advances or scores a simulator. Its only
-motion output is a joint request that Model returns to the official evaluator.
+This boundary never creates, resets, advances or scores a simulator. Model
+returns each queued motion to the native owner for joint execution and ACK.
 """
 
 from __future__ import annotations
@@ -249,6 +249,7 @@ class HybridBackend:
         vla_port: int,
         replay: dict | None = None,
         vla_session_id: str | None = None,
+        eef_execution_backend: str = "legacy_dls",
     ):
         import json
 
@@ -258,6 +259,8 @@ class HybridBackend:
             raise ValueError("The exact public native step limit is required")
         if type(vla_port) is not int or not 1 <= vla_port <= 65535:
             raise ValueError("An explicit local VLA port is required")
+        if eef_execution_backend not in {"legacy_dls", "bounded_curobo"}:
+            raise ValueError("Unknown EEF execution backend")
         self.reference, self.task_name = reference, task_name
         self.directory = Path(episode_dir).resolve()
         if not self.directory.is_dir():
@@ -271,6 +274,7 @@ class HybridBackend:
         self._actions = queue.Queue()
         self._pending: PendingJointAction | None = None
         self._connection = None
+        self._last_execution = None
         _verify(Path(metadata_path), expected_metadata_sha256)
         metadata = json.loads(Path(metadata_path).read_text())
         if metadata.get("schema_version") != 1 or metadata.get("robot") != "arx_x5":
@@ -394,6 +398,7 @@ class HybridBackend:
                 self.replay = copy.deepcopy(replay)
                 self.replay_consumed = False
                 self.kinematics = reference.DualKinematics(self.env)
+                self._eef_execution_backend = eef_execution_backend
 
             @property
             def connection(self):
@@ -485,6 +490,16 @@ class HybridBackend:
             def _step_joint(self, action):
                 owner._submit_joint(action)
                 return self._transition()
+
+            def _step_eef(self, action):
+                if self._eef_execution_backend == "bounded_curobo":
+                    # Only the native owner has the real cuRobo solver. Keep
+                    # original EEF validation before emitting its private request.
+                    from curobo_execution import _command
+                    _command(action, self.env.get_obs()["state"])
+                    owner._submit_curobo(action)
+                    return self._transition(applied_action=copy.deepcopy(owner._last_execution))
+                return super()._step_eef(action)
 
             def finish(self):
                 if not owner._terminated:
@@ -585,6 +600,23 @@ class HybridBackend:
         if pending._error is not None:
             raise pending._error
 
+    def _submit_curobo(self, action: dict) -> None:
+        with self._lock:
+            if self._closed:
+                raise BackendClosed("Hybrid episode closed before native cuRobo motion")
+            if self._terminated or self._step >= self.step_limit:
+                raise self.reference.InvalidAction("Native episode is over")
+            if self._pending is not None:
+                raise RuntimeError("A native action already awaits acknowledgement")
+            self._serial += 1
+            pending = PendingJointAction(self._serial, self._step, copy.deepcopy(action), kind="bounded_curobo")
+            self._last_execution = None
+            self._pending = pending
+            self._actions.put(pending)
+        pending._event.wait()
+        if pending._error is not None:
+            raise pending._error
+
     def next_action(self, timeout: float | None = None) -> PendingJointAction:
         if self._closed:
             raise BackendClosed("Hybrid episode is closed")
@@ -638,8 +670,16 @@ class HybridBackend:
                 raise ValueError("Acknowledge only the current delivered native action")
             if pending.kind == "finish" and not terminated:
                 raise ValueError("Native finalization requires terminal acknowledgement")
+            if pending.kind == "bounded_curobo":
+                from .native_curobo import validate_ack
+                applied = validate_ack(pending.request_id, self._step, pending.action,
+                                       observation.get("roborsi_execution"))
+                self._last_execution = applied
+                with (self._adapter.record_dir/"bounded_curobo_execution.jsonl").open("a") as stream:
+                    import json
+                    stream.write(json.dumps(observation["roborsi_execution"], allow_nan=False)+"\n")
             self._latest, self._terminated, self._metrics = latest, terminated, metrics
-            self._step += int(pending.kind == "joint")
+            self._step += int(pending.kind in ("joint", "bounded_curobo"))
             self._pending = None
             pending._event.set()
 

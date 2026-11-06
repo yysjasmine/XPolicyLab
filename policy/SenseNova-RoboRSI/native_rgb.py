@@ -138,11 +138,14 @@ class NativeRgbBackend:
         if reply is not self._reply or self._vision is None:
             raise ValueError("Only the current acknowledged native frame can reach Model")
         obs = reply["observation"]
-        return dict(instruction=obs["instruction"], state=deepcopy(obs["state"]),
+        value = dict(instruction=obs["instruction"], state=deepcopy(obs["state"]),
                     vision={name: dict(color=self._vision[name]["color"]) for name in CAMERAS},
                     additional_info={"frequency": obs["control_frequency_hz"],
                                      **({"spatial_calibration": deepcopy(obs["spatial_calibration"])}
                                         if obs.get("spatial_calibration") is not None else {})})
+        if "roborsi_execution" in reply:
+            value["roborsi_execution"] = deepcopy(reply["roborsi_execution"])
+        return value
 
     def close(self):
         try:

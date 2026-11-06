@@ -251,3 +251,13 @@ EVAL_NUM=1 \
 此策略目录包含可选的 `environment/run.py` namespace 启动器，但本 PR 不分发部署 plan。使用该启动器时须显式传入针对当前部署验证过的 `--plan /absolute/current-plan.json`。常规 `install.sh` / `eval.sh` 直接使用前文的官方工作区布局。源码提交不代表安装或评测就绪。
 
 共享 VLA 是显式选择的运行方式：先启动匹配的本节点 π0.5 服务，再通过 `ROBORSI_SHARED_VLA_PORT` 将端口传给各路独立 policy；每路使用独立 run ID、state、tmp、轨迹及模型会话。未设置该变量时，每路默认管理独立 VLA。每卡 1 个共享 VLA、每卡 10 路评测的真实验收仍待完成，本 PR 未包含十路编排器或相关验收结果。需要在目标工作区验证服务、模拟器入口和 GPU 分配，才能声明对应的并发能力或任务成功率。
+
+## Manual TCP solver selection
+
+Fresh episodes default to `eef_execution_backend: bounded_curobo`; explicitly
+set `legacy_dls` in the model/deployment configuration for the original solver.
+Native RGB case specifications can carry the same optional field. Checkpoint
+recovery preserves the recorded backend and rejects a solver change. Manual
+cuRobo actions wait for an actual joint/physics ACK from the native owner;
+accepted VLA proposals still execute their original stored joint sequence.
+See [CUROBO_EXECUTION.md](CUROBO_EXECUTION.md) for the execution contract.

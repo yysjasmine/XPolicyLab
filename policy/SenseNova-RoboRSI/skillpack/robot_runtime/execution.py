@@ -31,7 +31,7 @@ def stage_owned_adapter(source, config, modules):
     entry = source / Path(original_file).name
     if not entry.is_file():
         raise ValueError("Configured native adapter entry is absent from owned source")
-    for name in ("execution.py", "tcp_pose.py", "gripper_monitor.py"):
+    for name in ("execution.py", "tcp_pose.py", "gripper_monitor.py", "bounded_curobo.py", "curobo_execution.py"):
         shutil.copy2(modules/name, source/name)
     hybrid = source/"hybrid_adapter.py"
     suffix = "\nfrom execution import adapter_class\nAdapter = adapter_class(Adapter)\n"
@@ -208,6 +208,13 @@ def execute_vla(owner, req, native_request, *, invalid_action_type):
 def adapter_class(base):
     """Extend an owned runtime copy, without changing frozen benchmark sources."""
     class Adapter(base):
+        def __init__(self, environment_dir, options):
+            backend = options.get("eef_execution_backend", "legacy_dls")
+            if backend not in {"legacy_dls", "bounded_curobo"}:
+                raise ValueError("eef_execution_backend must be legacy_dls or bounded_curobo")
+            self._eef_execution_backend = backend
+            super().__init__(environment_dir, options)
+
         def vla_propose(self, subgoal):
             import json
             path = self.record_dir / "vla_proposals_private.jsonl"
@@ -231,7 +238,10 @@ def adapter_class(base):
             return proposal
 
         def _step_eef(self, action):
-            """Keep native pose bounds and IK, with continuous gripper commands."""
+            """Route manual EEF targets; stored VLA joints bypass the solver."""
+            if getattr(self, "_eef_execution_backend", "legacy_dls") == "bounded_curobo":
+                from curobo_execution import execute
+                return execute(self, action)
             import numpy as np
             from scipy.spatial.transform import Rotation
             from policylab.api import InvalidAction

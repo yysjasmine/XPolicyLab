@@ -179,12 +179,15 @@ an evaluation wrapper must not silently add a smoke act limit or wall-time cap.
 Authentication, policy and quota failures retain evidence and stop dispatch.
 The harness never changes a key or model route to bypass such failures.
 
-Open-gripper TCP approaches more than 4 cm away use up to 4.5 cm / 0.3 rad
-task-space increments; close or closed-gripper motion keeps the original
-2 cm / 0.1 rad increments. The existing DLS path accepts bounded joint
-updates up to 0.4 rad and verifies the predicted 5 cm / 0.35 rad pose bound.
-The optional cuRobo numerical modules are retained as PR dependencies; this
-wsl4-based integration keeps its existing DLS execution routing.
+Fresh manual TCP actions use `bounded_curobo`: each solver step bounds the
+translation vector to 2 cm, rotation to 0.1 rad and joint target to measured
+position ±0.05 rad, with joint-target EMA alpha 0.5. The real native owner runs
+the official solver and joint executor, and returns a verified one-step ACK.
+Stored VLA joint prefixes retain their original execution path. Set
+`eef_execution_backend: legacy_dls` for the existing DLS comparison, including
+its open-gripper fast approach behavior. Resume keeps the recorded backend;
+older checkpoints without a backend field retain DLS. See
+[cuRobo execution](CUROBO_EXECUTION.md) for bounds, fallback and verification.
 
 For an existing unauthenticated self-hosted CCI service, set `provider_kind: cci`
 and select its exact model/base URL. The same entry uses the CCI v4 tool transport,

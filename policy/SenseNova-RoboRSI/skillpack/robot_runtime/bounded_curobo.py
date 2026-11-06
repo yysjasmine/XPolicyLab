@@ -1,12 +1,12 @@
-"""Pure geometric helpers for bounded native-step TCP tracking."""
+"""Pure geometric helpers matching original DLS incremental bounds."""
 from __future__ import annotations
 import math
 import numpy as np
 from scipy.spatial.transform import Rotation
 
-TRANSLATION_ERROR_CAP_M=.045
-ROTATION_ERROR_CAP_RAD=.3
-JOINT_DELTA_CAP_RAD=.4
+TRANSLATION_ERROR_CAP_M=.02
+ROTATION_ERROR_CAP_RAD=.1
+JOINT_DELTA_CAP_RAD=.05
 
 def matrix(pose):
     if np.asarray(pose).shape==(4,4):return np.asarray(pose,float)

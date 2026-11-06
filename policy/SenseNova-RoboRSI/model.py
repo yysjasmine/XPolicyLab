@@ -294,7 +294,7 @@ class Model(ModelTemplate):
         native = obs.get("roborsi_native_identity")
         if native is not None or self._resume or os.environ.get("ROBORSI_REQUIRE_NATIVE_IDENTITY") == "1":
             expected_step = self._step + int(
-                self._pending is not None and getattr(self._pending, "kind", "joint") == "joint"
+                self._pending is not None and getattr(self._pending, "kind", "joint") in ("joint", "bounded_curobo")
             )
             source_native = self._resume["native_identity"] if self._resume else None
             native = validate_native_identity(
@@ -323,7 +323,7 @@ class Model(ModelTemplate):
             from .simate_bridge import SimateObserver
 
             observed_step = self._step + int(
-                self._pending is not None and getattr(self._pending, "kind", "joint") == "joint"
+                self._pending is not None and getattr(self._pending, "kind", "joint") in ("joint", "bounded_curobo")
             )
             if self._simate_observer is None:
                 self._simate_observer = SimateObserver(self._ensure_vla(), self._episode_id)
@@ -416,6 +416,14 @@ class Model(ModelTemplate):
         cfg.pop("continue_from_run", None)
         cfg["options"]["task"] = self.model_cfg["task_name"]
         cfg["options"].update(self._adaptive_steps)
+        default_backend = (
+            self._resume["config"]["options"].get("eef_execution_backend", "legacy_dls")
+            if self._resume else "bounded_curobo"
+        )
+        eef_backend = self.model_cfg.get("eef_execution_backend", default_backend)
+        if eef_backend not in {"legacy_dls", "bounded_curobo"}:
+            raise ValueError("eef_execution_backend must be legacy_dls or bounded_curobo")
+        cfg["options"]["eef_execution_backend"] = eef_backend
         native_limit = (self._obs.get("roborsi_native_identity") or {}).get("step_limit")
         requested_limit = self.model_cfg.get("native_step_limit", native_limit or cfg["options"]["review_window_steps"])
         if type(requested_limit) is not int or requested_limit <= 0:
@@ -483,6 +491,7 @@ class Model(ModelTemplate):
             replay=cfg["options"].get("replay"),
             vla_session_id=self._episode_id
             if self.model_cfg.get("vla_backend") == "simate_beta" else None,
+            eef_execution_backend=cfg["options"].get("eef_execution_backend", "legacy_dls"),
         )
         agent = self._agent_config.create_agent(case)
         context = HybridRunContext(
@@ -521,7 +530,7 @@ class Model(ModelTemplate):
                 self._start()
             elif self._pending is not None:
                 self._connector.acknowledge(self._pending.request_id, self._obs)
-                self._step += int(getattr(self._pending, "kind", "joint") == "joint")
+                self._step += int(getattr(self._pending, "kind", "joint") in ("joint", "bounded_curobo"))
                 self._pending = None
                 self._awaiting_feedback = False
             try:
@@ -540,6 +549,12 @@ class Model(ModelTemplate):
                 self._obs = None
                 self._awaiting_feedback = True
                 return [{"_roborsi_control": "finish"}]
+            if getattr(pending, "kind", "joint") == "bounded_curobo":
+                from .native_curobo import envelope
+                self._pending = pending
+                self._obs = None
+                self._awaiting_feedback = True
+                return [envelope(pending.request_id, pending.step_index, pending.action)]
             values = [
                 number
                 for name in self._action_space.names
@@ -565,7 +580,7 @@ class Model(ModelTemplate):
             self._connector.acknowledge(
                 self._pending.request_id, self._obs, terminated=True
             )
-            self._step += int(getattr(self._pending, "kind", "joint") == "joint")
+            self._step += int(getattr(self._pending, "kind", "joint") in ("joint", "bounded_curobo"))
             self._pending = None
             self._awaiting_feedback = False
             self._ended = True

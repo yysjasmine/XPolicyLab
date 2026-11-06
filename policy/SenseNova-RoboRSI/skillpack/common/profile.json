@@ -1,5 +1,5 @@
 {
-  "profile_id": "robodojo_execution_three_tools_wsl6_spatial_memory",
+  "profile_id": "robodojo_execution_wsl9_native_bounded_curobo",
   "task": "arrange_largest_number",
   "skills": [
     "robo-general",
