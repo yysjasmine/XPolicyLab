@@ -51,6 +51,7 @@ try:
     stage = "scientific CPU imports"
     import numpy
     import scipy
+    import cv2
     from scipy.spatial.transform import Rotation
     import PIL
     from PIL import Image
@@ -64,7 +65,7 @@ try:
     import robot
     assert callable(robot.observe) and callable(robot.vla_propose)
     assert Path(robot.__file__) == Path("/tools/robot.py")
-    for module in (numpy, scipy, PIL, openpi_client.msgpack_numpy):
+    for module in (numpy, scipy, PIL, cv2, openpi_client.msgpack_numpy):
         assert Path(module.__file__).is_relative_to("/runtime/lib/python3.11/site-packages")
     stage = "distribution metadata"
     distributions = sorted(
@@ -186,6 +187,11 @@ def _verified_sandbox_transport(policy_dir: Path):
         )
 
     metadata = load_submission(policy_dir)
+    try:
+        from .custom_cli import selected_cli
+    except ImportError:
+        from custom_cli import selected_cli
+    metadata["cli"] = selected_cli(policy_dir, metadata["cli"])
     validate_source_manifest(metadata, policy_dir)
     binary = policy_dir / "runtime/codex/codex-resources/bwrap"
     expected = metadata["cli"]["companion_sha256"]["codex-resources/bwrap"]

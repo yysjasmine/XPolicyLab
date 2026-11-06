@@ -29,6 +29,50 @@ Simate weights resolve through XPolicyLab's checkpoint resolver. The default is
 checkpoint run directory uses the shared resolver's precedence. Weights and
 installed environments are not part of this source checkout.
 
+For an operator-owned CLI build, set `ROBORSI_CUSTOM_CODEX_MANIFEST` to an
+absolute JSON identity manifest before installation and evaluation. It must
+declare `schema_version: 1`, `selection: operator_custom_build`, the native ELF
+`executable`, exact `version`, `expected_version`, `target`, executable `sha256`,
+and `companion_sha256` for `bin/codex-code-mode-host` and
+`codex-resources/bwrap`. Select the wrapper's actual native payload. Installation
+verifies the selected files, links `runtime/codex` to their package, and records
+the selected identity. The default release pins remain unchanged. A custom build
+requires a separate real CLI/provider and native-tool smoke before evaluation.
+
+`ROBORSI_DEPLOY_CONFIG` selects an explicit per-experiment deployment YAML for
+both policy startup/preflight and the client. `ROBORSI_SIM_PYTHON` can select an
+absolute existing simulator virtualenv interpreter in place of Conda activation;
+its environment must already provide the official simulator and dependencies.
+This path still invokes the official evaluation script and native identity/layout
+wrapper. The namespace launcher accepts a checkout with an `XPolicyLab.py` package
+entry even when its physical directory has a different name.
+
+## Spatial localization and task memory
+
+Every task workspace includes `robodojo-spatial-localize` alongside `robo-general`
+and the current case skill. Its bundled RGB helpers use matching camera
+calibration and declared support planes or multi-view correspondences. The system
+prompt explains both the skill and the writable `/workspace/space.json` memory.
+The memory records current named object points in environment-origin metres,
+with control-step and evidence references. Initialize empty per task runtime;
+preserve on same-episode recovery; invalidate affected points after manipulation
+and re-localize before reuse. The skill's `space_memory.py` CLI can import accepted
+`points3d.json` results or mark an object's points stale; direct JSON edits are
+also allowed. Images and detailed geometry reports remain separate.
+
+The model-tool environment adds pinned `opencv-python-headless==4.10.0.84` to its
+existing NumPy/SciPy dependencies. No simulator object-state or depth access is
+added. The native observation wrapper now captures paired RGB and optical calibration
+through existing Isaac camera APIs, without depth or changes to RoboDojo source.
+The observation transport preserves this metadata, and the policy bridge writes
+an immutable `*_spatial_case.json` plus image hashes beside the current images.
+`observe` exposes `spatial_localization.case_path`; the model only annotates
+pixels and invokes the bundled `run_localize.py`, which runs geometry and merges
+accepted estimates into `space.json`. Calibration capture renders without
+advancing physics. `ROBORSI_SPATIAL_CALIBRATION=0` retains the legacy uncalibrated
+capture path for host diagnostics; normal spatial deployments leave it enabled.
+Already-running frozen experiments require a new deployment to use this code.
+
 ## Execution materials
 
 `skillpack/common/` contains the frozen short core instructions, `robo-general`
@@ -134,6 +178,13 @@ additional cumulative model-call cap. Episode wall time is unlimited by default;
 an evaluation wrapper must not silently add a smoke act limit or wall-time cap.
 Authentication, policy and quota failures retain evidence and stop dispatch.
 The harness never changes a key or model route to bypass such failures.
+
+Open-gripper TCP approaches more than 4 cm away use up to 4.5 cm / 0.3 rad
+task-space increments; close or closed-gripper motion keeps the original
+2 cm / 0.1 rad increments. The existing DLS path accepts bounded joint
+updates up to 0.4 rad and verifies the predicted 5 cm / 0.35 rad pose bound.
+The optional cuRobo numerical modules are retained as PR dependencies; this
+wsl4-based integration keeps its existing DLS execution routing.
 
 For an existing unauthenticated self-hosted CCI service, set `provider_kind: cci`
 and select its exact model/base URL. The same entry uses the CCI v4 tool transport,

@@ -138,12 +138,12 @@
       "derivation": "unchanged copy"
     },
     {
-      "bytes": 6765,
+      "bytes": 8046,
       "path": "source/code/configurations/robodojo/20261005_standard_1x_10x/adapters/eef_kinematics.py",
-      "sha256": "fffd0c6aa2207fdd551b0b92933daae938f1d3647b3a197aaf0457c8ebca22ad",
+      "sha256": "f1f991336b58d046040875b8724c0b13d2ffd5a8fca8563b12c659170c3ef1b0",
       "source": "upstream/robodojo-adaptive/code/configurations/robodojo/20261005_standard_1x_10x/adapters/eef_kinematics.py",
       "parent_sha256": "fffd0c6aa2207fdd551b0b92933daae938f1d3647b3a197aaf0457c8ebca22ad",
-      "derivation": "unchanged copy"
+      "derivation": "PR102 d8ddff138d9a868ce93c156edf8b3f1ff86a167a: bounded 0.4-rad DLS joint updates and predicted-pose line search"
     },
     {
       "bytes": 385,

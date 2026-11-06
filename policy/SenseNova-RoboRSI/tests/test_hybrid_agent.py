@@ -372,7 +372,7 @@ def test_skillpack_tools_five_acknowledged_steps_close_without_self_scoring(
         result = json.loads((episode/"controller/episodes/evaluation-0001/result.json").read_text())
         assert result["native_done"] is True and result["success"] is None
         assert (episode/"workspace/.agents/skills/robo-general/SKILL.md").is_file()
-        assert context.execution_profile.manifest["skills"] == ["robo-general"]
+        assert context.execution_profile.manifest["skills"] == ["robo-general", "robodojo-spatial-localize"]
         assert not (episode/"workspace/.agents/skills/align_blocks").exists()
         assert not (episode/"workspace/AGENTS.md").exists()
         assert not (episode/"controller/tools/robot.py").exists()

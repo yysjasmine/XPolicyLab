@@ -25,7 +25,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 XPL_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 BENCH_ROOT="$(cd "${XPL_ROOT}/.." && pwd)"
 policy_name="$(basename "${SCRIPT_DIR}")"
-yaml_file="${SCRIPT_DIR}/deploy.yml"
+yaml_file="${ROBORSI_DEPLOY_CONFIG:-${SCRIPT_DIR}/deploy.yml}"
 
 if [[ "${policy_env}" == "uv" ]]; then
     policy_python="${SCRIPT_DIR}/.venv/bin/python"

@@ -73,6 +73,15 @@ def main():
         if destination.exists() or destination.is_symlink():
             raise ValueError('Existing default Simate environment is incomplete; preserve it before reinstalling')
         run([base, '-m', 'venv', '--system-site-packages', destination], env)
+        # A simulator venv's Torch lives outside sys.base_prefix. Preserve its
+        # package search roots explicitly; never install into the simulator.
+        parent_sites = json.loads(run([base, '-B', '-c',
+            'import json,site; print(json.dumps(site.getsitepackages()))'], env, capture=True))
+        own_site = Path(run([python, '-B', '-c',
+            'import sysconfig; print(sysconfig.get_path("purelib"))'], env, capture=True))
+        inherited = [str(Path(path).resolve()) for path in parent_sites
+                     if Path(path).is_dir() and Path(path).resolve() != own_site.resolve()]
+        (own_site / 'roborsi_simulator_parent.pth').write_text('\n'.join(inherited) + '\n')
     # Reuse the official CUDA PyTorch, preserving simulator and sibling-policy files.
     # All non-Torch dependencies below are fixed by the committed SHA-256 lock.
     torch_identity = json.loads(run([python, '-B', '-c', PROBE], env, capture=True))
@@ -113,8 +122,19 @@ def main():
     print(json.dumps({'status': 'ready', 'backend': 'simate_beta', 'receipt': str(POLICY / 'simate-install.json')}))
 
 
+def locked_main():
+    if '--check-input' in sys.argv:
+        return main()
+    import fcntl
+    state = POLICY / 'runtime'
+    state.mkdir(exist_ok=True)
+    with (state / '.simate-install.lock').open('a') as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        return main()
+
+
 if __name__ == '__main__':
     try:
-        main()
+        locked_main()
     except (OSError, ValueError, subprocess.SubprocessError) as error:
         raise SystemExit('Simate installation failed: ' + str(error)) from None

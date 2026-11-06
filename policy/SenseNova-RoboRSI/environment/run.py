@@ -134,7 +134,7 @@ def load_plan(path):
                  "simulator_prefix", "conda_root", "controller_python"):
         plan[name] = str(absolute(plan[name]))
     policy = Path(plan["policy_dir"])
-    if policy.parent.name != "policy" or policy.parent.parent.name != "XPolicyLab":
+    if policy.parent.name != "policy" or not (policy.parent.parent / "XPolicyLab.py").is_file():
         raise NamespaceError("unexpected canonical policy layout")
     expected = Path(plan["source_workspace"]) / "XPolicyLab/policy" / policy.name
     if Path(plan["source_policy"]) != expected:
@@ -464,7 +464,9 @@ def main(argv=None):
     shell = '''set -euo pipefail
 export PATH="$1/bin:$1/condabin:$PATH"
 set +u
-source "$1/etc/profile.d/conda.sh"
+if [[ -z "${ROBORSI_SIM_PYTHON:-}" ]]; then
+    source "$1/etc/profile.d/conda.sh"
+fi
 set -u
 shift
 exec bash "$@"

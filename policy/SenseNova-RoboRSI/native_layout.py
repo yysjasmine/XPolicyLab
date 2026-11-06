@@ -174,6 +174,12 @@ def bind_native_environment(env, selection: NativeSelection, *, resume_state=Non
             receipt = dict(current[index])
             receipt["control_step"] = int(self.take_action_cnt[index])
             receipt["step_limit"] = int(self.step_lim)
+            if hasattr(self, "camera_manager") and os.environ.get("ROBORSI_SPATIAL_CALIBRATION", "1") == "1":
+                try:
+                    from .native_camera import calibrated_observation
+                except ImportError:
+                    from native_camera import calibrated_observation
+                calibrated_observation(self, obs, index)
             obs["roborsi_native_identity"] = receipt
         return values
 

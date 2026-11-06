@@ -54,14 +54,15 @@ def load_skillpack_profile(policy_dir, task, owner):
         return profile
     destination.mkdir()
     for path in source.rglob("*"):
-        if not path.is_file() or path.name == "profile.json":
+        if (not path.is_file() or path.name == "profile.json"
+                or "__pycache__" in path.parts or path.suffix == ".pyc"):
             continue
         target = destination/path.relative_to(source)
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(path, target)
     case_id = selected["case_skill"]
     manifest = json.loads((source/"profile.json").read_text())
-    names = ["robo-general"]
+    names = ["robo-general", "robodojo-spatial-localize"]
     if case_id is not None:
         package = index["packs"][case_id]
         base = (library_root/package["directory"]).resolve(strict=True)
@@ -69,7 +70,7 @@ def load_skillpack_profile(policy_dir, task, owner):
             if _hash(base/relative) != digest:
                 raise ValueError("Case resource differs: "+relative)
         target = destination/"skills"/task
-        shutil.copytree(base, target)
+        shutil.copytree(base, target, ignore=shutil.ignore_patterns('__pycache__', '*.pyc', '*.pyo'))
         if task != case_id:
             main = target/"SKILL.md"
             main.write_text(main.read_text().replace("name: "+case_id+"\n", "name: "+task+"\n", 1))
@@ -82,8 +83,9 @@ def load_skillpack_profile(policy_dir, task, owner):
             lines.append(f"- {task}: Case strategy and public demonstration evidence. (file: /workspace/.agents/skills/{task}/SKILL.md)")
         instructions = "\n".join(lines)+"\n"
     (destination/"skills_instruction.md").write_text(instructions)
-    manifest.update(task=task, skills=names, single_markdown_skills=names,
-                    profile_id="robodojo_execution_skillpack_v1:"+task)
+    manifest.update(task=task, skills=names,
+                    single_markdown_skills=[name for name in names if name != "robodojo-spatial-localize"],
+                    profile_id="robodojo_execution_spatial_memory_v1:"+task)
     manifest["sha256"] = {
         path.relative_to(destination).as_posix(): _hash(path)
         for path in destination.rglob("*") if path.is_file()

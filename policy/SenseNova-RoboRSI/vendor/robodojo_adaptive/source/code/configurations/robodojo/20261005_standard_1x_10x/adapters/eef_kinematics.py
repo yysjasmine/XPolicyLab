@@ -6,6 +6,10 @@ import xml.etree.ElementTree as ET
 import numpy as np
 from scipy.spatial.transform import Rotation
 
+TASK_TRANSLATION_CAP_M = .045
+TASK_ROTATION_CAP_RAD = .3
+JOINT_STEP_CAP_RAD = .4
+
 
 def transform(position, quaternion_wxyz):
     q = np.asarray(quaternion_wxyz, float)
@@ -56,7 +60,8 @@ class ArmFK:
         translation = goal[:3, 3] - now[:3, 3]
         rotation = Rotation.from_matrix(goal[:3, :3] @ now[:3, :3].T).as_rotvec()
         bounded = lambda x, cap: x*min(1., cap/max(np.linalg.norm(x), 1e-12))
-        error = np.r_[bounded(translation, .02), bounded(rotation, .1)]
+        error = np.r_[bounded(translation, TASK_TRANSLATION_CAP_M),
+                      bounded(rotation, TASK_ROTATION_CAP_RAD)]
         jacobian = np.zeros((6, len(q)))
         for i in range(len(q)):
             shifted = q.copy(); shifted[i] += 1e-5
@@ -65,13 +70,30 @@ class ArmFK:
             jacobian[3:, i] = Rotation.from_matrix(nxt[:3, :3] @ now[:3, :3].T).as_rotvec()/1e-5
         delta = jacobian.T @ np.linalg.solve(jacobian @ jacobian.T + .05**2*np.eye(6), error)
         limits = np.asarray(limits, float)
-        low, high = np.maximum(limits[:, 0], q-.05), np.minimum(limits[:, 1], q+.05)
+        low, high = np.maximum(limits[:, 0], q-JOINT_STEP_CAP_RAD), np.minimum(limits[:, 1], q+JOINT_STEP_CAP_RAD)
         if np.any(low > high):
             raise ValueError('Joint outside bounded valid interval')
-        result = np.clip(q+delta, low, high).astype(np.float32)
+        # Large joint updates make a local Jacobian less accurate. Accept the
+        # largest bounded update that predicts progress toward this waypoint.
+        start_cost = np.linalg.norm(translation) + .15*np.linalg.norm(rotation)
+        result, accepted_scale = q, 0.
+        for scale in (1., .5, .25, .125, .0625, .03125):
+            candidate = np.clip(q + scale*delta, low, high)
+            predicted = root @ self.matrix(candidate)
+            predicted_rotation = Rotation.from_matrix(predicted[:3, :3] @ now[:3, :3].T).magnitude()
+            if (np.linalg.norm(predicted[:3, 3] - now[:3, 3]) > .05 + 1e-9 or
+                    predicted_rotation > .35 + 1e-9):
+                continue
+            remaining_p = goal[:3, 3] - predicted[:3, 3]
+            remaining_r = Rotation.from_matrix(goal[:3, :3] @ predicted[:3, :3].T).as_rotvec()
+            if np.linalg.norm(remaining_p) + .15*np.linalg.norm(remaining_r) < start_cost - 1e-6:
+                result, accepted_scale = candidate, scale
+                break
+        result = np.asarray(result, dtype=np.float32)
         return result, dict(target_position_error_m=float(np.linalg.norm(translation)),
             target_rotation_error_rad=float(np.linalg.norm(rotation)),
             proposed_joint_delta=(result-q).tolist(), bounded_task_delta=error.tolist(),
+            line_search_scale=accepted_scale, joint_step_cap_rad=JOINT_STEP_CAP_RAD,
             method='robot_only_numerical_jacobian_dls', physical_tracking_verified=False)
 
 

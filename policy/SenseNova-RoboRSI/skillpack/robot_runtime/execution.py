@@ -15,6 +15,11 @@ DEFAULT_MAX_NATIVE_STEPS = 80
 MAX_NATIVE_STEPS = 160
 POSITION_TOLERANCE_M = .003
 ROTATION_TOLERANCE_RAD = math.radians(3)
+FAST_APPROACH_DISTANCE_M = .04
+FAST_TRANSLATION_STEP_M = .045
+FINE_TRANSLATION_STEP_M = .02
+FAST_ROTATION_STEP_RAD = .3
+FINE_ROTATION_STEP_RAD = .1
 
 
 def stage_owned_adapter(source, config, modules):
@@ -50,6 +55,13 @@ def tracking_geometry(state, native_goal):
         desired = Rotation.from_quat(np.asarray(goal["quaternion_wxyz"])[[1, 2, 3, 0]])
         dp = np.asarray(goal_tcp[:3]) - current[:3]
         dr = (desired * rotation.inv()).as_rotvec()
+        # An open gripper can approach a distant, model-chosen pregrasp pose
+        # quickly. Keep the final approach, closed-gripper motion and contact
+        # corrections at the original task-space resolution.
+        fast_approach = (goal["gripper_opening"] >= .9 and
+                         np.linalg.norm(dp) > FAST_APPROACH_DISTANCE_M)
+        translation_cap = FAST_TRANSLATION_STEP_M if fast_approach else FINE_TRANSLATION_STEP_M
+        rotation_cap = FAST_ROTATION_STEP_RAD if fast_approach else FINE_ROTATION_STEP_RAD
         errors[arm] = dict(position_error_m=float(np.linalg.norm(dp)),
                            orientation_error_rad=float(np.linalg.norm(dr)))
         # TCP interpolation and quaternion rotation: never interpolate Euler angles.
@@ -57,13 +69,13 @@ def tracking_geometry(state, native_goal):
         # Shrink both deltas if needed to stay inside the original 5 cm bound.
         scale = 1.
         for _ in range(16):
-            fraction_p = min(1., .02 / max(np.linalg.norm(dp), 1e-12)) * scale
-            fraction_r = min(1., .1 / max(np.linalg.norm(dr), 1e-12)) * scale
+            fraction_p = min(1., translation_cap / max(np.linalg.norm(dp), 1e-12)) * scale
+            fraction_r = min(1., rotation_cap / max(np.linalg.norm(dr), 1e-12)) * scale
             q = (Rotation.from_rotvec(dr * fraction_r) * rotation).as_quat()[[3, 0, 1, 2]]
             pose = tcp_to_link6_pose([*(np.asarray(current[:3]) + dp * fraction_p).tolist(), *q.tolist()])
             candidate = dict(position=pose[:3], quaternion_wxyz=pose[3:],
                              gripper_opening=goal["gripper_opening"])
-            if np.linalg.norm(np.asarray(candidate["position"]) - actual[:3]) <= .045:
+            if np.linalg.norm(np.asarray(candidate["position"]) - actual[:3]) <= .05 + 1e-9:
                 break
             scale *= .5
         targets[arm] = candidate

@@ -79,3 +79,6 @@ uvicorn==0.54.0
 wcwidth==0.9.1
 websockets==15.0.1
 wrapt==2.5.0
+
+# RGB spatial localization
+opencv-python-headless==4.10.0.84

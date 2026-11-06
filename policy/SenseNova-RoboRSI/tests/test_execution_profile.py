@@ -12,14 +12,14 @@ profile = import_module("XPolicyLab.policy.SenseNova-RoboRSI.execution_profile")
 P = Path(__file__).resolve().parents[1]
 
 
-def test_largest_workspace_has_only_two_single_markdown_skills(tmp_path):
+def test_largest_workspace_has_general_spatial_and_case_skills(tmp_path):
     context = profile.prepare_skillpack_context(P, "arrange_largest_number", tmp_path)
     visible = sorted(p.name for p in (context.workspace/".agents/skills").iterdir())
-    assert visible == ["arrange_largest_number", "robo-general"]
+    assert visible == ["arrange_largest_number", "robo-general", "robodojo-spatial-localize"]
     assert not (context.workspace/"AGENTS.md").exists()
     assert not (context.workspace/"README.md").exists()
     assert not (context.workspace/"preparation/demonstrations.md").exists()
-    assert len(list(context.workspace.rglob("SKILL.md"))) == 2
+    assert len(list(context.workspace.rglob("SKILL.md"))) == 3
     assert all(p.stat().st_size <= 8192 for p in context.workspace.rglob("*.md"))
     assert context.source_identity["raw_icl_materialized"] is False
     assert context.source_identity["runtime_subagents_enabled"] is False
@@ -30,7 +30,7 @@ def test_open_task_has_no_case_skill(tmp_path):
     task = next(name for name, row in index["tasks"].items() if row["kind"] == "open")
     context = profile.prepare_skillpack_context(P, task, tmp_path)
     visible = sorted(p.name for p in (context.workspace/".agents/skills").iterdir())
-    assert visible == ["robo-general"]
+    assert visible == ["robo-general", "robodojo-spatial-localize"]
     derived = profile.load_skillpack_profile(P, task, tmp_path)
     assert "arrange_largest_number:" not in derived.skills_instruction
 

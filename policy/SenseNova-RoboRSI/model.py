@@ -498,7 +498,7 @@ class Model(ModelTemplate):
             / "BENCHMARK.md",
             agent_python=self._tool_python,
             bubblewrap=POLICY_DIR / "runtime/codex/codex-resources/bwrap",
-            bubblewrap_sha256=pins["cli"]["companion_sha256"]["codex-resources/bwrap"],
+            bubblewrap_sha256=self._agent_cli_bwrap_sha256(),
             resume=self._resume,
             trajectory_dir=self._trajectory_directory,
             before_execution=self._claim_resume,
@@ -506,6 +506,11 @@ class Model(ModelTemplate):
             model_cfg=dict(self.model_cfg),
         )
         self._connector = SkillpackController(agent, context).start()
+
+    @staticmethod
+    def _agent_cli_bwrap_sha256():
+        from .custom_cli import selected_cli
+        return selected_cli(POLICY_DIR, submission()["cli"])["companion_sha256"]["codex-resources/bwrap"]
 
     def get_action(self) -> list[dict[str, np.ndarray]]:
         """Yield one original joint update; wait for its actual executed observation."""
