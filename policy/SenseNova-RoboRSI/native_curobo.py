@@ -65,6 +65,13 @@ def runtime():
     if hashlib.sha256(manifest.read_bytes()).hexdigest() != pins['manifest_sha256']:
         raise ValueError('Native cuRobo reference manifest differs')
     rows = {row['path']: row for row in json.loads(manifest.read_text())['files']}
+    # The simulator is a separate process from the policy server. It has not
+    # loaded the verified reference package used by curobo_execution's action
+    # validation. Load only its dependency-free API, with the same source pins.
+    for name, relative in [('policylab', 'code/policylab/__init__.py'),
+                           ('policylab.api', 'code/policylab/api.py')]:
+        _load(name, root/pins['source_path']/relative,
+              rows['source/'+relative]['sha256'])
     relative = 'code/configurations/robodojo/20261005_standard_1x_10x/adapters/eef_kinematics.py'
     path = root/pins['source_path']/relative
     kin = _load('_roborsi_native_curobo_fk', path, rows['source/'+relative]['sha256'])

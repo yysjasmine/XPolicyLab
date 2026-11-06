@@ -122,9 +122,12 @@ def extend_reference(reference):
 def episode_prompt(profile, cfg):
     """Bind the frozen prompt's identity to the actual selected native scene."""
     prompt = profile.episode_prompt(cfg)
+    # This appendix is separate from the JSON episode configuration so neither
+    # its identity nor the existing configuration parser changes on recovery.
+    refresh = getattr(profile, "skill_refresh_prompt", lambda: "")()
     episodes = cfg.get("test_episodes", [])
     if not episodes:
-        return prompt
+        return prompt + refresh
     if len(episodes) != 1 or episodes[0]["task"] != profile.task:
         raise ValueError("Prompt requires the current episode's task identity")
     prefix, marker, body = prompt.partition("Episode configuration:\n")
@@ -134,7 +137,7 @@ def episode_prompt(profile, cfg):
     episode = episodes[0]
     data.update(layout=episode["layout_id"],
                 seed=episode.get("eval_seed", episode.get("seed", 0)))
-    return prefix + marker + json.dumps(data, separators=(",", ":")) + "\n"
+    return prefix + marker + json.dumps(data, separators=(",", ":")) + "\n" + refresh
 
 
 def start_toolkit(experiment, run, owner, model_cfg, *, proposal_ids_seed=None):

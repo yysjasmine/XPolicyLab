@@ -90,7 +90,7 @@
     "catalog_path": "skillpack/cases/catalog.json",
     "catalog_sha256": "cb7530b8bf5c7ab68803041f107f113ceb3d3674cde771863a689cb158dbf473",
     "frozen_common_path": "skillpack/frozen_common.json",
-    "frozen_common_sha256": "9fa3f1df51eccdc211881304fa2e3b3199b5951b6bc1e1efa8cc4afd7d541145"
+    "frozen_common_sha256": "89d99ffb002d5c2a40dd4799cc23aea2536bfecb8922b80da9056b2b5a4a7dc3"
   },
   "native_rgb": {
     "transport": "native_rgb_bytes_v1",
@@ -102,7 +102,7 @@
       "native_rgb.py": "dc475a32d9c7af2e4d7cd84c4bf7b5b52b9a5e1b778fd5776301710678a55690",
       "native_rgb_adapter.py": "d7cdc31d58873aac10a3b8c5e1c5e7a7249d303b43eaaeb8e9a42592b17921a5",
       "native_rgb_episode.py": "d1c8eb857392b1a1529b2aa5b854a80d34858e1be762ac111fb315410da79c65",
-      "native_curobo.py": "d23e4de4680d6d69699bd05d9d611dd124707bdbf2f097922439a087bdb70362"
+      "native_curobo.py": "00f54528f84b58213e5499494e27e5384eb62f1ab4461bb4dfccff3021f22d39"
     }
   }
 }

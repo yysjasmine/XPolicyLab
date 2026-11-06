@@ -76,10 +76,33 @@ class RobotPromptProfile:
         public=workspace.parent/'tools/BENCHMARK.md'
         if public.exists():public.write_text('# Public robot interface\n\nRead the registered robo-general and current case skills.\n')
         marker=workspace/'.skillpack-staged.json'
+        previous=None
         if marker.exists():
-            receipt=json.loads(marker.read_text())
-            if receipt['profile_id']!=self.profile_id:raise ValueError('Workspace has another profile')
-            return receipt
+            previous=json.loads(marker.read_text())
+            if previous['profile_id']!=self.profile_id:raise ValueError('Workspace has another profile')
+        # A restored workspace can have the same task/profile ID but older
+        # skills. Authenticate the current source and the actual destination,
+        # rather than trusting a receipt copied from the previous attempt.
+        revision=hashlib.sha256(json.dumps(self.manifest,sort_keys=True,separators=(',',':')).encode()).hexdigest()
+        assets={};sources={};changed=[]
+        for name,digest in sorted(self.manifest['sha256'].items()):
+            if not name.startswith('skills/'):continue
+            source=self.directory/name
+            data=source.read_bytes()
+            if hashlib.sha256(data).hexdigest()!=digest:raise ValueError('Skillpack asset differs: '+name)
+            relative=str(Path('.agents')/name)
+            destination=workspace/relative
+            if not destination.resolve().is_relative_to(workspace):raise ValueError('Skill path escapes workspace')
+            assets[relative]=digest;sources[relative]=data
+            if not destination.is_file() or hashlib.sha256(destination.read_bytes()).hexdigest()!=digest:
+                changed.append(relative)
+        core_path=workspace/'preparation/agent_system.md'
+        if not core_path.resolve().is_relative_to(workspace):raise ValueError('Core path escapes workspace')
+        core=(self.core+'\n').encode()
+        if (previous is not None and previous.get('profile_sha256')==revision
+                and previous.get('assets')==assets and not changed
+                and core_path.is_file() and core_path.read_bytes()==core):
+            return previous
         removed=[]
         for relative in self.manifest['remove_legacy_markdown']+self.manifest.get('remove_legacy_assets',[]):
             path=workspace/relative
@@ -92,19 +115,16 @@ class RobotPromptProfile:
                 if path.relative_to(root).as_posix()!='SKILL.md':
                     if not path.resolve().is_relative_to(workspace):raise ValueError('Legacy MD escapes workspace')
                     path.unlink();removed.append(str(path.relative_to(workspace)))
-        assets={}
         # Stage every pinned skill resource, including executable helpers and
         # JSON evidence; unregistered files and development tests stay out.
-        for name in sorted(self.manifest['sha256']):
-            if not name.startswith('skills/'):continue
-            source=self.directory/name
-            relative=Path('.agents')/source.relative_to(self.directory)
+        for relative,data in sources.items():
             destination=workspace/relative
             if not destination.resolve().is_relative_to(workspace):raise ValueError('Skill path escapes workspace')
-            destination.parent.mkdir(parents=True,exist_ok=True);destination.write_bytes(source.read_bytes())
-            assets[str(relative)]=hashlib.sha256(source.read_bytes()).hexdigest()
-        core_path=workspace/'preparation/agent_system.md';core_path.parent.mkdir(exist_ok=True)
-        core_path.write_text(self.core+'\n')
+            destination.parent.mkdir(parents=True,exist_ok=True);destination.write_bytes(data)
+        core_path.parent.mkdir(exist_ok=True);core_path.write_bytes(core)
+        for relative,digest in assets.items():
+            if hashlib.sha256((workspace/relative).read_bytes()).hexdigest()!=digest:
+                raise ValueError('Staged skill asset differs: '+relative)
         # The old public markdown becomes an entry point, not a second manual.
         public=workspace.parent/'tools/BENCHMARK.md'
         if public.exists():public.write_text('# Public robot interface\n\nRead the registered robo-general and current case skills.\n')
@@ -112,7 +132,14 @@ class RobotPromptProfile:
         if any(size>16384 for size in lengths.values()):raise ValueError('Workspace MD exceeds conservative byte cap')
         receipt={'profile_id':self.profile_id,'removed_legacy_md':removed,'assets':assets,
                  'spatial_memory':'space.json',
-                 'markdown_utf8_bytes':lengths,'source_preparation_changed':False}
+                 'markdown_utf8_bytes':lengths,'source_preparation_changed':False,
+                 'profile_sha256':revision,'refreshed_assets':changed}
+        if previous is not None and changed:
+            # The resumed CLI history can still contain the old tool output.
+            # Append current instructions; never rewrite that recorded history.
+            self.workspace_skill_refresh={
+                relative:{'sha256':assets[relative],'text':data.decode()}
+                for relative,data in sources.items() if relative.endswith('/SKILL.md')}
         marker.write_text(json.dumps(receipt,indent=2)+'\n');return receipt
 
     def episode_prompt(self,cfg):
@@ -125,8 +152,20 @@ class RobotPromptProfile:
         if cfg['episode_seconds'] is not None:data['wall_seconds_budget']=cfg['episode_seconds']
         for key in ['max_repeat','review_window_steps','review_max_windows','stop_min_steps','review_allow_reset']:
             if key in options:data[key]=options[key]
-        return ('Carry out the current episode task.\nEpisode configuration:\n'
+        prompt=('Carry out the current episode task.\nEpisode configuration:\n'
                 +json.dumps(data,separators=(',',':'))+'\n')
+        return prompt
+
+    def skill_refresh_prompt(self):
+        """Make refreshed skills visible even when a resumed session read old text."""
+        skills=getattr(self,'workspace_skill_refresh',{})
+        if not skills:return ''
+        prompt=('\nThe registered skills were refreshed for this continuation. '
+                'The current instructions below supersede older copies in this session.\n')
+        for relative,skill in sorted(skills.items()):
+            prompt+=('\nCurrent skill: /workspace/'+relative+'\nSHA256: '+skill['sha256']+'\n'
+                     +skill['text']+'\n')
+        return prompt
 
     def transform(self,request):
         original=deepcopy(request);result=deepcopy(request);new=[];found_core=False;found_tools=False;removed=[]
