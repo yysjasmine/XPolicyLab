@@ -1,0 +1,3220 @@
+{
+  "status": "local_observed_positive_candidate_not_established_general_improvement",
+  "branch": "xpolicy-dev-syy-skill",
+  "base_git_commit": "a838046dbb4bc868cc46d2186ab00194b005a5de",
+  "comparison_snapshot": {
+    "B": "2026-11-06 13:39:41",
+    "E": "2026-11-06 13:40:00"
+  },
+  "candidate_revision": "motion-gates-v1",
+  "candidate_source_archive_sha256": "f45397723535029f211c28779297963c20e1c4ac6afe026e2d29b7a7bd43b91a",
+  "baseline_source_archive_sha256": "6c88a71317b8c608a7c2ead6d60bf48ab566906ac52336f2fdbd4e4c45572eca",
+  "full_policy_source_files_exactly_verified_against_tested_candidate": 827,
+  "offline_skill_contracts_checked": 54,
+  "groups_defined_from_pre_evaluation_frozen_change_manifest": true,
+  "all_changed_task_skill_groups": {
+    "pairs": 109,
+    "E_successes": 50,
+    "B_successes": 55,
+    "B_only_success": 19,
+    "E_only_success": 14,
+    "both_success": 36,
+    "both_unsuccessful": 40,
+    "success_delta_pp": 4.587155963302752,
+    "paired_success_95pct_ci_pp": [
+      -5.504587155963303,
+      14.678899082568808
+    ],
+    "bootstrap_zero_variance": false,
+    "conservative_exact_95pct_success_difference_bounds_pp": [
+      -17.599905789326964,
+      26.45223663182398
+    ],
+    "mcnemar_exact_p": 0.48685024166479707,
+    "E_mean_native_score": 0.555045871559633,
+    "B_mean_native_score": 0.5752293577981651,
+    "mean_native_score_delta": 0.020183486238532108,
+    "native_score_bootstrap_95pct_ci": [
+      -0.06743119266055046,
+      0.10871559633027522
+    ],
+    "score_bootstrap_replicates": 25000
+  },
+  "all136_pairs": {
+    "pairs": 136,
+    "E_successes": 63,
+    "B_successes": 59,
+    "B_only_success": 23,
+    "E_only_success": 27,
+    "both_success": 36,
+    "both_unsuccessful": 50,
+    "success_delta_pp": -2.9411764705882355,
+    "paired_success_95pct_ci_pp": [
+      -13.235294117647058,
+      7.352941176470588
+    ],
+    "bootstrap_zero_variance": false,
+    "conservative_exact_95pct_success_difference_bounds_pp": [
+      -22.474931937775423,
+      16.75780306275775
+    ],
+    "mcnemar_exact_p": 0.6718110337653656,
+    "E_mean_native_score": 0.5503676470588236,
+    "B_mean_native_score": 0.5036764705882353,
+    "mean_native_score_delta": -0.046691176470588236,
+    "native_score_bootstrap_95pct_ci": [
+      -0.13676470588235295,
+      0.04375
+    ],
+    "score_bootstrap_replicates": 25000
+  },
+  "skill_groups": [
+    {
+      "skill": "arrange_largest_number",
+      "tasks": [
+        "arrange_largest_number",
+        "arrange_largest_number_random"
+      ],
+      "exposure": "modified general and modified task skill together",
+      "all_pairs": {
+        "pairs": 26,
+        "E_successes": 17,
+        "B_successes": 16,
+        "B_only_success": 5,
+        "E_only_success": 6,
+        "both_success": 11,
+        "both_unsuccessful": 4,
+        "success_delta_pp": -3.8461538461538463,
+        "paired_success_95pct_ci_pp": [
+          -26.923076923076923,
+          19.23076923076923
+        ],
+        "bootstrap_zero_variance": false,
+        "conservative_exact_95pct_success_difference_bounds_pp": [
+          -46.664459302959116,
+          40.10822846578746
+        ],
+        "mcnemar_exact_p": 1.0,
+        "E_mean_native_score": 0.7596153846153846,
+        "B_mean_native_score": 0.7269230769230769,
+        "mean_native_score_delta": -0.032692307692307694,
+        "native_score_bootstrap_95pct_ci": [
+          -0.20384615384615384,
+          0.14038461538461539
+        ],
+        "score_bootstrap_replicates": 25000,
+        "holm_adjusted_p_seven_disjoint_skill_groups": 1.0
+      },
+      "continuation137_sensitivity": {
+        "pairs": 17,
+        "E_successes": 8,
+        "B_successes": 11,
+        "B_only_success": 5,
+        "E_only_success": 2,
+        "both_success": 6,
+        "both_unsuccessful": 4,
+        "success_delta_pp": 17.647058823529413,
+        "paired_success_95pct_ci_pp": [
+          -11.764705882352942,
+          47.05882352941177
+        ],
+        "bootstrap_zero_variance": false,
+        "conservative_exact_95pct_success_difference_bounds_pp": [
+          -39.80116737946654,
+          67.31629647422419
+        ],
+        "mcnemar_exact_p": 0.453125,
+        "E_mean_native_score": 0.6323529411764706,
+        "B_mean_native_score": 0.75,
+        "mean_native_score_delta": 0.11764705882352941,
+        "native_score_bootstrap_95pct_ci": [
+          -0.08235294117647059,
+          0.3176470588235294
+        ],
+        "score_bootstrap_replicates": 25000
+      },
+      "by_task": [
+        {
+          "task": "arrange_largest_number",
+          "pairs": 15,
+          "E_successes": 9,
+          "B_successes": 8,
+          "B_only_success": 3,
+          "E_only_success": 4,
+          "both_success": 5,
+          "both_unsuccessful": 3,
+          "success_delta_pp": -6.666666666666667,
+          "paired_success_95pct_ci_pp": [
+            -40.0,
+            26.666666666666668
+          ],
+          "bootstrap_zero_variance": false,
+          "conservative_exact_95pct_success_difference_bounds_pp": [
+            -62.1980683962388,
+            52.164787640076185
+          ],
+          "mcnemar_exact_p": 1.0,
+          "E_mean_native_score": 0.7233333333333334,
+          "B_mean_native_score": 0.66,
+          "mean_native_score_delta": -0.06333333333333334,
+          "native_score_bootstrap_95pct_ci": [
+            -0.3,
+            0.1733333333333333
+          ],
+          "score_bootstrap_replicates": 25000
+        },
+        {
+          "task": "arrange_largest_number_random",
+          "pairs": 11,
+          "E_successes": 8,
+          "B_successes": 8,
+          "B_only_success": 2,
+          "E_only_success": 2,
+          "both_success": 6,
+          "both_unsuccessful": 1,
+          "success_delta_pp": 0.0,
+          "paired_success_95pct_ci_pp": [
+            -36.36363636363637,
+            36.36363636363637
+          ],
+          "bootstrap_zero_variance": false,
+          "conservative_exact_95pct_success_difference_bounds_pp": [
+            -60.24311057686752,
+            60.24311057686752
+          ],
+          "mcnemar_exact_p": 1.0,
+          "E_mean_native_score": 0.8090909090909091,
+          "B_mean_native_score": 0.8181818181818182,
+          "mean_native_score_delta": 0.009090909090909089,
+          "native_score_bootstrap_95pct_ci": [
+            -0.23636363636363633,
+            0.2545454545454545
+          ],
+          "score_bootstrap_replicates": 25000
+        }
+      ]
+    },
+    {
+      "skill": "fill_egg_holder",
+      "tasks": [
+        "fill_egg_holder"
+      ],
+      "exposure": "modified general and modified task skill together",
+      "all_pairs": {
+        "pairs": 13,
+        "E_successes": 0,
+        "B_successes": 0,
+        "B_only_success": 0,
+        "E_only_success": 0,
+        "both_success": 0,
+        "both_unsuccessful": 13,
+        "success_delta_pp": 0.0,
+        "paired_success_95pct_ci_pp": [
+          0.0,
+          0.0
+        ],
+        "bootstrap_zero_variance": true,
+        "conservative_exact_95pct_success_difference_bounds_pp": [
+          -28.61475366072502,
+          28.61475366072502
+        ],
+        "mcnemar_exact_p": 1.0,
+        "E_mean_native_score": 0.18461538461538463,
+        "B_mean_native_score": 0.09230769230769231,
+        "mean_native_score_delta": -0.09230769230769231,
+        "native_score_bootstrap_95pct_ci": [
+          -0.17307692307692307,
+          -0.019230769230769232
+        ],
+        "score_bootstrap_replicates": 25000,
+        "holm_adjusted_p_seven_disjoint_skill_groups": 1.0
+      },
+      "continuation137_sensitivity": {
+        "pairs": 13,
+        "E_successes": 0,
+        "B_successes": 0,
+        "B_only_success": 0,
+        "E_only_success": 0,
+        "both_success": 0,
+        "both_unsuccessful": 13,
+        "success_delta_pp": 0.0,
+        "paired_success_95pct_ci_pp": [
+          0.0,
+          0.0
+        ],
+        "bootstrap_zero_variance": true,
+        "conservative_exact_95pct_success_difference_bounds_pp": [
+          -28.61475366072502,
+          28.61475366072502
+        ],
+        "mcnemar_exact_p": 1.0,
+        "E_mean_native_score": 0.18461538461538463,
+        "B_mean_native_score": 0.09230769230769231,
+        "mean_native_score_delta": -0.09230769230769231,
+        "native_score_bootstrap_95pct_ci": [
+          -0.17307692307692307,
+          -0.019230769230769232
+        ],
+        "score_bootstrap_replicates": 25000
+      },
+      "by_task": [
+        {
+          "task": "fill_egg_holder",
+          "pairs": 13,
+          "E_successes": 0,
+          "B_successes": 0,
+          "B_only_success": 0,
+          "E_only_success": 0,
+          "both_success": 0,
+          "both_unsuccessful": 13,
+          "success_delta_pp": 0.0,
+          "paired_success_95pct_ci_pp": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_zero_variance": true,
+          "conservative_exact_95pct_success_difference_bounds_pp": [
+            -28.61475366072502,
+            28.61475366072502
+          ],
+          "mcnemar_exact_p": 1.0,
+          "E_mean_native_score": 0.18461538461538463,
+          "B_mean_native_score": 0.09230769230769231,
+          "mean_native_score_delta": -0.09230769230769231,
+          "native_score_bootstrap_95pct_ci": [
+            -0.17307692307692307,
+            -0.019230769230769232
+          ],
+          "score_bootstrap_replicates": 25000
+        }
+      ]
+    },
+    {
+      "skill": "fill_pen_holder",
+      "tasks": [
+        "fill_pen_holder"
+      ],
+      "exposure": "modified general and modified task skill together",
+      "all_pairs": {
+        "pairs": 5,
+        "E_successes": 0,
+        "B_successes": 0,
+        "B_only_success": 0,
+        "E_only_success": 0,
+        "both_success": 0,
+        "both_unsuccessful": 5,
+        "success_delta_pp": 0.0,
+        "paired_success_95pct_ci_pp": [
+          0.0,
+          0.0
+        ],
+        "bootstrap_zero_variance": true,
+        "conservative_exact_95pct_success_difference_bounds_pp": [
+          -58.372339629906335,
+          58.372339629906335
+        ],
+        "mcnemar_exact_p": 1.0,
+        "E_mean_native_score": 0.31,
+        "B_mean_native_score": 0.28,
+        "mean_native_score_delta": -0.030000000000000006,
+        "native_score_bootstrap_95pct_ci": [
+          -0.24000000000000005,
+          0.18000000000000002
+        ],
+        "score_bootstrap_replicates": 25000,
+        "holm_adjusted_p_seven_disjoint_skill_groups": 1.0
+      },
+      "continuation137_sensitivity": {
+        "pairs": 5,
+        "E_successes": 0,
+        "B_successes": 0,
+        "B_only_success": 0,
+        "E_only_success": 0,
+        "both_success": 0,
+        "both_unsuccessful": 5,
+        "success_delta_pp": 0.0,
+        "paired_success_95pct_ci_pp": [
+          0.0,
+          0.0
+        ],
+        "bootstrap_zero_variance": true,
+        "conservative_exact_95pct_success_difference_bounds_pp": [
+          -58.372339629906335,
+          58.372339629906335
+        ],
+        "mcnemar_exact_p": 1.0,
+        "E_mean_native_score": 0.31,
+        "B_mean_native_score": 0.28,
+        "mean_native_score_delta": -0.030000000000000006,
+        "native_score_bootstrap_95pct_ci": [
+          -0.24000000000000005,
+          0.18000000000000002
+        ],
+        "score_bootstrap_replicates": 25000
+      },
+      "by_task": [
+        {
+          "task": "fill_pen_holder",
+          "pairs": 5,
+          "E_successes": 0,
+          "B_successes": 0,
+          "B_only_success": 0,
+          "E_only_success": 0,
+          "both_success": 0,
+          "both_unsuccessful": 5,
+          "success_delta_pp": 0.0,
+          "paired_success_95pct_ci_pp": [
+            0.0,
+            0.0
+          ],
+          "bootstrap_zero_variance": true,
+          "conservative_exact_95pct_success_difference_bounds_pp": [
+            -58.372339629906335,
+            58.372339629906335
+          ],
+          "mcnemar_exact_p": 1.0,
+          "E_mean_native_score": 0.31,
+          "B_mean_native_score": 0.28,
+          "mean_native_score_delta": -0.030000000000000006,
+          "native_score_bootstrap_95pct_ci": [
+            -0.24000000000000005,
+            0.18000000000000002
+          ],
+          "score_bootstrap_replicates": 25000
+        }
+      ]
+    },
+    {
+      "skill": "fold_clothes",
+      "tasks": [
+        "fold_clothes",
+        "fold_clothes_random"
+      ],
+      "exposure": "modified general and modified task skill together",
+      "all_pairs": {
+        "pairs": 28,
+        "E_successes": 14,
+        "B_successes": 17,
+        "B_only_success": 7,
+        "E_only_success": 4,
+        "both_success": 10,
+        "both_unsuccessful": 7,
+        "success_delta_pp": 10.714285714285714,
+        "paired_success_95pct_ci_pp": [
+          -10.714285714285714,
+          32.142857142857146
+        ],
+        "bootstrap_zero_variance": false,
+        "conservative_exact_95pct_success_difference_bounds_pp": [
+          -33.60932369446351,
+          52.11539244315758
+        ],
+        "mcnemar_exact_p": 0.548828125,
+        "E_mean_native_score": 0.5571428571428572,
+        "B_mean_native_score": 0.6428571428571429,
+        "mean_native_score_delta": 0.08571428571428572,
+        "native_score_bootstrap_95pct_ci": [
+          -0.1285714285714286,
+          0.3
+        ],
+        "score_bootstrap_replicates": 25000,
+        "holm_adjusted_p_seven_disjoint_skill_groups": 1.0
+      },
+      "continuation137_sensitivity": {
+        "pairs": 27,
+        "E_successes": 13,
+        "B_successes": 16,
+        "B_only_success": 7,
+        "E_only_success": 4,
+        "both_success": 9,
+        "both_unsuccessful": 7,
+        "success_delta_pp": 11.11111111111111,
+        "paired_success_95pct_ci_pp": [
+          -11.11111111111111,
+          33.333333333333336
+        ],
+        "bootstrap_zero_variance": false,
+        "conservative_exact_95pct_success_difference_bounds_pp": [
+          -34.173311429831344,
+          53.25753676226511
+        ],
+        "mcnemar_exact_p": 0.548828125,
+        "E_mean_native_score": 0.5407407407407407,
+        "B_mean_native_score": 0.6296296296296297,
+        "mean_native_score_delta": 0.08888888888888889,
+        "native_score_bootstrap_95pct_ci": [
+          -0.13333333333333333,
+          0.3111111111111111
+        ],
+        "score_bootstrap_replicates": 25000
+      },
+      "by_task": [
+        {
+          "task": "fold_clothes",
+          "pairs": 14,
+          "E_successes": 9,
+          "B_successes": 8,
+          "B_only_success": 2,
+          "E_only_success": 3,
+          "both_success": 6,
+          "both_unsuccessful": 3,
+          "success_delta_pp": -7.142857142857143,
+          "paired_success_95pct_ci_pp": [
+            -35.714285714285715,
+            21.428571428571427
+          ],
+          "bootstrap_zero_variance": false,
+          "conservative_exact_95pct_success_difference_bounds_pp": [
+            -63.468853751261065,
+            52.964989300254096
+          ],
+          "mcnemar_exact_p": 1.0,
+          "E_mean_native_score": 0.7,
+          "B_mean_native_score": 0.6142857142857143,
+          "mean_native_score_delta": -0.08571428571428572,
+          "native_score_bootstrap_95pct_ci": [
+            -0.37142857142857144,
+            0.19999999999999998
+          ],
+          "score_bootstrap_replicates": 25000
+        },
+        {
+          "task": "fold_clothes_random",
+          "pairs": 14,
+          "E_successes": 5,
+          "B_successes": 9,
+          "B_only_success": 5,
+          "E_only_success": 1,
+          "both_success": 4,
+          "both_unsuccessful": 4,
+          "success_delta_pp": 28.571428571428573,
+          "paired_success_95pct_ci_pp": [
+            0.0,
+            57.142857142857146
+          ],
+          "bootstrap_zero_variance": false,
+          "conservative_exact_95pct_success_difference_bounds_pp": [
+            -36.435757118283206,
+            78.49134358534316
+          ],
+          "mcnemar_exact_p": 0.21875,
+          "E_mean_native_score": 0.4142857142857143,
+          "B_mean_native_score": 0.6714285714285715,
+          "mean_native_score_delta": 0.2571428571428572,
+          "native_score_bootstrap_95pct_ci": [
+            -0.04285714285714286,
+            0.5428571428571429
+          ],
+          "score_bootstrap_replicates": 25000
+        }
+      ]
+    },
+    {
+      "skill": "make_toast",
+      "tasks": [
+        "make_toast",
+        "make_toast_random"
+      ],
+      "exposure": "modified general and modified task skill together",
+      "all_pairs": {
+        "pairs": 9,
+        "E_successes": 5,
+        "B_successes": 3,
+        "B_only_success": 1,
+        "E_only_success": 3,
+        "both_success": 2,
+        "both_unsuccessful": 3,
+        "success_delta_pp": -22.22222222222222,
+        "paired_success_95pct_ci_pp": [
+          -66.66666666666667,
+          22.22222222222222
+        ],
+        "bootstrap_zero_variance": false,
+        "conservative_exact_95pct_success_difference_bounds_pp": [
+          -83.00044089146996,
+          55.8936458666526
+        ],
+        "mcnemar_exact_p": 0.625,
+        "E_mean_native_score": 0.5833333333333334,
+        "B_mean_native_score": 0.3333333333333333,
+        "mean_native_score_delta": -0.25,
+        "native_score_bootstrap_95pct_ci": [
+          -0.6666666666666666,
+          0.1388888888888889
+        ],
+        "score_bootstrap_replicates": 25000,
+        "holm_adjusted_p_seven_disjoint_skill_groups": 1.0
+      },
+      "continuation137_sensitivity": {
+        "pairs": 9,
+        "E_successes": 5,
+        "B_successes": 3,
+        "B_only_success": 1,
+        "E_only_success": 3,
+        "both_success": 2,
+        "both_unsuccessful": 3,
+        "success_delta_pp": -22.22222222222222,
+        "paired_success_95pct_ci_pp": [
+          -66.66666666666667,
+          22.22222222222222
+        ],
+        "bootstrap_zero_variance": false,
+        "conservative_exact_95pct_success_difference_bounds_pp": [
+          -83.00044089146996,
+          55.8936458666526
+        ],
+        "mcnemar_exact_p": 0.625,
+        "E_mean_native_score": 0.5833333333333334,
+        "B_mean_native_score": 0.3333333333333333,
+        "mean_native_score_delta": -0.25,
+        "native_score_bootstrap_95pct_ci": [
+          -0.6666666666666666,
+          0.1388888888888889
+        ],
+        "score_bootstrap_replicates": 25000
+      },
+      "by_task": [
+        {
+          "task": "make_toast",
+          "pairs": 6,
+          "E_successes": 3,
+          "B_successes": 3,
+          "B_only_success": 1,
+          "E_only_success": 1,
+          "both_success": 2,
+          "both_unsuccessful": 2,
+          "success_delta_pp": 0.0,
+          "paired_success_95pct_ci_pp": [
+            -50.0,
+            50.0
+          ],
+          "bootstrap_zero_variance": false,
+          "conservative_exact_95pct_success_difference_bounds_pp": [
+            -81.64280014861092,
+            81.64280014861092
+          ],
+          "mcnemar_exact_p": 1.0,
+          "E_mean_native_score": 0.5416666666666666,
+          "B_mean_native_score": 0.5,
+          "mean_native_score_delta": -0.041666666666666664,
+          "native_score_bootstrap_95pct_ci": [
+            -0.5,
+            0.375
+          ],
+          "score_bootstrap_replicates": 25000
+        },
+        {
+          "task": "make_toast_random",
+          "pairs": 3,
+          "E_successes": 2,
+          "B_successes": 0,
+          "B_only_success": 0,
+          "E_only_success": 2,
+          "both_success": 0,
+          "both_unsuccessful": 1,
+          "success_delta_pp": -66.66666666666667,
+          "paired_success_95pct_ci_pp": [
+            -100.0,
+            0.0
+          ],
+          "bootstrap_zero_variance": false,
+          "conservative_exact_95pct_success_difference_bounds_pp": [
+            -99.58158506449566,
+            70.19016565888106
+          ],
+          "mcnemar_exact_p": 0.5,
+          "E_mean_native_score": 0.6666666666666666,
+          "B_mean_native_score": 0.0,
+          "mean_native_score_delta": -0.6666666666666666,
+          "native_score_bootstrap_95pct_ci": [
+            -1.0,
+            0.0
+          ],
+          "score_bootstrap_replicates": 25000
+        }
+      ]
+    },
+    {
+      "skill": "stack_blocks",
+      "tasks": [
+        "stack_blocks",
+        "stack_blocks_random"
+      ],
+      "exposure": "modified general and modified task skill together",
+      "all_pairs": {
+        "pairs": 28,
+        "E_successes": 14,
+        "B_successes": 19,
+        "B_only_success": 6,
+        "E_only_success": 1,
+        "both_success": 13,
+        "both_unsuccessful": 8,
+        "success_delta_pp": 17.857142857142858,
+        "paired_success_95pct_ci_pp": [
+          0.0,
+          35.714285714285715
+        ],
+        "bootstrap_zero_variance": false,
+        "conservative_exact_95pct_success_difference_bounds_pp": [
+          -26.640310695657053,
+          57.4664990327672
+        ],
+        "mcnemar_exact_p": 0.125,
+        "E_mean_native_score": 0.5696428571428571,
+        "B_mean_native_score": 0.7214285714285714,
+        "mean_native_score_delta": 0.15178571428571427,
+        "native_score_bootstrap_95pct_ci": [
+          0.005357142857142857,
+          0.30357142857142855
+        ],
+        "score_bootstrap_replicates": 25000,
+        "holm_adjusted_p_seven_disjoint_skill_groups": 0.75
+      },
+      "continuation137_sensitivity": {
+        "pairs": 28,
+        "E_successes": 14,
+        "B_successes": 19,
+        "B_only_success": 6,
+        "E_only_success": 1,
+        "both_success": 13,
+        "both_unsuccessful": 8,
+        "success_delta_pp": 17.857142857142858,
+        "paired_success_95pct_ci_pp": [
+          0.0,
+          35.714285714285715
+        ],
+        "bootstrap_zero_variance": false,
+        "conservative_exact_95pct_success_difference_bounds_pp": [
+          -26.640310695657053,
+          57.4664990327672
+        ],
+        "mcnemar_exact_p": 0.125,
+        "E_mean_native_score": 0.5696428571428571,
+        "B_mean_native_score": 0.7214285714285714,
+        "mean_native_score_delta": 0.15178571428571427,
+        "native_score_bootstrap_95pct_ci": [
+          0.005357142857142857,
+          0.30357142857142855
+        ],
+        "score_bootstrap_replicates": 25000
+      },
+      "by_task": [
+        {
+          "task": "stack_blocks",
+          "pairs": 15,
+          "E_successes": 9,
+          "B_successes": 13,
+          "B_only_success": 4,
+          "E_only_success": 0,
+          "both_success": 9,
+          "both_unsuccessful": 2,
+          "success_delta_pp": 26.666666666666668,
+          "paired_success_95pct_ci_pp": [
+            6.666666666666667,
+            53.333333333333336
+          ],
+          "bootstrap_zero_variance": false,
+          "conservative_exact_95pct_success_difference_bounds_pp": [
+            -30.093133837298037,
+            69.70559711721211
+          ],
+          "mcnemar_exact_p": 0.125,
+          "E_mean_native_score": 0.66,
+          "B_mean_native_score": 0.8866666666666667,
+          "mean_native_score_delta": 0.22666666666666666,
+          "native_score_bootstrap_95pct_ci": [
+            0.056666666666666664,
+            0.4533333333333333
+          ],
+          "score_bootstrap_replicates": 25000
+        },
+        {
+          "task": "stack_blocks_random",
+          "pairs": 13,
+          "E_successes": 5,
+          "B_successes": 6,
+          "B_only_success": 2,
+          "E_only_success": 1,
+          "both_success": 4,
+          "both_unsuccessful": 6,
+          "success_delta_pp": 7.6923076923076925,
+          "paired_success_95pct_ci_pp": [
+            -15.384615384615385,
+            30.76923076923077
+          ],
+          "bootstrap_zero_variance": false,
+          "conservative_exact_95pct_success_difference_bounds_pp": [
+            -55.12045569177981,
+            66.1602239880087
+          ],
+          "mcnemar_exact_p": 1.0,
+          "E_mean_native_score": 0.4653846153846154,
+          "B_mean_native_score": 0.5307692307692308,
+          "mean_native_score_delta": 0.06538461538461539,
+          "native_score_bootstrap_95pct_ci": [
+            -0.1423076923076923,
+            0.2846153846153846
+          ],
+          "score_bootstrap_replicates": 25000
+        }
+      ]
+    },
+    {
+      "skill": "robo-general-only",
+      "tasks": [
+        "cover_blocks",
+        "match_and_pick_from_conveyor"
+      ],
+      "exposure": "modified general only; no registered task skill",
+      "all_pairs": {
+        "pairs": 27,
+        "E_successes": 13,
+        "B_successes": 4,
+        "B_only_success": 4,
+        "E_only_success": 13,
+        "both_success": 0,
+        "both_unsuccessful": 10,
+        "success_delta_pp": -33.333333333333336,
+        "paired_success_95pct_ci_pp": [
+          -59.25925925925926,
+          -3.7037037037037037
+        ],
+        "bootstrap_zero_variance": false,
+        "conservative_exact_95pct_success_difference_bounds_pp": [
+          -67.0305325855682,
+          10.052768492221587
+        ],
+        "mcnemar_exact_p": 0.049041748046875,
+        "E_mean_native_score": 0.5314814814814814,
+        "B_mean_native_score": 0.21481481481481482,
+        "mean_native_score_delta": -0.31666666666666665,
+        "native_score_bootstrap_95pct_ci": [
+          -0.5703703703703704,
+          -0.046296296296296294
+        ],
+        "score_bootstrap_replicates": 25000,
+        "holm_adjusted_p_seven_disjoint_skill_groups": 0.343292236328125
+      },
+      "continuation137_sensitivity": {
+        "pairs": 20,
+        "E_successes": 8,
+        "B_successes": 4,
+        "B_only_success": 4,
+        "E_only_success": 8,
+        "both_success": 0,
+        "both_unsuccessful": 8,
+        "success_delta_pp": -20.0,
+        "paired_success_95pct_ci_pp": [
+          -50.0,
+          15.0
+        ],
+        "bootstrap_zero_variance": false,
+        "conservative_exact_95pct_success_difference_bounds_pp": [
+          -62.1551188493499,
+          29.89791975005654
+        ],
+        "mcnemar_exact_p": 0.3876953125,
+        "E_mean_native_score": 0.46749999999999997,
+        "B_mean_native_score": 0.2675,
+        "mean_native_score_delta": -0.2,
+        "native_score_bootstrap_95pct_ci": [
+          -0.505,
+          0.1125
+        ],
+        "score_bootstrap_replicates": 25000
+      },
+      "by_task": [
+        {
+          "task": "cover_blocks",
+          "pairs": 14,
+          "E_successes": 6,
+          "B_successes": 1,
+          "B_only_success": 1,
+          "E_only_success": 6,
+          "both_success": 0,
+          "both_unsuccessful": 7,
+          "success_delta_pp": -35.714285714285715,
+          "paired_success_95pct_ci_pp": [
+            -64.28571428571429,
+            0.0
+          ],
+          "bootstrap_zero_variance": false,
+          "conservative_exact_95pct_success_difference_bounds_pp": [
+            -74.1333738658835,
+            22.47622039504292
+          ],
+          "mcnemar_exact_p": 0.125,
+          "E_mean_native_score": 0.525,
+          "B_mean_native_score": 0.19999999999999998,
+          "mean_native_score_delta": -0.325,
+          "native_score_bootstrap_95pct_ci": [
+            -0.6,
+            -0.042857142857142864
+          ],
+          "score_bootstrap_replicates": 25000
+        },
+        {
+          "task": "match_and_pick_from_conveyor",
+          "pairs": 13,
+          "E_successes": 7,
+          "B_successes": 3,
+          "B_only_success": 3,
+          "E_only_success": 7,
+          "both_success": 0,
+          "both_unsuccessful": 3,
+          "success_delta_pp": -30.76923076923077,
+          "paired_success_95pct_ci_pp": [
+            -69.23076923076923,
+            15.384615384615385
+          ],
+          "bootstrap_zero_variance": false,
+          "conservative_exact_95pct_success_difference_bounds_pp": [
+            -79.49385197696034,
+            35.488856365662784
+          ],
+          "mcnemar_exact_p": 0.34375,
+          "E_mean_native_score": 0.5384615384615384,
+          "B_mean_native_score": 0.23076923076923078,
+          "mean_native_score_delta": -0.3076923076923077,
+          "native_score_bootstrap_95pct_ci": [
+            -0.7692307692307693,
+            0.15384615384615385
+          ],
+          "score_bootstrap_replicates": 25000
+        }
+      ]
+    }
+  ],
+  "shared_current_source_prerequisites": [
+    "execution_profile.py",
+    "native_curobo.py",
+    "skillpack/robot_runtime/prompt_profile.py"
+  ],
+  "B_arm_shared_deployment_difference": {
+    "field": "ws_ping_timeout_s",
+    "B_frozen_value": 3660.0,
+    "E_current_source_value": 20.0,
+    "E_historical_attempt_runtime_value_verified": false,
+    "note": "E value is a current source observation, not proof of every historical deployment. Treat cross-run transport differences as a potential confound."
+  },
+  "frozen_common_runtime_pin": "46ad5fc1c8a0182e622d5e5a0e518b83085e251d24da90fa557547f20e89996e",
+  "treatment_files": [
+    {
+      "path": "policy/SenseNova-RoboRSI/submission.json",
+      "frozen_sha256": "f304d5ef890675fcf31e805352fdb73843e9e503eeeb0d6efc7d3847fcdd6e99",
+      "matches_original_revision_receipt": false
+    },
+    {
+      "path": "policy/SenseNova-RoboRSI/skillpack/frozen_common.json",
+      "frozen_sha256": "6c3ffffef3a3073c72a17f5156454969f68a86b07c0a24361ad5dfdbfdcaabf9",
+      "matches_original_revision_receipt": true
+    },
+    {
+      "path": "policy/SenseNova-RoboRSI/skillpack/cases/catalog.json",
+      "frozen_sha256": "ac07ae57f01fce5b14b1ac733eec4019d49b9419dd885077f555ee43983f167f",
+      "matches_original_revision_receipt": true
+    },
+    {
+      "path": "policy/SenseNova-RoboRSI/skillpack/common/profile.json",
+      "frozen_sha256": "8fe86e39f80130cff045732e7262c168915adfeb8458b9dbf5d63c18a55f3348",
+      "matches_original_revision_receipt": true
+    },
+    {
+      "path": "policy/SenseNova-RoboRSI/skillpack/cases/skills/arrange_largest_number/SKILL.md",
+      "frozen_sha256": "85353d66d927ade366203d30aa1ff6c233cbdc660b1f2109a508b5c2a43b2e09",
+      "matches_original_revision_receipt": true
+    },
+    {
+      "path": "policy/SenseNova-RoboRSI/skillpack/cases/skills/fill_egg_holder/SKILL.md",
+      "frozen_sha256": "0b0f45d753964a89c88bbcb9ffbfb9b1c070ab2e10d54c71d7b7a5d1c1eb95f7",
+      "matches_original_revision_receipt": true
+    },
+    {
+      "path": "policy/SenseNova-RoboRSI/skillpack/cases/skills/fill_pen_holder/SKILL.md",
+      "frozen_sha256": "51471353e7858c5ae213a877cb33c7d5dad9f2fcfcafc41b9edb66cdabdee6a9",
+      "matches_original_revision_receipt": true
+    },
+    {
+      "path": "policy/SenseNova-RoboRSI/skillpack/cases/skills/fold_clothes/SKILL.md",
+      "frozen_sha256": "880dd0dd94310bd67bd66765f53c0b3f7d8a5d1c3ef955d4fe4954f3d7b9adae",
+      "matches_original_revision_receipt": true
+    },
+    {
+      "path": "policy/SenseNova-RoboRSI/skillpack/cases/skills/make_toast/SKILL.md",
+      "frozen_sha256": "9035e974e0f5cc55e9661439aee2ea4aa8290efca1166fd13b76ae05cddada8e",
+      "matches_original_revision_receipt": true
+    },
+    {
+      "path": "policy/SenseNova-RoboRSI/skillpack/cases/skills/stack_blocks/SKILL.md",
+      "frozen_sha256": "da95ada201ead20cf7a990acc01eab44d416c9138925c96e5e93b532d42dc148",
+      "matches_original_revision_receipt": true
+    },
+    {
+      "path": "policy/SenseNova-RoboRSI/skillpack/common/skills/robo-general/SKILL.md",
+      "frozen_sha256": "f42c746610daaa1dcd7047b3b36d194605da4c37767b6e8b165d2885de3e8aa7",
+      "matches_original_revision_receipt": true
+    }
+  ],
+  "runtime_prerequisite_files": [
+    {
+      "path": "policy/SenseNova-RoboRSI/deploy.yml",
+      "sha256": "6c23e1e2e771aa375d0edd38cc38c04bcf59ac46e9734b8fdf2d54937e58e435"
+    },
+    {
+      "path": "policy/SenseNova-RoboRSI/execution_profile.py",
+      "sha256": "384ad986db7033100c44e161ec319dcd5ad18be378bfd2f9f9ec4af5bee27a35"
+    },
+    {
+      "path": "policy/SenseNova-RoboRSI/native_curobo.py",
+      "sha256": "46ad5fc1c8a0182e622d5e5a0e518b83085e251d24da90fa557547f20e89996e"
+    },
+    {
+      "path": "policy/SenseNova-RoboRSI/skillpack/frozen_common.json",
+      "sha256": "d4802424dfb907b84868cf8816afa99b6eb4e17c1819d9d46fe6a5f1ab186e3d"
+    },
+    {
+      "path": "policy/SenseNova-RoboRSI/skillpack/robot_runtime/prompt_profile.py",
+      "sha256": "361c7cdd8b38049b0a2c329b1dfcbb7919c2fde970a6e58ad9288750d2fa34c7"
+    },
+    {
+      "path": "policy/SenseNova-RoboRSI/submission.json",
+      "sha256": "b4fddff417a70ee568ff08e27290974dc6631928471ca6584940ea07b807e510"
+    }
+  ],
+  "important_limitations": [
+    "The general skill changed simultaneously with all six task skills; isolated attribution is not identifiable.",
+    "E originals include prior instruction versions and checkpoint recovery.",
+    "Matched observations and unadjusted bootstrap intervals are exploratory; missing/unscored cases are never failures.",
+    "Native action/guard/model/tool source bytes remain exactly the frozen evaluated bytes. No new setting was tested or deployed.",
+    "Task-specific positive observations justify preserving a candidate, not asserting stable or overall improvement.",
+    "API training caches are input subsets. They are not full trajectory returns."
+  ],
+  "examples": [
+    {
+      "skill": "arrange_largest_number",
+      "direction": "B_better",
+      "available": true,
+      "key": [
+        "arrange_largest_number",
+        0,
+        6
+      ],
+      "scene_sha256": "24af7076c9a327d38c21f9082c5c2dd3fce8ca34365ad9c33cf0698bf969fd2c",
+      "visual_note": "已核对官方结果原字节与API中的实际control_step/done/动作返回。图像供复核；未仅凭分数给抓取、接触或归位失败编造原因。",
+      "E": {
+        "native_result_sha256": "1f0e87aba98632fe2da496820266d2fda908dcbe605d826d47717c64d4985a5e",
+        "success": false,
+        "score": 0.3,
+        "record_scope": "full trajectory return",
+        "native_grade_bytes_verified": true,
+        "API_capture_proof": [
+          {
+            "sha256": "4a22db6965ddd426e9842e1b15381ba27c44d58d839bff790585e89d160b910c",
+            "forwarded_record_sha256": "3f0060cc0a09eb7a9c464b8bb55dbaaa7e6420234156a3c934640126ddcbb891",
+            "request_id": 1
+          },
+          {
+            "sha256": "57ad2b92953ca5644a2685a5b1ed02d700e789b32ef8ad396d49104754b4721f",
+            "forwarded_record_sha256": "aba3734c745ad4df9203a58fef416c6173340877acfa4baefb45185c2c9b9a7c",
+            "request_id": 2
+          },
+          {
+            "sha256": "f0ccb7bb777394b74efb1db18d310bb0ae559f9e3addf77954e572c899b315ba",
+            "forwarded_record_sha256": "45cb6f6759493d871868264059735e16569c3007929ed5bd1bf6fc98389aaebe",
+            "request_id": 3
+          },
+          {
+            "sha256": "78c68fb64ca7c56266efbd046a3786e9a5ab960fb825165f6f5359a71a37b994",
+            "forwarded_record_sha256": "388cc4522fff7cf5e23c6ec0387dadff461d38e23210353582bb393a4288f1ca",
+            "request_id": 4
+          },
+          {
+            "sha256": "ce1800b6b1f038f1d1595f7578b6871215784bc53d765c3af4314db1fc4a42a7",
+            "forwarded_record_sha256": "19dc0c9e8cda6d6ff6c2f7413f71c2046a24d1e7f33f941bf7c10d38df37aaff",
+            "request_id": 52
+          },
+          {
+            "sha256": "2bfe53b4ecfd94103037326921f11b7031df3d1fd3eada2852222f318ebb0729",
+            "forwarded_record_sha256": "b83df08e5d8ee506b02d76e27a1de405d09d52eb5167826a6ff0331c88eb255a",
+            "request_id": 53
+          },
+          {
+            "sha256": "c00447afa34982718d939d65c3d4d3757742aba75b3a86c451bae1b8b0106314",
+            "forwarded_record_sha256": "d751c35fa9698f4c02bba3cc5d1517e9abff1cfc10fda66bd01b3d92989fc9e4",
+            "request_id": 54
+          }
+        ],
+        "forwarded_skill_body_sha256": [
+          "418e29f5312f8d4b751cfc39fd999571588ed53485fcce8fe5cf41e4392b119a",
+          "8c9c1f548cdc98134c241bced9cc3c677d03927fbd1ae516ce10f6c578a1e520"
+        ],
+        "latest_observed_native_result": {
+          "status": "reached",
+          "done": false,
+          "control_step": 1033,
+          "step_limit": 1050,
+          "steps_remaining": 17
+        },
+        "image_sha256": "9c73cca6ff045629022c4410704a0b8a8045564098960b72fbaf8164b1014183"
+      },
+      "B": {
+        "native_result_sha256": "0d4366d03be196625243688d60cdd43a116e7150f009b1d930401dd64dcbd215",
+        "success": true,
+        "score": 1.0,
+        "record_scope": "training-input subset; not full trajectory return",
+        "native_grade_bytes_verified": true,
+        "API_capture_proof": [
+          {
+            "sha256": "fd72f6923e11a98c5750e18dc6d98c2f380b76d3d42e945c050fbfa1aa6db74b",
+            "forwarded_record_sha256": "f9098df4724c25540f69bc65f8884441c6446e48dc172a03d1f5a9fcb66d5627",
+            "request_id": 1
+          },
+          {
+            "sha256": "19e3bb3e6eb731e44297c04670d951b9029849ab1b0836168bc74a1160466c1e",
+            "forwarded_record_sha256": "a999710c684ff1c35ea15977d5abf840dca16ce4337bd75506de06c73f6ef8cc",
+            "request_id": 2
+          },
+          {
+            "sha256": "c2cb8c8d6b4af54cff376afd3f264f05a456047112a43af023825cac123581f2",
+            "forwarded_record_sha256": "95dfd7496741c45bbfb58e9d89441a28a8b1f3d98c825bfd2b0a2bbf6ab9ba61",
+            "request_id": 3
+          },
+          {
+            "sha256": "0635b3ce33ac65d3b5bbe000ffbdb5e8061352687d704abff3f088bc8132642e",
+            "forwarded_record_sha256": "331c749199ab3627649214eb959ffc3f029ddc73d92ab89a0f7bd0ee325c05ed",
+            "request_id": 4
+          },
+          {
+            "sha256": "528d50d86f6e848f3443f78578610ec81671732002b2e3ec6dd0cf62eb635b04",
+            "forwarded_record_sha256": "c729c7b55eb4d5a4a826dc05cc5823af972c50e3b7871e7503e63e13fa8c3516",
+            "request_id": 34
+          },
+          {
+            "sha256": "c3e675b3f7d05a2abe9e825a5253018cfd66033a4974051f7082bcbf0646bdb6",
+            "forwarded_record_sha256": "ad04d0a7497f3b8c181ead0d258c029baf3d01408c66a90eb942b89c73c072fa",
+            "request_id": 35
+          },
+          {
+            "sha256": "cd1d0b8b8fdaed29cc68b79f1d3ba8d1655b99223e33656b52ff3aa083654f4f",
+            "forwarded_record_sha256": "abf78dae36f7631897a20cadcaee2523e74646e322cbf2541eca1d5e63c354d0",
+            "request_id": 36
+          }
+        ],
+        "forwarded_skill_body_sha256": [
+          "85353d66d927ade366203d30aa1ff6c233cbdc660b1f2109a508b5c2a43b2e09",
+          "f42c746610daaa1dcd7047b3b36d194605da4c37767b6e8b165d2885de3e8aa7"
+        ],
+        "latest_observed_native_result": {
+          "status": "native_done",
+          "done": true,
+          "control_step": 972,
+          "step_limit": 1050,
+          "steps_remaining": 78
+        },
+        "image_sha256": "c0641e7a3984732af557ebff81cd3ad7c6aef12dfa9682143173b9dedeb71f59"
+      }
+    },
+    {
+      "skill": "arrange_largest_number",
+      "direction": "B_worse",
+      "available": true,
+      "key": [
+        "arrange_largest_number",
+        0,
+        4
+      ],
+      "scene_sha256": "98706033d8a7fda99b589530145d83be0dadfdb90edab624ab41a295c7ffbe57",
+      "visual_note": "已核对官方结果原字节与API中的实际control_step/done/动作返回。图像供复核；未仅凭分数给抓取、接触或归位失败编造原因。",
+      "E": {
+        "native_result_sha256": "ea87682a5ef1824a77f04e22e412b395f7fe5087366e664618da42c5a80b599e",
+        "success": true,
+        "score": 1.0,
+        "record_scope": "full trajectory return",
+        "native_grade_bytes_verified": true,
+        "API_capture_proof": [
+          {
+            "sha256": "20899e45dc731c4545488310b4ba13a997e11b6a671df53f7109e936169bf8da",
+            "forwarded_record_sha256": "c6b6d488d2270f8a2703a1060d07beaba9ac642ff35859c84e95be4239abd9d3",
+            "request_id": 1
+          },
+          {
+            "sha256": "2d4120d5dddc91b6d9b80d18d27c8caa253c37000afcf1c4f7a150d71f37fa15",
+            "forwarded_record_sha256": "499c453264ea1dd8cf397f92624e72b3c1ccd9be84c9e2bf773a3b9fbc7a9e12",
+            "request_id": 2
+          },
+          {
+            "sha256": "244835e9d152124a402d91386a4058934722a2cdc6a6663022239e7175552160",
+            "forwarded_record_sha256": "e020c8ff87f48ac1d976a860d8ae8d1c69009d59733738bdcae6e54e43cebc1b",
+            "request_id": 3
+          },
+          {
+            "sha256": "1c64efd030beddc1e1b91bda984f6cba27c48abb1f21f8de3aa6528b14c7142e",
+            "forwarded_record_sha256": "24db30e1ffb13b03981f946a021f88653f2d6d83b91a40e4a6b5348da62b6b73",
+            "request_id": 4
+          },
+          {
+            "sha256": "45e9802464d2474928de47118614153799d85f9ebdbde5699c4cdd5e023a3ba4",
+            "forwarded_record_sha256": "229abeb284f7822301605a9f90132fd5701636ed4ed468e94f3ca323a4190b35",
+            "request_id": 31
+          },
+          {
+            "sha256": "a0c0aabdd8f2497135d21f82b157d10daf279156d04ac434c1dff0a892a92ede",
+            "forwarded_record_sha256": "3539a409675bb80ed835676487935f9c8509b105fc585a0c73e1d150b12e7150",
+            "request_id": 32
+          },
+          {
+            "sha256": "a41946b3b1a81905cdebfd03afa6affd14de903b1ac2ab4437cbb52fb6999f7b",
+            "forwarded_record_sha256": "24200ae229b91e05af2f6d5c5104163c0001f9a846309adbcf205c546ba081bc",
+            "request_id": 33
+          }
+        ],
+        "forwarded_skill_body_sha256": [
+          "d8411655badbb507539e54fe228d49de014cad00dfd733b95d8dd8761542f5ea",
+          "ea113aeebeb665dbb244ab630924022a1694d095ebcf8c0e25336a2e31f04923"
+        ],
+        "latest_observed_native_result": {
+          "status": "native_done",
+          "done": true,
+          "control_step": 928,
+          "step_limit": 1050,
+          "steps_remaining": 122
+        },
+        "image_sha256": "bc245527e4d50739d00e743f4db5c8836fcc82f9e61f92f226add5c84c9feeef"
+      },
+      "B": {
+        "native_result_sha256": "982e3afbcc23e6ddae9f2dbb8ae52abade325f336a7e23b5e97a4f4f3c80c036",
+        "success": false,
+        "score": 0.4,
+        "record_scope": "training-input subset; not full trajectory return",
+        "native_grade_bytes_verified": true,
+        "API_capture_proof": [
+          {
+            "sha256": "325527ef3d03c4c3feb81e80779a2c711db81befccf8c0347d59d164a6ea7a54",
+            "forwarded_record_sha256": "7761a1288a9edf1d3f173b1252da79172113a1c2abfa6466a51df05d2ee3a242",
+            "request_id": 1
+          },
+          {
+            "sha256": "7419e46827f2df1d4c960da683b810e94d6570bac97247fad05fbb1a25b4967a",
+            "forwarded_record_sha256": "601c8b2033be8daa0690100d381829c92b6bdabfa78d54172fad7191c73ef2f2",
+            "request_id": 2
+          },
+          {
+            "sha256": "3fa25656c7bf629780d5bfdc0ff0810c5643a27b326202db7f72911b7355a2b5",
+            "forwarded_record_sha256": "5e86afb3ed49a8d91b561f6e3d3593accf9cfe5f99460d50ee4a5f0f6c7242c1",
+            "request_id": 3
+          },
+          {
+            "sha256": "23e4b76a96aa5a16b6e2aaf85735c11b18f4b80cb50b22d95cc0e561392a58c0",
+            "forwarded_record_sha256": "2b8c6ce79ee8ef4bbf60cb4863e746345ceb0a726bcdb4e867294a833f46bdb7",
+            "request_id": 4
+          },
+          {
+            "sha256": "6ecf69dee8215ce28ba26982ad239724b16569d19829becc6cd239a471d8d7c3",
+            "forwarded_record_sha256": "bd3e37014c6af644c3fcaa2dc2ce77a4c9c5bed4cdd88eef3601e79321637dae",
+            "request_id": 31
+          },
+          {
+            "sha256": "c814b2067b077ca97306b12e6d67edf94ac0e70a4ac2c7eef6343c1d39ebfb52",
+            "forwarded_record_sha256": "3f70c8526b279c9a6c9d42d07f056d61b540d05dac7164b8c6b5a7eab20f034f",
+            "request_id": 32
+          },
+          {
+            "sha256": "fb5e4593305c8f6e00397e04a6d7c4a22410bf328c6c390500b7ba5b3a1dac2b",
+            "forwarded_record_sha256": "826ae7aa7ce001b25a183ce1bc1082668055ff406defcc96fb0522fd9d2a18d7",
+            "request_id": 33
+          }
+        ],
+        "forwarded_skill_body_sha256": [
+          "85353d66d927ade366203d30aa1ff6c233cbdc660b1f2109a508b5c2a43b2e09",
+          "f42c746610daaa1dcd7047b3b36d194605da4c37767b6e8b165d2885de3e8aa7"
+        ],
+        "latest_observed_native_result": {
+          "status": "native_done",
+          "done": true,
+          "control_step": 1050,
+          "step_limit": 1050,
+          "steps_remaining": 0
+        },
+        "image_sha256": "a3d29b65bccb70d93a96c298817985dc3b61ef59f1ce194c01fd4e33658a209e"
+      }
+    },
+    {
+      "skill": "fill_egg_holder",
+      "direction": "B_better",
+      "available": true,
+      "key": [
+        "fill_egg_holder",
+        2,
+        55
+      ],
+      "scene_sha256": "fe091e59f631b931fabf721797baf9a257b2308dc0cd8b06384ac4c83d927d9f",
+      "visual_note": "已核对官方结果原字节与API中的实际control_step/done/动作返回。图像供复核；未仅凭分数给抓取、接触或归位失败编造原因。",
+      "E": {
+        "native_result_sha256": "8d16225ad2f1aa586d8a9acda0534ada5ccf2af054b8e0e0e5ec4a8794fe351a",
+        "success": false,
+        "score": 0.1,
+        "record_scope": "full trajectory return",
+        "native_grade_bytes_verified": true,
+        "API_capture_proof": [
+          {
+            "sha256": "1e08c5a0f867da1fa9625913483eb59e912e9e7240de6dcac4dd9cc45b43cdd0",
+            "forwarded_record_sha256": "8bf0abdaf095dddafba3683929cd5e59364739fd7bb180ee0f8dad2d463c8e8d",
+            "request_id": 1
+          },
+          {
+            "sha256": "8c6a5fffe1860c0cd61c5c6bd97e6378d5d685218719cfeff5f45eb736ad558e",
+            "forwarded_record_sha256": "88e3ba775ef1f2bb9bc673010b5b70365f712b60629438916e2ba4ee67c6cc3d",
+            "request_id": 2
+          },
+          {
+            "sha256": "a2a5dc863215587a4f405845099957223cded03cb984dccff0915cda6df01335",
+            "forwarded_record_sha256": "eb2945692245a6f9ead6f4be6deb33517e4389c387c8a840ad64839950b49c76",
+            "request_id": 3
+          },
+          {
+            "sha256": "82d11b55c6dab562200b73fe41ee7c336678279908ffa27346f81a120ecd6dd2",
+            "forwarded_record_sha256": "26bfc87750f8ad8d6453a1c59ff9554a9cd384ec2706134a2288b4f2b8060819",
+            "request_id": 4
+          },
+          {
+            "sha256": "ce6961abec9e9fa7aece5b72813f70eea3fb2205af11f354f35b35dcee4dd4c6",
+            "forwarded_record_sha256": "cb50ce1a4ad4438b65b8a7df2a866fa8efa91e5ebb5e450072a18affa5a92d19",
+            "request_id": 39
+          },
+          {
+            "sha256": "3ab46121008f847797622b9b77c29af718841fc34f6be359d5882bdcb44f445f",
+            "forwarded_record_sha256": "2504132ebc72a93a7386b01e931de9e4c70be752303e4add1bd6db5aa7649a85",
+            "request_id": 40
+          },
+          {
+            "sha256": "822e844d8e537a3990f4a4e7cdd549305ba9963335b53b88885ca287a75ffd79",
+            "forwarded_record_sha256": "7d68f88d153c4a90d89ff64e526a9523629614189500bc417227de3f0715ee4d",
+            "request_id": 41
+          }
+        ],
+        "forwarded_skill_body_sha256": [
+          "3a2e5b040e8caceb0e14a1a908ea3b25fb1a57e9c2023b8af2c0466b059ad869",
+          "418e29f5312f8d4b751cfc39fd999571588ed53485fcce8fe5cf41e4392b119a"
+        ],
+        "latest_observed_native_result": {
+          "status": "executed",
+          "done": true,
+          "control_step": 700,
+          "step_limit": 700,
+          "steps_remaining": 0
+        },
+        "image_sha256": "071a92965df319683d57c077cb010d7c636407a88d390514dc63da5006200dee"
+      },
+      "B": {
+        "native_result_sha256": "2885ce825371ab68f8e8159d4ac0cf259fe781ffceb9047fca1de073b24f1eef",
+        "success": false,
+        "score": 0.25,
+        "record_scope": "training-input subset; not full trajectory return",
+        "native_grade_bytes_verified": true,
+        "API_capture_proof": [
+          {
+            "sha256": "fe8055551c66d392588d2da2954bf731bc1eda649ea3ae21b6fe5314ead9606e",
+            "forwarded_record_sha256": "b1e34d3b22d39419349ce29472c3379568011366d5edf44b030f6410b777d6e4",
+            "request_id": 1
+          },
+          {
+            "sha256": "30f990e4a5f0c0c9599894584d29308fb24ff6c3ca3fbb58af29494f19b6caa3",
+            "forwarded_record_sha256": "164c24831cbcbf6e2fba1013b150c9dce78c133111926dd7fbff5cf69880ea15",
+            "request_id": 2
+          },
+          {
+            "sha256": "7b33fd120004ed31d385f2b05d8423c03fa1de9b66a74e4ec33478be02d02b04",
+            "forwarded_record_sha256": "a51749390db8de50b6e2f717aaeb92240e963e97687156d79810833ec3bb374a",
+            "request_id": 3
+          },
+          {
+            "sha256": "9e3467e9db34c6b8f05254b6a50195956609d3696f0947fb2f981b5f68cc255a",
+            "forwarded_record_sha256": "a885770cc201a15c40ffd381b71aa92d4ee83ff03babe6921b076850a11a274b",
+            "request_id": 4
+          },
+          {
+            "sha256": "9114c09acc4d837353bbd7751cd38ed3a80a74367dc8ece2f44b1d6182621e21",
+            "forwarded_record_sha256": "6d72b03f58ebeb5e5a15d44a8649e1338b88c6da58a7e708aeab3cc597360abc",
+            "request_id": 51
+          },
+          {
+            "sha256": "02be46f26dfb78bf193b6f667e15000cc0aec25710da78f1b0b0e3278cd0b570",
+            "forwarded_record_sha256": "98837a0ab664d4314d31cab3880fce2c863168da6bd52309bced2e458a21fdab",
+            "request_id": 52
+          },
+          {
+            "sha256": "5f3fdf0796b0508daba6e14431ca230cce031985412d90906c8809121e992375",
+            "forwarded_record_sha256": "414e70bfdde60ee2396c21f4a2732a2548d6aa23b217b67a8dd089dd91f834d1",
+            "request_id": 53
+          }
+        ],
+        "forwarded_skill_body_sha256": [
+          "0b0f45d753964a89c88bbcb9ffbfb9b1c070ab2e10d54c71d7b7a5d1c1eb95f7",
+          "f42c746610daaa1dcd7047b3b36d194605da4c37767b6e8b165d2885de3e8aa7"
+        ],
+        "latest_observed_native_result": {
+          "status": "native_done",
+          "done": true,
+          "control_step": 700,
+          "step_limit": 700,
+          "steps_remaining": 0
+        },
+        "image_sha256": "12b53f2c49a2ea8cc1865b8f0df0131d7570183835026392e8b75fbd20ae3935"
+      }
+    },
+    {
+      "skill": "fill_egg_holder",
+      "direction": "B_worse",
+      "available": true,
+      "key": [
+        "fill_egg_holder",
+        0,
+        10
+      ],
+      "scene_sha256": "a5fb2318cf150bd8710c9ce8ea02fa52270999909f72391596210a346f01e706",
+      "visual_note": "已核对官方结果原字节与API中的实际control_step/done/动作返回。图像供复核；未仅凭分数给抓取、接触或归位失败编造原因。",
+      "E": {
+        "native_result_sha256": "d1d3bf580e4715f0e2da4b5cb34fbe5d98e665391fccf42a7a2aabf4094ae679",
+        "success": false,
+        "score": 0.25,
+        "record_scope": "full trajectory return",
+        "native_grade_bytes_verified": true,
+        "API_capture_proof": [
+          {
+            "sha256": "b54baaeb7f2f19522509c6783bafea0fb9efca978e49e0b004a66b3e776b5325",
+            "forwarded_record_sha256": "0046a32ae7a5a16ed0001725f9933ee0d4c77434619c58d2c0ae8ac81dfdd99b",
+            "request_id": 1
+          },
+          {
+            "sha256": "338a5a010b6bf1378a51d82d126a4b688808671f49ca3e455b8f231626871cb4",
+            "forwarded_record_sha256": "2c14da498f352aa1fbcb1e3300e6510ce050daf673ae545bf2a90be625a1cbc7",
+            "request_id": 2
+          },
+          {
+            "sha256": "037bc2fce9aea296551f4ba9e61d6cc2668dd1e68948c850ec1f23b646204cb8",
+            "forwarded_record_sha256": "d383697b5cd5cad1180683bd62acd772464cb4b1f7c697aa8a7e17b776048693",
+            "request_id": 3
+          },
+          {
+            "sha256": "3d0079a3826305ba70b3f489857a993735eaf665f5e6c3b2f1635fac4527bed9",
+            "forwarded_record_sha256": "0c53ea6254fd5b56e51f25d400eed2efc86c7f601fd835af8fdc15410961cff0",
+            "request_id": 4
+          },
+          {
+            "sha256": "672213b83b3c4993a5326e0dabe80f196bbe33b6756058f6697b2beca7a2f028",
+            "forwarded_record_sha256": "781bba25230e5825492eaec581038f5354abf129da784278b6fbf4243e80ac2b",
+            "request_id": 34
+          },
+          {
+            "sha256": "3537bc0a58ace1a825d31f6eeda8acdc49ac4de55c9a37f612245f1b11bac657",
+            "forwarded_record_sha256": "674e1e11f3fa597a7acbbb0bf58cf3b8a9136c3ed16e655a1228298adacd4cd1",
+            "request_id": 35
+          },
+          {
+            "sha256": "89bfdd08792cb27c559a774e04c69c19859bfa4db3c6659f302ef6c4f2fe6ecd",
+            "forwarded_record_sha256": "04398767956075c64497ddf94b8434e1d38a328aec3fc7d12728bff9d06ca8f1",
+            "request_id": 36
+          }
+        ],
+        "forwarded_skill_body_sha256": [
+          "df1aa26bb992ad4a3c719ca012b2caec8b142936ac2a96c6016c233fd251766f",
+          "ea113aeebeb665dbb244ab630924022a1694d095ebcf8c0e25336a2e31f04923"
+        ],
+        "latest_observed_native_result": {
+          "status": "executed",
+          "done": true,
+          "control_step": 700,
+          "step_limit": 700,
+          "steps_remaining": 0
+        },
+        "image_sha256": "2b97f6b3641149d75e57dc84538651407992ad6eba6bae11d61263ae7fab3a90"
+      },
+      "B": {
+        "native_result_sha256": "c5974d4b4246bc31ba26e09420d6cfa4bdf9d4385e64ef777005adbdd18c0d6a",
+        "success": false,
+        "score": 0.0,
+        "record_scope": "training-input subset; not full trajectory return",
+        "native_grade_bytes_verified": true,
+        "API_capture_proof": [
+          {
+            "sha256": "79371312ea900cf4cf7efd8997035d66a97e0fe6cf685b7abe7f3ca586ecee65",
+            "forwarded_record_sha256": "1adbcc74626760a9f5175b3401b7478bfad2d94ab0eaa4dcc75613a21a8dc98e",
+            "request_id": 1
+          },
+          {
+            "sha256": "875d5516d0d20300cbbfeef732ffb62ed0d95dede61285ce9423fdacb5e90c13",
+            "forwarded_record_sha256": "06cab4fe49de2c499685516ab5c1123ebef04a749347a5226dd7ae207b3f804a",
+            "request_id": 2
+          },
+          {
+            "sha256": "2f3f2f198eec778447c5568ab486e3917d945844c0ff8d7d8b8a03a351b04d44",
+            "forwarded_record_sha256": "269d9dc2cfd5645c708c84e33635c04a8cee3f783d1261510a7ec986fbd4ee11",
+            "request_id": 3
+          },
+          {
+            "sha256": "3dc71e0fab6f1789f7fa51b8154228a2d91a21a095cac5ba18285f769186f5e0",
+            "forwarded_record_sha256": "4596b0a89e817b36e823c7e483920eceaa7e4b8f1cfd202e49a7551bf003e2f9",
+            "request_id": 4
+          },
+          {
+            "sha256": "81ac6323eed36f3e74da6c48edebd2279698c706f1c6bebf5e7c08d3ab92c9e0",
+            "forwarded_record_sha256": "7a33563b2056a7c5ed6c1cb0f208fea102389a9cba74177250488fae86d217ce",
+            "request_id": 65
+          },
+          {
+            "sha256": "494f0bf3c1e3389cb6b0e1e2b0428fb7db543ca5284c41a9aef2f370c1eed703",
+            "forwarded_record_sha256": "102cbd79ae828c1071a0ad99e9fe8c05fcd496eac7c429843248350dfb36b9b6",
+            "request_id": 66
+          },
+          {
+            "sha256": "c13f9eae8390d7d316f40ec23fbb303cb3f0fe30b6d9ca1fb310d2d0960542e9",
+            "forwarded_record_sha256": "4d70d294009b4dc7ecbc60e538992e47ec37607c552685bc2e60594521760046",
+            "request_id": 67
+          }
+        ],
+        "forwarded_skill_body_sha256": [
+          "0b0f45d753964a89c88bbcb9ffbfb9b1c070ab2e10d54c71d7b7a5d1c1eb95f7",
+          "f42c746610daaa1dcd7047b3b36d194605da4c37767b6e8b165d2885de3e8aa7"
+        ],
+        "latest_observed_native_result": {
+          "status": "native_done",
+          "done": true,
+          "control_step": 700,
+          "step_limit": 700,
+          "steps_remaining": 0
+        },
+        "image_sha256": "e524e0bc4ac574a84a519240b076c6cc388f31c93ec846603e5310283fcc627d"
+      }
+    },
+    {
+      "skill": "fill_pen_holder",
+      "direction": "B_better",
+      "available": true,
+      "key": [
+        "fill_pen_holder",
+        0,
+        10
+      ],
+      "scene_sha256": "1a2bdb04f096bf0ccf8c6df4d3092db779ff070da64620448391de638dad3633",
+      "visual_note": "已核对官方结果原字节与API中的实际control_step/done/动作返回。图像供复核；未仅凭分数给抓取、接触或归位失败编造原因。",
+      "E": {
+        "native_result_sha256": "275f5c2854e7ce67646f89c4e173d21d0521aa550b2c895dc85fa8edf62bcda2",
+        "success": false,
+        "score": 0.1,
+        "record_scope": "full trajectory return",
+        "native_grade_bytes_verified": true,
+        "API_capture_proof": [
+          {
+            "sha256": "3083d77a178e40e8648d514a73432b1c122842ee854108147e07b81895f23f0b",
+            "forwarded_record_sha256": "f8848e91cad1706d0c537480963df8a0bb6551b7a0ab1ea67ae43fbf6145911a",
+            "request_id": 1
+          },
+          {
+            "sha256": "fe9dd3ff07d8a816a34cba6030782a572aabe8bbcd422d550ddb12584ff57a46",
+            "forwarded_record_sha256": "95bbe6574fe3fd5d611690d59be28bc3d8e50beaf642a500d794653a50928d10",
+            "request_id": 2
+          },
+          {
+            "sha256": "668faafb20dd2b6770f04f5c75eb89cfc98ccbef07d7ab6074a8a55c16bf13d5",
+            "forwarded_record_sha256": "b621d81d999659d0616241e66287931ab0b7f20d3611887e9179c2947cb055d8",
+            "request_id": 3
+          },
+          {
+            "sha256": "4f2179a790dd8943c824995f1cb06e8b45d60413a1ddfdf646d887ec705fcd39",
+            "forwarded_record_sha256": "ab94830b24d6e268aaeeec9192f8795760a4fa70a999978b97465f82d90c881f",
+            "request_id": 4
+          },
+          {
+            "sha256": "f9be758696cd587c36143ff089a5289c1355ee04776736aa8bf61aa5ada82ada",
+            "forwarded_record_sha256": "cda1b35a9d4a9784c9366772b7db144cae97d0c7a61c3b1ac8485c7c0e2efc58",
+            "request_id": 78
+          },
+          {
+            "sha256": "35013fdd1963e73677fc97c096fe5ae49c38d7528dc63dfc7538e413d30adc4f",
+            "forwarded_record_sha256": "cb8244dc698218a113d0e877365dd4dc67939450bdf06abca84a6d29cc58f3aa",
+            "request_id": 79
+          },
+          {
+            "sha256": "36ced837aa74e4e4b7165ac24a9883579280cbf6f0b93157e0b14d1ed6538e47",
+            "forwarded_record_sha256": "d70e32e16c8da2fedbc80eded5efa74923ad22a91f8121a9ac2029cec182756c",
+            "request_id": 80
+          }
+        ],
+        "forwarded_skill_body_sha256": [
+          "4415c86b2aace2079923145111f7a86ca9cad30e3e651f4df6a4e9accca350da",
+          "ea113aeebeb665dbb244ab630924022a1694d095ebcf8c0e25336a2e31f04923"
+        ],
+        "latest_observed_native_result": {
+          "status": "native_done",
+          "done": true,
+          "control_step": 1100,
+          "step_limit": 1100,
+          "steps_remaining": 0
+        },
+        "image_sha256": "cfebce9255b6634fca26ef64ace687a3497fa2c3c3dfa0b1390f856b66b40662"
+      },
+      "B": {
+        "native_result_sha256": "62f0cd6f78edc9661b2e83ab5b5779afac383c0fffc4a225cdd0c01c1baaeabb",
+        "success": false,
+        "score": 0.4,
+        "record_scope": "training-input subset; not full trajectory return",
+        "native_grade_bytes_verified": true,
+        "API_capture_proof": [
+          {
+            "sha256": "cf669044d2cc8d46f537311197cd969dbbd64b7ae5ae9454f4fa5cb8c0be7206",
+            "forwarded_record_sha256": "ec79b7fa169a1e6e778ff811de692563c0ce5206e768e862d5cd8171c50b6dc5",
+            "request_id": 1
+          },
+          {
+            "sha256": "760bf45c10392ca929544d9e7367c3a90a95cdde5156deaf29169a4be501bf02",
+            "forwarded_record_sha256": "82c83aa5dc785eb900c998acaa830b9212e1e68a7c77892c76809504259c1c46",
+            "request_id": 2
+          },
+          {
+            "sha256": "85dbe0b55c83a9cfdf7cb7ff6fad54b58ebc2b4823bc6233cedeabcabfece11d",
+            "forwarded_record_sha256": "910d889a954f5aa8db15d202678b26a5a627d3d92127ca61d4a19be7b289baa7",
+            "request_id": 3
+          },
+          {
+            "sha256": "26b9b182c9c23bb80f443a664abc7f1cfa1452d460c0e0f97c5d0881c58c6944",
+            "forwarded_record_sha256": "98c649c2b90952b38f6f4aba8581ea5279b85785bfa62c3ead630ad352d02fef",
+            "request_id": 4
+          },
+          {
+            "sha256": "8de9154c282c91de58e93443993c2bcd7481ed82103d86a33424ba3f252b24aa",
+            "forwarded_record_sha256": "53fe17be5c52af3fd461056bbcdb56184946187647486454e5bb706defb32f10",
+            "request_id": 88
+          },
+          {
+            "sha256": "bc7de9e3d700ffae751006abf9acc2f1ba203e91368fb6f930b7aae04710e1c2",
+            "forwarded_record_sha256": "3a76c7779b6e7455ed2a07abc88f5435529d71b9bd927819d55673ba87ccb2ea",
+            "request_id": 89
+          },
+          {
+            "sha256": "37d6d40966eeffb9914c1d79e6143c2b9892a32c4f23f018dac260a202535a6c",
+            "forwarded_record_sha256": "45bf471df55206e5d6f296ea41e0a46666c2ea66c7b56d64357540c01a385b42",
+            "request_id": 90
+          }
+        ],
+        "forwarded_skill_body_sha256": [
+          "51471353e7858c5ae213a877cb33c7d5dad9f2fcfcafc41b9edb66cdabdee6a9",
+          "f42c746610daaa1dcd7047b3b36d194605da4c37767b6e8b165d2885de3e8aa7"
+        ],
+        "latest_observed_native_result": {
+          "status": "native_done",
+          "done": true,
+          "control_step": 1100,
+          "step_limit": 1100,
+          "steps_remaining": 0
+        },
+        "image_sha256": "4d2fa09606d3247162c12457c10c58129c21868c323d9360bc365a4182ff2b80"
+      }
+    },
+    {
+      "skill": "fill_pen_holder",
+      "direction": "B_worse",
+      "available": true,
+      "key": [
+        "fill_pen_holder",
+        1,
+        45
+      ],
+      "scene_sha256": "b8539c240e626519a2592c05d2cdfe92b7f2641e97aebce90466d9da88fa68d7",
+      "visual_note": "已核对官方结果原字节与API中的实际control_step/done/动作返回。图像供复核；未仅凭分数给抓取、接触或归位失败编造原因。",
+      "E": {
+        "native_result_sha256": "c39b4f3b7b3c2919ea2cdb8af05a79c7d11e8d0f07f83f01db5190cfad26bd8f",
+        "success": false,
+        "score": 0.4,
+        "record_scope": "full trajectory return",
+        "native_grade_bytes_verified": true,
+        "API_capture_proof": [
+          {
+            "sha256": "f2adaac34ff580fa10918e749d1d778a64d88801f39f5696bf4ddacef5690a41",
+            "forwarded_record_sha256": "3ef954c5c5a4293a9fbdb4b6d9f2364a4fc990dac4760b8c9380d6624b5e8b91",
+            "request_id": 1
+          },
+          {
+            "sha256": "a68143fa0d0c3e7b72a5b76d900ad09968c367a867b40b058bce2f5d082d5261",
+            "forwarded_record_sha256": "6665b03091f27cafa4c34aadb52ed9200c7143996f5e9a6dc1b6af25342fe462",
+            "request_id": 2
+          },
+          {
+            "sha256": "31ddab7003143c84eb5198f25645ec0c0d96f660f9627659c3c864c604bb287c",
+            "forwarded_record_sha256": "a7dd0d39cc0e337b83ee7f75792f496ab89736b9390dc90e742c9a7249db2bf7",
+            "request_id": 3
+          },
+          {
+            "sha256": "c369767aa46372e996d2d039bc8c229ff9147855da7d38069ab5a80093406733",
+            "forwarded_record_sha256": "75dd3dec1a24f5b8508068b03d8ba1a0b89928d27699441ea1a68bd497c21a8c",
+            "request_id": 4
+          },
+          {
+            "sha256": "44f40b96ade7b150f1d476d65cc039a5857aa554515bc415aa968df27f592287",
+            "forwarded_record_sha256": "768bcd4bcc19ac72b90ee27bc3c4c3dfb6e797d19ad8d0f055452e249df6f5eb",
+            "request_id": 61
+          },
+          {
+            "sha256": "47ee8fbabb5682e3aaef41420196ff7edfb3e00cac1d0927e6cdc7bf0b32b0ff",
+            "forwarded_record_sha256": "21c4e9b53447c87bccc296d8526a1d64a383ea5cf4e0f57f8d0cb0d71ca31dfa",
+            "request_id": 62
+          },
+          {
+            "sha256": "6b420dba86df9a40fce17b3f9829b8bc9b631ce380c97bacb4f0b47ec8daf04b",
+            "forwarded_record_sha256": "a4e018ec635ed5148c8e127352c817427e3f13dc2b19b38192d6d18c06808d4e",
+            "request_id": 63
+          }
+        ],
+        "forwarded_skill_body_sha256": [
+          "285df4a24462b6f7ae63dc2fb2a11674e19a9d80af5cb00d080a28ad3dbd3762",
+          "418e29f5312f8d4b751cfc39fd999571588ed53485fcce8fe5cf41e4392b119a"
+        ],
+        "latest_observed_native_result": {
+          "status": "native_done",
+          "done": true,
+          "control_step": 1100,
+          "step_limit": 1100,
+          "steps_remaining": 0
+        },
+        "image_sha256": "fffc70e9d87f7c9c33e1c4d310be29ef7f3b410c309a88eb2a4b78fc66f78fc9"
+      },
+      "B": {
+        "native_result_sha256": "bce8c2ec243936bd86eea33d67b39353528898513eaa3444382e5a1bf8c17a05",
+        "success": false,
+        "score": 0.1,
+        "record_scope": "training-input subset; not full trajectory return",
+        "native_grade_bytes_verified": true,
+        "API_capture_proof": [
+          {
+            "sha256": "c39b9d3b2e2dbe96fc31f32317300fcf4edbacbb5f2a5a2a272da1b06d5c26f1",
+            "forwarded_record_sha256": "5e00bc1ddf508c2852f505aae53b8e5d1f2a11cdb5d6337dd3e113df1b3d1aee",
+            "request_id": 1
+          },
+          {
+            "sha256": "f2159173cb53babdf8d1a210e3ccf8fc6770dcc8f16d0f338fdb3905e29ba79e",
+            "forwarded_record_sha256": "09b531f09f66e357fddc877dc027a25872d108afc9637979a96d3de89ecb4204",
+            "request_id": 2
+          },
+          {
+            "sha256": "18162d452a6de86e2fdcd58ebf6048a4430254dc2fe5fc5497f194d190f66c16",
+            "forwarded_record_sha256": "47b4a2c50c7746520399dfdb4cc523e04e61f8405b2afbd95afa4a3cf833eaee",
+            "request_id": 3
+          },
+          {
+            "sha256": "5beb961dc5f5077bea807553c9ca156ff4624468847e16454023f762a689b8bf",
+            "forwarded_record_sha256": "ebe99d558179b04c777c218eb2bb0a280dd7dcbd9f53b296fa9e1c7ea7ba248a",
+            "request_id": 4
+          },
+          {
+            "sha256": "f6874e3ad08b216093deec7f8962cd9dcd64c9d07244445f2b228e134a5aa2b8",
+            "forwarded_record_sha256": "3127688280d84eac27bb268cea74ce16d5d18bd65dcd6b1813384295defed2c6",
+            "request_id": 98
+          },
+          {
+            "sha256": "971a75650ad8e0803e18ea579893457b37f591f36bfa5a5af0f1567192656332",
+            "forwarded_record_sha256": "fdfd35ae4427f591df6aaa496de5a2d6891eebbeedf99f0dbdeea2e8b59b6451",
+            "request_id": 99
+          },
+          {
+            "sha256": "dc40f9cb3fb70a338ce57e1518ab1731e0abaed3cdc998a8a886fc8df611b1e7",
+            "forwarded_record_sha256": "15323f07150394bcc8fe89126dd6dce442d61b50a7844a534bf2b7a9164a7239",
+            "request_id": 100
+          }
+        ],
+        "forwarded_skill_body_sha256": [
+          "51471353e7858c5ae213a877cb33c7d5dad9f2fcfcafc41b9edb66cdabdee6a9",
+          "f42c746610daaa1dcd7047b3b36d194605da4c37767b6e8b165d2885de3e8aa7"
+        ],
+        "latest_observed_native_result": {
+          "status": "executed",
+          "done": true,
+          "control_step": 1100,
+          "step_limit": 1100,
+          "steps_remaining": 0
+        },
+        "image_sha256": "1976fb52182a757e14e5b2e5c6f590cbc70de8952446c992c82a79261841ffe8"
+      }
+    },
+    {
+      "skill": "fold_clothes",
+      "direction": "B_better",
+      "available": true,
+      "key": [
+        "fold_clothes",
+        2,
+        16
+      ],
+      "scene_sha256": "5fb6b5aac628b630144c367960c0e4e8d6b2777476f8e6483831c0b9ba72a320",
+      "visual_note": "已目视核对：B衣物呈较紧凑矩形，E仍较展开、不规则。B在442/500步done，E到500/500步；官方分数分别1.0/0.2。",
+      "E": {
+        "native_result_sha256": "05c10f0ba62dba20de6647adf90d18d522a3927fded8b3893d7f225d73db3fbc",
+        "success": false,
+        "score": 0.2,
+        "record_scope": "full trajectory return",
+        "native_grade_bytes_verified": true,
+        "API_capture_proof": [
+          {
+            "sha256": "0e02588916701af9c2c451450dd83c9fec7dc73f127fc0042181ba1a655f2716",
+            "forwarded_record_sha256": "fa5049a413232d836cbcf434d24abb9a841273141aa3e0e64e6b5ec0ff32e714",
+            "request_id": 1
+          },
+          {
+            "sha256": "3b7f412bd43799f761414e247750bc616ccf0e822af4957bb401dff99c390d2b",
+            "forwarded_record_sha256": "2d5c96f4a48f6834e5939d4faf6ebda6060b0967d78a73157d2b82aee7351db3",
+            "request_id": 2
+          },
+          {
+            "sha256": "349205fca89431ec604065adbcbf87fe29b51ea758c7684e468e2765cdeb9729",
+            "forwarded_record_sha256": "017015c4c2f581b1a604bef2b5d54ea96d2c4847470986759c664b4e2279d455",
+            "request_id": 3
+          },
+          {
+            "sha256": "c27cb674b7a4d2ee9f05c371446f47a26680522914cea652cc0860437a844fbb",
+            "forwarded_record_sha256": "236e5ae4f1a56a12df7783c218c81c986d69b2fb1ed20cdb8be308d6d65393ef",
+            "request_id": 4
+          },
+          {
+            "sha256": "3a1eb71dd42ffc355067df3066653165abb4043f8445e1bb90840cc2b8d87f87",
+            "forwarded_record_sha256": "e543e4775e1168c532ae55dc7aa9ac5c983bc72fd6ba33a20c49c8bd39c1bbe9",
+            "request_id": 6
+          },
+          {
+            "sha256": "89a1b23a502a033128bacd67fd4e92524fcf7f8799063780e486da2325da2786",
+            "forwarded_record_sha256": "42e92b7a0525cbe764a0e311f16ae0dc639fd51f54dd9cd7c014cc1234135d1e",
+            "request_id": 7
+          },
+          {
+            "sha256": "40aa184aef562f5e53357559869fdc65e7a83c614224b1a1c4d4795b3d699400",
+            "forwarded_record_sha256": "b291acacc2137915ba207cefa84b108021705aac1aa363bb992e750f6365a0ee",
+            "request_id": 8
+          }
+        ],
+        "forwarded_skill_body_sha256": [
+          "33805122bac5579b5e48a19a20aa505c171f6fa343e20a7f1164f0835000caf2",
+          "ea113aeebeb665dbb244ab630924022a1694d095ebcf8c0e25336a2e31f04923"
+        ],
+        "latest_observed_native_result": {
+          "status": "executed",
+          "done": true,
+          "control_step": 500,
+          "step_limit": 500,
+          "steps_remaining": 0
+        },
+        "image_sha256": "d10f88a5cf64ca67c0a3636b3a75323fa991dc91a3843aa21aa0beae2497ced1"
+      },
+      "B": {
+        "native_result_sha256": "2ed2c1d65535064cc242e519fd876d834920106809190ee89a7305170edb84ae",
+        "success": true,
+        "score": 1.0,
+        "record_scope": "training-input subset; not full trajectory return",
+        "native_grade_bytes_verified": true,
+        "API_capture_proof": [
+          {
+            "sha256": "77907e20b57e677787e036432e07aa88d4194301103c6bb57976cb449b0c9e0c",
+            "forwarded_record_sha256": "fb29631cb318def2689b3456edae02daad08330033a2f651ae37b6166171077f",
+            "request_id": 1
+          },
+          {
+            "sha256": "ecd712ea5d86a573387e1bc54d0773a06961e6568cb1e7778797aa9f48016555",
+            "forwarded_record_sha256": "0ae41b52b2a1f3ce024e45f0ed0b7752fda4e6ac03201eac5f91ab6c14696411",
+            "request_id": 2
+          },
+          {
+            "sha256": "f9956f89ec38f6cbb152fe08821d4abd4ba319d9f34f82b645d0b5321f46c58e",
+            "forwarded_record_sha256": "b410597e38e11f3b3a5365aca00aa789ff45a0082fb21a0a10f035b1711b6c7f",
+            "request_id": 3
+          },
+          {
+            "sha256": "6357ae9e59fb732bdf8d11d28e588da523a9fc832bbc0f1f4e6ef0277f81a6da",
+            "forwarded_record_sha256": "773bc1ae20ba320a741510c13c139f6dbfc5b41154c832dc6685e9df1aa165d4",
+            "request_id": 4
+          },
+          {
+            "sha256": "f30cdbbc2d03ec3f0ce271d99cee012c6c35742c3c0e3153d850aa58ba68339d",
+            "forwarded_record_sha256": "9bfde8e9d62b5e3b738f2ebecc41195143d44f48f4be2f5e235e1b50bdb0f22b",
+            "request_id": 43
+          },
+          {
+            "sha256": "545a9a24c4bd84e2eecc4f9baef8ba37213946d2414b5c13649a988f47e0d1f8",
+            "forwarded_record_sha256": "af324770ac5e02d85cfd6148835e983a52f6734bcf116d23b8a3ef2fe0dd9fdc",
+            "request_id": 44
+          },
+          {
+            "sha256": "63045c6d59f7242a6ab5d748ad66defbcf70e2e835b850381d4dbb8db882de66",
+            "forwarded_record_sha256": "47909598a69433c5885600d03c9e20e793d76792a55b988d22bec4b913b259dd",
+            "request_id": 45
+          }
+        ],
+        "forwarded_skill_body_sha256": [
+          "880dd0dd94310bd67bd66765f53c0b3f7d8a5d1c3ef955d4fe4954f3d7b9adae",
+          "f42c746610daaa1dcd7047b3b36d194605da4c37767b6e8b165d2885de3e8aa7"
+        ],
+        "latest_observed_native_result": {
+          "status": "executed",
+          "done": true,
+          "control_step": 442,
+          "step_limit": 500,
+          "steps_remaining": 58
+        },
+        "image_sha256": "26fe05a2b69a1625ef7e1924daefdc2949971a38da2ffc849c97e6d4bce27f83"
+      }
+    },
+    {
+      "skill": "fold_clothes",
+      "direction": "B_worse",
+      "available": true,
+      "key": [
+        "fold_clothes",
+        0,
+        41
+      ],
+      "scene_sha256": "998e767e12a4744d22fd6947b1707207d1fff511f95714b85e201bfff1dd487e",
+      "visual_note": "已目视核对反例：B衣物展开面积更大，E更收拢；两侧均在预算前done，但官方终局判定不同。不能把done当成功。",
+      "E": {
+        "native_result_sha256": "d567d3313f5218fc08d15f65fb93c63457446edb172715fed80b3053babc1dc1",
+        "success": true,
+        "score": 1.0,
+        "record_scope": "full trajectory return",
+        "native_grade_bytes_verified": true,
+        "API_capture_proof": [
+          {
+            "sha256": "c8ca257624d69357b5604c0859481888979216f4db8bb4c1abd7752488f5e627",
+            "forwarded_record_sha256": "ea56bdf7895925ffa652ce491bb3dc9f7e31cb0fa52029516f5924f343bf14ca",
+            "request_id": 1
+          },
+          {
+            "sha256": "23cbe0e292f5a32980b76e890d9d95b583799711eed9d0a0d8aa67a01a5907b2",
+            "forwarded_record_sha256": "2d15a45781df1e0331b048de173747e543e4217a7028092ce8177be28ab3e2d8",
+            "request_id": 2
+          },
+          {
+            "sha256": "e7c89a42c89f03b250657ffa3da8e38ecc98a4f1c44d1cc375e0dcf04d1c5b24",
+            "forwarded_record_sha256": "bc551c35b4e5e64d4613ab9863f90ccd6da290a70d85770eec9eb975dc739c56",
+            "request_id": 3
+          },
+          {
+            "sha256": "e75e7f115d15e1200d700ccfd30feb869751724eab47a15dec4c171d9d26c64b",
+            "forwarded_record_sha256": "2e49baf5a99a30deb4383a4de5a26c16477e6dbf0cb0b0144821fb1874e50238",
+            "request_id": 4
+          },
+          {
+            "sha256": "4157eface5973f324b016d3fc3a12208f782a0537788b3e1387189d06f8cfe70",
+            "forwarded_record_sha256": "f0d328c447c80430a3c02b5c8c51fcb75a7ab078f184b0b65e33347ad07bd02c",
+            "request_id": 41
+          },
+          {
+            "sha256": "097cbab50b2f06f07ff003c5349c11b02d02631168c4bceaece2b460c67d3d80",
+            "forwarded_record_sha256": "6bea2271427401e6e180d99f6b30c58ff6d7fb234d04de440ac1b0a7e604431b",
+            "request_id": 42
+          },
+          {
+            "sha256": "e698061e514fa3f8fe589c85f4f78637ba93b6ec5cec91dd269550bc2624e47f",
+            "forwarded_record_sha256": "b823cada0626400deb2e3f3b730d878fcbfcb7d4fa5147f32be38f3ba158b5bd",
+            "request_id": 43
+          }
+        ],
+        "forwarded_skill_body_sha256": [
+          "082f4fbba13f512109ef1e34c26031eca11c8c6d15a8b969c7ba8f3fe53b0cf3",
+          "418e29f5312f8d4b751cfc39fd999571588ed53485fcce8fe5cf41e4392b119a"
+        ],
+        "latest_observed_native_result": {
+          "status": "executed",
+          "done": true,
+          "control_step": 380,
+          "step_limit": 500,
+          "steps_remaining": 120
+        },
+        "image_sha256": "e0a52081be4b1e460fc95665ae647ac5859c5c73ee5e65504d8c42563ea33023"
+      },
+      "B": {
+        "native_result_sha256": "b990a917b1b921b8ccc1eaf6c08900f23102a97c8c33a8d61a6c7431a554d7dd",
+        "success": false,
+        "score": 0.0,
+        "record_scope": "training-input subset; not full trajectory return",
+        "native_grade_bytes_verified": true,
+        "API_capture_proof": [
+          {
+            "sha256": "396451ec2dda3b1400be68a691a043c202fa14025f9894b01a0c308481805f30",
+            "forwarded_record_sha256": "35b5442899c4578aada9da7f7b2ca3f6238358e8b87e15212f5bd2830bde36e0",
+            "request_id": 1
+          },
+          {
+            "sha256": "d5e5a541a1f26a950b74a2423a75801cf3fe48824853822896f678893af01ad3",
+            "forwarded_record_sha256": "3bf4680896818542a43ab45077ae1d1cc013b0b445d8f50b664efc7f153be694",
+            "request_id": 2
+          },
+          {
+            "sha256": "1408afb7785bc0435534b5f8f79bce34428c62cc65b5667c668a693ff47ed278",
+            "forwarded_record_sha256": "9c5dc3366da27b570492974c1d46105c47917f76a917f798c9f870449d4e3acc",
+            "request_id": 3
+          },
+          {
+            "sha256": "2a6d5f2d8641ceb3f69f256def7f0f111980551ce1f900ee2bfa7d4d41f2680c",
+            "forwarded_record_sha256": "05728d5092cc33fd35450a3aa39d20cdac50eea94dece4b7113e07e5b2a609e7",
+            "request_id": 4
+          },
+          {
+            "sha256": "4552fe335b1c3a4163f16ec210e1d7fdbe70d547ce624c17e5b797aa8d252227",
+            "forwarded_record_sha256": "fad4540dff7e1445b9221054ba86c0a8cd66845140b1e1eef5b88cc20e59c03b",
+            "request_id": 42
+          },
+          {
+            "sha256": "012cc63c05f9f83b435c033afb9032691c8428bcc035c68f28b613a6915ca015",
+            "forwarded_record_sha256": "da4576bae21ab15cb33faba6df2ab50ada5724019967414667a053e652bb1602",
+            "request_id": 43
+          },
+          {
+            "sha256": "be9f8ea146ac725cb1e2891a4ac75b1c35a05ddf117e4ec5d0bea976b9907c0d",
+            "forwarded_record_sha256": "d9192394b9c760b3af1d31e5ec44629ad2eddc646693e91682ce81c74d53224d",
+            "request_id": 44
+          }
+        ],
+        "forwarded_skill_body_sha256": [
+          "880dd0dd94310bd67bd66765f53c0b3f7d8a5d1c3ef955d4fe4954f3d7b9adae",
+          "f42c746610daaa1dcd7047b3b36d194605da4c37767b6e8b165d2885de3e8aa7"
+        ],
+        "latest_observed_native_result": {
+          "status": "executed",
+          "done": true,
+          "control_step": 383,
+          "step_limit": 500,
+          "steps_remaining": 117
+        },
+        "image_sha256": "3bff4e7f48fcab253bd9f699a194b91c0ac783b92bd61106eeac60514d5741c9"
+      }
+    },
+    {
+      "skill": "fold_clothes",
+      "direction": "B_better",
+      "available": true,
+      "key": [
+        "fold_clothes_random",
+        0,
+        18
+      ],
+      "scene_sha256": "0afd177f26f26db55b955397656b2e12b6522011a8094c8397b187f8659a5120",
+      "visual_note": "已目视核对随机变体正例：B衣物已收拢且双手撤开；E仍双手拉着展开衣物。B在356/500步done，E到500/500步。",
+      "E": {
+        "native_result_sha256": "1095df25ec677e3db821b32b2a65ac78ae9b742db2441859b1cab2dd51f30a20",
+        "success": false,
+        "score": 0.0,
+        "record_scope": "full trajectory return",
+        "native_grade_bytes_verified": true,
+        "API_capture_proof": [
+          {
+            "sha256": "4a62458d98b49b52f53fc4971bf3f7955cb497a1641e0d745a91bdc00d5c4fb3",
+            "forwarded_record_sha256": "7fd8e318a333d42d41ae597a4767c11c32362fb77b5f3ef293c91a268ef965c8",
+            "request_id": 1
+          },
+          {
+            "sha256": "b8759dd4e2b995548683d1d0f31f601c68cd8f4273f3b7a5cb11a4e79b313f8a",
+            "forwarded_record_sha256": "4802f054d15dfa353b66137c0e36bd094e16808db0fce7a2a2bd7e8536cfa443",
+            "request_id": 2
+          },
+          {
+            "sha256": "eb2d25d4d63f8bac5ecdba84d550ab11cd92187731fd1203eec1887b30cd6336",
+            "forwarded_record_sha256": "1205798b0442edd3121c4e091773227449a4c8ddaedfe2e957fe215503a37233",
+            "request_id": 3
+          },
+          {
+            "sha256": "26882bce62faea0bc9a85f402f8e12562ca8b35d630e9cd24d821a789ef3e611",
+            "forwarded_record_sha256": "61b3319d43f5ef63e616b32889830d841d70c8315e837fa528ff91194a079a5b",
+            "request_id": 4
+          },
+          {
+            "sha256": "965e9279778ca92038c1fbe91f066cdc816d74bf17e1a96da7835d96b0300a32",
+            "forwarded_record_sha256": "2f87e340a7ff31a5ab8799918c7154b85d766375eb146e10ffdff3167d1eae87",
+            "request_id": 49
+          },
+          {
+            "sha256": "06c27bfcc2bed95eb28d2cb9dfc98c3ad68cd788bfde7afd1a7dcb8db8e465a8",
+            "forwarded_record_sha256": "235294317a1e46684eaa413bc86a0844f02c39750a0acd64ac423d253f9fe2b2",
+            "request_id": 50
+          },
+          {
+            "sha256": "cac450f3aed85b99ad7d8ea8841ef10f34c4d28afa7798fad2a188995686f29f",
+            "forwarded_record_sha256": "c8dd5be8d00d1d510691730cabb4c4797e5ac67437cf6aee8207900811dddc54",
+            "request_id": 51
+          }
+        ],
+        "forwarded_skill_body_sha256": [
+          "ea113aeebeb665dbb244ab630924022a1694d095ebcf8c0e25336a2e31f04923"
+        ],
+        "latest_observed_native_result": {
+          "status": "native_done",
+          "done": true,
+          "control_step": 500,
+          "step_limit": 500,
+          "steps_remaining": 0
+        },
+        "image_sha256": "71f379376cc14f230a3ffbdb83353da1cce76ba5263c2449ee11517f482f0683"
+      },
+      "B": {
+        "native_result_sha256": "60078173b45acc9943a05a2da7f49d0148e8b62d5a5321fc658cc7e3634ee41b",
+        "success": true,
+        "score": 1.0,
+        "record_scope": "training-input subset; not full trajectory return",
+        "native_grade_bytes_verified": true,
+        "API_capture_proof": [
+          {
+            "sha256": "f550bdbb0c13654235e3d3a5b0c63e9f8ff2ac4c5d44a358447aa66f59dbc24a",
+            "forwarded_record_sha256": "7f4be86023b78323816d6223c0cf76961338624987cf9e73a21633e34e1bab69",
+            "request_id": 1
+          },
+          {
+            "sha256": "3c9f73fed6d479843f8735811a7130bc37e88154154c2163700f8d2749724391",
+            "forwarded_record_sha256": "303346d7ce713a2b97fe6a52350c437952853368a9c804306dc14c8e4ca463c8",
+            "request_id": 2
+          },
+          {
+            "sha256": "4b76dc40e91be7ddee7df0b296425a921365b7cf979e1504eb18ef0caef41f3e",
+            "forwarded_record_sha256": "c1d33f99be580041c52485ac832d368fd565244f5b34abb6ae081fa735dd2759",
+            "request_id": 3
+          },
+          {
+            "sha256": "902c0b7156cc41ff75896549363d8dad1f7f570723a6aa208b5de878b265d90a",
+            "forwarded_record_sha256": "2c1225e8d951b066de73e9e276918c526753fdec1df307cd540e8207a62df779",
+            "request_id": 4
+          },
+          {
+            "sha256": "0230e729cb71d52d46a268ce06546793eb24b40fbbb86a4fc49096d3f83cc764",
+            "forwarded_record_sha256": "2907b2aaf8aa258933528de51d42fab99e862826a7b168faef878fa3da63b439",
+            "request_id": 32
+          },
+          {
+            "sha256": "77c5f32d5a1827bf50782f56128a4b84f0efe354703882ec194bb02d92b3cfe1",
+            "forwarded_record_sha256": "cb9f4ad970fac1c02d4f72ad2208c39e44f85883dc39fae67d2af2401dab5765",
+            "request_id": 33
+          },
+          {
+            "sha256": "a9c2d7107b357eecbf34b0096c3eccb3fb9786bf87afe5132c3ec346c8caa1da",
+            "forwarded_record_sha256": "238c60579452d024432ea1992dcfb40db1a4402b3c693f11e78a75961a06dd6b",
+            "request_id": 34
+          }
+        ],
+        "forwarded_skill_body_sha256": [
+          "3b8addb524bda01703da9445e13b8dad517d821abfbfdbcdedf0b8cbaf21eb29",
+          "f42c746610daaa1dcd7047b3b36d194605da4c37767b6e8b165d2885de3e8aa7"
+        ],
+        "latest_observed_native_result": {
+          "status": "native_done",
+          "done": true,
+          "control_step": 356,
+          "step_limit": 500,
+          "steps_remaining": 144
+        },
+        "image_sha256": "d6f9337b1f0d48d84e4d4a0bf19a01ef95449fdaaf4e71668620e4853850cfb1"
+      }
+    },
+    {
+      "skill": "fold_clothes",
+      "direction": "B_worse",
+      "available": true,
+      "key": [
+        "fold_clothes_random",
+        1,
+        23
+      ],
+      "scene_sha256": "392b6d750f9b854b49b982fbb4f24800f42a44fb1fcf2a57de8adb3a23d2506a",
+      "visual_note": "已核对官方结果原字节与API中的实际control_step/done/动作返回。图像供复核；未仅凭分数给抓取、接触或归位失败编造原因。",
+      "E": {
+        "native_result_sha256": "195b05fd00819b01099166e71cf4c65a5257de40103a8a7f0e5f96100f614028",
+        "success": true,
+        "score": 1.0,
+        "record_scope": "full trajectory return",
+        "native_grade_bytes_verified": true,
+        "API_capture_proof": [
+          {
+            "sha256": "35d09644bf027235072b789bd79468caa08907b3d54b6f681dff4f9a2d8f84d9",
+            "forwarded_record_sha256": "1a1c7da78bf85fb88703e7e5a025ea46410f1f4f48434b2b86604ca2fff244fa",
+            "request_id": 1
+          },
+          {
+            "sha256": "d5cb64cb13efb90cda882f379fec254e1587b42c03f7b320dd6b8c9306ba704d",
+            "forwarded_record_sha256": "09b603d42201a3c158347c877b1fea4b6b63fcd9a7519e1edb460a6e8a67b97d",
+            "request_id": 2
+          },
+          {
+            "sha256": "58855c91922229f845ccebc01096942681024f95232738909877372225d6617c",
+            "forwarded_record_sha256": "625112312f9c05afb5a9038a73ccb3a88c6410a1cb70a5f55c13123acc0b9370",
+            "request_id": 3
+          },
+          {
+            "sha256": "3638250aa72612fa5281cb9fee64cfcf9d245c16ec72b14ad450b52dc3d8a57e",
+            "forwarded_record_sha256": "9aeef310d0238724447dbd8fe51769b9c2300e9938c1bb1e6f7402021b100264",
+            "request_id": 4
+          },
+          {
+            "sha256": "d92b973546c184f954db4becd1488d64b262d83780ad4cfb3f8ebad1296052ed",
+            "forwarded_record_sha256": "bcd9afb0c3872b718ea9d7cb782f4f3c60218b42b5763807e17d8b7eeecddc1d",
+            "request_id": 27
+          },
+          {
+            "sha256": "431541df2d94e0e9a6c180d6b5f02aaedf43bb520a1b4707d8ef4040889860c1",
+            "forwarded_record_sha256": "c2b3e618b6be8203f38db24dac78d9ac03cc4cffbbc348ae8fe604f26200a5d2",
+            "request_id": 28
+          },
+          {
+            "sha256": "d958981a3900d6539e10bb53e2a6c50a40a8de5fd4c1cea9c2667142c5ca2972",
+            "forwarded_record_sha256": "e65e4d48d93d3c25458957509e6ca68f6b4e8888e47ae0050cffa7e6ff0f03c0",
+            "request_id": 29
+          }
+        ],
+        "forwarded_skill_body_sha256": [
+          "26ae45eb89c3ad5046ca106154d07bc34622ea78525836267e86f299c1a9b3c5",
+          "418e29f5312f8d4b751cfc39fd999571588ed53485fcce8fe5cf41e4392b119a"
+        ],
+        "latest_observed_native_result": {
+          "status": "native_done",
+          "done": true,
+          "control_step": 434,
+          "step_limit": 500,
+          "steps_remaining": 66
+        },
+        "image_sha256": "f3ab51f334bf177e455ec81a6040844d6f9e1e10c57d998909b8161ae6cbf0dc"
+      },
+      "B": {
+        "native_result_sha256": "2ef4c052697e8add57a00d23b985fcfd41203c5544c7029307b95ef3e7a5f9e3",
+        "success": false,
+        "score": 0.0,
+        "record_scope": "training-input subset; not full trajectory return",
+        "native_grade_bytes_verified": true,
+        "API_capture_proof": [
+          {
+            "sha256": "e9243547621b64572c4e60552530f38301e2e77bcbc8045c826b2e5955a91823",
+            "forwarded_record_sha256": "c373b7657779702f7c19c3953797680c667ac35dffb615293b9e6db2a48fe3da",
+            "request_id": 1
+          },
+          {
+            "sha256": "20537768c062ab56d359f52f3e58b83ed4ea403d73770cd6f4c109bd5b5cdad8",
+            "forwarded_record_sha256": "21a65cf501add79f07038b686ac332b18c768c56d4e4bb3f9b585612459fcac6",
+            "request_id": 2
+          },
+          {
+            "sha256": "824b204edbd969ebe7b4fc6994ca2dd71474fa2eda2413208363a64dad54eab7",
+            "forwarded_record_sha256": "186f246dca78c425590f472663636b752bd8bebf654bd38dd23008a6ad335ff8",
+            "request_id": 3
+          },
+          {
+            "sha256": "9fc2b42a2022c937eb3d3bb174aa3ba1314936b4c4d6d00766c877aeff3be46f",
+            "forwarded_record_sha256": "34553f388d43346700bb4ec3ebee0dc94eef3ffa8d28bd7166d86dccd73e41a8",
+            "request_id": 4
+          },
+          {
+            "sha256": "fead7a50b1a686b8a829093fec7b989249bdcdf1510dc97155c26e5c3d88ce23",
+            "forwarded_record_sha256": "b414010a25e63c12b16dda6133e2e4d6dbcb6afa0f5dbc4bca993fb115424c7a",
+            "request_id": 53
+          },
+          {
+            "sha256": "02a1043ad929faaf514180d456d372a08247d34eb5ad1fac809fef13b4667d52",
+            "forwarded_record_sha256": "30ca16ad172848132fdcfcc61c4e9d4041c754fb0c3fcac5202a104b8ac3320d",
+            "request_id": 54
+          },
+          {
+            "sha256": "b03fb5811a0977538099eee66bf6810e87005ff8bcba830e0588ac88f0addd33",
+            "forwarded_record_sha256": "09dc4cf3d6a30fa993f473d998dd6eaecde8576d1f4f65b577ba51fd8ff21b7c",
+            "request_id": 55
+          }
+        ],
+        "forwarded_skill_body_sha256": [
+          "3b8addb524bda01703da9445e13b8dad517d821abfbfdbcdedf0b8cbaf21eb29",
+          "f42c746610daaa1dcd7047b3b36d194605da4c37767b6e8b165d2885de3e8aa7"
+        ],
+        "latest_observed_native_result": {
+          "status": "executed",
+          "done": true,
+          "control_step": 494,
+          "step_limit": 500,
+          "steps_remaining": 6
+        },
+        "image_sha256": "452f47abbf9583b9206cfcd50f1e19350766e35257654fe0eb3c1480bf6c8136"
+      }
+    },
+    {
+      "skill": "make_toast",
+      "direction": "B_better",
+      "available": true,
+      "key": [
+        "make_toast",
+        0,
+        53
+      ],
+      "scene_sha256": "209d745c3c3eaa11bb2956882a638e27f1f8e3886c5e8dc3cb51720224b5c5cc",
+      "visual_note": "已核对官方结果原字节与API中的实际control_step/done/动作返回。图像供复核；未仅凭分数给抓取、接触或归位失败编造原因。",
+      "E": {
+        "native_result_sha256": "0ccfe0411635fd1dc6f995d14699789414a8b77071332b268085d14ef15cdd7f",
+        "success": false,
+        "score": 0.25,
+        "record_scope": "full trajectory return",
+        "native_grade_bytes_verified": true,
+        "API_capture_proof": [
+          {
+            "sha256": "649e85cc768f42d0f7dbcbfdd7305fdd7c5370024f9bfd4992c7819b1c8c221f",
+            "forwarded_record_sha256": "c6c7c91dcfe818613e3302cdd318b1366d640bbcf1ab1da034120fdfd550ea41",
+            "request_id": 1
+          },
+          {
+            "sha256": "efdfd2ff75de9c4acd1b4b7a94e6c1ea75132732cc1fbce3f1d973b024f62f6b",
+            "forwarded_record_sha256": "06d71ac87065767c1ee3e773e36e2ba93a102066f9b88cba4b11789e3f34f6d0",
+            "request_id": 2
+          },
+          {
+            "sha256": "1b2a51b2b028af77cf315d4abacafa96a4557c200cd092cb34e18b3e7facc537",
+            "forwarded_record_sha256": "26390ca4324f1f9dbe0c6109bf53d17586d5604b6233772729764bf7f99f1e47",
+            "request_id": 3
+          },
+          {
+            "sha256": "cb4da5d0c135edc3d31de3e67e2566db71819773d6a1d126b5cf9bc44c01d817",
+            "forwarded_record_sha256": "126eafe96be4b6bf05431aa050947160892dd46c4ba34e4a68a7c39d7aac4ca6",
+            "request_id": 4
+          },
+          {
+            "sha256": "4decb9cecd3a364d00adac58eb084ef89b51bfa9777580f25549d8e91745e5a9",
+            "forwarded_record_sha256": "29cd5962d158b5d04c2fe6e68d3e40cc2d375a1b8c6cd53778c7493ae56d7f3c",
+            "request_id": 106
+          },
+          {
+            "sha256": "e77b0ace59e303a63723400537da44679834407cc3fe6678d91c2c6fb1083a32",
+            "forwarded_record_sha256": "afdfb69a9a90ac324a46c9508ab10fb21ccd5bd57343e76a0dc1107e6f4f01a9",
+            "request_id": 107
+          },
+          {
+            "sha256": "7a174e9e1ccb6135c6eb9dc1a1c15fdf672701f8cdf18e71a9fa271ecb174d0c",
+            "forwarded_record_sha256": "5a34cdb0ccf824762c0b72295ade4ef6872d1e0fbae09cd4f2fa707a08e8ed40",
+            "request_id": 108
+          }
+        ],
+        "forwarded_skill_body_sha256": [
+          "56768d7cb420ffc02d668368da203aa78edff681a0bd7326baaf8f149de00294",
+          "ea113aeebeb665dbb244ab630924022a1694d095ebcf8c0e25336a2e31f04923"
+        ],
+        "latest_observed_native_result": {
+          "status": "native_done",
+          "done": true,
+          "control_step": 1400,
+          "step_limit": 1400,
+          "steps_remaining": 0
+        },
+        "image_sha256": "19acaaa67f309c59e56d4ebcf13f567c8ceddb61de242b271b2848391b0ecbb2"
+      },
+      "B": {
+        "native_result_sha256": "15c00011b00e9571a8b49eb5f4a59e5af9796825a02e18b7ec39fae887f65d0d",
+        "success": true,
+        "score": 1.0,
+        "record_scope": "training-input subset; not full trajectory return",
+        "native_grade_bytes_verified": true,
+        "API_capture_proof": [
+          {
+            "sha256": "8dbd3975b7e3708e04b2e51552ff304de6629c1babd3bd8bb75e0fd6ebdf17e8",
+            "forwarded_record_sha256": "d938c087ea2f881cc4f7fe50c7f81f1a8dc283c1fd05117ac84a5dacf496c149",
+            "request_id": 1
+          },
+          {
+            "sha256": "daa994881c5a363b1ed93482a873739bca54606d5090fad075472378089e3d91",
+            "forwarded_record_sha256": "c2f318e536db34829c89b184cf20a6c1be571c8e4b7a6655c3583a488a2dc22d",
+            "request_id": 2
+          },
+          {
+            "sha256": "3bf1530cc7ef1e3ca6363f10c4f0b9a8ccf8ca3912dc12b1249b4e2dd43df2dd",
+            "forwarded_record_sha256": "21244575ccd2670c93f9cce9c6e3e9c48c08ca1f6aa745269ae7bb374614c71e",
+            "request_id": 3
+          },
+          {
+            "sha256": "e4454c2c3de2931501ebdec1924c1725c14b366f143bb38c1e01e8fcbb068325",
+            "forwarded_record_sha256": "eba12d8a287d8a73f6aa75e37fbb803e8fd3c08690004c423bfdc371218046e8",
+            "request_id": 4
+          },
+          {
+            "sha256": "65c794db343098fcdaefe08d85f8bbf88c11286601ec52bcebf23650b5b1acf7",
+            "forwarded_record_sha256": "0f103ef6c46d4e622aea65312c3864bc204cc8805446ac82750f4c5edeb6b81a",
+            "request_id": 92
+          },
+          {
+            "sha256": "66c29bcf2dcd5263f47e533a357440f0f984f4c7beabc0e81693b6d806c67eb9",
+            "forwarded_record_sha256": "749dabcd889fa399a22b49f6c3d819d12c27e7e2ac55026379541109e5b9af3e",
+            "request_id": 93
+          },
+          {
+            "sha256": "69ccc5ce4f3a97e2a3b42ee15c65a691139423c5b180eaa45021b49d9e9ecb84",
+            "forwarded_record_sha256": "cfa2a103170fe595a26271b852289defe24429de68bc344296e186a087083f5e",
+            "request_id": 94
+          }
+        ],
+        "forwarded_skill_body_sha256": [
+          "9035e974e0f5cc55e9661439aee2ea4aa8290efca1166fd13b76ae05cddada8e",
+          "f42c746610daaa1dcd7047b3b36d194605da4c37767b6e8b165d2885de3e8aa7"
+        ],
+        "latest_observed_native_result": {
+          "status": "native_done",
+          "done": true,
+          "control_step": 949,
+          "step_limit": 1400,
+          "steps_remaining": 451
+        },
+        "image_sha256": "b2fd6875c36825c50ca1387b922530e895580e5d5d3686fcad42068abf366c35"
+      }
+    },
+    {
+      "skill": "make_toast",
+      "direction": "B_worse",
+      "available": true,
+      "key": [
+        "make_toast",
+        1,
+        38
+      ],
+      "scene_sha256": "90e76a4792c966785ab46da07b253e658bb002802ef5bdd7791cb4c0a54559dd",
+      "visual_note": "已目视核对反例：B末帧可见面包在烤面包机外，E槽内可见面包。B到1400/1400步，E在1005/1400步done；没有从单张图推断早先压杆行程。",
+      "E": {
+        "native_result_sha256": "80f2a675340f01192fe0b1c17942b727a1925f3be9828d15278993f6f955820a",
+        "success": true,
+        "score": 1.0,
+        "record_scope": "full trajectory return",
+        "native_grade_bytes_verified": true,
+        "API_capture_proof": [
+          {
+            "sha256": "aab2e57967faa3384a1024b090de94d669430673e5357b5c0547ed309053249b",
+            "forwarded_record_sha256": "afb84bcf41aa1bcfaf1c87484a7714b1b08703d2028776dd9544d11d04bc7cd6",
+            "request_id": 1
+          },
+          {
+            "sha256": "42dd7ebb1710723137d796c5a95ac1eed2803ab24380c6802382d5b850a0594a",
+            "forwarded_record_sha256": "c5e6c56f73830e184aef407723221e448318697a08c527f1533489c5059a9529",
+            "request_id": 2
+          },
+          {
+            "sha256": "9558fb3c22058294cd7407562735e1ea93137cb1b32c1a654f759fab1a8389de",
+            "forwarded_record_sha256": "693c85c416af9eef817f80abed9d2e34d974fc395c638340d33ce858aa07c294",
+            "request_id": 3
+          },
+          {
+            "sha256": "3c7490f5805359bf9d2754c1b3b50e31f896b801d8576785891074b6b552db6e",
+            "forwarded_record_sha256": "1e6aa39501d0d001ada9aa0013f2647340ff71d1ee1aa4489bdce843794cf1db",
+            "request_id": 4
+          },
+          {
+            "sha256": "52bd1023371537282c71d22d78edd679b3a7a7612111bffdf1380c5215ff1d46",
+            "forwarded_record_sha256": "8f1dda09654060ff31c46d3f97a988018dd4ec016cc39238b5ff8eaa9abe3141",
+            "request_id": 95
+          },
+          {
+            "sha256": "d354680cc5f01f548b11bf12aefb8fc88d552c2fb993806e81c8b7f2a6207256",
+            "forwarded_record_sha256": "18b22bec4a208d23be5425e9e8e1b6d712cbd9a731380e9af321d850d83c43bf",
+            "request_id": 96
+          },
+          {
+            "sha256": "6d57e38ab7b64abe4b2506efac9cf37c7e157a45c225b710d33074361b437898",
+            "forwarded_record_sha256": "aaf7c8f4aabf5b3dba0f049a56d50a75a862de2306944497820fead34de49bca",
+            "request_id": 97
+          }
+        ],
+        "forwarded_skill_body_sha256": [
+          "56768d7cb420ffc02d668368da203aa78edff681a0bd7326baaf8f149de00294",
+          "ea113aeebeb665dbb244ab630924022a1694d095ebcf8c0e25336a2e31f04923"
+        ],
+        "latest_observed_native_result": {
+          "status": "executed",
+          "done": true,
+          "control_step": 1005,
+          "step_limit": 1400,
+          "steps_remaining": 395
+        },
+        "image_sha256": "a2f0e576d169c1cd1b716d044f7d735b33bcabb3e2ff7a75ce1bbb39247a2001"
+      },
+      "B": {
+        "native_result_sha256": "8f5b153b9cc6df89b51f3ac26e1c59722a01a964557629ef34e9c90872457925",
+        "success": false,
+        "score": 0.0,
+        "record_scope": "training-input subset; not full trajectory return",
+        "native_grade_bytes_verified": true,
+        "API_capture_proof": [
+          {
+            "sha256": "ff9daba5544ae6d11d1e762ad978684deecb19402a83e610b5d0de8e0415dc91",
+            "forwarded_record_sha256": "c7255c5b82dbad2f66efa7ae479b1873cd00dde7b7687197e2b691c8a764ec41",
+            "request_id": 1
+          },
+          {
+            "sha256": "43c42f2843c34be883d957fa025df11db19383e43f7f393e4dc493e79db41b69",
+            "forwarded_record_sha256": "eb29811c07d4a9a5e3034fc6d062e1831258b1f56f3c08470e575551ce299422",
+            "request_id": 2
+          },
+          {
+            "sha256": "caa9c2ec2f331e96f2a0b5c3785e5aa3f5bb7277aa2e7e6a21f0ba1df29ddc94",
+            "forwarded_record_sha256": "b4acbeb0bb5f88110d2dc3ffbb4caaad657b37db88fc5fdb4501065d1bb97f57",
+            "request_id": 3
+          },
+          {
+            "sha256": "4e68a6ac7c458737133939dc299aff761d4e15d150cba4523b7be7c51ac16852",
+            "forwarded_record_sha256": "efb80555ac71e0d2152d12f275beb74e4f52860ffea523cd2e482148858dbe20",
+            "request_id": 4
+          },
+          {
+            "sha256": "b2a5592b1e5b6deea93538abc87a1ef55837ab2a7e1af6f6f2215ba5daeefc10",
+            "forwarded_record_sha256": "468a32f2f3e0940ca7b3f263db2af257445e2e122c7ac3773a8f3dc9ed76025c",
+            "request_id": 100
+          },
+          {
+            "sha256": "f6c66f8fafd7cf9c5ffc2e7badb39c8c05e83c4beac2b33b248221e591ae0191",
+            "forwarded_record_sha256": "ae72b2be0607cab7076eede88562c63830b0593286e0762bf308494653188b47",
+            "request_id": 101
+          },
+          {
+            "sha256": "46249d5bdb8ed65566dc6b5537d1ff90f9f7bf4eb0d03e881b2f033d41b403dc",
+            "forwarded_record_sha256": "fd0ffa27526be42ddaed2997e4569abac3f49b45b97c141377b3dab5d9f57704",
+            "request_id": 102
+          }
+        ],
+        "forwarded_skill_body_sha256": [
+          "9035e974e0f5cc55e9661439aee2ea4aa8290efca1166fd13b76ae05cddada8e",
+          "f42c746610daaa1dcd7047b3b36d194605da4c37767b6e8b165d2885de3e8aa7"
+        ],
+        "latest_observed_native_result": {
+          "status": "native_done",
+          "done": true,
+          "control_step": 1400,
+          "step_limit": 1400,
+          "steps_remaining": 0
+        },
+        "image_sha256": "73be9bbd9cbc0dec0a2d0f798253f5102ffd7545b5cac9bd263a90439f1041ce"
+      }
+    },
+    {
+      "skill": "stack_blocks",
+      "direction": "B_better",
+      "available": true,
+      "key": [
+        "stack_blocks",
+        0,
+        23
+      ],
+      "scene_sha256": "3ef9e138b1955eb938c29dd47d7970568ab96ed916b079be60b3f6f4da58a840",
+      "visual_note": "已目视核对：B末帧三块已叠成柱，双臂撤离操作区；E末帧仍有分散块且左手在块附近。B在498/550步done，E到550/550步；不据此断言单独skill因果或双臂精确归位。",
+      "E": {
+        "native_result_sha256": "f73270dfcd4a925d1095c8986081d48d4352da6ea5e09882b5efbe2c4b3e4352",
+        "success": false,
+        "score": 0.15,
+        "record_scope": "full trajectory return",
+        "native_grade_bytes_verified": true,
+        "API_capture_proof": [
+          {
+            "sha256": "c55d166a63775a8c56548133ef2c1fa591f553a5d576b76a84da41a45c66505f",
+            "forwarded_record_sha256": "7acf9058fe8b6bedabe4ffdab4b5c5e22c1c54abacafa0f1e6db97b84790ee49",
+            "request_id": 1
+          },
+          {
+            "sha256": "dd43a1d21955f8cef282ec81617dfaf04a9e98a0318b6534133dd41b058d1370",
+            "forwarded_record_sha256": "0a45a3a8fd38f1d21b6b2c624f40a1516fdb0185835a73eecd66f1f00d7b5789",
+            "request_id": 2
+          },
+          {
+            "sha256": "0f8de62a47c3099bf8617164795b77ea848016d951ba7d48b4cda78416dcb278",
+            "forwarded_record_sha256": "54574872aaf0b57de32ffa44c381b98a52e525facb4866706d7abe81df40e005",
+            "request_id": 3
+          },
+          {
+            "sha256": "b982dfb9224328c43e9b2c1bd634358d7889084ebe94e32b759482fc88ddab5e",
+            "forwarded_record_sha256": "5c087cad2062b79ae44b3baa46547a624b2ec770c42ac2deeced46d14e1eaaa2",
+            "request_id": 4
+          },
+          {
+            "sha256": "471315dc1575b93457cfe87f42bcc1de01382dcc8710fe7c28bc5d1a1b8ee1c2",
+            "forwarded_record_sha256": "1d76a3638d7bafd0923b1a0ad42f3896e581d01667bf57bca42e7d7d58bc143e",
+            "request_id": 24
+          },
+          {
+            "sha256": "8c8ad1fbc6c99ca69e98e6c78c6b64fccd74a28174094d81ac6b5bd625b6ba25",
+            "forwarded_record_sha256": "7c5670ad1ec30213a5d4e6bd40fcf42645a436a09662f076b992789fffc93962",
+            "request_id": 25
+          },
+          {
+            "sha256": "c63a55a3ed272384eab1bb423ddabbe158f50f352b5cad19c45817215c90f940",
+            "forwarded_record_sha256": "7479a90bd94119432391111c15165e0c95c784ff78cb615be36227bc23169eff",
+            "request_id": 26
+          }
+        ],
+        "forwarded_skill_body_sha256": [
+          "0652a207ea0fc00b514c02779edc333b546ee74618fa8b161776680725e7fe17",
+          "ea113aeebeb665dbb244ab630924022a1694d095ebcf8c0e25336a2e31f04923"
+        ],
+        "latest_observed_native_result": {
+          "status": "native_done",
+          "done": true,
+          "control_step": 550,
+          "step_limit": 550,
+          "steps_remaining": 0
+        },
+        "image_sha256": "256b6bcd0f41e051cef262e72153c371bde744e23cdc1ec843322e216e9318c5"
+      },
+      "B": {
+        "native_result_sha256": "195b05fd00819b01099166e71cf4c65a5257de40103a8a7f0e5f96100f614028",
+        "success": true,
+        "score": 1.0,
+        "record_scope": "training-input subset; not full trajectory return",
+        "native_grade_bytes_verified": true,
+        "API_capture_proof": [
+          {
+            "sha256": "261531e03a6725c108bb613cd5ec3d57814b5a82781749b85274071c79e93bd5",
+            "forwarded_record_sha256": "4e1ef295f20f0df89d4623672da6c808b0996cf526cf99a0bee3b9a3ef8b0421",
+            "request_id": 1
+          },
+          {
+            "sha256": "89a68ceff901432d89b84da8c5bf0067315789023f336f71c99f38dade59f5b7",
+            "forwarded_record_sha256": "8bca8db9c83605e74e438a956601bb6e1c0abeb420fbcb7945d2015ba1900fae",
+            "request_id": 2
+          },
+          {
+            "sha256": "6da1b0d9c06bd33150e1d1c4a9bf9fa33db97ad8d9cd05dcf398387fc2a66284",
+            "forwarded_record_sha256": "eeb328217c0a3846f34404d690296ef9aac723ff425a809fcffdf69f83a09fc0",
+            "request_id": 3
+          },
+          {
+            "sha256": "df81841a675fb1bea3c651176859fec2bf05fe086d666eac9cce1f244e3aadcc",
+            "forwarded_record_sha256": "56cbe68bac5883f676612922d8b9a3f377fa66488c45e3e3ddeb1f4b0eb8772d",
+            "request_id": 4
+          },
+          {
+            "sha256": "757044b4859214e0bf4a4d28318e709ebb8ba48bf535d05e462e6f473eaee93d",
+            "forwarded_record_sha256": "455b4cecb9448efbc8bd2ad13e401ad5e6caf9b7181b78ae0c204def92c5acc9",
+            "request_id": 40
+          },
+          {
+            "sha256": "56bc2c5e271014b6e13e78550f5a1135e471c93c10e7a09654b2e442d1cfd70e",
+            "forwarded_record_sha256": "5b0c76f6cc16191485263bb920dc7898148020329acd2304fa0cfd87f79c92b1",
+            "request_id": 41
+          },
+          {
+            "sha256": "c60772c7573555297e1674360cb1a3cb43ff9606978af516c049f414f4284ed3",
+            "forwarded_record_sha256": "5ca21263e3628deac90bb523e358003faa83238e52d7b58d018c29412c785e93",
+            "request_id": 42
+          }
+        ],
+        "forwarded_skill_body_sha256": [
+          "da95ada201ead20cf7a990acc01eab44d416c9138925c96e5e93b532d42dc148",
+          "f42c746610daaa1dcd7047b3b36d194605da4c37767b6e8b165d2885de3e8aa7"
+        ],
+        "latest_observed_native_result": {
+          "status": "executed",
+          "done": true,
+          "control_step": 498,
+          "step_limit": 550,
+          "steps_remaining": 52
+        },
+        "image_sha256": "5006635d03a816aef5ee0218dfef6625a80f03b258336fac8a20cada3fd16bfd"
+      }
+    },
+    {
+      "skill": "stack_blocks",
+      "direction": "B_worse",
+      "available": true,
+      "key": [
+        "stack_blocks_random",
+        1,
+        2
+      ],
+      "scene_sha256": "5f8984d7dc3e120d334354b65765f20bfca46fcccbc7286f151d81fc066744c8",
+      "visual_note": "已目视核对反例：B末帧中间两块仍分开，左手仍在操作区；E三块成柱。B官方0.15、到550/550步；E官方1.0、488/550步done。",
+      "E": {
+        "native_result_sha256": "cc6468b7f7528bd52d7561d2f877115ef92241bd4a3fd3868f48e41f5da17fd0",
+        "success": true,
+        "score": 1.0,
+        "record_scope": "full trajectory return",
+        "native_grade_bytes_verified": true,
+        "API_capture_proof": [
+          {
+            "sha256": "9e598b4bb6d5f0ae6859b0c3d28b160041577f30873954b2b67448bc019dc132",
+            "forwarded_record_sha256": "3cbbbb373942edc5c27e04a498a3ca4362d3b347b744f8ea5ed2d77a3455d745",
+            "request_id": 1
+          },
+          {
+            "sha256": "504f7c173cd747373ee22f559aa6fbce9bead444efcff4e120103c5f1ed3b9cc",
+            "forwarded_record_sha256": "a64c9400689edec81c3fe104eb12a0a9b054bb015503e13d14e7982a75744d2a",
+            "request_id": 2
+          },
+          {
+            "sha256": "126ca8c41629daca79e28dc153ed36cff3342a9823e7d6f44df0d0b9cc66f8c2",
+            "forwarded_record_sha256": "aada8366c7a5c1149e46290f09887eaf465b7f9ff9bb582bde784d3d92100822",
+            "request_id": 3
+          },
+          {
+            "sha256": "8c7a1de2cc189caa4ae33b28e60e799314350a58b79e081648af25ed4332c8a4",
+            "forwarded_record_sha256": "3fdb5d67dd48fb040296bcda7d6ea5162952196260696af6a5e54bb87d8040d9",
+            "request_id": 4
+          },
+          {
+            "sha256": "bfb06557eaedfbf2a59b708ced40d68a4a2bf1b8e895ec17f360854f6d149ad2",
+            "forwarded_record_sha256": "b5127b2af07020e4dde8a7c738bf2c66136a4c70227955036ebbbc3b8d68e4d5",
+            "request_id": 36
+          },
+          {
+            "sha256": "bc14184f604b905c9f52c8f3e45e0a8e1df0a0e220a3d8a641bb5f324461b39b",
+            "forwarded_record_sha256": "c2f2773103c5df876a48112d009a081cc6639f7da4b469a06685304c48824b7a",
+            "request_id": 37
+          },
+          {
+            "sha256": "3c0238bce24859d685a61698ee2de6a13b59e98c46783d6093979c56a008de4e",
+            "forwarded_record_sha256": "ef012b0d81e97cee8ac95048f0d5ad079bd1349d3decc740fc35535fd1c205b7",
+            "request_id": 38
+          }
+        ],
+        "forwarded_skill_body_sha256": [
+          "ea113aeebeb665dbb244ab630924022a1694d095ebcf8c0e25336a2e31f04923"
+        ],
+        "latest_observed_native_result": {
+          "status": "executed",
+          "done": true,
+          "control_step": 488,
+          "step_limit": 550,
+          "steps_remaining": 62
+        },
+        "image_sha256": "971ad065a9717cf72c44340785b07925f769c44c0511bb4ce45b26e980b6fc88"
+      },
+      "B": {
+        "native_result_sha256": "5173cd585649428e7dd13bac6435ecb72aae639286055b7c3000eb5ff1544e34",
+        "success": false,
+        "score": 0.15,
+        "record_scope": "training-input subset; not full trajectory return",
+        "native_grade_bytes_verified": true,
+        "API_capture_proof": [
+          {
+            "sha256": "f263fc62484a73184d8ffa838489d7e826eceb4b1e33e2dec5c4d0579577dd15",
+            "forwarded_record_sha256": "16f27a9534acbcb3ef4050e039c088f93a7a173ba751c6a0ef4199d2db0713f3",
+            "request_id": 1
+          },
+          {
+            "sha256": "a75c948859634cce2b10e2d5ce361ce70f3c35a72e76ae73f1080b1b6b07d539",
+            "forwarded_record_sha256": "60b4754675276ccd28d2f988958dc1e1aeec98fa2f7b05bd1d14ee5de83a102f",
+            "request_id": 2
+          },
+          {
+            "sha256": "287c97496b5344c0afb193b2434fb06a4ae6b8fe4146be40eeb60b825cd6045c",
+            "forwarded_record_sha256": "fd27bd15b702b7fa14bb53a848746c4bee85a3042958dd61a96b1f1d8c7755c9",
+            "request_id": 3
+          },
+          {
+            "sha256": "68e775528a678a30cf3a0c44f0b0c5a3d978c22e8709ae937f8b9b408f841fa5",
+            "forwarded_record_sha256": "12f5dabe2e9c9a79683ee77c27561663ed3c0625f2e55891210283304c88247f",
+            "request_id": 4
+          },
+          {
+            "sha256": "78eeb20de37b2662852232b433b65b6b896ed4ca8eee42fe9eca4bc5c673b2c9",
+            "forwarded_record_sha256": "0d7c32c7e867f4c32505cd0b47ebd626702b52ccb57dd6c7f44e6758dde8740b",
+            "request_id": 58
+          },
+          {
+            "sha256": "423b3f62d0547d6ab3b2ec7ecada11be0c948e2ead51c77090c6b72d52f20282",
+            "forwarded_record_sha256": "a767a4bd2994a1f07a2f24f4d7a832bf89c7a9d3a7a52c647c1b451234f50c55",
+            "request_id": 59
+          },
+          {
+            "sha256": "f74d7ccca2e1366df3b521a339c6023821962a1fc2f49046cccf37519799b868",
+            "forwarded_record_sha256": "ed73f2213c450318aaca6013b5c13de4d0e23e48e4181fecf7c155a00b74408d",
+            "request_id": 60
+          }
+        ],
+        "forwarded_skill_body_sha256": [
+          "5ce347afcafd46091f27e703e3487a701263b5b6d38634c31b69dafec35056c4",
+          "f42c746610daaa1dcd7047b3b36d194605da4c37767b6e8b165d2885de3e8aa7"
+        ],
+        "latest_observed_native_result": {
+          "status": "executed",
+          "done": true,
+          "control_step": 550,
+          "step_limit": 550,
+          "steps_remaining": 0
+        },
+        "image_sha256": "691813cd9c17639395c06b2419f2dd3932cee068892c7f205b29675bb3060804"
+      }
+    },
+    {
+      "skill": "robo-general-only",
+      "direction": "B_better",
+      "available": true,
+      "key": [
+        "cover_blocks",
+        1,
+        4
+      ],
+      "scene_sha256": "d0d9a4f120ab5be327851a068b1c0c9ddced4815da273fab04f7339546e54776",
+      "visual_note": "已核对官方结果原字节与API中的实际control_step/done/动作返回。图像供复核；未仅凭分数给抓取、接触或归位失败编造原因。",
+      "E": {
+        "native_result_sha256": "0155a0445eb3585ff57336d7c7be5f68fe287c8051449e5a5acd9678a882ab4a",
+        "success": false,
+        "score": 0.3,
+        "record_scope": "full trajectory return",
+        "native_grade_bytes_verified": true,
+        "API_capture_proof": [
+          {
+            "sha256": "b211f885c5821874396651735d78817c375b827b2c9c2b69c25e589dac021bb6",
+            "forwarded_record_sha256": "d1972e7ee13554d6c51ee6b7592d32f2540edeff174083202896380004264c16",
+            "request_id": 1
+          },
+          {
+            "sha256": "e8a080de00b2fcd4d5acadc9300eb2da8546aa00bfa0382f98e66f303408c114",
+            "forwarded_record_sha256": "73f72181e20668e9afbbb9c5a945087f650f62772c1cb0333dd89e5ccc39b32a",
+            "request_id": 2
+          },
+          {
+            "sha256": "8fc13f46657c94d8535a27b138838094f5b8f73c59e27cf2535436c4cf66cf7b",
+            "forwarded_record_sha256": "c149d4c6d35e5e17681b6c48c1c5faaaf570bcb63c02fa8745aa26e590bba342",
+            "request_id": 3
+          },
+          {
+            "sha256": "f1b038a6b72665e171655d2a9ee37354dac9711a2773f6bc5ae39329aaa468fa",
+            "forwarded_record_sha256": "63bbff39a2d19348da392bb5d821ae774e24f913bfcdaff6727d16f272572c81",
+            "request_id": 4
+          },
+          {
+            "sha256": "5b77fa432a1ad6402fc5b2490ed7915b9e368b2d1358f7806844378707521c6d",
+            "forwarded_record_sha256": "cbe9ca4c2122ffbc7de421476f7fa801cdb6d98ade3195b72861fadfe5b6d664",
+            "request_id": 55
+          },
+          {
+            "sha256": "6c7fe71294a10fd31d29d4a285a0d7ae8d787db6315549bad46b1167c797d815",
+            "forwarded_record_sha256": "81e3ae37211704fdf2852045977a14af1c09d8a81a3127b144a99c170e34b14b",
+            "request_id": 56
+          },
+          {
+            "sha256": "e97f8c9e09fcbc08368002f899b8e306e1cc992c450cbc30db3d02efe20253e8",
+            "forwarded_record_sha256": "7432cb76916827728c5b530e2cae91a859862dbe96ae876b40f8d9ec454c2102",
+            "request_id": 57
+          }
+        ],
+        "forwarded_skill_body_sha256": [
+          "ea113aeebeb665dbb244ab630924022a1694d095ebcf8c0e25336a2e31f04923"
+        ],
+        "latest_observed_native_result": {
+          "status": "native_done",
+          "done": true,
+          "control_step": 800,
+          "step_limit": 800,
+          "steps_remaining": 0
+        },
+        "image_sha256": "9e3eefb96a76161f6459226662d5fda14307456c22cc28921435896ed23b6799"
+      },
+      "B": {
+        "native_result_sha256": "ea87682a5ef1824a77f04e22e412b395f7fe5087366e664618da42c5a80b599e",
+        "success": true,
+        "score": 1.0,
+        "record_scope": "training-input subset; not full trajectory return",
+        "native_grade_bytes_verified": true,
+        "API_capture_proof": [
+          {
+            "sha256": "81f62ceca6f505dcc7fff2a7112d874ea9f8a35b785380ea109e25c7421504a4",
+            "forwarded_record_sha256": "b2dd497f6e8e2a38bf13b14454528f1ca38425d6c87b85ed7cc3c1a47e76ed99",
+            "request_id": 1
+          },
+          {
+            "sha256": "37d2c57cf9e331fb6c004bb0159036ac7f93b473aeff8b01b1b836b4ccd8f308",
+            "forwarded_record_sha256": "9c2345e9d5dafd691f0b3ffdafc03a0cb066e14a2001339a1e4862d25306b5fe",
+            "request_id": 2
+          },
+          {
+            "sha256": "e04fa51454fceca5289bab1179c92a0171500e7858b1244cc76e0d58e5d25b5c",
+            "forwarded_record_sha256": "89250047b33d8b5dd1a594321744602fcc3aa49a1f36f06df4ec645b2f61e118",
+            "request_id": 3
+          },
+          {
+            "sha256": "fcfcef5cd0209233556140d0bce70f8c73df947fc306c1b2fa0ef5ed4c8c47ba",
+            "forwarded_record_sha256": "237316d464967653240a6ca4126fa7fbf19dd5628744622e6634567575eec220",
+            "request_id": 4
+          },
+          {
+            "sha256": "fd2624fc98c1305ee07bffc0b35b75e3dbb18d88f392127b51b95e1ef3c5119c",
+            "forwarded_record_sha256": "6317143d04615c47e50e20824d8beaba97a323dfaff1f865abc1d4380bab4dcf",
+            "request_id": 43
+          },
+          {
+            "sha256": "f3c36a28acaa37870fec952b50af371685346b9657511a30119f95a880369fe7",
+            "forwarded_record_sha256": "400295868209272adc1b0316234ef2a9303c21e48262f71da00a6c4757791876",
+            "request_id": 44
+          },
+          {
+            "sha256": "33e6bc499150dd69ab684b8d6787c926d74fee5a1cd27d599b92f7fcbce89cf0",
+            "forwarded_record_sha256": "746b7bab2a3a72e9ee995fbf5674a956e44b4bca8963a207f86ab18e252ff823",
+            "request_id": 45
+          }
+        ],
+        "forwarded_skill_body_sha256": [
+          "f42c746610daaa1dcd7047b3b36d194605da4c37767b6e8b165d2885de3e8aa7"
+        ],
+        "latest_observed_native_result": {
+          "status": "native_done",
+          "done": true,
+          "control_step": 634,
+          "step_limit": 800,
+          "steps_remaining": 166
+        },
+        "image_sha256": "432cd5d65b8441ff07ea6f4cf57e1dead1e84b8da66208d1700d3673b7e2eb8b"
+      }
+    },
+    {
+      "skill": "robo-general-only",
+      "direction": "B_worse",
+      "available": true,
+      "key": [
+        "cover_blocks",
+        0,
+        1
+      ],
+      "scene_sha256": "4d7f51a24edfa3c3bd7279f84c36b2151ef0c8528a96bc62ec3453b59c2c2382",
+      "visual_note": "已核对官方结果原字节与API中的实际control_step/done/动作返回。图像供复核；未仅凭分数给抓取、接触或归位失败编造原因。",
+      "E": {
+        "native_result_sha256": "8ae6a937232fc1b8c6d1e3b297a60df76889c266a3fa45274dc4e42ae609b509",
+        "success": true,
+        "score": 1.0,
+        "record_scope": "full trajectory return",
+        "native_grade_bytes_verified": true,
+        "API_capture_proof": [
+          {
+            "sha256": "b3d1b9a5301d284e900882ced87664ac1391ef15606fff4b9ac95755966d9a63",
+            "forwarded_record_sha256": "097eac427b2114eda74db686e63953f4a58dd44ad5ccd1377edacf79f6693245",
+            "request_id": 1
+          },
+          {
+            "sha256": "9d4fd28aebfc5a19c68fc5da06f65c994c7b43626409d8d0038cfb93d8a0a1d6",
+            "forwarded_record_sha256": "93d04ebe6d7d86211da87f09cb8a6c969979ced35c35d16333b6c2a1d165336f",
+            "request_id": 2
+          },
+          {
+            "sha256": "c1b275bd1e4f59777f398113b15ab86917c523c4de49992979c1db5f2660c89b",
+            "forwarded_record_sha256": "3be30138dbb6f45c4ca18666e90dd51d8fd3100470679e8a8c0715fb45ceb3e5",
+            "request_id": 3
+          },
+          {
+            "sha256": "b007267a361bc40938fedd8e3241a1752652b6ca2f01bcfdc2d821d476e6f4ad",
+            "forwarded_record_sha256": "504065af404d495edadccfefdda126aff5b8aa6a91e8dbc6c18a444d86126fca",
+            "request_id": 4
+          },
+          {
+            "sha256": "7c6e74c5a31caef8e9bcfd7004370b96f620d5493e28187c462f02e3ed4a23e4",
+            "forwarded_record_sha256": "7b34d950ed8380aa982567c168a6f0b144f5947371648c115fec008bde73e506",
+            "request_id": 29
+          },
+          {
+            "sha256": "cea22b68261de683c5002b1b349bf7d7042b997b05f78d9128f2c7d8a529b596",
+            "forwarded_record_sha256": "4e01b5ef2a62e3a8afdfcaf757815955aff4ee5fad3658d7b0b05a33c3d5109e",
+            "request_id": 30
+          },
+          {
+            "sha256": "1a38eff529b5a451d9ae1ae566f7368225c5d019affbeb30c826e677f0a5f817",
+            "forwarded_record_sha256": "d53c961f4ac6fbb2ad12dcb36ed55389986f3811039fa90d049ee872f0f96b85",
+            "request_id": 31
+          }
+        ],
+        "forwarded_skill_body_sha256": [
+          "ea113aeebeb665dbb244ab630924022a1694d095ebcf8c0e25336a2e31f04923"
+        ],
+        "latest_observed_native_result": {
+          "status": "executed",
+          "done": true,
+          "control_step": 507,
+          "step_limit": 800,
+          "steps_remaining": 293
+        },
+        "image_sha256": "f155fef2b1dc27f0544574b9c824eb6b7ba70aa0cdb421e10bf8d4c8b4dc24ef"
+      },
+      "B": {
+        "native_result_sha256": "96cf8e42bf46170235dcdc30bd867473c42aea88c0e2fb61a9e47e8df26c9c4d",
+        "success": false,
+        "score": 0.15,
+        "record_scope": "training-input subset; not full trajectory return",
+        "native_grade_bytes_verified": true,
+        "API_capture_proof": [
+          {
+            "sha256": "a229e911d4a56048b30dec291d74395128304dba25c243e7916e7dbb13323e4a",
+            "forwarded_record_sha256": "61c2a23b25f24f1c1a3f66191a18dc7c234ddb152c5afb34fe6be112505a5cde",
+            "request_id": 1
+          },
+          {
+            "sha256": "46cc52536dc4637fd388e7a2dd18ce9851d8ac3f2d26738d70d05947d96b7c98",
+            "forwarded_record_sha256": "80f06cc11b2443387545c43d45b59e0ea142cde986fc894e7527a5bea9dbefd4",
+            "request_id": 2
+          },
+          {
+            "sha256": "ff39dd7ea0566b1733f6f7adad5237de3f83d851737a33573900730280635598",
+            "forwarded_record_sha256": "5259800a2e93e16cf7ade8e362910a6cb491cb2ec729f532c972ec673f41d898",
+            "request_id": 3
+          },
+          {
+            "sha256": "dcca465f3ef00fe7679808dd6cf1ac6052a14fb44e5b063687579e9c1f608ce7",
+            "forwarded_record_sha256": "0a1e9f88cb0dff06bed4475973f47b352a067aa671ec10ea6bbf5ceb6a2dfaab",
+            "request_id": 4
+          },
+          {
+            "sha256": "54851d060e6429abddbf2ef1df21f943fede72b077a135ebcc8344df7db8e43d",
+            "forwarded_record_sha256": "c54d5ce1c382cffeb3d5e79e696340daffcdcf4528206151d961ce03c19cd342",
+            "request_id": 96
+          },
+          {
+            "sha256": "e87b18550485c65a0ba66ba5796a52d785024eac2fadf3471ff327de927b6fda",
+            "forwarded_record_sha256": "f4b9dfce8fa11fdc05a671b9c656d09da81ad86179d8f398acf30bc0408520fd",
+            "request_id": 97
+          },
+          {
+            "sha256": "0f666cfc2cbf4b3ad65c8481d26955dea0332b56e3c46144f1e9e8bb07e538d2",
+            "forwarded_record_sha256": "4453ef555b7873949033633b13137adc4bd5bc4ddf4f2b1d1243093f7a3a0001",
+            "request_id": 98
+          }
+        ],
+        "forwarded_skill_body_sha256": [
+          "f42c746610daaa1dcd7047b3b36d194605da4c37767b6e8b165d2885de3e8aa7"
+        ],
+        "latest_observed_native_result": {
+          "status": "native_done",
+          "done": true,
+          "control_step": 800,
+          "step_limit": 800,
+          "steps_remaining": 0
+        },
+        "image_sha256": "5643e8b69cdfa8b8746c436e6a368cfc55b470a8ce022fb7c328dba0efdadadb"
+      }
+    },
+    {
+      "skill": "robo-general-only",
+      "direction": "B_better",
+      "available": true,
+      "key": [
+        "match_and_pick_from_conveyor",
+        0,
+        17
+      ],
+      "scene_sha256": "e074b83b8e6ad86e6d2600686dc5ed1bce9e397681587b9c8f8c66408f20ef08",
+      "visual_note": "已核对官方结果原字节与API中的实际control_step/done/动作返回。图像供复核；未仅凭分数给抓取、接触或归位失败编造原因。",
+      "E": {
+        "native_result_sha256": "09ed78a032ff16ccea32c149ce710ac1b3dbd601c6201b36e19501e5f26e9fb4",
+        "success": false,
+        "score": 0.0,
+        "record_scope": "full trajectory return",
+        "native_grade_bytes_verified": true,
+        "API_capture_proof": [
+          {
+            "sha256": "fd70f92b7d83bd7ae0b3d54025b50132341b1c02a924110705c065cbc1657053",
+            "forwarded_record_sha256": "d2b150230d7d49876cb1493eb59ea6e78b4d418dd754d0f3ef3ff749498b5727",
+            "request_id": 1
+          },
+          {
+            "sha256": "09f59ca8b841e5550c8fed0cc0b2bffeee234a9b76ebf39512e337cb38db29a2",
+            "forwarded_record_sha256": "cf551238711001928b8ba0a8050a8555eb55505f8df02ce2bcb3ac646103f85b",
+            "request_id": 2
+          },
+          {
+            "sha256": "85953eaa59bf6c666de0e19a67ea1cd639efa1649652e30fbd65f259502d78a3",
+            "forwarded_record_sha256": "56fb62010dcd9464ca28d1b3851318853a7ca83dca631a085f69dc733b6b0513",
+            "request_id": 3
+          },
+          {
+            "sha256": "fd09a35b070f5eba9830419d323022a780b3072672ae958040299b6a9d57ca9d",
+            "forwarded_record_sha256": "491df37daab2d499e8867c22bbd0518ef750180f7d49f676f872e96d06a830d5",
+            "request_id": 4
+          },
+          {
+            "sha256": "30d3ad64ad9d2da859b2873c154882b5023ec2513012ee35f816a56eac155d75",
+            "forwarded_record_sha256": "6bbf056ee3d7be81f7e7e30a3a2d30c6d11fb11752b8455d7742a61d4e492285",
+            "request_id": 41
+          },
+          {
+            "sha256": "e68b7d7d7355e7d01de448f9c49f005f2eabbd7e7cf0ee7864e66cac5db1709b",
+            "forwarded_record_sha256": "169b8781a2dc713fdbb501d6a194c454a1df881d573b2d3e2c3c60aa8d30a43f",
+            "request_id": 42
+          },
+          {
+            "sha256": "6bf69df22115db210ac846d323a3cefa65c02ad709001130f366145e2a5d2654",
+            "forwarded_record_sha256": "b8ca79f94903d864628398351086afbaea6aa24b21bc9aa07bf3ab4d4a345356",
+            "request_id": 43
+          }
+        ],
+        "forwarded_skill_body_sha256": [
+          "ea113aeebeb665dbb244ab630924022a1694d095ebcf8c0e25336a2e31f04923"
+        ],
+        "latest_observed_native_result": {
+          "status": "native_done",
+          "done": true,
+          "control_step": 700,
+          "step_limit": 700,
+          "steps_remaining": 0
+        },
+        "image_sha256": "1a4bc1189ae2a9ebb6b3daf8726703f988a463a9cd76b242f9c23858c63bc1b2"
+      },
+      "B": {
+        "native_result_sha256": "665a8d51e96dd69593c59397ad78fffecc357909170b69ce1c417aae7d71c6cf",
+        "success": true,
+        "score": 1.0,
+        "record_scope": "training-input subset; not full trajectory return",
+        "native_grade_bytes_verified": true,
+        "API_capture_proof": [
+          {
+            "sha256": "0bbf940ccfafeca7a6a3aca222bc01d675d49f0d9dd2d8d060f0d2e2d95c9e4e",
+            "forwarded_record_sha256": "e8894e7fd101c0c2194413466ba48934308c748e40b7bef805c57cebb21b3fff",
+            "request_id": 1
+          },
+          {
+            "sha256": "72491a254d0305c357c94b6b43a338d8f527cceeb7ad52fb57eb9249d4d346c1",
+            "forwarded_record_sha256": "2623aa6dfad576c548d35e3fef0743f0fcc3230195d7009ee18610e1d80dfcc2",
+            "request_id": 2
+          },
+          {
+            "sha256": "556c730834ffdc59143a6dac620f0c93381193df9a7b204e08a812e279dbab41",
+            "forwarded_record_sha256": "b0b6090b6e714ff74d50e539cbeaf49b9f5396094057b9b8aa8a651d4fa400bf",
+            "request_id": 3
+          },
+          {
+            "sha256": "5728298787dd597b5a1e125252671c83d247ae75bcbfa214a5050bb0c93ffde9",
+            "forwarded_record_sha256": "dbf07796484233444e75ba2379ee1aade4d690be431a5effbd80af07d8d4d31e",
+            "request_id": 4
+          },
+          {
+            "sha256": "cafe2e6c26b807ab602fe349845646bf3fda95b6ef9203ca7992aa5133317180",
+            "forwarded_record_sha256": "1b9112b6d60c697210606723156ae42cf5e22c8c0515b5554cf088e53df9d23e",
+            "request_id": 35
+          },
+          {
+            "sha256": "b334f4809a9c7e4196b299869d5eaa0eae2709152f1de97d3a106ad40a35cd10",
+            "forwarded_record_sha256": "0287e35b08b1b2b30501ecde998553e92588f35f704ccc8d5cb27f9a24bfc1fd",
+            "request_id": 36
+          },
+          {
+            "sha256": "8751cb9bbf9a0beaf88aafbb7d28a17f00fad25c99ca87af0d71c87d5d285574",
+            "forwarded_record_sha256": "69f2d06e5e7d4c2fb3a9f56c0b8b9fec7daccc3dfb7aeca9a9002c562b652430",
+            "request_id": 37
+          }
+        ],
+        "forwarded_skill_body_sha256": [
+          "f42c746610daaa1dcd7047b3b36d194605da4c37767b6e8b165d2885de3e8aa7"
+        ],
+        "latest_observed_native_result": {
+          "status": "native_done",
+          "done": true,
+          "control_step": 546,
+          "step_limit": 700,
+          "steps_remaining": 154
+        },
+        "image_sha256": "0bd28ae6edef0d598fc2a4349d705e008960b5f6e5e3f004b05f41ef517bc0d6"
+      }
+    },
+    {
+      "skill": "robo-general-only",
+      "direction": "B_worse",
+      "available": true,
+      "key": [
+        "match_and_pick_from_conveyor",
+        0,
+        10
+      ],
+      "scene_sha256": "f41946f0a7b473d01a74ba82c4649c86914869081255802ce8b010fc540c5160",
+      "visual_note": "已核对官方结果原字节与API中的实际control_step/done/动作返回。图像供复核；未仅凭分数给抓取、接触或归位失败编造原因。",
+      "E": {
+        "native_result_sha256": "362097c722449728e0294af1d7ce9ab51d85cbcd1b8a9f35c3c425320ede9b6a",
+        "success": true,
+        "score": 1.0,
+        "record_scope": "full trajectory return",
+        "native_grade_bytes_verified": true,
+        "API_capture_proof": [
+          {
+            "sha256": "8eb005fbba30d673c8e75bf9329538335c6d6a7868d959af0ab776878e2eb0fc",
+            "forwarded_record_sha256": "6572568a9a7576e2faa3d51d55ea35428ae756de262f0de73a7b8dcc8f961406",
+            "request_id": 1
+          },
+          {
+            "sha256": "d2b63aa970ea1f10e4cb79a5b21b507874b53cb13029732a9c78580a61b681f0",
+            "forwarded_record_sha256": "b44c9d8d615019d22301750ca0687de5082f7ac1b6090d3defc9509be90e2f2b",
+            "request_id": 2
+          },
+          {
+            "sha256": "f4fbde03906c0b7485f080df6075c8421fc552124a220cce215d3be757991896",
+            "forwarded_record_sha256": "1f1e2f69c45c0827a665a1076f45dae04901c3ff8bd6a09e88bad83eea64aa99",
+            "request_id": 3
+          },
+          {
+            "sha256": "5d8b45be81ac969bee02e11d1f6ba347b4d147b927e7df9d8435ae29d1ace86f",
+            "forwarded_record_sha256": "ccaebd4cac5a48d4ab341e7f67908a589cadddb10522646c4ed97c3b137dff3e",
+            "request_id": 4
+          },
+          {
+            "sha256": "a0904d0fbc01872d04802abfd9c084a32859295e632fa0522581f9f72a83f045",
+            "forwarded_record_sha256": "dd849c425e30295caf84cc345cfacc2370b68da0ffb69197f8b8095d0dab198a",
+            "request_id": 14
+          },
+          {
+            "sha256": "5bad386685a0447eea3dbabb7cc9da33441f8ab1916edcf70766f09cdc4ed387",
+            "forwarded_record_sha256": "cd44874ca2aa2309795aebcb6cc8ca8a4090b82fcc1f79e987901576bbefe27a",
+            "request_id": 15
+          },
+          {
+            "sha256": "38eb1163aef5865a819407bac2ab1ac2e62442ca4237e0db9d1198814725c3f3",
+            "forwarded_record_sha256": "8b402ef54b08e9e25d451ccbc26c2c6718a3d70f49e775f57023eb4caf753986",
+            "request_id": 16
+          }
+        ],
+        "forwarded_skill_body_sha256": [
+          "ea113aeebeb665dbb244ab630924022a1694d095ebcf8c0e25336a2e31f04923"
+        ],
+        "latest_observed_native_result": {
+          "status": "native_done",
+          "done": true,
+          "control_step": 533,
+          "step_limit": 700,
+          "steps_remaining": 167
+        },
+        "image_sha256": "4589c10e66f5140c9478ec0a5545a6b39bc396d2f7978aa9965fae96791dc7ed"
+      },
+      "B": {
+        "native_result_sha256": "c5974d4b4246bc31ba26e09420d6cfa4bdf9d4385e64ef777005adbdd18c0d6a",
+        "success": false,
+        "score": 0.0,
+        "record_scope": "training-input subset; not full trajectory return",
+        "native_grade_bytes_verified": true,
+        "API_capture_proof": [
+          {
+            "sha256": "18844fca8d7c19fa3a2e1704f9974b9d25e947e318440d53cbce2b5e49b23348",
+            "forwarded_record_sha256": "9625ef83e4c13d29f3239fb295dda10e1a3da0dba68b4c9aa305eedbb2eed892",
+            "request_id": 1
+          },
+          {
+            "sha256": "c71e36c5fcae992519f122ec9cb54e4c0d9f70f71d99f3e6290d80a72a2599dc",
+            "forwarded_record_sha256": "7ed2206522f892a6eeb75ae015641ebacc5f3068caa74f9c2db5baa85d7eaefd",
+            "request_id": 2
+          },
+          {
+            "sha256": "e595e2367e972aef9a398a7c41bca79f473d494874f9e62e8a52c7d61b6547b5",
+            "forwarded_record_sha256": "0122b9ff3446a49a8ffefd59461709dd502f9d7c5e94a2d7e5ebfe9a4c16e8bb",
+            "request_id": 3
+          },
+          {
+            "sha256": "731e6c0294c326515cba959b2caa3901c7e0e56d202cce5ce7ed43ca4714832c",
+            "forwarded_record_sha256": "fc47390e36ac4e0e7b29ea72460afd26fcdbffb07118da907943fd5782c8901a",
+            "request_id": 4
+          },
+          {
+            "sha256": "c546f3b9cc151b3038a5553acdbff894aa7d0129c64a7307a53ce4e182650aea",
+            "forwarded_record_sha256": "0dd8b6eb7ad4d5bdf9235bce15ae1410290cd29dc679d759d1b2507c55a3446b",
+            "request_id": 41
+          },
+          {
+            "sha256": "c3545d1b1a6221f3154f0c464b0300fcd76f534baecd5ac2b781998f2cef4b9d",
+            "forwarded_record_sha256": "3947ba81ee496881f6033a2a56aa5f2fd6713de2095d6132638cc2dda589ab25",
+            "request_id": 42
+          },
+          {
+            "sha256": "9e169e526eb1ecf5b45526da56e734981f5f33121fc5b0a6d0833896cd99c8d3",
+            "forwarded_record_sha256": "b8b9a0120c72e93e6eb44536545f5d3edce3644fb2c46db8ab26afbf698812ac",
+            "request_id": 43
+          }
+        ],
+        "forwarded_skill_body_sha256": [
+          "f42c746610daaa1dcd7047b3b36d194605da4c37767b6e8b165d2885de3e8aa7"
+        ],
+        "latest_observed_native_result": {
+          "status": "executed",
+          "done": true,
+          "control_step": 700,
+          "step_limit": 700,
+          "steps_remaining": 0
+        },
+        "image_sha256": "56ebd7fce1449f10bbc48f01527466f8e57ca88a0c8812e7e24c0c18e771ce0f"
+      }
+    }
+  ],
+  "analysis_new_model_calls": 0,
+  "analysis_new_simulator_calls": 0,
+  "source_trajectory_mutations": 0,
+  "recommended_for_deployment_as_validated_improvement": false
+}

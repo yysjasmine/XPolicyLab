@@ -5,6 +5,12 @@ description: Build one supported vertical stack from the observed blocks and ver
 
 # Stack blocks
 
+## Action checkpoints
+
+For each layer, re-estimate the current support centre/top and held block's bottom-to-TCP offset. Count the layer only after opening and a clear withdrawal show independent support. If the base shifts, invalidate the old centres/heights and re-localize before adding another layer.
+
+Before the final layer, check placement/release/withdrawal and both-arm return costs. For a stalled return, use a reachable intermediate pose with a clear finger sweep; repeatedly increasing height can worsen reachability. Compare both measured arms to the original step-0 reference, including the inactive arm, rather than treating its current hold target as home. Preserve a stable stack while correcting the return route.
+
 Read the current instruction and inventory the blocks from head/wrist RGB. The reference scenes contain three differently textured cubes; texture order changes between demonstrations. Use current counts and any explicit ordering rule. Track each identity from its source into the stack, including blocks hidden by a home gripper.
 
 ## Choose a base and clear route
@@ -26,7 +32,7 @@ Recount loose blocks and inspect the tower after each layer. A shifted base chan
 
 ## Ending
 
-Account for every required block in one vertical stack, with base on the table and each upper block supported by broad overlap on the layer below. Check release, uprightness and stability after finger withdrawal. Scan original source sites and both hands. Return both open, empty arms toward their captured initial poses through raised clear waypoints. The head view may remain useful when parked wrist cameras no longer see the tower.
+Account for every required block in one vertical stack, with base on the table and each upper block supported by broad overlap on the layer below. Check release, uprightness and stability after finger withdrawal. Scan original source sites and both hands. Return both open, empty arms toward their original step-0 poses through raised clear waypoints. The head view may remain useful when parked wrist cameras no longer see the tower.
 
 ## Pictures
 

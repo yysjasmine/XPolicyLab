@@ -4,7 +4,7 @@
   "source_commit": "cfa591575172b638a8436fa95db28e9469785c9c",
   "official_source_commit": "726e9aabfaa642203722eb126f5eaf0f37f3e1ad",
   "subagents_enabled": false,
-  "frozen_general_sha256": "77b83692b3cf5cea607da0e8054d83dcdd890c2a0ff0c6b959cebd2b5b0ad311",
+  "frozen_general_sha256": "ff9d975f9a3493af92cbe2399cd2731a0fad9bbab28905714c39ce6977e609a0",
   "raw_icl_training_material_in_runtime": false,
   "tasks": {
     "align_blocks": {
@@ -283,13 +283,13 @@
     "arrange_largest_number": {
       "directory": "skills/arrange_largest_number",
       "description": "Arrange observed digits upright in descending left-to-right order on the pads.",
-      "markdown_utf8_bytes": 3540,
-      "token_count_upper_bound": 3540,
+      "markdown_utf8_bytes": 8521,
+      "token_count_upper_bound": 8521,
       "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
       "reference_images": 3,
-      "bytes": 745398,
+      "bytes": 750870,
       "sha256": {
-        "SKILL.md": "8c9c1f548cdc98134c241bced9cc3c677d03927fbd1ae516ce10f6c578a1e520",
+        "SKILL.md": "85353d66d927ade366203d30aa1ff6c233cbdc660b1f2109a508b5c2a43b2e09",
         "assets/direct-overview.jpg": "eef5d6026466ac63f64d10b5a93ce0d845a0b0b910330e94cfcf8dda2d1f71d3",
         "assets/ending.jpg": "0f39936e1802c96faab3b59276dfbd234bfeae1a4fdae0fd812e18f84c7f89b0",
         "assets/transfer-keyframes.jpg": "221603c54f85b0cfa06478dc4c28b48c5132fa79a451d26bbbea4543ccb2a98c",
@@ -301,11 +301,11 @@
     "build_tower": {
       "directory": "skills/build_tower",
       "description": "Assemble the demonstrated layered tower with paired supports, two boards and a roof.",
-      "markdown_utf8_bytes": 4445,
-      "token_count_upper_bound": 4445,
+      "markdown_utf8_bytes": 10335,
+      "token_count_upper_bound": 10335,
       "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
       "reference_images": 2,
-      "bytes": 903076,
+      "bytes": 909277,
       "sha256": {
         "SKILL.md": "66acbae7d555df710b373fcd5270835e61db2830eccc73f33ae73d7723bb4f35",
         "assets/ep00_ending_views.jpg": "dce87d6406e8871dfdbdc25e8e57f29fcc1354a63005e499abfc1614d5140325",
@@ -317,11 +317,11 @@
     "classify_objects": {
       "directory": "skills/classify_objects",
       "description": "Sort the observed objects by category into the instructed baskets.",
-      "markdown_utf8_bytes": 3715,
-      "token_count_upper_bound": 3715,
+      "markdown_utf8_bytes": 10579,
+      "token_count_upper_bound": 10579,
       "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
       "reference_images": 2,
-      "bytes": 2859213,
+      "bytes": 2866405,
       "sha256": {
         "SKILL.md": "acc5644563d2415d9d6bb13b6565b928d884a4f12110d9356ca988346f540670",
         "assets/groups-and-endings.jpg": "b6b072c85883743ffa6a78d9b1229e92364bd3e3f8bae685edd01a4344bec7ba",
@@ -333,11 +333,11 @@
     "deposit_coin": {
       "directory": "skills/deposit_coin",
       "description": "Pick up the observed coin, transfer it when needed, and deposit it edge-first through the bank slot.",
-      "markdown_utf8_bytes": 3636,
-      "token_count_upper_bound": 3636,
+      "markdown_utf8_bytes": 10103,
+      "token_count_upper_bound": 10103,
       "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
       "reference_images": 3,
-      "bytes": 1962279,
+      "bytes": 1969159,
       "sha256": {
         "SKILL.md": "8fd0d46baf9219b32886d9a85269588da9b229362e70e75e34402234a7f54faf",
         "assets/direct_overview.jpg": "8c9cc30cc5ee3feead4e7ed80e622399ac1e42861e10834ab9264a43f9a9f635",
@@ -350,11 +350,11 @@
     "fasten_screws": {
       "directory": "skills/fasten_screws",
       "description": "Pair observed nuts and screws, seat each nut, and tighten through visually checked clockwise strokes.",
-      "markdown_utf8_bytes": 12807,
-      "token_count_upper_bound": 12807,
+      "markdown_utf8_bytes": 12427,
+      "token_count_upper_bound": 12427,
       "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
       "reference_images": 3,
-      "bytes": 1273569,
+      "bytes": 1273189,
       "sha256": {
         "SKILL.md": "86fd086b6d0d37caee02b40f8e91012209dcfdc175d9c58796165e55a1ec7134",
         "assets/assembly.jpg": "c4f8f9422ac4615d4beeb14a2c329361c09978c5bb4da8d61e6c743b0f0cb317",
@@ -367,13 +367,13 @@
     "fill_egg_holder": {
       "directory": "skills/fill_egg_holder",
       "description": "Transfer the eggs into the holder, close its lid and restore the arms.",
-      "markdown_utf8_bytes": 3924,
-      "token_count_upper_bound": 3924,
+      "markdown_utf8_bytes": 10387,
+      "token_count_upper_bound": 10387,
       "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
       "reference_images": 2,
-      "bytes": 376604,
+      "bytes": 383378,
       "sha256": {
-        "SKILL.md": "dd8a3d27ce50e5af002ab4f98ed82729248daabcaac1f0ab1b1ac73d002d046b",
+        "SKILL.md": "7787d2670319f51c48234d8be7927a4d8c92b346a9d7977129dcdf20bfa7decd",
         "assets/ep00_overview.jpg": "320ac744cce8e28996ac3c4872bcc73120e5115c4c7427f719fa48418a117417",
         "assets/ep08_overview.jpg": "08122a6befe7daef7a6a387f8e13578e62bf5c7cc14ead2371300be20d2204ae",
         "scripts/assist.py": "56c0cfead5a78e7da6073f36a69b8ed8734c5b08c6040d0215cbe838a94a48ca"
@@ -383,13 +383,13 @@
     "fill_pen_holder": {
       "directory": "skills/fill_pen_holder",
       "description": "Hold the container with one arm, insert the instruments with the other, then put it down.",
-      "markdown_utf8_bytes": 4367,
-      "token_count_upper_bound": 4367,
+      "markdown_utf8_bytes": 14039,
+      "token_count_upper_bound": 14039,
       "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
       "reference_images": 3,
-      "bytes": 1044011,
+      "bytes": 1053994,
       "sha256": {
-        "SKILL.md": "05fa1cdf4ac400f090cbde124e8de4ce9eadc6aeb34979494cd563eca40d7959",
+        "SKILL.md": "d1c0e9af578e662223fe1227e57c03299de1ae66b90bf8998e300672521632bd",
         "assets/ep00_endings.jpg": "0234e2d2f01c57d5d7c6bf4badfcbe047055af630c580329d370c9d8229cb405",
         "assets/ep00_transitions.jpg": "2a341bfebc511086f0958f202a3e34edb122003357eefb26fcc2bad336961390",
         "assets/ep07_endings.jpg": "a2137672b286b0146a725a2da934ef18b8119ff6fd21bf4904b192786778981c",
@@ -400,13 +400,13 @@
     "fold_clothes": {
       "directory": "skills/fold_clothes",
       "description": "Fold the observed garment using its current cuffs, hem and torso frame.",
-      "markdown_utf8_bytes": 4524,
-      "token_count_upper_bound": 4524,
+      "markdown_utf8_bytes": 9352,
+      "token_count_upper_bound": 9352,
       "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
       "reference_images": 2,
-      "bytes": 841238,
+      "bytes": 846470,
       "sha256": {
-        "SKILL.md": "5611a25c1e1aa84434cd310c12aaa553e245493e112f0bff61fa4bba9f5c9aca",
+        "SKILL.md": "1870dabc4f4af434b981d315d67c7f7eefcedadb8f95814597691b8057893b67",
         "assets/ending-variation.jpg": "0c7214533b73533a41e19a389e47bd8fae0f13749c121c628d3905068816a8e3",
         "assets/fold-sequence.jpg": "dd67e85354485be72cbf04a21db5df0fe7d9b0d6bf4759d6d1fdb152d0692fe7",
         "scripts/assist.py": "76064154886282995103abc6ae4c3372a5b93781de0e26ecafe1d05ad56e96ef"
@@ -416,11 +416,11 @@
     "hang_mugs": {
       "directory": "skills/hang_mugs",
       "description": "Grasp observed mugs by their rims and thread their handles onto free rack pegs.",
-      "markdown_utf8_bytes": 3901,
-      "token_count_upper_bound": 3901,
+      "markdown_utf8_bytes": 8133,
+      "token_count_upper_bound": 8133,
       "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
       "reference_images": 3,
-      "bytes": 1710428,
+      "bytes": 1715073,
       "sha256": {
         "SKILL.md": "76dbb914969bfb4874a8d2810976d2867a6275b5aaa8bd54890d5594928a9ebb",
         "assets/endings.jpg": "ae198a8d52ede534981c25127eebe678c04e5db07724b472f4c6b46346e072ca",
@@ -433,11 +433,11 @@
     "insert_key": {
       "directory": "skills/insert_key",
       "description": "Pick up the key, transfer its bow to the other hand, align the asymmetric keyhole, insert and turn.",
-      "markdown_utf8_bytes": 4174,
-      "token_count_upper_bound": 4174,
+      "markdown_utf8_bytes": 9460,
+      "token_count_upper_bound": 9460,
       "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
       "reference_images": 3,
-      "bytes": 1460864,
+      "bytes": 1466563,
       "sha256": {
         "SKILL.md": "796d7068de330132e4899f58c05d9ac64d8294c1f677a39f3c32df8c447e9897",
         "assets/ending.jpg": "016393a86f6420358c7777fe3669ff4685c60082f18d5a9fa28d0308f8ec86f6",
@@ -450,11 +450,11 @@
     "insert_tubes": {
       "directory": "skills/insert_tubes",
       "description": "Pick capped tubes, turn them upright and seat them in the rack's intended large holes.",
-      "markdown_utf8_bytes": 4311,
-      "token_count_upper_bound": 4311,
+      "markdown_utf8_bytes": 11967,
+      "token_count_upper_bound": 11967,
       "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
       "reference_images": 3,
-      "bytes": 1404873,
+      "bytes": 1412840,
       "sha256": {
         "SKILL.md": "5c2ad70ef18d3b2317cdd3d36dd6da8c08aa5fee805154616694296a31e525f2",
         "assets/demo00_contacts.jpg": "c52ff5186d572d23a1018b5ced8e0aa39e62ef63e38d8fc60991b99dfe937766",
@@ -467,11 +467,11 @@
     "make_kong": {
       "directory": "skills/make_kong",
       "description": "Expose the three hand tiles matching an observed discard, draw a reserve tile, and stand it at the row end.",
-      "markdown_utf8_bytes": 11558,
-      "token_count_upper_bound": 11558,
+      "markdown_utf8_bytes": 11260,
+      "token_count_upper_bound": 11260,
       "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
       "reference_images": 2,
-      "bytes": 1312762,
+      "bytes": 1312464,
       "sha256": {
         "SKILL.md": "4a0e16090271dfa89c9c1755a27ad7bde9c2d65766f865910dff97d2c01c1e50",
         "assets/draw-handoff-place.jpg": "9ee9246a48c5f519bce714a71e2bed0257a621c85a659eec37cd127f45b8ad7a",
@@ -483,13 +483,13 @@
     "make_toast": {
       "directory": "skills/make_toast",
       "description": "Pick up bread, transfer it between hands, place slices in toaster slots and press the lever.",
-      "markdown_utf8_bytes": 4973,
-      "token_count_upper_bound": 4973,
+      "markdown_utf8_bytes": 9790,
+      "token_count_upper_bound": 9790,
       "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
       "reference_images": 3,
-      "bytes": 859435,
+      "bytes": 864665,
       "sha256": {
-        "SKILL.md": "ac68d96d0a682553585411d5495dffbe0fe5af2430cce15438fbdd3740e482bd",
+        "SKILL.md": "77e49d2cdcbae7e5a6b26b4e29f5ed1f50c73aa89b6548bc579db049764d6de9",
         "assets/contact.jpg": "f6f50eb0c514549fd30fb1a41a2654d2dbc4c79c645177ccea26dc5217068d34",
         "assets/ending.jpg": "1ed80839a3f2315acfa2a8776f3d18dc75fdf2c400873bf6e94435457bbd60b2",
         "assets/overview.jpg": "31d7ed00b18e78bbaaaed468fdcc1d301a094710ce1d78d33d291b597b0931ff",
@@ -500,11 +500,11 @@
     "pack_objects_into_box": {
       "directory": "skills/pack_objects_into_box",
       "description": "Pack observed objects into an open box with their semantic fronts facing left.",
-      "markdown_utf8_bytes": 5177,
-      "token_count_upper_bound": 5177,
+      "markdown_utf8_bytes": 9200,
+      "token_count_upper_bound": 9200,
       "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
       "reference_images": 2,
-      "bytes": 1194484,
+      "bytes": 1198884,
       "sha256": {
         "SKILL.md": "01478cd142dce15be75e3e7430d92de16abc509994133a85fd93cdd0a94ca273",
         "assets/ending-sequence.jpg": "aac5138d888f2d2e819799cb2fd1e7a831f55eb2eec3c9c32b61079b8135560c",
@@ -516,11 +516,11 @@
     "play_Xylophone": {
       "directory": "skills/play_Xylophone",
       "description": "Acquire a mallet, strike observed keys left-to-right and retain it in the demonstrated ending.",
-      "markdown_utf8_bytes": 5268,
-      "token_count_upper_bound": 5268,
+      "markdown_utf8_bytes": 11360,
+      "token_count_upper_bound": 11360,
       "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
       "reference_images": 3,
-      "bytes": 1224421,
+      "bytes": 1230956,
       "sha256": {
         "SKILL.md": "556246c88dd4fc51682f445b011c10c56ec3d051394d6b2af06dd898ade139d2",
         "assets/ending.jpg": "07f5ff06424cc16db8cfb64c8eb4925031e5f288a74baa150346e203376725da",
@@ -533,11 +533,11 @@
     "play_stacking_toy": {
       "directory": "skills/play_stacking_toy",
       "description": "Group the toy pieces by family and thread each family onto its height-ranked peg.",
-      "markdown_utf8_bytes": 4446,
-      "token_count_upper_bound": 4446,
+      "markdown_utf8_bytes": 9366,
+      "token_count_upper_bound": 9366,
       "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
       "reference_images": 3,
-      "bytes": 1739090,
+      "bytes": 1744321,
       "sha256": {
         "SKILL.md": "fc7e0ed3cb542455a65f684dec2ccd05fa48347a43269c4144e2186b5f6095da",
         "assets/board_endings.jpg": "1306700897c9fae5a3481cdc334e1373412089ea4152fb157815ca60ee3615c6",
@@ -550,11 +550,11 @@
     "play_tic_tac_toe": {
       "directory": "skills/play_tic_tac_toe",
       "description": "Place O rings in alternating turns with the X opponent and fill the observed board.",
-      "markdown_utf8_bytes": 5282,
-      "token_count_upper_bound": 5282,
+      "markdown_utf8_bytes": 15133,
+      "token_count_upper_bound": 15133,
       "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
       "reference_images": 3,
-      "bytes": 1156296,
+      "bytes": 1166590,
       "sha256": {
         "SKILL.md": "4a7fb7f8c2f38b3ae0b04ee6f0c097b6403cd3a70b163c4c574c1c87d6627ca4",
         "assets/ending-sequence.jpg": "f7ac56954767149d6ece76d32f09c6e4703a0b6840d16cff92923881523d8e83",
@@ -567,11 +567,11 @@
     "plug_in_charger": {
       "directory": "skills/plug_in_charger",
       "description": "Acquire a charger, expose its pins, align them with a power-strip socket and release after insertion.",
-      "markdown_utf8_bytes": 4924,
-      "token_count_upper_bound": 4924,
+      "markdown_utf8_bytes": 9179,
+      "token_count_upper_bound": 9179,
       "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
       "reference_images": 3,
-      "bytes": 1557515,
+      "bytes": 1562183,
       "sha256": {
         "SKILL.md": "b01528dda6ed4ab5e7631cda4527c0a4e177689c9017dd278c5af9a69c14ce88",
         "assets/ending.jpg": "e48e9ba2c85500105685c976b8252313ec8c22d4aad4d6c9f2512a097fd624cf",
@@ -584,11 +584,11 @@
     "pour_liquid_into_cup": {
       "directory": "skills/pour_liquid_into_cup",
       "description": "Grasp a bottle, position its mouth over a cup, pour with feedback and return upright while retaining the grasp.",
-      "markdown_utf8_bytes": 8474,
-      "token_count_upper_bound": 8474,
+      "markdown_utf8_bytes": 8137,
+      "token_count_upper_bound": 8137,
       "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
       "reference_images": 3,
-      "bytes": 672138,
+      "bytes": 671801,
       "sha256": {
         "SKILL.md": "245088b713504e7bc9c1141c7da1474865bf545c192ce151da0f3602354fc009",
         "assets/contact.jpg": "eeb122ac46459f2a50baf91d18dee859eea6121cb115e0b9ce1dced05ae6ff26",
@@ -601,11 +601,11 @@
     "push_T": {
       "directory": "skills/push_T",
       "description": "Push a supported T block onto the observed T pad, using whole-shape alignment and measured contact response.",
-      "markdown_utf8_bytes": 5317,
-      "token_count_upper_bound": 5317,
+      "markdown_utf8_bytes": 8266,
+      "token_count_upper_bound": 8266,
       "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
       "reference_images": 3,
-      "bytes": 1309519,
+      "bytes": 1312911,
       "sha256": {
         "SKILL.md": "27d781a9d10b5542d3d155769494cbc6e768e5bae143c78f8b538aea4fb5e4f6",
         "assets/layouts-overview.jpg": "9e74bf16df96f5435cdc94bd2f7a5d2134e55213cdbe5def2c313a5a72b35987",
@@ -618,11 +618,11 @@
     "put_bottles_into_dustbin": {
       "directory": "skills/put_bottles_into_dustbin",
       "description": "Pick up observed upright or lying bottles, transfer when useful, and release them through the bin opening.",
-      "markdown_utf8_bytes": 6083,
-      "token_count_upper_bound": 6083,
+      "markdown_utf8_bytes": 12850,
+      "token_count_upper_bound": 12850,
       "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
       "reference_images": 3,
-      "bytes": 530201,
+      "bytes": 537411,
       "sha256": {
         "SKILL.md": "e43b856c2f6f8315d03d641186ed0190e0413d344e79eaf744e32ed7af2a5f84",
         "assets/ending-sequence.jpg": "d1d2d0dddea30a8269c8a17eee238fda3293e3df52b58bd59ea843c568be18fa",
@@ -635,11 +635,11 @@
     "sort_nesting_dolls_by_size": {
       "directory": "skills/sort_nesting_dolls_by_size",
       "description": "Arrange the observed dolls in one upright row, smallest to largest from left to right.",
-      "markdown_utf8_bytes": 4565,
-      "token_count_upper_bound": 4565,
+      "markdown_utf8_bytes": 8835,
+      "token_count_upper_bound": 8835,
       "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
       "reference_images": 3,
-      "bytes": 427444,
+      "bytes": 432025,
       "sha256": {
         "SKILL.md": "5599c1548431fcea9e0f383a28272a663021c6b6df6056b083ceee600ce07b60",
         "assets/ep02_endings.jpg": "af01370ae52b0903172d07f7f8d3518f34be1c3965cf2e0341b423f21be18165",
@@ -652,13 +652,13 @@
     "stack_blocks": {
       "directory": "skills/stack_blocks",
       "description": "Build one supported vertical stack from the observed blocks and verify release of every layer.",
-      "markdown_utf8_bytes": 4323,
-      "token_count_upper_bound": 4323,
+      "markdown_utf8_bytes": 7949,
+      "token_count_upper_bound": 7949,
       "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
       "reference_images": 3,
-      "bytes": 5386293,
+      "bytes": 5390230,
       "sha256": {
-        "SKILL.md": "083cd6aec065764a5bcb55ee3a69e2d6e7da20906461176362c06112f4478e55",
+        "SKILL.md": "ac81f818c316d45468b4c501e9ea199bf317f662ac33c281350f4961c317c8e3",
         "assets/ep00_overview.png": "1dc85c27ac21b0b690c1081d89c75b4ef8cafbb93793e38745d1287398554295",
         "assets/ep00_support.png": "03e4c6adb54295a8c2a4a9255ab2677fac12250854722413d3e014cd94d8e27c",
         "assets/geometry_face_orientation.png": "5e07c9c63337746ced5a611bcdda1c336e25e41e425f25d67d0c72f9132ef5e3",
@@ -669,11 +669,11 @@
     "stack_bowls": {
       "directory": "skills/stack_bowls",
       "description": "Lift bowls by their rims, nest them into one supported stack and clear the fingers.",
-      "markdown_utf8_bytes": 4273,
-      "token_count_upper_bound": 4273,
+      "markdown_utf8_bytes": 7477,
+      "token_count_upper_bound": 7477,
       "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
       "reference_images": 3,
-      "bytes": 583685,
+      "bytes": 587200,
       "sha256": {
         "SKILL.md": "a8728b8908fe23386fad049fe025497fa3f53eacf3e93b2bb9b473a82c501618",
         "assets/ep00_overview.jpg": "f4f052696bf0799f69444a394e48dab0c327256db2c7188798bb203240c077dc",
@@ -686,11 +686,11 @@
     "store_laptop_and_headphones": {
       "directory": "skills/store_laptop_and_headphones",
       "description": "Hang headphones, close the laptop, transfer it and seat it upright in its separate holder.",
-      "markdown_utf8_bytes": 6460,
-      "token_count_upper_bound": 6460,
+      "markdown_utf8_bytes": 10420,
+      "token_count_upper_bound": 10420,
       "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
       "reference_images": 3,
-      "bytes": 2367122,
+      "bytes": 2371525,
       "sha256": {
         "SKILL.md": "dd06bc6ea0e7e6ac4fbbf5b9b113745ee344158588216c482c5b48bcaa952d37",
         "assets/ending-sequence.jpg": "7f9fbe9a97f27b93c1104a140d4dca77ffd28d46398dd9e5b6985847eb8cfcaf",
@@ -703,11 +703,11 @@
     "sweep_blocks": {
       "directory": "skills/sweep_blocks",
       "description": "Acquire a broom and dustpan, sweep the currently requested objects into the bowl, and release the tools on support.",
-      "markdown_utf8_bytes": 12642,
-      "token_count_upper_bound": 12642,
+      "markdown_utf8_bytes": 11798,
+      "token_count_upper_bound": 11798,
       "token_bound_method": "UTF-8 byte count, conservative for these English skill files",
       "reference_images": 3,
-      "bytes": 1247417,
+      "bytes": 1246573,
       "sha256": {
         "SKILL.md": "174f9e5e7fe1cf32849a5bcf71559d97c8fb19f48c2a647cc5ed288b05fadb74",
         "assets/ending.jpg": "f80015504fcac19c318f21a0b18e9c357bf3c134290209b243ca2080e2b7a682",

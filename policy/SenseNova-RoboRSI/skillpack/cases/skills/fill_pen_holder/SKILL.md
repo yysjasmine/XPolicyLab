@@ -5,6 +5,14 @@ description: Hold the container with one arm, insert the instruments with the ot
 
 # Fill pen holder
 
+## Action checkpoints
+
+Track each instrument separately through located -> verified lift -> lower end inside the current holder mouth -> released and retained. Update its state only from that transition's observation. A tip crossing the rim, a closed gripper or two instruments already inside does not account for the remaining instruments.
+
+Before each insertion, recheck the support hand's measured opening and the holder's current upright mouth. Account for the held instrument's lower-end offset; verify actual supported containment after the picker withdraws. If pickup is empty or the end catches outside, inspect and change centring, shaft grasp point, height or jaw direction before retrying. Use measured difficulty and reach when selecting the next instrument so difficult thin pens are not all left to the finishing reserve.
+
+Begin final put-down only after the required instrument states are verified. Reserve the measured put-down, support-hand release, clear withdrawal and both-arm return costs. A partial inventory remains incomplete even if the holder is parked neatly.
+
 Read the current instruction and count the holder and instruments from head/wrist RGB. Give same-colour instruments distinct IDs. The reference scenes contain an upright holder and four instruments; use the current count and layout. Choose a support arm near the holder and a picker with clear access to the instruments. Either side can support.
 
 ## Hold the holder
@@ -15,7 +23,7 @@ Keep the supporting hand's intended opening during picker motions. Recheck the a
 
 ## Transfer each instrument
 
-1. Prefer accessible thick markers before thin pens, as in the demonstrations; choose within a group by reach and clearance. Locate both ends and grasp the body with enough length protruding for insertion.
+1. Choose by current reach, clearance and measured pickup difficulty; the demonstrations often start with thick markers. Locate both ends and grasp the body with enough length protruding for insertion.
 2. Align the open jaws across the shaft using wrist RGB, descend and close. Make a small test lift; confirm the selected instrument moves with the fingers and its table site is empty.
 3. Lift clear before rotating the long shaft. Account for the tip's swept path as well as the TCP. Orient the lower end toward a free region inside the holder mouth.
 4. Pause with that end above the rim, then lower in short spans. Keep fingers clear of the support hand, rim and already inserted instruments. If the tip catches outside, lift clear and change lateral alignment or tilt.
@@ -27,7 +35,7 @@ For an empty lift, change centring, yaw or grasp point before retrying. If two i
 
 After all required instruments are accounted for, clear the picker from the holder path. Select a free table footprint in the instructed region. Bring the holder upright, lower until its base is supported, open the support fingers and move outward before retreating upward. If the holder follows the hand, clear hooked fingers before lifting farther.
 
-Check every instrument remains contained, none is left at its old table site or in either hand, and the loaded holder stands unsupported and stable. Compare the base/table relation after hand clearance. Return both open, empty arms toward their captured initial poses. Exact shaft heights and lean differ among demonstrations.
+Check every instrument remains contained, none is left at its old table site or in either hand, and the loaded holder stands unsupported and stable. Compare the base/table relation after hand clearance. Return both open, empty arms toward their original step-0 poses. Exact shaft heights and lean differ among demonstrations.
 
 ## Pictures
 

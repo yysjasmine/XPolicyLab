@@ -5,6 +5,14 @@ description: Transfer the eggs into the holder, close its lid and restore the ar
 
 # Fill egg holder
 
+## Action checkpoints
+
+Keep an egg-ID -> cup-ID map. Require verified pickup, cup seating, release and retention before marking that cup occupied. Recount the source basket and check for an egg outside the holder; an intended transfer or the egg disappearing behind a finger is insufficient.
+
+Before closure, preserve a direct view of all required eggs seated below the lid path and account for the source inventory. If the lid falls early, the holder moves or an egg slips, stabilize/re-localize the holder and recover the missing state before continuing. A closed opaque lid cannot retrospectively prove the cups were filled.
+
+Treat lid closure as a separate mechanism action: follow its current hinge arc in short spans, verify actual lid motion, and inspect the front/side gap after withdrawing. When the lid stalls, inspect an obstructing egg or misplaced contact instead of pressing the hand blindly farther down. Reserve closure, withdrawal and both-arm return before spending the last steps on another pickup retry.
+
 Use the current instruction and RGB to identify the eggs, basket, holder cups and lid hinge. Match the current object count and layout. The demonstrations transfer four eggs individually into a 2x2 holder, close the lid with an empty hand and return home. Either arm can be active, depending on the basket side.
 
 ## Choose and fill a cup
@@ -25,7 +33,7 @@ Check front/side gaps after withdrawing. If the base slides, contact misses or a
 
 ## Ending
 
-Verify all eggs accounted for in the cups, basket empty, lid resting closed after contact ends, holder base and basket still supported in their original regions. Both grippers end open and empty. Return the active arm through clear raised waypoints toward its captured initial pose; check the inactive arm too. Compare unobstructed ending views rather than the lid-push pose.
+Verify all eggs accounted for in the cups, basket empty, lid resting closed after contact ends, holder base and basket still supported in their original regions. Both grippers end open and empty. Return the active arm through clear raised waypoints toward its original step-0 pose; check the inactive arm too. Compare unobstructed ending views rather than the lid-push pose.
 
 ## Pictures
 

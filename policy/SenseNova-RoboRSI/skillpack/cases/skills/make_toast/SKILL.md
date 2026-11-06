@@ -5,6 +5,14 @@ description: Pick up bread, transfer it between hands, place slices in toaster s
 
 # Make toast
 
+## Action checkpoints
+
+Record each distinct slice, its current grasp offset, target slot and released/support evidence. Re-estimate after a handover or slip. Keep already placed slices and unused rack slices accounted for while manipulating the next one. Use a handover when reach or geometry requires it; a clear, reachable direct placement can avoid an unnecessary transfer.
+
+Do not begin lever contact until the required distinct slices are independently supported in their slots. With the empty hand clear of bread, identify the moving tab and its accessible surface against the fixed toaster body. Compare tab position before contact, during the press and after withdrawal. Follow its actual track through the required visible downward stroke; reaching a hand target or touching the upper rim is not a completed press. If the tab stays still or tracking stalls, unload and revise contact geometry/direction. Inspect the lowered/engaged state after the hand separates, without inventing force or joint-ratio thresholds.
+
+Before acquiring the last slice, budget its placement plus lever approach/stroke, withdrawal and both-arm return using actual costs so far. Preserve the original step-0 home reference and verify both arms after the final clear retreat. Keep a visually ambiguous mechanism state uncertain.
+
 Use the current instruction to determine the required number of slices. Identify the bread rack, free toaster slots, front lever and arm roles from current RGB. Both gray wide-opening/divider and white two-slot toasters appear in the references; their slot and lever locations differ. The white toaster's round knob below the track is not the lever. Bread starts with browned texture: color change is not an ending test.
 
 ## Pick and transfer

@@ -5,6 +5,12 @@ description: Arrange observed digits upright in descending left-to-right order o
 
 # Arrange largest number
 
+## Action checkpoints
+
+Keep a digit-ID ledger with the observed value, current source/staging/hand location, assigned pad and post-release evidence. After each placement, read the actual glyph and row position again; planned assignments are not placement evidence. When staging across sides, preserve the digit identity and ensure donor release/clearance before the receiver approaches.
+
+Before the last digit, check the measured cost of its pickup/transfer/placement plus release, clear retreat and both-arm return. Use the general skill's original step-0 home record, never a newly saved mid-episode pose. A return stall calls for a reachable clear intermediate pose and measured residual check, not ever-higher targets or repeated holds at the wrong pose.
+
 Count the current digits and pads from head/wrist RGB. Resolve 1/7 and 6/9 with crops. Give each instance a distinct ID, sort digits by value descending and pads by world X ascending. Update locations after contact or release.
 
 ## Manipulation
@@ -35,7 +41,7 @@ Assess each applicable item as **met / unmet / uncertain**, citing current RGB/n
 | Release | Both hands visibly empty and commanded open; digits stay behind as fingers lift and arms withdraw. Opening alone does not prove separation. |
 | Stability | Compare views separated by actual native physics steps after release: occupancy, order, orientation and support remain stable. Observe alone advances no physics. |
 | Final robot state | Record both measured initial TCP poses. Return both empty/open arms through raised clear waypoints. For this case, both native end-links must be within 0.150 m per position axis and 20 degrees full 3D rotation of their initial poses. Verify measured arrival, not a requested target or home-looking image. |
-| Current evidence and protocol | Recheck after withdrawal/parking; preserve a clear view before occlusion, inspect done/review/budget state and resolve uncertain execution before replay. |
+| Current evidence and protocol | Recheck after withdrawal/parking; preserve a clear view before occlusion, inspect done/action-status/budget state and resolve uncertain execution before replay. |
 
 Reserve native steps for release, retreat and return. Target the measured initial TCP poses with margin inside the limits; inspect actual convergence/status/residuals. The native check uses end-link positions and one 3D rotation angle, not separate Euler differences; tool targets use gripping-face-centre TCP. Budget exhaustion during return leaves this item unmet/uncertain. Correct digits alone cannot establish final success while an arm remains outside its return limits.
 

@@ -5,6 +5,12 @@ description: Fold the observed garment using its current cuffs, hem and torso fr
 
 # Clothes folding
 
+## Action checkpoints
+
+Before each cuff or hem move, refresh the garment's supported torso frame and locate the actual free edge. Verify both hem grasps are on the intended exposed layer before carrying them together. If only one side follows, restore support and regrasp the other side instead of dragging the body with an empty hand.
+
+Before releasing, verify the carried layer is draped onto its intended support. Release and withdraw while inspecting each hand for retained or snagged fabric; repair a visible supported defect without pulling apart a good fold. Start the final return only after the fold/support/release conditions have been checked, then use both original step-0 poses and measured arrival. Passing an arm through home earlier does not prove the fold is complete. Check done after each act and stop issuing motion once the harness has terminated; do not infer its cause from a short trajectory alone.
+
 Identify the garment, collar, torso, cuffs and hem from current RGB. The public examples show long-sleeve shirts at different yaws. Preserve useful existing folds and adapt to the current garment and instruction.
 
 ## Establish the garment frame
