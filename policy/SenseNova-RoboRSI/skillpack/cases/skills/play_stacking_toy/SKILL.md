@@ -37,7 +37,7 @@ Every required piece is accounted for on its assigned height-ranked peg, each ho
 
 ## Full completion evidence
 
-For each applicable row, record **met / unmet / uncertain** with current RGB/native-step and measured-state evidence. Compare the supplied task reference images. Start uncertain; an intended target, command, demo ending or occlusion is not evidence that this episode is complete. Apply the current instruction and observed inventory; demonstration counts/poses and variations are references, not hidden evaluator tolerances. Keep useful corrections or inspection going within the current harness protocol while checks remain unmet or uncertain. At a due checkpoint include this assessment in `act.review.ending_check`; native done means termination, not necessarily success.
+For each applicable row, assess **met / unmet / uncertain** from current RGB, measured state and advancing-step history. Apply the current instruction and inventory; demonstrations are comparison evidence, not hidden evaluator tolerances. Follow robo-general for the shared execution and checkpoint protocol.
 
 | Check | Required current evidence |
 |---|---|
@@ -57,13 +57,13 @@ For each applicable row, record **met / unmet / uncertain** with current RGB/nat
 | U1 | Condition to check: Other initially present/unused objects remain accounted for Required current evidence: Explicit list from this episode; compare placement, orientation, support, stability, and note cropped/unknown extent |
 | L1 | Condition to check: Left gripper empty and fully open Required current evidence: Current measured opening plus visual empty fingers, not opening alone |
 | R1 | Condition to check: Right gripper empty and fully open Required current evidence: Current measured opening plus visual empty fingers |
-| L2 | Condition to check: Left arm returned to initial demonstrated home pose/posture Required current evidence: Current xyz/wxyz error to saved initial pose; compare six joints in recorded order and RGB posture |
+| L2 | Condition to check: Left arm returned to initial demonstrated home pose/posture Required current evidence: Current TCP position/orientation error to saved initial TCP pose; compare six joints in recorded order and RGB posture |
 | R2 | Condition to check: Right arm returned to initial demonstrated home pose/posture Required current evidence: Same, including orientation and actual measured arrival |
 | E1 | Condition to check: Native termination/status understood Required current evidence: Check actual latest done and budget/review metadata |
 
 Completion cautions from the public source:
 
-- This is a **demonstration-derived checklist**, not a hidden evaluator specification. The episode instruction is authoritative. All ten matched demos show the conditions below; read variations and uncertainty in `the public demonstration evidence`. Preserve unchanged objects in the comparison.
+- This is a **demonstration-derived checklist**, not a hidden evaluator specification. The episode instruction is authoritative. All ten matched demos show the conditions below; compare the supplied overview, contact and ending images for visible variation. Preserve unchanged objects in the comparison.
 - Use statuses **met / unmet / uncertain** and evidence labels **directly observed / inferred / uncertain**. Cite current frame/step and measured values, plus matching demo frame(s). A command, earlier checklist assertion, a single ambiguous image, or inference alone does not verify a condition. Capture several observations with useful retreat/viewpoint/correction actions between them where needed. `observe()` alone does not advance physics.
 - Do not impose the demo residuals as exact success thresholds. As an operational goal, approach saved home within a few millimeters and a small angle, then inspect actual posture; continue correction when the difference is visible/measured and relevant. Keep exact residuals in the review so the next decision is grounded.
 

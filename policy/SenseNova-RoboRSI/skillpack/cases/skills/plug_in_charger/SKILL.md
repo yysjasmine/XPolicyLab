@@ -46,7 +46,7 @@ The helper calculates only and outputs three-decimal numbers. It does not establ
 
 ## Full completion evidence
 
-For each applicable row, record **met / unmet / uncertain** with current RGB/native-step and measured-state evidence. Compare the supplied task reference images. Start uncertain; an intended target, command, demo ending or occlusion is not evidence that this episode is complete. Apply the current instruction and observed inventory; demonstration counts/poses and variations are references, not hidden evaluator tolerances. Keep useful corrections or inspection going within the current harness protocol while checks remain unmet or uncertain. At a due checkpoint include this assessment in `act.review.ending_check`; native done means termination, not necessarily success.
+For each applicable row, assess **met / unmet / uncertain** from current RGB, measured state and advancing-step history. Apply the current instruction and inventory; demonstrations are comparison evidence, not hidden evaluator tolerances. Follow robo-general for the shared execution and checkpoint protocol.
 
 | Check | Required current evidence |
 |---|---|
@@ -60,8 +60,8 @@ For each applicable row, record **met / unmet / uncertain** with current RGB/nat
 | unused socket groups | Exactly two socket groups remain unoccupied and undamaged/unchanged visibly. Name occupied middle/far/etc and identify both unused groups in clear final RGB. Demos06/07 differ from other eight. |
 | strip switch | Rocker visually unchanged from initial; no demonstrated switching action. Compare current and initial rocker appearance; do not infer electrical on/off or add a toggle requirement. |
 | other objects fixtures | All other objects/fixtures in live initial inventory remain accounted for and supported as appropriate. Inspect scene for displaced objects, additional cables/parts or debris; match actual instruction and live evidence. |
-| left arm home | Left link6 and whole arm return close to the live initial home configuration. Cite current measured xyz/quaternion errors to initial; compare six joint columns and visible elbow/hand. Demo extrema are evidence, not thresholds. |
-| right arm home | Right link6 and whole arm return close to the live initial home configuration. Cite current measured xyz/quaternion errors to initial; compare six joint columns and visible elbow/hand. |
+| left arm home | Left TCP pose and whole-arm posture return close to the saved live initial home configuration. Cite current measured TCP position/orientation errors to the saved initial TCP state; compare six joint columns and visible elbow/hand. Demo extrema are evidence, not thresholds. |
+| right arm home | Right TCP pose and whole-arm posture return close to the saved live initial home configuration. Cite current measured TCP position/orientation errors to the saved initial TCP state; compare six joint columns and visible elbow/hand. |
 | left gripper open | Left hand fully open, empty and clear of objects. Cite measured opening plus visible empty/separated fingers; all demo final opening states equal1. |
 | right gripper open | Right hand fully open, empty and clear of objects. Cite measured opening plus visible empty/separated fingers; all demo final opening states equal1. |
 

@@ -35,7 +35,7 @@ Account for every required bowl in one nested stack: bottom supported on the tab
 
 ## Full completion evidence
 
-For each applicable row, record **met / unmet / uncertain** with current RGB/native-step and measured-state evidence. Compare the supplied task reference images. Start uncertain; an intended target, command, demo ending or occlusion is not evidence that this episode is complete. Apply the current instruction and observed inventory; demonstration counts/poses and variations are references, not hidden evaluator tolerances. Keep useful corrections or inspection going within the current harness protocol while checks remain unmet or uncertain. At a due checkpoint include this assessment in `act.review.ending_check`; native done means termination, not necessarily success.
+For each applicable row, assess **met / unmet / uncertain** from current RGB, measured state and advancing-step history. Apply the current instruction and inventory; demonstrations are comparison evidence, not hidden evaluator tolerances. Follow robo-general for the shared execution and checkpoint protocol.
 
 | Check | Required current evidence |
 |---|---|
@@ -47,13 +47,13 @@ For each applicable row, record **met / unmet / uncertain** with current RGB/nat
 | Finger clearance | Evidence to seek now: Inner and outer fingers are clear of the stack; retreat does not drag or tip any layer. |
 | Stability over time | Evidence to seek now: Several observations **after physics has advanced** show the same supported stack with arms clear. Repeated observe() calls without act() do not create elapsed physical time. |
 | Final robot pose | Evidence to seek now: Both arms are safely withdrawn, grippers open, and measured poses approach the actual episode's starting/parked poses through clear paths. Record residual pose errors and visible clearance. |
-| Budget/review protocol | Inspect current done, native budget and review_due after motion. At a required checkpoint submit current evidence through act.review. Continue useful authorized corrections; the current harness owns termination. Native done is not itself a success label. |
+| Native outcome and budget | Inspect returned done and remaining native budget after motion. Native done is termination, not a success label; the current harness owns termination and enforced limits. |
 
 Completion cautions from the public source:
 
-- Reread the current instruction and public stopping guidance before evaluation actions. This checklist mixes the explicit task requirement with **demonstrated ending behavior**, identified below. It is not a hidden evaluator specification. Replace or extend it if the current episode gives a different instruction.
+- Use the current instruction and the shared execution protocol in robo-general. This checklist mixes the explicit task requirement with **demonstrated ending behavior**, identified below. It is not a hidden evaluator specification. Replace or extend it if the current episode gives a different instruction.
 - For every item record `met`, `unmet`, or `uncertain`, the current observation/step and image references, and a relevant demonstration reference. Do not promote uncertainty to met because a command was sent. Do not use a static training destination or exact home coordinates as an invented requirement.
-- Inspect support, all three layers, open jaws, finger clearance, stability, and measured parking errors. Make small corrections only where current evidence warrants them. Otherwise use measured holds that advance a few native steps, save and compare multiple frames, and honor required reviews. Never repeatedly manipulate an apparently stable stack merely to force termination.
+- Inspect support, all three layers, open jaws, finger clearance, stability, and measured parking errors. Make small corrections only where current evidence warrants them. Otherwise use measured holds that advance a few native steps, save and compare multiple frames. Never repeatedly manipulate an apparently stable stack merely to force termination.
 
 ## Offline helpers
 

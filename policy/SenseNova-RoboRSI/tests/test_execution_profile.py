@@ -12,6 +12,18 @@ profile = import_module("XPolicyLab.policy.SenseNova-RoboRSI.execution_profile")
 P = Path(__file__).resolve().parents[1]
 
 
+def test_episode_prompt_uses_selected_layout_and_eval_seed(tmp_path):
+    derived = profile.load_skillpack_profile(P, 'arrange_largest_number', tmp_path)
+    cfg = {'test_episodes':[{'task':'arrange_largest_number','layout_id':28,'eval_seed':3}],
+           'episode_seconds':120,'options':{'review_window_steps':1050,'review_max_windows':1}}
+    prompt = profile.episode_prompt(derived,cfg)
+    data = json.loads(prompt.split('Episode configuration:\n',1)[1])
+    assert data['layout']==28 and data['seed']==3
+    assert data['native_step_limit']==1050
+    # The authenticated profile source is unchanged; identity is bound by the adapter.
+    assert json.loads(derived.episode_prompt(cfg).split('Episode configuration:\n',1)[1])['layout']==0
+
+
 def test_largest_workspace_has_general_spatial_and_case_skills(tmp_path):
     context = profile.prepare_skillpack_context(P, "arrange_largest_number", tmp_path)
     visible = sorted(p.name for p in (context.workspace/".agents/skills").iterdir())

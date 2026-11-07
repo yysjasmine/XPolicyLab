@@ -82,5 +82,19 @@
     "native_scoring_changed": false,
     "integration_base": "d5a090aef8623aee32e70a5de012a99dc7c33aa0",
     "integrated_main_skill_sha256": "19c99a5007944dc28a322078f78fdfe1f5d8f97d13910ce0d5846a54e7ce27e6"
+  },
+  "wsl7_prompt_docs_integration": {
+    "source_range": [
+      "d375ab8e",
+      "fc762b13"
+    ],
+    "integration_base": "bf8c39e9",
+    "scope": "Shared protocol cleanup and public TCP/degree reference poses; retain wsl5 case enhancements and original task acceptance criteria.",
+    "before_sha256": "19c99a5007944dc28a322078f78fdfe1f5d8f97d13910ce0d5846a54e7ce27e6",
+    "after_sha256": "4a0e16090271dfa89c9c1755a27ad7bde9c2d65766f865910dff97d2c01c1e50",
+    "main_md_bytes": 11260,
+    "native_scoring_changed": false,
+    "native_physics_changed": false,
+    "physical_validation_performed": false
   }
 }

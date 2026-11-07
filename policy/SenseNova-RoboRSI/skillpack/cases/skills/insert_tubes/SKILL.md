@@ -40,7 +40,7 @@ Check each required tube individually: correct hole, cap-up, seated, released an
 
 ## Full completion evidence
 
-For each applicable row, record **met / unmet / uncertain** with current RGB/native-step and measured-state evidence. Compare the supplied task reference images. Start uncertain; an intended target, command, demo ending or occlusion is not evidence that this episode is complete. Apply the current instruction and observed inventory; demonstration counts/poses and variations are references, not hidden evaluator tolerances. Keep useful corrections or inspection going within the current harness protocol while checks remain unmet or uncertain. At a due checkpoint include this assessment in `act.review.ending_check`; native done means termination, not necessarily success.
+For each applicable row, assess **met / unmet / uncertain** from current RGB, measured state and advancing-step history. Apply the current instruction and inventory; demonstrations are comparison evidence, not hidden evaluator tolerances. Follow robo-general for the shared execution and checkpoint protocol.
 
 | Check | Required current evidence |
 |---|---|
@@ -55,9 +55,9 @@ For each applicable row, record **met / unmet / uncertain** with current RGB/nat
 | Rack support/stability | Demonstrated initial -> ending state: Base supported on table, plate upright -> same, no collapse or hand contact What to inspect now: Inspect base/table relationship and rack landmarks across observations. Do not infer stability merely from tube count. |
 | Unused rack locations | Demonstrated initial -> ending state: Front large columns **2,4**, all **five back large holes**, and all smaller holes empty -> still empty What to inspect now: Inspect the unused row and openings. These unchanged states belong in the comparison even though the short instruction does not enumerate them. |
 | Remaining table objects | Demonstrated initial -> ending state: All three initially loose tubes moved into rack; no unused tube remains on table What to inspect now: Scan original tube locations and any region a failed grasp/drop could reach. No loose or fallen tube, detached cap, or tube held out of view. |
-| Left arm | Demonstrated initial -> ending state: Initial home/open/empty -> same home/open/empty What to inspect now: Compare latest measured link6 xyz and wxyz to saved initial left pose; inspect open empty fingers and clearance from rack/tubes. Training final position errors 0.005–0.229 mm across both arms, rotation errors 0.000015–0.000533 rad; joints within .00238 rad of initial zero, opening exactly 1. These are comparison evidence, not required hidden tolerances. |
+| Left arm | Demonstrated initial -> ending state: Initial home/open/empty -> same home/open/empty What to inspect now: Compare latest measured TCP position and orientation to the saved initial left TCP pose; inspect open empty fingers and clearance from rack/tubes. Demonstrated full orientation errors are approximately 0.001–0.031 degrees; joints return within .00238 rad of initial zero and openings to 1. These are comparison evidence, not evaluator tolerances; measure this episode's TCP return error directly. |
 | Right arm | Demonstrated initial -> ending state: Initial home/open/empty -> same home/open/empty What to inspect now: Perform the same fresh comparison independently for the right arm. Earlier return of the right arm does not excuse rechecking it at the ending. |
-| Native outcome/protocol | Inspect current done, native budget and review_due after motion. At a required checkpoint submit current evidence through act.review. Continue useful authorized corrections; the current harness owns termination. Native done is not itself a success label. |
+| Native outcome and budget | Inspect returned done and remaining native budget after motion. Native done is termination, not a success label; the current harness owns termination and enforced limits. |
 | D00 | Initial: 0 Ending frames (0-based): 283, 299, 309, 315, 318 |
 | D01 | Initial: 0 Ending frames (0-based): 288, 304, 314, 320, 323 |
 | D02 | Initial: 0 Ending frames (0-based): 283, 299, 309, 315, 318 |
@@ -74,8 +74,8 @@ Completion cautions from the public source:
 - This checklist records consistent **demonstrated endings**, not known evaluator logic. Use it with the actual episode instruction. Compare the initial scene, several current observations separated by real native steps, and several matching demonstration ending frames. `observe()` alone does not advance time.
 - All ten demos have three capped tubes, one rack, two arms and no other movable task object apparent in the supplied views. The table remains the support surface. If a new episode visibly contains additional objects, add them to the ledger and assess their instructed/demonstrated role instead of ignoring them.
 - For **each check**, mark `met`, `unmet`, or `uncertain`; record the current observation step, image paths or measured values, and demo references. Label evidence `directly_observed`, `inferred`, or `uncertain`. Inference alone does not verify a requirement. A past claim, issued action, detected cap or gripper opening is not fresh proof.
-- The initial home poses in these demos are approximately:
-- - L xyz `[-.299529,-.352300,.921500]`, wxyz `[.707000,0,0,.707214]`. - R xyz `[ .300471,-.352300,.921500]`, same wxyz.
+- Approximate demonstration home:
+  TCP `position` (metres) left `[-0.3, -0.202, 0.921]`, right `[0.3, -0.202, 0.921]`; both `pitch_deg=90.0`, `roll_deg=0.0`, `yaw_deg=0.017`, `gripper_opening=1`.
 - Use the episode's recorded initial measured reference after confirming the home scene, not a fixed timed return script. The **n-10** ending sample still shows the left arm in motion; even **n-4** can remain about a centimeter from home (D00 f315). Compare the return across these frames, and use **n-1** for the measured final home state.
 
 ## Offline helpers

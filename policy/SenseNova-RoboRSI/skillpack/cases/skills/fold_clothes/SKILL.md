@@ -45,7 +45,7 @@ Use continuous `gripper_opening` from 0 closed to 1 open. Partial openings can e
 
 ## Full completion evidence
 
-For each applicable row, record **met / unmet / uncertain** with current RGB/native-step and measured-state evidence. Compare the supplied task reference images. Start uncertain; an intended target, command, demo ending or occlusion is not evidence that this episode is complete. Apply the current instruction and observed inventory; demonstration counts/poses and variations are references, not hidden evaluator tolerances. Keep useful corrections or inspection going within the current harness protocol while checks remain unmet or uncertain. At a due checkpoint include this assessment in `act.review.ending_check`; native done means termination, not necessarily success.
+For each applicable row, assess **met / unmet / uncertain** from current RGB, measured state and advancing-step history. Apply the current instruction and inventory; demonstrations are comparison evidence, not hidden evaluator tolerances. Follow robo-general for the shared execution and checkpoint protocol.
 
 | Check | Required current evidence |
 |---|---|
@@ -62,8 +62,8 @@ For each applicable row, record **met / unmet / uncertain** with current RGB/nat
 Completion cautions from the public source:
 
 - For every row record **met / unmet / uncertain**, the current observation step/image/proprio evidence, and a task-matched demonstration reference. All rows start uncertain in a fresh instance. An issued action, gripper command or one ending image is insufficient. Demonstrated behavior is a comparison target, not a proven hidden evaluator requirement.
-- All twenty demo final arm poses are within 0.000299 m and 0.00203 rad of their own initial poses. This is **measured demonstration behavior, not an evaluator tolerance**. Home reference in these recordings: left approximately [-0.299529,-0.352300,0.921500], right [0.300471,-0.352300,0.921500], quaternion [0.707000,0,0,0.707214]. Use the current observed home and current measured error; do not command a full jump to these coordinates. Last-five-frame robot motion reaches 0.0253 m, so do not claim all robot endings were stationary for five frames.
-- After an authorized end, save `the public demonstration evidence` with the current instruction, actions that visibly helped or failed, evidence paths, termination/stop status as actually returned, and uncertainties. Evaluation experience is local to that isolated instance and is not shared with future episodes.
+- All twenty source arm endings have recomputed TCP return error at most 0.259 mm and full orientation error 0.116 degrees. This is measured demonstration behavior, not an evaluator tolerance. Approximate home: TCP `position` (metres) left `[-0.3, -0.202, 0.921]`, right `[0.3, -0.202, 0.921]`; both `pitch_deg=90.0`, `roll_deg=0.0`, `yaw_deg=0.017`, `gripper_opening=1`. Use the current observed initial TCP state and a clear return route; sampled ending frames may still contain return motion.
+- Retain a concise episode note with the current instruction, useful/failed actions, evidence paths, actual outcome and uncertainties. Experience remains local to this isolated episode.
 
 ## Offline helpers
 

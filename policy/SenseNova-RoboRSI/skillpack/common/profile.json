@@ -7,13 +7,13 @@
     "arrange_largest_number"
   ],
   "sha256": {
-    "agent_core.md": "1acbd17a084858303da9368133d4809ccf9b64eb3448f53ad6a6d7d4d41e8647",
+    "agent_core.md": "eecdcbb8c5d969d6de2045cc4142c0f4fe4dc1ab03a2254da50c6e016fa4fd0e",
     "native_tools.json": "aa97455a660c91cbf250ea98862507baf0d33dc798ffeba0fd440cc0641592b8",
-    "robot_tools.json": "ae26629f2a3c8fdf4a51271894d9ea76719b13c71b669868d71617029de97f52",
-    "skills/arrange_largest_number/SKILL.md": "ae20b680034040b2d7956a46bc4a3622f8678726e0c3a4bc4fe17fc6f9373aaa",
-    "skills/robo-general/SKILL.md": "795113fd24f4b075ed72d8b05099b436d99a9b71d86cb36c819ec6cf7f95de02",
+    "robot_tools.json": "18f33417b8bf4f1bf09c9344a585dad991eaaffa4767711cdc3d0552e02630fc",
+    "skills/arrange_largest_number/SKILL.md": "8c9c1f548cdc98134c241bced9cc3c677d03927fbd1ae516ce10f6c578a1e520",
+    "skills/robo-general/SKILL.md": "8c393e2bf24c241c93963793fe24c00fe101419e862b734ee5ebe74ea743edad",
     "skills_instruction.md": "24dbc691364770bdeac57b871fa34ebdb775d7f0e1235b296c2e2278fd423e05",
-    "actual_robot_declarations.json": "968ea80e377d4464a141a319891ef21acae2a78d49114dcb06220574520f184e",
+    "actual_robot_declarations.json": "979bde7ee67d863a15d8fab84196125fe94b70e509296085a7e1d22352318257",
     "skills/arrange_largest_number/scripts/arrange.py": "82a3363e3a7ecc0091f80f1684a6081577e0263c415807a5f028102352baaa35",
     "skills/robodojo-spatial-localize/SKILL.md": "518cc046daf3d51ba2eb3ccea26b44f6b87b97619449e80c495881e943713d1a",
     "skills/robodojo-spatial-localize/inputs.md": "733f6156b85b90e6b91c31cc258bb5ede5601ce123157d69f599f4d745a3ece0",

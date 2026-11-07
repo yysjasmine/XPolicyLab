@@ -40,7 +40,7 @@ Image pose captions are historical; use current TCP targets and continuous `grip
 
 ## Full completion evidence
 
-For each applicable row, record **met / unmet / uncertain** with current RGB/native-step and measured-state evidence. Compare the supplied task reference images. Start uncertain; an intended target, command, demo ending or occlusion is not evidence that this episode is complete. Apply the current instruction and observed inventory; demonstration counts/poses and variations are references, not hidden evaluator tolerances. Keep useful corrections or inspection going within the current harness protocol while checks remain unmet or uncertain. At a due checkpoint include this assessment in `act.review.ending_check`; native done means termination, not necessarily success.
+For each applicable row, assess **met / unmet / uncertain** from current RGB, measured state and advancing-step history. Apply the current instruction and inventory; demonstrations are comparison evidence, not hidden evaluator tolerances. Follow robo-general for the shared execution and checkpoint protocol.
 
 | Check | Required current evidence |
 |---|---|
@@ -52,7 +52,7 @@ For each applicable row, record **met / unmet / uncertain** with current RGB/nat
 | RN_bottom | Initial observation: Bottom of near reserve stack, flat green up Consistently demonstrated ending: Single flat green-up tile stays at the original near reserve location on table |
 | RF_top | Initial observation: Top of far reserve stack, flat green up Consistently demonstrated ending: Still supported by RF_bottom, original far location/orientation |
 | RF_bottom | Initial observation: Bottom of far reserve stack Consistently demonstrated ending: Still flat/tabletop-supported under RF_top, original location |
-| Left arm/gripper | Demonstrated comparison: Empty, open = 1, near measured home `[-.2995,-.3523,.9216]`, wxyz `[.7073,0,0,.7069]` Verification: Current measured pose versus initial home; visual empty fingers, no contact supporting any tile |
+| Left arm/gripper | Demonstrated comparison: Empty, open = 1, near approximate TCP home `{"position":[-0.299,-0.202,0.922],"pitch_deg":90.0,"roll_deg":0.0,"yaw_deg":-0.032}` with `gripper_opening=1` Verification: Current measured pose versus initial home; visual empty fingers, no contact supporting any tile |
 | Right arm/gripper | Demonstrated comparison: Empty, open = 1, remains near new rightmost tile at its adapted release pose; demo xyz x .4357–.4400, y -.1516–-.1503, z .9059–.9108, q roughly `[0,-.347,0,.938]` Verification: Measured pose, layout-relative relationship to tile, open visible gap and supported upright tile; returning right home differs from all ten endings |
 | Opponent arm | Demonstrated comparison: Separate white arm withdrawn/empty, not one of controlled arms Verification: RGB shows discard area clear and unused far tiles maintained |
 | Waiting/history | Demonstrated comparison: Opponent's actual discard precedes robot tipping; correct trio selected from the discarded face Verification: Cite earlier observed discard and matching inspection, not just a current kong-looking arrangement |

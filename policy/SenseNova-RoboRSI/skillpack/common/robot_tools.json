@@ -29,7 +29,7 @@
   },
   {
     "name": "act",
-    "description": "Accept stored original VLA joint steps, or track model-supplied TCP targets with internal measured-state feedback and IK. TCP targets use continuous gripper_opening (0 closed, 1 open). Supplying targets declines the proposal. Check measured gripper openings every native step; a change of at least 0.02 after settling under a steady command interrupts with gripper_change_reobserve and gripper_event. Return status, actual native steps, residual errors, current RGB and measured TCP state. Inspect interrupted results before choosing another action; opening changes do not prove object loss. Pose arrival does not verify grasp. Keep reason/assessment concise.",
+    "description": "Accept stored original VLA joint steps, or track model-supplied TCP targets with internal measured-state feedback and IK. TCP targets use continuous gripper_opening (0 closed, 1 open). Supplying targets declines the proposal. Return status, actual native steps, residual errors, current RGB and measured TCP state. Inspect interrupted results before choosing another action; an interrupted VLA proposal cannot be reused. Pose arrival does not verify grasp. Keep reason/assessment concise. Only when observe reports review_due, act.review records legacy checkpoint analysis; it does not determine the native score.",
     "input_schema": {
       "type": "object",
       "properties": {
@@ -207,7 +207,7 @@
             "ending_check"
           ],
           "additionalProperties": false,
-          "description": "Evidence at a required checkpoint. Without proposal_id/steps/targets, records the due review without motion."
+          "description": "Legacy harness checkpoint record, only when observe reports review_due. These fields are not native scoring conditions. Without proposal_id/steps/targets, records the due checkpoint without motion."
         }
       },
       "required": [

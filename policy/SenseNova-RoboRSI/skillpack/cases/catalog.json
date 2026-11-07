@@ -4,7 +4,7 @@
   "source_commit": "cfa591575172b638a8436fa95db28e9469785c9c",
   "official_source_commit": "726e9aabfaa642203722eb126f5eaf0f37f3e1ad",
   "subagents_enabled": false,
-  "frozen_general_sha256": "795113fd24f4b075ed72d8b05099b436d99a9b71d86cb36c819ec6cf7f95de02",
+  "frozen_general_sha256": "8c393e2bf24c241c93963793fe24c00fe101419e862b734ee5ebe74ea743edad",
   "raw_icl_training_material_in_runtime": false,
   "tasks": {
     "align_blocks": {
@@ -289,7 +289,7 @@
       "reference_images": 3,
       "bytes": 745398,
       "sha256": {
-        "SKILL.md": "ae20b680034040b2d7956a46bc4a3622f8678726e0c3a4bc4fe17fc6f9373aaa",
+        "SKILL.md": "8c9c1f548cdc98134c241bced9cc3c677d03927fbd1ae516ce10f6c578a1e520",
         "assets/direct-overview.jpg": "eef5d6026466ac63f64d10b5a93ce0d845a0b0b910330e94cfcf8dda2d1f71d3",
         "assets/ending.jpg": "0f39936e1802c96faab3b59276dfbd234bfeae1a4fdae0fd812e18f84c7f89b0",
         "assets/transfer-keyframes.jpg": "221603c54f85b0cfa06478dc4c28b48c5132fa79a451d26bbbea4543ccb2a98c",
@@ -307,7 +307,7 @@
       "reference_images": 2,
       "bytes": 903076,
       "sha256": {
-        "SKILL.md": "a6bb362934db8f34880e82b6ce2a3c1c30b433b9e6cb0530a86f4ff9a5ab18a7",
+        "SKILL.md": "66acbae7d555df710b373fcd5270835e61db2830eccc73f33ae73d7723bb4f35",
         "assets/ep00_ending_views.jpg": "dce87d6406e8871dfdbdc25e8e57f29fcc1354a63005e499abfc1614d5140325",
         "assets/ep00_overview.jpg": "17b19df71f47c6a516da34909fc04bbce0c37ddbd71046ccf0007a8de150ff5a",
         "scripts/assist.py": "90f873d7fb24f3b0747c714b736363abbc535e58a01eacbe411c708a725ae1e4"
@@ -323,7 +323,7 @@
       "reference_images": 2,
       "bytes": 2859213,
       "sha256": {
-        "SKILL.md": "d576e0dfec7a3d867169ef343cbbddcb306935cbbb4d5cc569a90170b4b9a15d",
+        "SKILL.md": "acc5644563d2415d9d6bb13b6565b928d884a4f12110d9356ca988346f540670",
         "assets/groups-and-endings.jpg": "b6b072c85883743ffa6a78d9b1229e92364bd3e3f8bae685edd01a4344bec7ba",
         "assets/table-transfer.jpg": "7a90719e40ff12964a60a2c275fe4fd5ae1eedbc150a1e87621544d40a6d56f3",
         "scripts/assist.py": "37d6fe5e0953e0fd9b732e7c83b0afdbacbe83c761dc5b3260b6f0ca3b95c791"
@@ -339,7 +339,7 @@
       "reference_images": 3,
       "bytes": 1962279,
       "sha256": {
-        "SKILL.md": "e92cdd911b028a7a5e44ff3fdb23d957884ba2361e17d800688709a256132c82",
+        "SKILL.md": "8fd0d46baf9219b32886d9a85269588da9b229362e70e75e34402234a7f54faf",
         "assets/direct_overview.jpg": "8c9cc30cc5ee3feead4e7ed80e622399ac1e42861e10834ab9264a43f9a9f635",
         "assets/handoff.jpg": "dd7b43334ff7fa5c3357eed0e29d98db28b7465837c7e362174665bb40b1d4db",
         "assets/insertion.jpg": "bb1ca1fe2a6d5a7e45bfc39fbe64fb9be308e06a2a5e93ef8547f9410c045e65",
@@ -356,7 +356,7 @@
       "reference_images": 3,
       "bytes": 1273569,
       "sha256": {
-        "SKILL.md": "6f9e837907d189e1961e304919ee1c16902d5a6f1f59d35c266cb91ce073a4ad",
+        "SKILL.md": "86fd086b6d0d37caee02b40f8e91012209dcfdc175d9c58796165e55a1ec7134",
         "assets/assembly.jpg": "c4f8f9422ac4615d4beeb14a2c329361c09978c5bb4da8d61e6c743b0f0cb317",
         "assets/ending.jpg": "d28b0bc2192d8f2d998435f001037dee04e4a80505e0ea203837956ec2529cb7",
         "assets/turns.jpg": "498bdd102dfe97e95ebd93ccdf761cab8f582e86d4d7f17e0b820fa007be92b9",
@@ -373,7 +373,7 @@
       "reference_images": 2,
       "bytes": 376604,
       "sha256": {
-        "SKILL.md": "df805156f4ea6dbf3106d138d61d69fc7df08cf07e96777aed44b000b29d3b5c",
+        "SKILL.md": "dd8a3d27ce50e5af002ab4f98ed82729248daabcaac1f0ab1b1ac73d002d046b",
         "assets/ep00_overview.jpg": "320ac744cce8e28996ac3c4872bcc73120e5115c4c7427f719fa48418a117417",
         "assets/ep08_overview.jpg": "08122a6befe7daef7a6a387f8e13578e62bf5c7cc14ead2371300be20d2204ae",
         "scripts/assist.py": "56c0cfead5a78e7da6073f36a69b8ed8734c5b08c6040d0215cbe838a94a48ca"
@@ -389,7 +389,7 @@
       "reference_images": 3,
       "bytes": 1044011,
       "sha256": {
-        "SKILL.md": "b9571590cf4e577c46dbb50fb788d385c044e4bc1b256dc9961be5de63dd442c",
+        "SKILL.md": "05fa1cdf4ac400f090cbde124e8de4ce9eadc6aeb34979494cd563eca40d7959",
         "assets/ep00_endings.jpg": "0234e2d2f01c57d5d7c6bf4badfcbe047055af630c580329d370c9d8229cb405",
         "assets/ep00_transitions.jpg": "2a341bfebc511086f0958f202a3e34edb122003357eefb26fcc2bad336961390",
         "assets/ep07_endings.jpg": "a2137672b286b0146a725a2da934ef18b8119ff6fd21bf4904b192786778981c",
@@ -406,7 +406,7 @@
       "reference_images": 2,
       "bytes": 841238,
       "sha256": {
-        "SKILL.md": "80ab977ecc5e26e636a368b9a892f42f95b34620975a2f23935b1145a3c5a6ac",
+        "SKILL.md": "5611a25c1e1aa84434cd310c12aaa553e245493e112f0bff61fa4bba9f5c9aca",
         "assets/ending-variation.jpg": "0c7214533b73533a41e19a389e47bd8fae0f13749c121c628d3905068816a8e3",
         "assets/fold-sequence.jpg": "dd67e85354485be72cbf04a21db5df0fe7d9b0d6bf4759d6d1fdb152d0692fe7",
         "scripts/assist.py": "76064154886282995103abc6ae4c3372a5b93781de0e26ecafe1d05ad56e96ef"
@@ -422,7 +422,7 @@
       "reference_images": 3,
       "bytes": 1710428,
       "sha256": {
-        "SKILL.md": "33fc251106cd18110603bc73c2bacf7b30060dcfe710698bdd0d9c355ac4591a",
+        "SKILL.md": "76dbb914969bfb4874a8d2810976d2867a6275b5aaa8bd54890d5594928a9ebb",
         "assets/endings.jpg": "ae198a8d52ede534981c25127eebe678c04e5db07724b472f4c6b46346e072ca",
         "assets/overview.jpg": "44f0880a06dd6d08b30f0040401f7e174253a581f73459b468822df68a667e46",
         "assets/phases.jpg": "8125df755081b6b61ed69d8a69a8f4030404d5326d30673e9b20d50be9da5360",
@@ -439,7 +439,7 @@
       "reference_images": 3,
       "bytes": 1460864,
       "sha256": {
-        "SKILL.md": "760df400bc0aa5a089093ebfa3499dd21113c6ac3079268a3ef84bbc9a7732ca",
+        "SKILL.md": "796d7068de330132e4899f58c05d9ac64d8294c1f677a39f3c32df8c447e9897",
         "assets/ending.jpg": "016393a86f6420358c7777fe3669ff4685c60082f18d5a9fa28d0308f8ec86f6",
         "assets/mirrored_contacts.jpg": "2f824f3141864a807c3346b3d403e2c18bd071c06dd1bc1b5a71aea04ef8411f",
         "assets/overview.jpg": "81326db64e369b52816739524a759c5ee148f6f27bac0e1b728c13fa13ba6407",
@@ -456,7 +456,7 @@
       "reference_images": 3,
       "bytes": 1404873,
       "sha256": {
-        "SKILL.md": "a328ca183a6ba100b8e80a69f8f1cf1fb28fe3e041af6f6e1b75265c4373341a",
+        "SKILL.md": "5c2ad70ef18d3b2317cdd3d36dd6da8c08aa5fee805154616694296a31e525f2",
         "assets/demo00_contacts.jpg": "c52ff5186d572d23a1018b5ced8e0aa39e62ef63e38d8fc60991b99dfe937766",
         "assets/demo00_endings.jpg": "7f3c4ddaa185393f051d2786b4a7e5f08cbe4aec1bdde70323c190dd85985490",
         "assets/demo00_overview.jpg": "2e5aca0045ef25c40c5a1d4aaa87340f023c42e036cc7e384a4bd6fe84f39cb9",
@@ -473,7 +473,7 @@
       "reference_images": 2,
       "bytes": 1312762,
       "sha256": {
-        "SKILL.md": "19c99a5007944dc28a322078f78fdfe1f5d8f97d13910ce0d5846a54e7ce27e6",
+        "SKILL.md": "4a0e16090271dfa89c9c1755a27ad7bde9c2d65766f865910dff97d2c01c1e50",
         "assets/draw-handoff-place.jpg": "9ee9246a48c5f519bce714a71e2bed0257a621c85a659eec37cd127f45b8ad7a",
         "assets/identity-and-ending.jpg": "d9fb1923a00130b1e1ebc0a7fa7bb9a471169ad811f83ca641a16c10fa67a13a",
         "scripts/assist.py": "1745ad42d3f45472c50428c5567a563bed6457fdcf68f25227ab75578a80fd65"
@@ -489,7 +489,7 @@
       "reference_images": 3,
       "bytes": 859435,
       "sha256": {
-        "SKILL.md": "bab11dbfba4290a38631e58dbe1469befba00222244d7f7ec6d6db2a517edbc6",
+        "SKILL.md": "ac68d96d0a682553585411d5495dffbe0fe5af2430cce15438fbdd3740e482bd",
         "assets/contact.jpg": "f6f50eb0c514549fd30fb1a41a2654d2dbc4c79c645177ccea26dc5217068d34",
         "assets/ending.jpg": "1ed80839a3f2315acfa2a8776f3d18dc75fdf2c400873bf6e94435457bbd60b2",
         "assets/overview.jpg": "31d7ed00b18e78bbaaaed468fdcc1d301a094710ce1d78d33d291b597b0931ff",
@@ -506,7 +506,7 @@
       "reference_images": 2,
       "bytes": 1194484,
       "sha256": {
-        "SKILL.md": "84fd891998d6183b0ef5f8f25eb4f9adea7efd4a10ef87fada8761882eed6f54",
+        "SKILL.md": "01478cd142dce15be75e3e7430d92de16abc509994133a85fd93cdd0a94ca273",
         "assets/ending-sequence.jpg": "aac5138d888f2d2e819799cb2fd1e7a831f55eb2eec3c9c32b61079b8135560c",
         "assets/packing-overview.jpg": "b60b91858446c2e56bcf30806161aa9a204bb3dc3ec270008859bbfc263f4a73",
         "scripts/assist.py": "8caa0b552244eb7cd709d0b71df32fcdc61dca7478783de880d4dfda5de51029"
@@ -522,7 +522,7 @@
       "reference_images": 3,
       "bytes": 1224421,
       "sha256": {
-        "SKILL.md": "88342c1b553d86cb5f0711328a16715be13da7604f38533aded09b57b56e8c01",
+        "SKILL.md": "556246c88dd4fc51682f445b011c10c56ec3d051394d6b2af06dd898ade139d2",
         "assets/ending.jpg": "07f5ff06424cc16db8cfb64c8eb4925031e5f288a74baa150346e203376725da",
         "assets/handoff.jpg": "3833e61930bcbd56269f5bfdfef93f46a71ae1957f74f8386962843669634e5b",
         "assets/sequence-overview.jpg": "2d44b040fccc15d1f5809a31641555913cc3df0473a06d3f810eca33465a1698",
@@ -539,7 +539,7 @@
       "reference_images": 3,
       "bytes": 1739090,
       "sha256": {
-        "SKILL.md": "c720366e24c7d4c4277f7ed1a7caae4769c9b22cdb17a2d7034f18caefbadde2",
+        "SKILL.md": "fc7e0ed3cb542455a65f684dec2ccd05fa48347a43269c4144e2186b5f6095da",
         "assets/board_endings.jpg": "1306700897c9fae5a3481cdc334e1373412089ea4152fb157815ca60ee3615c6",
         "assets/ep00_contact.jpg": "7c3b0ca4873c2c5156d630f3677b316984bd17dfc3c176a3b8e1e0e6c76fb844",
         "assets/ep00_overview.jpg": "0d25020f972393afceadbc4dd7cd5614496ca1c6322ff3cebbb1411683628769",
@@ -556,7 +556,7 @@
       "reference_images": 3,
       "bytes": 1156296,
       "sha256": {
-        "SKILL.md": "a1c07ae8420e874e84f4b5f66674d6dd5f09b31af1bda509062b8847f15b6bd7",
+        "SKILL.md": "4a7fb7f8c2f38b3ae0b04ee6f0c097b6403cd3a70b163c4c574c1c87d6627ca4",
         "assets/ending-sequence.jpg": "f7ac56954767149d6ece76d32f09c6e4703a0b6840d16cff92923881523d8e83",
         "assets/first-turn.jpg": "ee723790c5669c479f03c0d7c0c59b6a1c2d5110ddf8eda1aba809f78b79ed48",
         "assets/opponent-turns.jpg": "fbbaafcff76862af6101b7b8c5f342b1250cdcf1efe6211efef63a6221eeada2",
@@ -573,7 +573,7 @@
       "reference_images": 3,
       "bytes": 1557515,
       "sha256": {
-        "SKILL.md": "aabf4415b0405e48a10a32be48660c8f2711f54c27b67e95d3e30a7f40667efe",
+        "SKILL.md": "b01528dda6ed4ab5e7631cda4527c0a4e177689c9017dd278c5af9a69c14ce88",
         "assets/ending.jpg": "e48e9ba2c85500105685c976b8252313ec8c22d4aad4d6c9f2512a097fd624cf",
         "assets/one_transfer.jpg": "ac4f5a0e8040f3e1565a46f6ffc493016deb8baabead4d90c3754112dd688ead",
         "assets/two_transfers.jpg": "7ecd84e68b592bbb828b123c36f44bfb9efa4a42a859c2e08c22243122208b8f",
@@ -590,7 +590,7 @@
       "reference_images": 3,
       "bytes": 672138,
       "sha256": {
-        "SKILL.md": "cb3935d4b279ed02836fd56956535758d6a7d01b61fa75f042589256af370a85",
+        "SKILL.md": "245088b713504e7bc9c1141c7da1474865bf545c192ce151da0f3602354fc009",
         "assets/contact.jpg": "eeb122ac46459f2a50baf91d18dee859eea6121cb115e0b9ce1dced05ae6ff26",
         "assets/ending.jpg": "6925bcd51f0a0be4a8f9c8f7585be35f30d80dc14c52c84895637f1c9125f5e9",
         "assets/pour.jpg": "4b89f2d11de8226e5c354f9fff15c1a7e15d360f2110afb63a97d13913c98cb0",
@@ -607,7 +607,7 @@
       "reference_images": 3,
       "bytes": 1309519,
       "sha256": {
-        "SKILL.md": "819348d9b63e85c91848565055a354ac668f80efc78810729d4ca5d555f82b4d",
+        "SKILL.md": "27d781a9d10b5542d3d155769494cbc6e768e5bae143c78f8b538aea4fb5e4f6",
         "assets/layouts-overview.jpg": "9e74bf16df96f5435cdc94bd2f7a5d2134e55213cdbe5def2c313a5a72b35987",
         "assets/rotation-response.jpg": "24b36d37926f02647dd82d429c23598a6232784ce555daa5442e5f73bd6bcfb9",
         "assets/separation-ending.jpg": "0543f7b986f66c774904517b40eaecda6d41d7290fb7639cfd46e501a091b867",
@@ -624,7 +624,7 @@
       "reference_images": 3,
       "bytes": 530201,
       "sha256": {
-        "SKILL.md": "15da8c52f37f37ed6bb80211d86073ad6442c73ccaecebbad05757ada19e0a69",
+        "SKILL.md": "e43b856c2f6f8315d03d641186ed0190e0413d344e79eaf744e32ed7af2a5f84",
         "assets/ending-sequence.jpg": "d1d2d0dddea30a8269c8a17eee238fda3293e3df52b58bd59ea843c568be18fa",
         "assets/handover.jpg": "99b23339307c7b343921ec4ce1947978406bec5b5badd1e9c606ea86a851f899",
         "assets/pickup-and-disposal-overview.jpg": "1c1283123f65760ae0a3438a93d3f036a117f89b1dabbe0d327e863f0671ba49",
@@ -641,7 +641,7 @@
       "reference_images": 3,
       "bytes": 427444,
       "sha256": {
-        "SKILL.md": "02768a3a35708772ae14399e0f31db1c5b654f81614cd2b6e6c79eb4fe727531",
+        "SKILL.md": "5599c1548431fcea9e0f383a28272a663021c6b6df6056b083ceee600ce07b60",
         "assets/ep02_endings.jpg": "af01370ae52b0903172d07f7f8d3518f34be1c3965cf2e0341b423f21be18165",
         "assets/ep03_endings.jpg": "ab6dfc1b5e50a3482c87732b8b430186b5c8de325da61f7fe9084052856f25f7",
         "assets/grasp_contact_gallery.jpg": "448a9da4d952525eea48fe27c94445e992e0a31005c7fb8bd6a3b9774f10b871",
@@ -658,7 +658,7 @@
       "reference_images": 3,
       "bytes": 5386293,
       "sha256": {
-        "SKILL.md": "7064d0d18fae3fb46cf261da773f78c33e87e5ff6bb5de4e0ff686b58499cc75",
+        "SKILL.md": "083cd6aec065764a5bcb55ee3a69e2d6e7da20906461176362c06112f4478e55",
         "assets/ep00_overview.png": "1dc85c27ac21b0b690c1081d89c75b4ef8cafbb93793e38745d1287398554295",
         "assets/ep00_support.png": "03e4c6adb54295a8c2a4a9255ab2677fac12250854722413d3e014cd94d8e27c",
         "assets/geometry_face_orientation.png": "5e07c9c63337746ced5a611bcdda1c336e25e41e425f25d67d0c72f9132ef5e3",
@@ -675,7 +675,7 @@
       "reference_images": 3,
       "bytes": 583685,
       "sha256": {
-        "SKILL.md": "f866a0c3de69f129fe5b17bbe447f7ab4a2132ebac68879eafc10c4e08150dbd",
+        "SKILL.md": "a8728b8908fe23386fad049fe025497fa3f53eacf3e93b2bb9b473a82c501618",
         "assets/ep00_overview.jpg": "f4f052696bf0799f69444a394e48dab0c327256db2c7188798bb203240c077dc",
         "assets/ep06_overview.jpg": "467e398f43036316dff1a5792e50f25899416cee009617ae3f3b280a137d3b2a",
         "assets/ep09_overview.jpg": "856385746d6e09baeb539eb947b1701a55519dfb8d2f4027b31e215e0caf6290",
@@ -692,7 +692,7 @@
       "reference_images": 3,
       "bytes": 2367122,
       "sha256": {
-        "SKILL.md": "a0fcdef3a6295c7a5ea191015b1bd355b542bf40b562f65f6b117d31975944d2",
+        "SKILL.md": "dd06bc6ea0e7e6ac4fbbf5b9b113745ee344158588216c482c5b48bcaa952d37",
         "assets/ending-sequence.jpg": "7f9fbe9a97f27b93c1104a140d4dca77ffd28d46398dd9e5b6985847eb8cfcaf",
         "assets/laptop-transfer-storage.jpg": "d63826e97b18220cebd17d4d04b4524a2e510c27deb9bcd9a7a5a929a172360d",
         "assets/sequence-overview.jpg": "f13d08a864cb37c5cab334941de85502e98ae712c5173cc36c2f254ef79c9945",
@@ -709,7 +709,7 @@
       "reference_images": 3,
       "bytes": 1247417,
       "sha256": {
-        "SKILL.md": "3e903691f4b15474cc8f736f08788f49f02401efdef805c4ce57aa2df8cad99b",
+        "SKILL.md": "174f9e5e7fe1cf32849a5bcf71559d97c8fb19f48c2a647cc5ed288b05fadb74",
         "assets/ending.jpg": "f80015504fcac19c318f21a0b18e9c357bf3c134290209b243ca2080e2b7a682",
         "assets/overview.jpg": "984ea91ebb859516ddbc2d3f6e73493b25df387e90095cbd767eed2c7a85894e",
         "assets/sweep.jpg": "5580eaf94843b28a63c5526594addebf6bc71094fcfc9c150f5ab265f886a7e9",

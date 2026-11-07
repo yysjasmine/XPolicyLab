@@ -119,6 +119,24 @@ def extend_reference(reference):
     return replace(reference, HybridAdapter=runtime.execution.adapter_class(reference.HybridAdapter))
 
 
+def episode_prompt(profile, cfg):
+    """Bind the frozen prompt's identity to the actual selected native scene."""
+    prompt = profile.episode_prompt(cfg)
+    episodes = cfg.get("test_episodes", [])
+    if not episodes:
+        return prompt
+    if len(episodes) != 1 or episodes[0]["task"] != profile.task:
+        raise ValueError("Prompt requires the current episode's task identity")
+    prefix, marker, body = prompt.partition("Episode configuration:\n")
+    if not marker:
+        raise ValueError("Execution profile lacks its episode configuration")
+    data = json.loads(body)
+    episode = episodes[0]
+    data.update(layout=episode["layout_id"],
+                seed=episode.get("eval_seed", episode.get("seed", 0)))
+    return prefix + marker + json.dumps(data, separators=(",", ":")) + "\n"
+
+
 def start_toolkit(experiment, run, owner, model_cfg, *, proposal_ids_seed=None):
     """Keep recording and optional operator stop outside the model tool schema."""
     runtime = runtime_modules(Path(__file__).parent)
