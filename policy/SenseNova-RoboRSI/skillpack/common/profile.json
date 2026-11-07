@@ -7,11 +7,11 @@
     "arrange_largest_number"
   ],
   "sha256": {
-    "agent_core.md": "eecdcbb8c5d969d6de2045cc4142c0f4fe4dc1ab03a2254da50c6e016fa4fd0e",
+    "agent_core.md": "f39757504421e6a549cefdf1062351e0726363dbb9799577af5f41e9a6d1f17b",
     "native_tools.json": "aa97455a660c91cbf250ea98862507baf0d33dc798ffeba0fd440cc0641592b8",
     "robot_tools.json": "4539fdcfaec8a8765f45cb3cb9b56b7bc2e9d0aa76a046efc1e29f57948350de",
     "skills/arrange_largest_number/SKILL.md": "8c9c1f548cdc98134c241bced9cc3c677d03927fbd1ae516ce10f6c578a1e520",
-    "skills/robo-general/SKILL.md": "84dd736eee872de2a0c4d8a607df13d575b63a7aba4e21d96fa870066b668610",
+    "skills/robo-general/SKILL.md": "77b83692b3cf5cea607da0e8054d83dcdd890c2a0ff0c6b959cebd2b5b0ad311",
     "skills_instruction.md": "24dbc691364770bdeac57b871fa34ebdb775d7f0e1235b296c2e2278fd423e05",
     "actual_robot_declarations.json": "4766c597c29e771ed769dfa7a2cf50241ffeaed944065010ee3467cb3c733f53",
     "skills/arrange_largest_number/scripts/arrange.py": "82a3363e3a7ecc0091f80f1684a6081577e0263c415807a5f028102352baaa35",

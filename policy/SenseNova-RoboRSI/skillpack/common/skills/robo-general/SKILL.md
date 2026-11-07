@@ -48,4 +48,7 @@ Execute one full dual-arm target at a time through `act`, without `proposal_id`;
 
 ## Completion
 
+Do not stop the task merely because it looks complete while native done remains false.
+Save useful experience and end your response only after native done; exiting earlier is recorded as incomplete.
+
 Use the current task instruction and supplied case SKILL.md to assess applicable checks as met / unmet / uncertain, with current RGB, measured state and native-step evidence. Task-specific thresholds and final poses stay in that case's SKILL.md. Check actual position/orientation, coverage, support, release, stability after real native steps and applicable arm state. A command, planned target, demo ending or occluded view does not establish completion; repeated observe alone advances no physics. Continue useful inspection/corrections while requirements remain unmet or uncertain and the task permits it. Native done means termination; success and score come from the native evaluator. The harness owns enforced limits and termination.
