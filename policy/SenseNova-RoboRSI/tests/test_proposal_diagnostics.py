@@ -62,7 +62,8 @@ def wrapped(tmp_path, *, cached=True):
     proposal, actions, observation = fixture()
 
     class Base:
-        def __init__(self):
+        def __init__(self, environment_dir, options):
+            assert environment_dir == tmp_path
             self.record_dir = tmp_path
             self.inferences = self.observations = 0
 
@@ -78,7 +79,8 @@ def wrapped(tmp_path, *, cached=True):
                 stream.write(json.dumps(record)+"\n")
             return deepcopy(proposal)
 
-    adapter = runtime.execution.adapter_class(Base)()
+    adapter = runtime.execution.adapter_class(Base)(
+        tmp_path, {"eef_execution_backend": "bounded_curobo"})
     if cached:
         adapter._transition()
     return adapter, proposal, actions

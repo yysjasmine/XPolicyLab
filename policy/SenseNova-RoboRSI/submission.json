@@ -90,7 +90,7 @@
     "catalog_path": "skillpack/cases/catalog.json",
     "catalog_sha256": "321f9e1c34bbdb168031e9ea0cae8c1be8b6f3624379ac5da626ef3e45d49c02",
     "frozen_common_path": "skillpack/frozen_common.json",
-    "frozen_common_sha256": "c750255f66a27d324877e553bb5cc7aebb02a0b941eb877da5e8b5a1af9a3cb7"
+    "frozen_common_sha256": "40eb6422fd8b20420409088d644de82f4bfbd4a4e791bbd818f052d2dbfe8a0f"
   },
   "native_rgb": {
     "transport": "native_rgb_bytes_v1",
@@ -99,9 +99,10 @@
     "archive": "JPEG95_444_no_resize",
     "pixels": "raw uint8 RGB bytes in private IPC; never JPEG decoded for Model/VLA",
     "sha256": {
-      "native_rgb.py": "225744d46efe288d034e380692ad268662667d76840a037f7708d3fa1c11afe1",
-      "native_rgb_adapter.py": "ef5eea0b106102bd1e728d51967cbad6630acc9c4e9ee8703619a249e4e5d831",
-      "native_rgb_episode.py": "f064fc7b31cac4e8679fa974362cd9def0c2f61ceb9c2ea94e807f7405e543c7"
+      "native_rgb.py": "dc475a32d9c7af2e4d7cd84c4bf7b5b52b9a5e1b778fd5776301710678a55690",
+      "native_rgb_adapter.py": "d7cdc31d58873aac10a3b8c5e1c5e7a7249d303b43eaaeb8e9a42592b17921a5",
+      "native_rgb_episode.py": "d1c8eb857392b1a1529b2aa5b854a80d34858e1be762ac111fb315410da79c65",
+      "native_curobo.py": "d23e4de4680d6d69699bd05d9d611dd124707bdbf2f097922439a087bdb70362"
     }
   }
 }

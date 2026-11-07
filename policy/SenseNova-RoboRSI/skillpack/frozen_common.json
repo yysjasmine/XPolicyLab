@@ -1,13 +1,13 @@
 {
   "robot_runtime/native_request.py": "92d7495f7deb70365225857f0efbce8805a81735c5852d34d4e2287b14267b88",
-  "robot_runtime/execution.py": "e98d004092971a4b2f9896a5ff5bda7f812f46ad03ff5791c368b5caf0a47a2e",
+  "robot_runtime/execution.py": "8203f67dfbf30aefa452862e9d9b3b212918731735ac7ef76bb807a9765145a6",
   "robot_runtime/robot_tools.py": "506ccb9763e9d5ef1515339a645ee5d3e192b66db545872d396d8814fb88048f",
   "robot_runtime/tcp_pose.py": "a3c544ceada5e6ac7d99165b13c757004ddfdd51cda354f67fccfe54a196db8d",
   "robot_runtime/prompt_profile.py": "60938ac526d5838a78c24e94e0f6eceb225ce2a354e70bfd620ea79bb290f398",
   "common/agent_core.md": "eecdcbb8c5d969d6de2045cc4142c0f4fe4dc1ab03a2254da50c6e016fa4fd0e",
   "common/native_tools.json": "aa97455a660c91cbf250ea98862507baf0d33dc798ffeba0fd440cc0641592b8",
   "common/skills_instruction.md": "24dbc691364770bdeac57b871fa34ebdb775d7f0e1235b296c2e2278fd423e05",
-  "common/profile.json": "e6542a505d556dfb184a8466170a4c292fe0459bf8d1163fd1c8947170dec7b0",
+  "common/profile.json": "d80c65376fa12d9241a75b1a9df7827cbc9e174ab2bf5ecd8f56b0bfd03f2331",
   "common/actual_robot_declarations.json": "4766c597c29e771ed769dfa7a2cf50241ffeaed944065010ee3467cb3c733f53",
   "common/robot_tools.json": "4539fdcfaec8a8765f45cb3cb9b56b7bc2e9d0aa76a046efc1e29f57948350de",
   "common/skills/robo-general/SKILL.md": "84dd736eee872de2a0c4d8a607df13d575b63a7aba4e21d96fa870066b668610",
@@ -27,7 +27,7 @@
   "common/skills/robodojo-spatial-localize/scripts/space_memory.py": "92f41de564b53a01d49ce0406a1a09001444c3be15805ddffa6a3c95c3b1469a",
   "common/skills/robodojo-spatial-localize/scripts/support_plane.py": "2bdbecedc90b2e4c075e850bc561002689a7257c3e45cb98a88be00eec3316e5",
   "common/skills/robodojo-spatial-localize/scripts/run_localize.py": "a7cd768e3db0d49be4075dd9b81563526d9e77dc5607e46bdb959b24abdd9121",
-  "robot_runtime/bounded_curobo.py": "eda06d95f1966217882d9fb2fe700075f3ba46f808f7e35ceafe1ec4eaa8f7eb",
-  "robot_runtime/curobo_execution.py": "580e3952e8b468a2481714f6308b62ca78f58824e491464688e07670c99e9c21",
+  "robot_runtime/bounded_curobo.py": "4429ee63f77f1db3b39bf00ac945baaa6b04de42350d3440920ef10b94e9ff6a",
+  "robot_runtime/curobo_execution.py": "5ee040b916370ee4e4ccc957d2c40b504872ba108a0e3a56eec23af0bc91accf",
   "robot_runtime/proposal_diagnostics.py": "8458fc2cbdc09e922aa8f6746bfbcf6481b68ecb2d162a7297762e36eb3361f9"
 }

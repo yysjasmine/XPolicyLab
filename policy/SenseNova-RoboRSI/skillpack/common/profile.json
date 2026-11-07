@@ -1,5 +1,5 @@
 {
-  "profile_id": "robodojo_execution_wsl8_ten_point_diagnostics_target_calculators",
+  "profile_id": "robodojo_execution_wsl7_wsl8_wsl10",
   "task": "arrange_largest_number",
   "skills": [
     "robo-general",

@@ -15,13 +15,13 @@ class FK:
  def matrix(self,q):
   out=np.eye(4);out[:3,3]=q[:3];out[:3,:3]=Rotation.from_rotvec(q[3:]).as_matrix();return out
 class Tests(unittest.TestCase):
- def test_fast_vector_caps_and_shortest_rotation(self):
+ def test_wsl4_vector_caps_and_shortest_rotation(self):
   now=np.eye(4);target=np.r_[[.12,.16,0],Rotation.from_rotvec([0,0,1.2]).as_quat()[[3,0,1,2]]];pose,delta=b.bounded_goal(now,target)
   self.assertAlmostEqual(np.linalg.norm(delta[:3]),.045);self.assertAlmostEqual(np.linalg.norm(delta[3:]),.3);self.assertAlmostEqual(np.linalg.norm(pose[:3]),.045)
   pose2,delta2=b.bounded_goal(now,np.r_[[0,0,0],-target[3:]]);self.assertTrue(np.allclose(delta2[3:],delta[3:]))
  def test_periodic_nearest_soft_limit_and_no_fake_prismatic_wrap(self):
   q=np.array([2.394861,2.358188,0,0,0,-3.071]);raw=q+np.array([-2*math.pi,2*math.pi,0,0,2*math.pi,0]);limits=np.tile([-math.pi,math.pi],(6,1));canonical,k=b.canonical_solution(raw,q,limits,[True]*6);self.assertTrue(np.allclose(canonical,q));self.assertEqual(k,[1,-1,0,0,-1,0]);bad,_=b.canonical_solution(raw,q,limits,[False]*6);self.assertIsNone(bad)
- def test_joint_bounds_ema_and_bad_state(self):
+ def test_wsl4_joint_bounds_and_unused_smoothing_helper(self):
   lim=np.tile([-1.,1.],(6,1));q=np.zeros(6);out,info=b.smooth_bounded_joints(np.ones(6)*.8,q,lim,previous=q);self.assertTrue(np.allclose(out,.2));self.assertEqual(info['alpha'],.5)
   out2,_=b.smooth_bounded_joints(-np.ones(6)*.8,q,lim,previous=out);self.assertTrue(np.allclose(out2,-.1));self.assertLessEqual(np.abs(out2-q).max(),.400001)
   with self.assertRaises(ValueError):b.bounded_joints(q,np.ones(6)*2,lim)
@@ -41,22 +41,36 @@ class Tests(unittest.TestCase):
   with tempfile.TemporaryDirectory()as folder:
    adapter,calls,steps=self.make_adapter(folder);original_solve=adapter.env.robot_manager.solve_ik;action={'mode':'eef','reason':'test','assessment':{'current_subgoal':'test'},'target':{a:{'position':[.04,0,0],'quaternion_wxyz':[1.,0,0,0],'gripper_opening':.2 if a=='left'else.8}for a in ['left','right']}};result=native_ee.execute(adapter,action)
    self.assertEqual(len(calls),2);self.assertEqual(len(steps),1);self.assertIs(adapter.env.robot_manager.solve_ik,original_solve);self.assertEqual(adapter.env.sim._sim_step_counter,10)
-   self.assertTrue(np.allclose(calls[0][1][:3],[.04,0,0]));self.assertAlmostEqual(steps[0]['left_arm_joint_state'][0],.02);self.assertEqual(steps[0]['left_ee_joint_state'],[.2]);self.assertEqual(steps[0]['right_ee_joint_state'],[.8]);self.assertGreaterEqual(result['applied_action']['ik_diagnostics']['left']['actual_residual_to_requested_goal']['tcp_position_error_m'],.019)
+   self.assertTrue(np.allclose(calls[0][1][:3],[.04,0,0]));self.assertAlmostEqual(steps[0]['left_arm_joint_state'][0],.04);self.assertEqual(steps[0]['left_ee_joint_state'],[.2]);self.assertEqual(steps[0]['right_ee_joint_state'],[.8]);self.assertLess(result['applied_action']['ik_diagnostics']['left']['actual_residual_to_requested_goal']['tcp_position_error_m'],1e-6)
    receipt=json.loads((Path(folder)/'bounded_curobo_execution.jsonl').read_text());self.assertEqual(receipt['status'],'completed');self.assertEqual(receipt['physics_steps'],10)
- def test_open_gripper_fast_approach_uses_full_joint_target(self):
-  with tempfile.TemporaryDirectory()as folder:
-   adapter,calls,steps=self.make_adapter(folder);action={'mode':'eef','reason':'fast pregrasp','assessment':{'current_subgoal':'approach'},'target':{a:{'position':[.04,0,0],'quaternion_wxyz':[1.,0,0,0],'gripper_opening':1.}for a in ['left','right']}}
+ def test_manual_execution_has_no_history_mixing(self):
+  with tempfile.TemporaryDirectory() as folder:
+   adapter,calls,steps=self.make_adapter(folder)
+   for entry in adapter.env.robot_manager.control_manager.prev_control[0].values():
+    entry['position']=[.3]*6
+   action={'mode':'eef','reason':'no EMA test','assessment':{'current_subgoal':'direct bounded target'},'target':{a:{'position':[.04,0,0],'quaternion_wxyz':[1.,0,0,0],'gripper_opening':.25} for a in ['left','right']}}
    result=native_ee.execute(adapter,action)
    self.assertAlmostEqual(steps[0]['left_arm_joint_state'][0],.04)
-   self.assertEqual(result['applied_action']['ik_diagnostics']['left']['smoothing']['alpha'],1.)
- def test_fast_joint_update_stays_inside_predicted_pose_bound(self):
-  with tempfile.TemporaryDirectory()as folder:
-   adapter,calls,steps=self.make_adapter(folder)
-   adapter.env.robot_manager.solve_ik=lambda target_pose,env_idx,robot,trans:{'status':'Success','joint_names':FK.names,'joint_value':[.4,0,0,0,0,0]}
-   action={'mode':'eef','reason':'fast pregrasp','assessment':{'current_subgoal':'approach'},'target':{a:{'position':[.04,0,0],'quaternion_wxyz':[1.,0,0,0],'gripper_opening':1.}for a in ['left','right']}}
-   result=native_ee.execute(adapter,action)
-   self.assertLessEqual(steps[0]['left_arm_joint_state'][0],.05+1e-9)
-   self.assertLess(result['applied_action']['ik_diagnostics']['left']['predicted_step_limit_scale'],1.)
+   self.assertTrue(np.allclose(steps[0]['left_arm_joint_state'][1:],0))
+   info=result['applied_action']['ik_diagnostics']['left']
+   self.assertEqual(info['smoothing'],{'method':'disabled','enabled':False,'alpha':1.0})
+   receipt=json.loads((Path(folder)/'bounded_curobo_execution.jsonl').read_text())
+   self.assertFalse(receipt['limits']['joint_target_ema_enabled'])
+   self.assertEqual(receipt['limits']['joint_delta_from_measured_rad'],.4)
+ def test_wider_joint_command_retains_native_predicted_pose_bounds(self):
+  for raw,expected_scale in [([.2,.2,0,0,0,0],.125),([0,0,0,0,0,.8],.5)]:
+   with self.subTest(raw=raw),tempfile.TemporaryDirectory() as folder:
+    adapter,calls,steps=self.make_adapter(folder)
+    adapter.env.robot_manager.solve_ik=lambda *args,**kw:{'status':'Success','joint_names':FK.names,'joint_value':raw}
+    action={'mode':'eef','reason':'native pose guard','assessment':{'current_subgoal':'bounded physical target'},'target':{a:{'position':[.04,0,0],'quaternion_wxyz':[1.,0,0,0],'gripper_opening':.2} for a in ['left','right']}}
+    result=native_ee.execute(adapter,action)
+    for arm in ['left','right']:
+     info=result['applied_action']['ik_diagnostics'][arm]
+     self.assertEqual(info['predicted_step_limit_scale'],expected_scale)
+     q=np.asarray(steps[0][arm+'_arm_joint_state']);pose=FK().matrix(q)
+     self.assertLessEqual(np.linalg.norm(pose[:3,3]),.05+1e-9)
+     self.assertLessEqual(Rotation.from_matrix(pose[:3,:3]).magnitude(),.35+1e-9)
+    self.assertEqual(len(steps),1);self.assertEqual(adapter.env.take_action_cnt[0],1)
  def test_solver_failure_keeps_bounded_previous_and_executes_other_arm(self):
   with tempfile.TemporaryDirectory()as folder:
    adapter,calls,steps=self.make_adapter(folder,fail='left');action={'mode':'eef','reason':'test','assessment':{'current_subgoal':'test'},'target':{a:{'position':[.04,0,0],'quaternion_wxyz':[1.,0,0,0],'gripper_opening':.3}for a in ['left','right']}};result=native_ee.execute(adapter,action);self.assertEqual(steps[0]['left_arm_joint_state'],[0.]*6);self.assertGreater(steps[0]['right_arm_joint_state'][0],0);self.assertEqual(result['applied_action']['ik_fallback_arms'],['left'])

@@ -699,6 +699,9 @@ def validate_policy(resumed: dict, fresh: dict) -> None:
     deployed = {"gpu", "physical_gpu", "vla_port", "replay", "replay_fresh_session"}
     old = {k: v for k, v in resumed["options"].items() if k not in deployed}
     new = {k: v for k, v in fresh["options"].items() if k not in deployed}
+    # Pre-cuRobo checkpoints implicitly used the original DLS backend.
+    old.setdefault("eef_execution_backend", "legacy_dls")
+    new.setdefault("eef_execution_backend", "legacy_dls")
     if old != new:
         raise ValueError("Resume changes original action/review/context options")
     remaining, limit = resumed["episode_seconds"], fresh["episode_seconds"]

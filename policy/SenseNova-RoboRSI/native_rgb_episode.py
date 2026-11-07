@@ -90,6 +90,7 @@ def main():
     model_cfg['storage_mode']=spec.get('storage_mode','training')
     model_cfg['save_video']=save_video
     if "enable_thinking" in spec:model_cfg["enable_thinking"] = spec["enable_thinking"]
+    if "eef_execution_backend" in spec:model_cfg["eef_execution_backend"] = spec["eef_execution_backend"]
     prior=ROOT/"prior_usage_files.json"
     if prior.exists():model_cfg["prior_usage_files"]=json.loads(prior.read_text())
     model_cfg["episode_seconds"] = cfg["episode_seconds"] = None
@@ -133,17 +134,19 @@ def main():
                 raise ValueError("Expected exactly one native action per Model chunk")
             action = actions[0]
             if "_roborsi_control" in action:
-                if action != {"_roborsi_control": "finish"}:
+                if action == {"_roborsi_control": "finish"}:
+                    reply = backend.request(op="finish")
+                    break
+                if action.get("_roborsi_control") != "bounded_curobo":
                     raise ValueError("Unknown native finish envelope")
-                reply = backend.request(op="finish")
-                break
             command = {key: value.tolist() if hasattr(value, "tolist") else value for key, value in action.items()}
             reply = backend.request(op="step", action=command)
             control_steps += 1
             if reply["observation"]["control_step"] != control_steps or control_steps > step_limit:
                 raise ValueError("Native step ACK/budget mismatch")
             with (case/"joint_actions.jsonl").open("a") as stream:
-                stream.write(json.dumps({"step": control_steps, "action": command, "done": reply["done"]})+"\n")
+                actual = reply.get("roborsi_execution", {}).get("applied_action", {}).get("joint_command", command)
+                stream.write(json.dumps({"step": control_steps, "action": actual, "done": reply["done"]})+"\n")
             write(case/"status.json", {"phase": "running", "model": route, "native_steps": control_steps,
                   "at": time.time(), "policy_source": str(POLICY), "score": None})
             if not reply["done"]:

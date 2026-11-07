@@ -7,6 +7,7 @@ code:
   - hybrid_launcher.py
   - custom_cli.py
   - hybrid_backend.py
+  - native_curobo.py
   - skillpack_agent.py
   - execution_profile.py
   - spatial_observation.py

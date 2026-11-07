@@ -1,4 +1,4 @@
-"""Pure geometric helpers for bounded native-step TCP tracking."""
+"""Geometric helpers for cuRobo with wsl4-scale incremental bounds."""
 from __future__ import annotations
 import math
 import numpy as np
