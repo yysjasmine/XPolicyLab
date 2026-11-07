@@ -1,4 +1,4 @@
-"""Enable model-chosen EEF targets behind the three-tool interface.
+"""Enable model-chosen EEF targets behind the registered robot tools.
 
 Install only in a new episode's bridge. Public targets have already been
 translated to native poses by RobotTools. Existing runtime/scoring is reused.
@@ -72,7 +72,7 @@ def make_request(hybrid_request, native_request, *, invalid_action_type,
 
 
 def make_experiment_class(reference, *, allow_direct_targets: bool):
-    """Construct the bridge class for a new three-tool episode owner."""
+    """Construct the bridge class for a new robot-tool episode owner."""
     class Experiment(reference.runner.Experiment):
         request = make_request(reference.hybrid_host.request, reference.hybrid_host.ORIGINAL,
                                invalid_action_type=reference.runner.InvalidAction,

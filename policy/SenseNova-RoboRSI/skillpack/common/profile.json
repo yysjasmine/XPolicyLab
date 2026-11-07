@@ -1,5 +1,5 @@
 {
-  "profile_id": "robodojo_execution_three_tools_wsl6_spatial_memory",
+  "profile_id": "robodojo_execution_wsl8_ten_point_diagnostics_target_calculators",
   "task": "arrange_largest_number",
   "skills": [
     "robo-general",
@@ -9,11 +9,11 @@
   "sha256": {
     "agent_core.md": "eecdcbb8c5d969d6de2045cc4142c0f4fe4dc1ab03a2254da50c6e016fa4fd0e",
     "native_tools.json": "aa97455a660c91cbf250ea98862507baf0d33dc798ffeba0fd440cc0641592b8",
-    "robot_tools.json": "18f33417b8bf4f1bf09c9344a585dad991eaaffa4767711cdc3d0552e02630fc",
+    "robot_tools.json": "4539fdcfaec8a8765f45cb3cb9b56b7bc2e9d0aa76a046efc1e29f57948350de",
     "skills/arrange_largest_number/SKILL.md": "8c9c1f548cdc98134c241bced9cc3c677d03927fbd1ae516ce10f6c578a1e520",
-    "skills/robo-general/SKILL.md": "8c393e2bf24c241c93963793fe24c00fe101419e862b734ee5ebe74ea743edad",
+    "skills/robo-general/SKILL.md": "84dd736eee872de2a0c4d8a607df13d575b63a7aba4e21d96fa870066b668610",
     "skills_instruction.md": "24dbc691364770bdeac57b871fa34ebdb775d7f0e1235b296c2e2278fd423e05",
-    "actual_robot_declarations.json": "979bde7ee67d863a15d8fab84196125fe94b70e509296085a7e1d22352318257",
+    "actual_robot_declarations.json": "4766c597c29e771ed769dfa7a2cf50241ffeaed944065010ee3467cb3c733f53",
     "skills/arrange_largest_number/scripts/arrange.py": "82a3363e3a7ecc0091f80f1684a6081577e0263c415807a5f028102352baaa35",
     "skills/robodojo-spatial-localize/SKILL.md": "518cc046daf3d51ba2eb3ccea26b44f6b87b97619449e80c495881e943713d1a",
     "skills/robodojo-spatial-localize/inputs.md": "733f6156b85b90e6b91c31cc258bb5ede5601ce123157d69f599f4d745a3ece0",
@@ -75,7 +75,10 @@
     "tools": [
       "observe",
       "vla_propose",
-      "act"
+      "act",
+      "hold_current",
+      "close_in_place",
+      "move_relative"
     ],
     "trajectory_display_stride": 5,
     "sample_step_numbers": [
@@ -166,6 +169,17 @@
       "interrupt_status": "gripper_change_reobserve",
       "response": "gripper_event, current RGB and measured state; remaining act cancelled",
       "interpretation": "contact change requiring visual inspection; not confirmed object loss"
+    },
+    "target_calculators": {
+      "tools": [
+        "hold_current",
+        "close_in_place",
+        "move_relative"
+      ],
+      "source": "latest full-precision measured TCP state",
+      "output": "control_step, computed_only=true, one dual-arm targets list; at most three decimal places",
+      "execution": "read-only; model inspects targets and then calls act; recalculate after intervening action",
+      "relative_frame": "environment XYZ metres"
     }
   },
   "single_markdown_skills": [

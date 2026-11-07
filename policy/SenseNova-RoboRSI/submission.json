@@ -88,9 +88,9 @@
   },
   "skillpack": {
     "catalog_path": "skillpack/cases/catalog.json",
-    "catalog_sha256": "ae68ead3c0517efba26824e503330c03262868dce7d46ec9ca8edfb28a767ec5",
+    "catalog_sha256": "321f9e1c34bbdb168031e9ea0cae8c1be8b6f3624379ac5da626ef3e45d49c02",
     "frozen_common_path": "skillpack/frozen_common.json",
-    "frozen_common_sha256": "ca8faa339544739b56b73358362eb914b7b3450257196a39a3bfbce96880208a"
+    "frozen_common_sha256": "c750255f66a27d324877e553bb5cc7aebb02a0b941eb877da5e8b5a1af9a3cb7"
   },
   "native_rgb": {
     "transport": "native_rgb_bytes_v1",

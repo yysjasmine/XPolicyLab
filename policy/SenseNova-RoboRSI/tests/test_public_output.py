@@ -156,10 +156,40 @@ def test_vla_preview_and_act_results_do_not_quantize_stored_proposal():
     tools = runtime.robot_tools.RobotTools(bridge, setting='simate_vla')
     preview = tools.execute_tool('vla_propose', {'subgoal': 'Move above the object.'}).result
     precision(preview)
-    assert len(preview['targets']) == 10
+    assert [row['step'] for row in preview['preview']] == list(range(5, 51, 5))
     result = tools.execute_tool('act', {'proposal_id': 'fixture', 'steps': 5,
         'reason': 'Use the accepted prefix.', 'assessment': {'current_subgoal': 'Approach.'}}).result
     precision(result)
     assert calls[-1]['op'] == 'vla_review' and calls[-1]['targets'] is None
     assert calls[-1]['approved_steps'] == 5
     assert proposal == original
+
+
+def test_compact_preview_rounds_public_copy_and_preserves_private_proposal():
+    runtime = import_module('XPolicyLab.policy.SenseNova-RoboRSI.execution_profile').runtime_modules(POLICY)
+    target = {arm: dict(position=[.123456789, -.00001, .3],
+                        quaternion_wxyz=[1., 0., 0., 0.], gripper_opening=.987654321)
+              for arm in ('left', 'right')}
+    metrics = dict(delta_cm=[.123456789, -.00001, .3], path_cm=.987654321,
+                   max_step_cm=.123456789, max_rotation_step_deg=.987654321,
+                   max_joint_step_rad=.123456789, grip_delta=-.00001,
+                   grip_range=[.123456789, .987654321])
+    proposal = dict(proposal_id='native-id', control_step=123,
+                    targets=[deepcopy(target) for _ in range(50)],
+                    review_aid=dict(status='available',
+                        prefixes={str(n):{arm:deepcopy(metrics) for arm in ('left','right')}
+                                  for n in (5, 10, 15, 20, 25, 30, 35, 40, 45, 50)}))
+    original = deepcopy(proposal)
+    tools = runtime.robot_tools.RobotTools(lambda _: None, setting='simate_vla')
+    result = tools._public_proposal(proposal)
+    precision(result)
+    assert result['proposal_id'] == 'p1' and result['control_step'] == 123
+    assert set(result) == {'proposal_id', 'control_step', 'preview'}
+    assert len(result['preview']) == 10
+    assert result['preview'][0]['left']['delta_cm'][0] == .123
+    assert proposal == original
+
+
+def test_general_skill_contains_no_legacy_calculation_script():
+    root = POLICY/'skillpack/common/skills/robo-general'
+    assert not list(root.rglob('*.py'))

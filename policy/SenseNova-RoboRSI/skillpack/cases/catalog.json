@@ -4,7 +4,7 @@
   "source_commit": "cfa591575172b638a8436fa95db28e9469785c9c",
   "official_source_commit": "726e9aabfaa642203722eb126f5eaf0f37f3e1ad",
   "subagents_enabled": false,
-  "frozen_general_sha256": "8c393e2bf24c241c93963793fe24c00fe101419e862b734ee5ebe74ea743edad",
+  "frozen_general_sha256": "84dd736eee872de2a0c4d8a607df13d575b63a7aba4e21d96fa870066b668610",
   "raw_icl_training_material_in_runtime": false,
   "tasks": {
     "align_blocks": {

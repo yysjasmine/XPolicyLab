@@ -4,7 +4,7 @@
 
 RoboDojo policy with a single execution entry: `Model` → `SkillpackController` →
 `SkillpackEmbodiedAgent` → external Codex CLI. Simate beta predicts joint
-trajectories; the agent uses three robot tools to inspect and execute them.
+trajectories; the agent uses six robot tools to inspect, calculate and execute.
 XPolicyLab owns the simulator, physical layout, native step feedback and scoring.
 Vendored RoboRSI, kinematics and OpenPI wire-codec sources remain pinned.
 
@@ -114,7 +114,8 @@ contracts rather than implementation source.
 ## Robot tools
 
 The external CLI exposes `functions.exec` / `functions.wait` with the registered
-MCP robot tools `observe`, `vla_propose` and `act`:
+MCP robot tools `observe`, `vla_propose`, `act`, `hold_current`, `close_in_place`
+and `move_relative`:
 
 - `observe` returns current RGB and measured state, with displayed floats rounded
   to three decimals. Native measurements retain their precision.
@@ -128,6 +129,8 @@ MCP robot tools `observe`, `vla_propose` and `act`:
   Targets use metres, pitch/roll/yaw degrees relative to vertical down, and
   continuous `gripper_opening` in [0,1]. Tracking completes a waypoint before
   advancing, and reports stalls, residuals and consumed native steps.
+- `hold_current`, `close_in_place` and `move_relative` calculate TCP targets
+  without motion. Their returned targets require a separate `act` call.
 
 Each physical joint step is returned by `Model.get_action()` and acknowledged
 with the actual executed observation. FK preview, stored joints and manual IK
@@ -332,6 +335,23 @@ converted reference poses as public TCP positions and downward-relative degree
 angles; their task-specific acceptance evidence remains intact. Existing case
 enhancements, spatial localization and memory remain available. `act.review` is
 a legacy checkpoint record requested only when `observe` reports `review_due`;
-it does not determine native success or score. This branch retains the three
-robot tools and every-fifth-step VLA preview; these documentation changes do
+it does not determine native success or score. This branch includes the robot operations, read-only target calculators and
+every-fifth-step VLA preview; these documentation changes do
 not change gripper monitoring, native scoring, physics or episode limits.
+
+## VLA preview diagnostics and read-only target tools
+
+VLA previews retain ten samples at steps 5/10/15/20/25/30/35/40/45/50.
+Each `preview` row includes public TCP positions, downward-relative angles,
+gripper openings, displacement from the measured start, cumulative path length,
+maximum position/rotation/joint increments, gripper change/range and cumulative
+bound warnings. Prefix statistics cover every original step, including steps
+not shown. Missing diagnostics are explicit and do not reject a usable proposal.
+Accepting a proposal still executes the original stored joint prefix.
+
+`hold_current`, `close_in_place` and `move_relative` read the latest measured
+state and return one full dual-arm `targets` list with `control_step` and
+`computed_only=true`. They do not move, generate a VLA prediction or replace a
+proposal. Inspect the result and call `act` to execute; recalculate after any
+intervening action. No generic calculation script is staged in robo-general;
+task-specific and spatial-localization helpers remain available.

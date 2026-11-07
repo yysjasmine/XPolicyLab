@@ -1,4 +1,4 @@
-"""Three public tools over the original RoboDojo episode's robot bridge.
+"""Robot observation, proposal, target calculation and execution tools.
 
 The bridge retains full proposals, permissions, IK, native state and budgets.
 The public tool interface uses grasp-centre TCP poses; native bridge/IK poses
@@ -17,11 +17,13 @@ import socket
 import threading
 from typing import Any, Callable
 
+from proposal_diagnostics import PREFIX_FIELDS, PREVIEW_STEPS
 from tcp_pose import (
     POSE_CONTRACT,
     link6_to_public_pose,
     link6_to_tcp_target,
     tcp_to_link6_target,
+    validate_gripper_opening,
 )
 
 
@@ -58,6 +60,9 @@ def _object(properties: dict, required: list[str]) -> dict:
 
 
 TEXT = dict(type="string", minLength=1)
+ARM_NAME = dict(type="string", enum=["left", "right"])
+TOOL_NAMES = frozenset(("observe", "vla_propose", "act", "hold_current",
+                        "close_in_place", "move_relative"))
 REVIEW = _object({key: TEXT for key in (
     "observed_state", "demo_comparison", "why_not_done", "next_plan", "ending_check"
 )}, ["observed_state", "demo_comparison", "why_not_done", "next_plan", "ending_check"])
@@ -84,10 +89,10 @@ NATIVE_DUAL = _object({"left": NATIVE_ARM, "right": NATIVE_ARM}, ["left", "right
 
 
 def tool_specs() -> list[dict[str, Any]]:
-    """Return three model-facing schemas using the grasp-centre TCP contract."""
+    """Expose robot operations and read-only target calculations."""
     return [
         dict(name="observe", description="Read current RGB, measured TCP positions, pitch/roll/yaw degrees relative to the downward reference, permissions and budgets without advancing physics. Display floats use at most three decimal places.", input_schema=_object({}, [])),
-        dict(name="vla_propose", description="Predict a trajectory without moving. Give one short English sentence describing an immediate action, the observed object and a destination when needed; use task/demo wording and omit reasoning, code and multi-step plans. Example: Move the left gripper above the blue 8. Return a short proposal_id (p1, p2, ...) and TCP samples at steps 5,10,...,50. A new request replaces an unexecuted old proposal.", input_schema=_object({"subgoal": {**TEXT, "maxLength": 2000}}, ["subgoal"])),
+        dict(name="vla_propose", description="Predict without moving. Give one short English immediate action naming the observed object and destination when needed; omit reasoning, code and multi-step plans. Return proposal_id and preview at steps 5,10,15,20,25,30,35,40,45,50 only. Each arm has pos_m (TCP XYZ), angles_deg ([pitch about +X, roll about +Y, yaw about +Z] from downward), grip (0 closed, 1 open), and measured-start prefix diagnostics: delta_cm, path_cm, max_step_cm, max_rotation_step_deg, max_joint_step_rad, grip_delta and grip_range (including start). Row bounds are cumulative existing warnings through that step. Statistics include every original step in the prefix. Read with RGB; predictions do not establish grasp or safety. No full 50-point inspection. A new proposal replaces the old one; act uses its stored original joint prefix.", input_schema=_object({"subgoal": {**TEXT, "maxLength": 2000}}, ["subgoal"])),
         dict(name="act", description="Accept stored original VLA joint steps, or track model-supplied TCP targets with internal measured-state feedback and IK. TCP targets use continuous gripper_opening (0 closed, 1 open). Supplying targets declines the proposal. Return status, actual native steps, residual errors, current RGB and measured TCP state. Inspect interrupted results before choosing another action; an interrupted VLA proposal cannot be reused. Pose arrival does not verify grasp. Keep reason/assessment concise. Only when observe reports review_due, act.review records legacy checkpoint analysis; it does not determine the native score.", input_schema=_object({
             "proposal_id": {**TEXT, "description": "Copy the current short VLA proposal_id, e.g. p1; omit when supplying targets."},
             "steps": dict(type="integer", minimum=1, maximum=50,
@@ -100,35 +105,56 @@ def tool_specs() -> list[dict[str, Any]]:
             "assessment": _object({"current_subgoal": TEXT}, ["current_subgoal"]),
             "review": {**REVIEW, "description": "Legacy harness checkpoint record, only when observe reports review_due. These fields are not native scoring conditions. Without proposal_id/steps/targets, records the due checkpoint without motion."},
         }, ["reason", "assessment"])),
+        dict(name="hold_current", description="Calculate one full dual-arm TCP target from the latest measured state, preserving both poses and gripper openings. Read-only: no motion, VLA call, physics step or proposal replacement. Returns control_step, computed_only and targets; inspect them, then call act with targets to execute. Recalculate after any intervening action.", input_schema=_object({}, [])),
+        dict(name="close_in_place", description="Calculate one full dual-arm TCP target from the latest measured state. Keep both poses and the other gripper unchanged; set the selected arm's opening (default 0, fully closed). Read-only; does not close or verify grasp. Returns control_step, computed_only and targets; inspect them, then call act with targets. Recalculate after any intervening action.", input_schema=_object({
+            "arm": ARM_NAME,
+            "opening": dict(type="number", minimum=0, maximum=1, default=0,
+                            description="Selected gripper's target opening, 0 closed and 1 open."),
+        }, ["arm"])),
+        dict(name="move_relative", description="Calculate one full dual-arm TCP target from the latest measured state. Add delta_m to the selected arm's TCP XYZ in environment axes; preserve both orientations, gripper openings and the other arm. Read-only; no motion or collision planning. Returns control_step, computed_only and targets; inspect them, then call act with targets. Recalculate after any intervening action.", input_schema=_object({
+            "arm": ARM_NAME,
+            "delta_m": dict(type="array", items=dict(type="number"), minItems=3, maxItems=3,
+                            description="Environment-frame XYZ offsets in metres, not tool-local axes."),
+        }, ["arm", "delta_m"])),
     ]
 
 
 def sparse_proposal(proposal: dict[str, Any]) -> dict[str, Any]:
-    """Expose every fifth target without changing the original proposal."""
+    """Join ten public targets and prefix diagnostics; retain no dense output."""
     targets = proposal.get("targets")
     if not isinstance(targets, list) or len(targets) != 50:
         raise RuntimeError("Expected the configured full 50-target proposal")
-    indices = list(range(4, 50, 5))
-    fields = ("status", "proposal_id", "control_step", "subgoal", "horizon",
-              "robot_moved", "approved_steps_min", "approved_steps_max",
-              "approved_steps_default", "gripper_conversion", "gripper_clipped_values",
-              "inference_latency_s", "fk_validation", "execution_mode")
-    result = {key: deepcopy(proposal[key]) for key in fields if key in proposal}
     violations = proposal.get("out_of_bounds", [[] for _ in range(50)])
     if not isinstance(violations, list) or len(violations) != 50:
         raise RuntimeError("Expected full-trajectory bound checks")
-    result.update(
-        targets=[{arm: link6_to_tcp_target(targets[i][arm]) for arm in ("left", "right")}
-                 for i in indices],
-        selected_waypoint_indices=indices,
-        sample_step_numbers=[i + 1 for i in indices],
-        display_stride=5, horizon=50, display_only=True,
-        out_of_bounds=[deepcopy(violations[i]) for i in indices],
-        full_trajectory_out_of_bounds_steps=[i for i, value in enumerate(violations) if value],
-        execution="act executes the full stored consecutive prefix, not these samples",
-        pose_contract=deepcopy(POSE_CONTRACT),
-        display_precision_decimals=3,
-    )
+    aid = proposal.get("review_aid") or {}
+    prefixes = aid.get("prefixes", {})
+    available = aid.get("status") == "available" and all(
+        all(key in prefixes.get(str(step), {}).get(arm, {}) for key in PREFIX_FIELDS)
+        for step in PREVIEW_STEPS for arm in ("left", "right"))
+    result = dict(proposal_id=proposal["proposal_id"])
+    if "control_step" in proposal:
+        result["control_step"] = proposal["control_step"]
+    result["preview"] = []
+    for step in PREVIEW_STEPS:
+        row = dict(step=step)
+        for arm in ("left", "right"):
+            pose = link6_to_tcp_target(targets[step-1][arm])
+            value = dict(pos_m=pose["position"],
+                         angles_deg=[pose[key] for key in ("pitch_deg", "roll_deg", "yaw_deg")],
+                         grip=pose["gripper_opening"])
+            if available:
+                value.update({key: deepcopy(prefixes[str(step)][arm][key]) for key in PREFIX_FIELDS})
+            row[arm] = value
+        # Keep warnings at skipped steps; omit duplicate occurrences only.
+        row["bounds"] = list(dict.fromkeys(flag for flags in violations[:step] for flag in flags))
+        result["preview"].append(row)
+    if not available:
+        result["diagnostics"] = "unavailable"
+    if (proposal.get("fk_validation") or {}).get("passed") is False:
+        result["fk_validation"] = deepcopy(proposal["fk_validation"])
+    if proposal.get("gripper_clipped_values"):
+        result["gripper_clipped_values"] = proposal["gripper_clipped_values"]
     return _round_display(result)
 
 
@@ -149,7 +175,7 @@ def _round_display(value: Any) -> Any:
 
 
 class RobotTools:
-    """Map three outer tools to one existing, original episode bridge."""
+    """Bind public operations to one existing, original episode bridge."""
 
     def __init__(self, call: Callable[[dict], dict], *, setting: str,
                  direct_act_enabled: bool = False, image_root: Path | None = None,
@@ -221,6 +247,31 @@ class RobotTools:
             return self.call({"op": "review", "analysis": review})
         return latest
 
+    def _calculate_targets(self, name: str, arguments: dict) -> dict:
+        """Use full-precision current state; quantize only the returned copy."""
+        latest = self._observe()
+        try:
+            observation = latest["observation"]
+            state = observation["state"]
+            target = {}
+            for arm in ("left", "right"):
+                pose = state[arm+"_ee_pose"]
+                if type(pose).__module__.split(".")[0] == "numpy":
+                    pose = pose.tolist()
+                target[arm] = link6_to_public_pose(pose)
+                target[arm]["gripper_opening"] = validate_gripper_opening(
+                    float(state[arm+"_ee_joint_state"][0]))
+            if name == "close_in_place":
+                target[arguments["arm"]]["gripper_opening"] = arguments.get("opening", 0.)
+            elif name == "move_relative":
+                arm = arguments["arm"]
+                target[arm]["position"] = [value+delta for value, delta in
+                                           zip(target[arm]["position"], arguments["delta_m"])]
+            return _round_display(dict(control_step=observation["control_step"],
+                                       computed_only=True, targets=[target]))
+        except (KeyError, TypeError, ValueError, IndexError) as error:
+            raise ToolInputError("Latest measured state cannot form finite dual-arm TCP targets") from error
+
     def dispatch(self, name: str, arguments: dict[str, Any]) -> dict[str, Any]:
         """Execute once, preserving native rejections and uncertain failures."""
         from jsonschema import Draft202012Validator, ValidationError
@@ -235,6 +286,8 @@ class RobotTools:
         with self._lock:
             if name == "observe":
                 return self._public(self._observe())
+            if name in {"hold_current", "close_in_place", "move_relative"}:
+                return self._calculate_targets(name, arguments)
             if name == "vla_propose":
                 if self.setting != "simate_vla":
                     raise ToolInputError("VLA is disabled for this episode")

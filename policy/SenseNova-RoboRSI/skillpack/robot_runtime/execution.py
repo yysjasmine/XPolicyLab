@@ -22,6 +22,12 @@ FAST_ROTATION_STEP_RAD = .3
 FINE_ROTATION_STEP_RAD = .1
 
 
+def _action_dimensions():
+    from XPolicyLab.utils.process_data import get_robot_action_dim_info
+    # This native adapter's reset contract requires arx_x5.
+    return get_robot_action_dim_info("arx_x5")
+
+
 def stage_owned_adapter(source, config, modules):
     """Keep the configured Simate session/history wrapper when extending IK routing."""
     from pathlib import Path
@@ -31,7 +37,7 @@ def stage_owned_adapter(source, config, modules):
     entry = source / Path(original_file).name
     if not entry.is_file():
         raise ValueError("Configured native adapter entry is absent from owned source")
-    for name in ("execution.py", "tcp_pose.py", "gripper_monitor.py"):
+    for name in ("execution.py", "tcp_pose.py", "proposal_diagnostics.py", "gripper_monitor.py"):
         shutil.copy2(modules/name, source/name)
     hybrid = source/"hybrid_adapter.py"
     suffix = "\nfrom execution import adapter_class\nAdapter = adapter_class(Adapter)\n"
@@ -208,6 +214,17 @@ def execute_vla(owner, req, native_request, *, invalid_action_type):
 def adapter_class(base):
     """Extend an owned runtime copy, without changing frozen benchmark sources."""
     class Adapter(base):
+        def _cache_review_observation(self, observation):
+            self._review_aid_observation = deepcopy({key: observation[key] for key in
+                                                   ("control_step", "state") if key in observation})
+
+        def _transition(self, *args, **kwargs):
+            result = super()._transition(*args, **kwargs)
+            # Reuse an observation the original adapter already emitted. No new
+            # camera read, physics step or policy history entry is introduced.
+            self._cache_review_observation(result.get("observation", {}))
+            return result
+
         def vla_propose(self, subgoal):
             import json
             path = self.record_dir / "vla_proposals_private.jsonl"
@@ -228,6 +245,15 @@ def adapter_class(base):
                     target[arm]["gripper_opening"] = validate_gripper_opening(values[index])
             proposal["execution_mode"] = "stored_vla_joint"
             proposal["gripper_conversion"] = "Continuous opening in [0,1]: 0 fully closed, 1 fully open; preview and execution use the same stored values"
+            try:
+                from proposal_diagnostics import build_review_aid
+                proposal["review_aid"] = build_review_aid(
+                    proposal, self._joint_proposal["actions"], self._review_aid_observation,
+                    dimensions=_action_dimensions())
+            except Exception as error:
+                # Diagnostics must never invalidate an otherwise usable proposal.
+                proposal["review_aid"] = dict(status="unavailable", advisory_only=True,
+                                              error_type=type(error).__name__, reason=str(error))
             return proposal
 
         def _step_eef(self, action):

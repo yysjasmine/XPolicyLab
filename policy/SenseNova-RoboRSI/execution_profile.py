@@ -1,4 +1,4 @@
-"""Stage the frozen three-tool interface and exactly one current case skill."""
+"""Stage the registered robot tools and exactly one current case skill."""
 from __future__ import annotations
 
 from copy import deepcopy
@@ -26,7 +26,7 @@ def runtime_modules(policy_dir):
         if not path.is_relative_to(root) or _hash(path) != digest:
             raise ValueError("Frozen shared interface differs: "+relative)
     runtime = root/"robot_runtime"
-    for name in ("robot_tools", "tcp_pose", "gripper_monitor", "execution", "native_request", "prompt_profile"):
+    for name in ("robot_tools", "tcp_pose", "gripper_monitor", "proposal_diagnostics", "execution", "native_request", "prompt_profile"):
         loaded = sys.modules.get(name)
         if loaded is not None and Path(loaded.__file__).resolve() != runtime/(name+".py"):
             raise ValueError("Robot runtime already imported from another source: "+name)

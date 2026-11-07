@@ -50,7 +50,7 @@ def test_preview_observe_and_native_execution_use_the_same_proposal(runtime):
     toolkit = runtime.robot_tools.RobotTools(bridge, setting="simate_vla")
     preview = toolkit.dispatch("vla_propose", {"subgoal": "Approach the object."})
     stored = deepcopy(bridge.pending)
-    assert preview["proposal_id"] == "p1" and len(preview["targets"]) == 10
+    assert preview["proposal_id"] == "p1" and len(preview["preview"]) == 10
     observed = toolkit.dispatch("observe", {})
     assert observed["pending_vla_proposal"]["proposal_id"] == "p1"
     assert stored["proposal_id"] not in json.dumps(observed)
