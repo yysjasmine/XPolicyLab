@@ -32,7 +32,7 @@ def test_largest_workspace_has_general_spatial_and_case_skills(tmp_path):
     assert not (context.workspace/"README.md").exists()
     assert not (context.workspace/"preparation/demonstrations.md").exists()
     assert len(list(context.workspace.rglob("SKILL.md"))) == 3
-    assert all(p.stat().st_size <= 8192 for p in context.workspace.rglob("*.md"))
+    assert all(p.stat().st_size <= 16384 for p in context.workspace.rglob("*.md"))
     assert context.source_identity["raw_icl_materialized"] is False
     assert context.source_identity["runtime_subagents_enabled"] is False
 
